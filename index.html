@@ -12,11 +12,20 @@
 <meta property="og:image" content="https://tensionlessdigital.com/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://tensionlessdigital.com">
-<link rel="icon" href="data:,">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="stylesheet" href="styles.css">
+<style>
+  html.gsap-active .cta-h .word {
+    opacity: 0;
+    transform: translateY(20px) rotateX(25deg);
+    transform-origin: bottom center;
+  }
+  html.gsap-active .marquee-track {
+    opacity: 0;
+    visibility: hidden;
+  }
+</style>
 <body>
-
-
 
 <!-- NAV -->
 <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -24,9 +33,6 @@
   <img src="logo.svg" alt="Tensionless Digital" class="nav-logo">
   <ul class="nav-links">
     <li><a href="#services">Services</a></li>
-    <li><a href="#results">Results</a></li>
-    <li><a href="#testimonials">Clients</a></li>
-    <li><a href="#process">Process</a></li>
   </ul>
   <a href="#contact" class="nav-cta">Book a Free Call</a>
   <button class="nav-toggle" aria-label="Menu" aria-expanded="false">
@@ -40,8 +46,6 @@
 <div class="hero-pin-wrap" id="hero-pin">
   <div class="hero-sticky">
     <canvas id="hero-canvas" aria-hidden="true"></canvas>
-
-    <!-- Text overlay -->
     <div class="hero-text">
       <p class="hero-eyebrow" id="ey">Digital Marketing Agency &middot; 120+ Campaigns Delivered</p>
       <h1 class="hero-h1">
@@ -53,11 +57,9 @@
         <p class="hero-desc">Landing pages that convert. Ads that perform. SEO that compounds. We build the full-funnel growth engine for businesses ready to scale without the guesswork.</p>
         <div class="hero-btns">
           <a href="#contact" class="btn-primary" tabindex="-1">Start a Project</a>
-          <a href="#results" class="btn-ghost" tabindex="-1">See Results</a>
         </div>
       </div>
     </div>
-
     <div class="scroll-hint" id="scroll-hint">
       <div class="scroll-line"></div>
       <span>Scroll</span>
@@ -65,11 +67,13 @@
   </div>
 </div>
 
-<!-- Remnant particles overlay — carries hero shard energy into Services -->
+<!-- Remnant particles overlay -->
 <canvas id="remnant-canvas" aria-hidden="true"></canvas>
 
 <!-- REST OF PAGE -->
 <main id="main-content">
+
+<!-- SERVICES -->
 <section id="services">
 <div class="grain" aria-hidden="true"></div>
   <div class="svc-intro">
@@ -88,8 +92,8 @@
     <div class="svc-card reveal d4"><svg class="svc-icon" viewBox="0 0 28 28" fill="none" aria-hidden="true"><circle cx="12" cy="9" r="4" stroke="currentColor" stroke-width="1.1"/><path d="M4 24c0-4.418 3.582-8 8-8s8 3.582 8 8" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/><line x1="22" y1="12" x2="22" y2="20" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/><line x1="18" y1="16" x2="26" y2="16" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg><div class="svc-num"><span class="svc-diamond" aria-hidden="true"></span>05</div><div class="svc-name">Lead<br>Generation</div><div class="svc-desc">Full-funnel lead systems: capture, qualify, nurture, and deliver pipeline-ready prospects.</div><span class="svc-arrow">&#8599;</span></div>
   </div>
 </section>
-<div class="section-divider" data-trigger="results"></div>
 
+<!-- DATA BREAK -->
 <section id="data-break" class="data-break">
 <div class="grain" aria-hidden="true"></div>
   <div class="db-inner">
@@ -115,146 +119,370 @@
   </div>
 </section>
 
-<section id="results" class="results">
-<div class="grain" aria-hidden="true"></div>
-  <div class="results-intro">
-    <div>
-      <div class="s-chrome" aria-hidden="true"></div>
-      <p class="s-label reveal">Case Studies</p>
-      <h2 class="s-head reveal d1">Numbers that<br><em>don&rsquo;t lie.</em></h2>
-    </div>
-    <p class="s-body reveal d1">Every number below is a real campaign from a real engagement &mdash; not an industry average, not a composite. This is what we&rsquo;ve actually done.</p>
-  </div>
-  <div class="res-grid">
-    <div class="res-card reveal">
-      <span class="res-ghost-num" aria-hidden="true">120</span>
-      <svg class="res-chart" viewBox="0 0 260 60" fill="none" aria-hidden="true"><polyline points="10,50 65,45 130,30 195,18 250,8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="250" cy="8" r="2" fill="currentColor"/></svg>
-      <div class="cs-headline">$350K Profit<br>on $6K Spend</div>
-      <div class="cs-industry">Automotive</div>
-      <p class="cs-narrative">Full-funnel Google Ads campaign paired with SEO. Precision keyword targeting and dedicated landing pages drove revenue within the first week, while organic held top-3 positions across two competitive verticals.</p>
-      <div class="cs-stats"><span class="cs-stat">58&times; ROAS</span><span class="cs-stat">Google Ads</span><span class="cs-stat">Top 3 SEO</span></div>
-    </div>
-    <div class="res-card reveal d1">
-      <svg class="res-chart" viewBox="0 0 260 60" fill="none" aria-hidden="true"><rect x="25" y="35" width="35" height="18" rx="1.5" stroke="currentColor" stroke-width="1"/><rect x="75" y="26" width="35" height="27" rx="1.5" stroke="currentColor" stroke-width="1"/><rect x="125" y="16" width="35" height="37" rx="1.5" stroke="currentColor" stroke-width="1"/><rect x="175" y="8" width="35" height="45" rx="1.5" stroke="currentColor" stroke-width="1" fill="currentColor" fill-opacity="0.06"/></svg>
-      <div class="cs-headline">$2M Production<br>in One Month</div>
-      <div class="cs-industry">Financial Services</div>
-      <p class="cs-narrative">Facebook Ads campaign for high-ticket financial services. Prospect audience targeting with direct-response creative delivered $2M in total production &mdash; yielding $150K in commissions &mdash; within a single calendar month.</p>
-      <div class="cs-stats"><span class="cs-stat">$150K Commissions</span><span class="cs-stat">Facebook Ads</span><span class="cs-stat">30 Days</span></div>
-    </div>
-    <div class="res-card reveal d2">
-      <svg class="res-chart" viewBox="0 0 260 60" fill="none" aria-hidden="true"><path d="M10,52 C60,52 80,10 130,10 C180,10 200,20 250,6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/><circle cx="250" cy="6" r="2" fill="currentColor"/></svg>
-      <div class="cs-headline">$100K Revenue<br>at $4K Ad Spend</div>
-      <div class="cs-industry">Immigration Law</div>
-      <p class="cs-narrative">Multi-channel campaign for an immigration firm. Funnel restructure and audience refinement dropped cost-per-lead 70% below industry standard while delivering a consistent flow of high-intent, case-ready prospects.</p>
-      <div class="cs-stats"><span class="cs-stat">25&times; ROAS</span><span class="cs-stat">FB + Lead Gen</span><span class="cs-stat">70% Lower CPL</span></div>
-    </div>
-    <div class="res-card reveal d3">
-      <svg class="res-chart" viewBox="0 0 260 60" fill="none" aria-hidden="true"><path d="M10,54 Q80,50 130,32 Q180,12 250,4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/><circle cx="250" cy="4" r="2" fill="currentColor"/></svg>
-      <div class="cs-headline">8 Closures<br>at $3K Ad Spend</div>
-      <div class="cs-industry">Real Estate</div>
-      <p class="cs-narrative">Facebook Ads campaign targeting new-development buyers. Hyperlocal strategy and purchase-intent creative delivered 8 closed sales from a minimal budget &mdash; proving that precise targeting beats high spend every time.</p>
-      <div class="cs-stats"><span class="cs-stat">8 New Launches</span><span class="cs-stat">Facebook Ads</span><span class="cs-stat">$375 / Closure</span></div>
+<!-- MARQUEE — Logo Track -->
+<section id="clients" class="marquee-section">
+  <div class="marquee-fade" aria-hidden="true"></div>
+  <div class="marquee-inner">
+    <div class="marquee-track">
+      <div class="marquee-row">
+        <span>Automotive</span><span class="marquee-dot" aria-hidden="true"></span>
+        <span>Financial Services</span><span class="marquee-dot" aria-hidden="true"></span>
+        <span>Immigration Law</span><span class="marquee-dot" aria-hidden="true"></span>
+        <span>Real Estate</span><span class="marquee-dot" aria-hidden="true"></span>
+        <span>E-Commerce</span><span class="marquee-dot" aria-hidden="true"></span>
+        <span>Enterprise SaaS</span><span class="marquee-dot" aria-hidden="true"></span>
+        <span>Home Services</span><span class="marquee-dot" aria-hidden="true"></span>
+        <span>Healthcare</span><span class="marquee-dot" aria-hidden="true"></span>
+      </div>
+      <div class="marquee-row" aria-hidden="true">
+        <span>Automotive</span><span class="marquee-dot" aria-hidden="true"></span>
+        <span>Financial Services</span><span class="marquee-dot" aria-hidden="true"></span>
+        <span>Immigration Law</span><span class="marquee-dot" aria-hidden="true"></span>
+        <span>Real Estate</span><span class="marquee-dot" aria-hidden="true"></span>
+        <span>E-Commerce</span><span class="marquee-dot" aria-hidden="true"></span>
+        <span>Enterprise SaaS</span><span class="marquee-dot" aria-hidden="true"></span>
+        <span>Home Services</span><span class="marquee-dot" aria-hidden="true"></span>
+        <span>Healthcare</span><span class="marquee-dot" aria-hidden="true"></span>
+      </div>
     </div>
   </div>
 </section>
-<div class="section-divider" data-trigger="testimonials"></div>
 
-<section id="testimonials">
-<div class="grain" aria-hidden="true"></div>
-  <div class="testi-head">
-    <div class="s-chrome" aria-hidden="true"></div>
-    <p class="s-label reveal">What Clients Say</p>
-    <h2 class="s-head reveal d1">Straight from the<br><em>people we work with.</em></h2>
-  </div>
-  <div class="testi-grid">
-    <div class="testi-featured reveal">
-      <div class="testi-stats">
-        <div class="testi-stat"><div class="testi-stat-num">6.2&times;</div><div class="testi-stat-lbl">ROAS Achieved</div></div>
-        <div class="testi-stat"><div class="testi-stat-num">90</div><div class="testi-stat-lbl">Days to Results</div></div>
-        <div class="testi-stat"><div class="testi-stat-num">3&times;</div><div class="testi-stat-lbl">Pipeline Growth</div></div>
-      </div>
-      <div>
-        <p class="testi-quote">They didn&rsquo;t just run our ads &mdash; they rebuilt how we think about customer acquisition entirely. Within three months we had more qualified leads than our sales team could handle.</p>
-        <div class="testi-author">
-          <span class="testi-author-avatar" aria-hidden="true" data-initial="AC"></span>
-          <span class="testi-name">A. Chen</span>
-        <span class="testi-role">Founder, DTC Beauty Brand &mdash; E-Commerce</span>
+
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     CASE STUDY — Pinned Cinematic Scene Transitions
+     ════════════════════════════════════════════════════════════════════ -->
+<section id="case-study" class="imm-pin-wrap" data-pin-height="300" aria-label="Featured case study">
+  <div class="imm-sticky cs-sticky">
+    <!-- Scene 01 — Project Intro -->
+    <div class="cs-scene cs-s1" data-scene="1">
+      <div class="cs-scene-bg" aria-hidden="true"></div>
+      <div class="cs-orb cs-orb-1" aria-hidden="true"></div>
+      <div class="cs-orb cs-orb-2" aria-hidden="true"></div>
+      <div class="cs-scene-inner">
+        <p class="cs-eyebrow">Featured Case Study</p>
+        <h2 class="cs-title">Building a digital experience that converts attention into action.</h2>
+        <p class="cs-subtitle">A cinematic brand and web experience designed to create clarity, trust, and momentum.</p>
+        <div class="cs-tags">
+          <span>Strategy</span><span>Design</span><span>Development</span><span>2026</span>
         </div>
       </div>
-      <div class="testi-quote-close" aria-hidden="true">&rdquo;</div>
     </div>
-    <div class="testi-card reveal"><p class="testi-quote">Our Google Ads were burning cash for two years. Tensionless Digital fixed our account structure in the first week and we saw the difference within days.</p><div class="testi-author"><span class="testi-author-avatar" aria-hidden="true" data-initial="MT"></span><span class="testi-name">M. Torres</span><span class="testi-role">VP Marketing, Enterprise SaaS &mdash; B2B Services</span></div></div>
-    <div class="testi-card reveal d1"><p class="testi-quote">The landing page they built converted at nearly triple the rate of our old one. Not a redesign &mdash; a completely different understanding of our customer.</p><div class="testi-author"><span class="testi-author-avatar" aria-hidden="true" data-initial="JP"></span><span class="testi-name">J. Patel</span><span class="testi-role">Director of Growth, Series B SaaS</span></div></div>
-    <div class="testi-card reveal d2"><p class="testi-quote">SEO results we were told would take 18 months happened in 6. The team is methodical, transparent, and obsessive about the right metrics.</p><div class="testi-author"><span class="testi-author-avatar" aria-hidden="true" data-initial="KO"></span><span class="testi-name">K. O'Brien</span><span class="testi-role">CEO, Home Services Group &mdash; Local Services</span></div></div>
+    <!-- Scene 02 — Problem -->
+    <div class="cs-scene cs-s2" data-scene="2">
+      <div class="cs-scene-bg cs-bg-dim" aria-hidden="true"></div>
+      <div class="cs-scene-inner">
+        <p class="cs-label">The Problem</p>
+        <h3 class="cs-heading">The brand had the quality, but the website did not communicate trust quickly enough.</h3>
+        <p class="cs-body">Visitors were landing, scanning, and leaving before understanding why the offer mattered. The first impression was not matching the standard of the work.</p>
+        <div class="cs-stat-badge" aria-hidden="true">
+          <span class="cs-badge-num">62%</span>
+          <span class="cs-badge-lbl">bounce rate before redesign</span>
+        </div>
+      </div>
+    </div>
+    <!-- Scene 03 — Solution -->
+    <div class="cs-scene cs-s3" data-scene="3">
+      <div class="cs-scene-bg cs-bg-cool" aria-hidden="true"></div>
+      <div class="cs-scene-inner">
+        <p class="cs-label">The Solution</p>
+        <h3 class="cs-heading">We rebuilt the journey around clarity, hierarchy, and interaction.</h3>
+        <p class="cs-body">Motion became a tool for guiding attention instead of decorating the page. Every scroll step was designed to build confidence and reduce friction.</p>
+        <div class="cs-panels" aria-hidden="true">
+          <div class="cs-panel cs-panel-l">Research &amp; Strategy</div>
+          <div class="cs-panel cs-panel-r">Visual Design System</div>
+          <div class="cs-panel cs-panel-l">Interactive Development</div>
+        </div>
+      </div>
+    </div>
+    <!-- Scene 04 — Results -->
+    <div class="cs-scene cs-s4" data-scene="4">
+      <div class="cs-scene-bg cs-bg-warm" aria-hidden="true"></div>
+      <div class="cs-scene-inner">
+        <p class="cs-label">The Result</p>
+        <h3 class="cs-heading">More clarity, stronger engagement, and a sharper digital presence.</h3>
+        <div class="cs-metrics">
+          <div class="cs-metric">
+            <span class="cs-metric-num serif count-imm" data-target="42" data-suffix="%">0%</span>
+            <span class="cs-metric-lbl">conversion lift</span>
+          </div>
+          <div class="cs-metric">
+            <span class="cs-metric-num serif count-imm" data-target="3.1" data-suffix="x">0x</span>
+            <span class="cs-metric-lbl">longer sessions</span>
+          </div>
+          <div class="cs-metric">
+            <span class="cs-metric-num serif count-imm" data-target="28" data-suffix="%">0%</span>
+            <span class="cs-metric-lbl">lower bounce rate</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Scene progress dots -->
+    <div class="imm-dot-bar cs-dot-bar" aria-hidden="true"></div>
   </div>
 </section>
-<div class="section-divider" data-trigger="process"></div>
 
-<section id="process" class="process">
-<div class="grain" aria-hidden="true"></div>
-  <div class="proc-intro">
-    <div>
-      <div class="s-chrome" aria-hidden="true"></div>
-      <p class="s-label reveal">How It Works</p>
-      <h2 class="s-head reveal d1">No bloat.<br><em>No guesswork.</em></h2>
+<div class="section-divider" data-trigger="testimonials-imm"></div>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     TESTIMONIALS — Floating Layered Quote Transitions
+     ════════════════════════════════════════════════════════════════════ -->
+<section id="testimonials-imm" class="imm-pin-wrap" data-pin-height="250" aria-label="Client testimonials">
+  <div class="imm-sticky testi-sticky">
+    <div class="testi-bg-glow" aria-hidden="true"></div>
+    <div class="testi-bg-quote" aria-hidden="true">&ldquo;</div>
+    <!-- Floating background cards — continuous random drift -->
+    <div class="testi-float" data-drift="1" aria-hidden="true">
+      <div class="testi-float-card">
+        <p class="testi-float-quote">&ldquo;Our conversion rate doubled within the first month.&rdquo;</p>
+        <span class="testi-float-name">Jordan Park</span>
+      </div>
     </div>
-    <p class="s-body reveal d1">A tight four-step process honed across 120+ campaigns. We move fast, keep you informed, and optimise relentlessly.</p>
-  </div>
-  <div class="proc-steps">
-    <div class="proc-step reveal"><svg class="proc-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="9" cy="9" r="5.5" stroke="currentColor" stroke-width="0.9"/><line x1="13" y1="13" x2="17" y2="17" stroke="currentColor" stroke-width="0.9" stroke-linecap="round"/></svg><span class="proc-node" aria-hidden="true"></span><div class="proc-step-num">01 &mdash; Audit</div><div class="proc-step-name">Deep Diagnosis</div><div class="proc-step-desc">We audit your current funnel, competitors, and market position before spending a single dollar.</div></div>
-    <div class="proc-step reveal d1"><svg class="proc-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="6.5" stroke="currentColor" stroke-width="0.9"/><circle cx="10" cy="10" r="2.5" stroke="currentColor" stroke-width="0.9"/><line x1="10" y1="2" x2="10" y2="5" stroke="currentColor" stroke-width="0.9" stroke-linecap="round"/><line x1="10" y1="15" x2="10" y2="18" stroke="currentColor" stroke-width="0.9" stroke-linecap="round"/><line x1="2" y1="10" x2="5" y2="10" stroke="currentColor" stroke-width="0.9" stroke-linecap="round"/><line x1="15" y1="10" x2="18" y2="10" stroke="currentColor" stroke-width="0.9" stroke-linecap="round"/></svg><span class="proc-node" aria-hidden="true"></span><div class="proc-step-num">02 &mdash; Strategy</div><div class="proc-step-name">Full-Funnel Blueprint</div><div class="proc-step-desc">Custom channel strategy, creative direction, and landing page architecture designed for your goals.</div></div>
-    <div class="proc-step reveal d2"><svg class="proc-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><polygon points="6,4 16,10 6,16" stroke="currentColor" stroke-width="0.9" stroke-linejoin="round"/></svg><span class="proc-node" aria-hidden="true"></span><div class="proc-step-num">03 &mdash; Launch</div><div class="proc-step-name">Execute &amp; Test</div><div class="proc-step-desc">We ship fast and test faster &mdash; every element is a variable until we find what converts.</div></div>
-    <div class="proc-step reveal d3"><svg class="proc-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><polyline points="3,15 7,11 11,13 17,5" stroke="currentColor" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/><line x1="15" y1="5" x2="17" y2="5" stroke="currentColor" stroke-width="0.9" stroke-linecap="round"/><line x1="17" y1="5" x2="17" y2="7" stroke="currentColor" stroke-width="0.9" stroke-linecap="round"/></svg><span class="proc-node" aria-hidden="true"></span><div class="proc-step-num">04 &mdash; Scale</div><div class="proc-step-name">Compound Growth</div><div class="proc-step-desc">Winners get scaled. Losers get cut. Monthly reporting you can actually understand.</div></div>
-  </div>
-  <div class="proc-track">
-    <div class="proc-track-line"></div>
+    <div class="testi-float" data-drift="2" aria-hidden="true">
+      <div class="testi-float-card">
+        <p class="testi-float-quote">&ldquo;They replaced six months of indecision with six weeks of execution.&rdquo;</p>
+        <span class="testi-float-name">Samir Khalil</span>
+      </div>
+    </div>
+    <div class="testi-float" data-drift="3" aria-hidden="true">
+      <div class="testi-float-card">
+        <p class="testi-float-quote">&ldquo;We stopped losing leads on mobile. That alone paid for the project.&rdquo;</p>
+        <span class="testi-float-name">Priya Nair</span>
+      </div>
+    </div>
+    <div class="testi-float" data-drift="4" aria-hidden="true">
+      <div class="testi-float-card">
+        <p class="testi-float-quote">&ldquo;The attention to detail in every interaction is what sets them apart.&rdquo;</p>
+        <span class="testi-float-name">Elena Rossi</span>
+      </div>
+    </div>
+    <div class="testi-float" data-drift="5" aria-hidden="true">
+      <div class="testi-float-card">
+        <p class="testi-float-quote">&ldquo;Our brand finally matches the quality of our product.&rdquo;</p>
+        <span class="testi-float-name">Marcus Webb</span>
+      </div>
+    </div>
+    <div class="testi-float" data-drift="6" aria-hidden="true">
+      <div class="testi-float-card">
+        <p class="testi-float-quote">&ldquo;We launched in half the time we budgeted for.&rdquo;</p>
+        <span class="testi-float-name">Rina Takahashi</span>
+      </div>
+    </div>
+    <div class="testi-float" data-drift="7" aria-hidden="true">
+      <div class="testi-float-card">
+        <p class="testi-float-quote">&ldquo;The site doesn&rsquo;t just look good. It performs.&rdquo;</p>
+        <span class="testi-float-name">Omar Farouk</span>
+      </div>
+    </div>
+    <div class="testi-float" data-drift="8" aria-hidden="true">
+      <div class="testi-float-card">
+        <p class="testi-float-quote">&ldquo;Every dollar we spent came back with interest.&rdquo;</p>
+        <span class="testi-float-name">Claire Donovan</span>
+      </div>
+    </div>
+    <!-- Main testimonial scenes -->
+    <div class="testi-main-stage">
+      <div class="testi-ms testi-ms-0" data-testi="0">
+        <p class="testi-quote">They turned a vague idea into a sharp, premium digital experience that finally made our offer easy to understand.</p>
+        <div class="testi-author">
+          <span class="testi-author-name">Amara Chen</span>
+          <span class="testi-author-role">Founder, Studio North</span>
+        </div>
+      </div>
+      <div class="testi-ms testi-ms-1" data-testi="1">
+        <p class="testi-quote">The site feels alive without getting in the way. Every interaction supports the message. Every detail feels intentional.</p>
+        <div class="testi-author">
+          <span class="testi-author-name">Daniel Reyes</span>
+          <span class="testi-author-role">Creative Director, Atlas Group</span>
+        </div>
+      </div>
+      <div class="testi-ms testi-ms-2" data-testi="2">
+        <p class="testi-quote">We saw an immediate improvement in how clients responded to the brand. It finally feels as strong online as it does in person.</p>
+        <div class="testi-author">
+          <span class="testi-author-name">Maya Thompson</span>
+          <span class="testi-author-role">CEO, Form House</span>
+        </div>
+      </div>
+    </div>
+    <!-- Trust statement (appears at end) -->
+    <div class="testi-trust" aria-hidden="true">
+      <p>Trusted by founders, studios, and product teams who care about how their brand feels.</p>
+    </div>
+    <div class="imm-dot-bar testi-dot-bar" aria-hidden="true"></div>
   </div>
 </section>
-<div class="section-divider" data-trigger="cta"></div>
-<div class="section-transition dark-to-light"></div>
 
-<section id="contact" class="cta">
-  <div>
-    <h2 class="cta-h reveal">Ready to stop<br><em>guessing</em><br>and start growing?</h2>
-  </div>
-  <div class="cta-right">
-    <p class="cta-availability reveal d1">Accepting 1 new client this quarter.</p>
-    <p class="cta-sub reveal d1">Book a free 30-minute strategy call. No pitch decks. No fluff. Just an honest look at what&rsquo;s costing you growth.</p>
-    <a href="#contact" class="btn-dark reveal d2">Book a Strategy Call</a>
-    <form class="cta-form reveal d2" onsubmit="return composeMail(event)">
-      <input type="text" name="name" placeholder="Your name" aria-label="Your name" required>
-      <input type="email" name="email" placeholder="Your email" aria-label="Your email" required>
-      <button type="submit" class="btn-dark">Send</button>
-    </form>
-    <a href="mailto:hello@tensionlessdigital.com" class="btn-ink reveal d2">hello@tensionlessdigital.com</a>
-    <p class="cta-risk reveal d2">Not sure if we&rsquo;re a fit? The call is obligation-free. If we can&rsquo;t help, we&rsquo;ll tell you.</p>
-    <div class="cta-proof reveal d2">
-      <div class="cta-proof-item"><span class="cta-proof-num">120+</span><span class="cta-proof-lbl">Campaigns Delivered</span></div>
-      <span class="cta-proof-dot"></span>
-      <div class="cta-proof-item"><span class="cta-proof-num">100%</span><span class="cta-proof-lbl">Client Retention</span></div>
-      <span class="cta-proof-dot"></span>
-      <div class="cta-proof-item"><span class="cta-proof-num">6&nbsp;yrs</span><span class="cta-proof-lbl">In Business</span></div>
+<div class="section-divider" data-trigger="process-imm"></div>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     PROCESS — Scroll-Driven Step System
+     ════════════════════════════════════════════════════════════════════ -->
+<section id="process-imm" class="imm-pin-wrap" data-pin-height="300" aria-label="Our process">
+  <div class="imm-sticky proc-sticky">
+    <div class="proc-layout">
+      <!-- Left: Step number + progress rail -->
+      <div class="proc-left" aria-hidden="true">
+        <div class="proc-rail">
+          <div class="proc-rail-track"></div>
+          <div class="proc-rail-fill"></div>
+        </div>
+        <div class="proc-num-stage">
+          <span class="proc-num">01</span>
+        </div>
+      </div>
+      <!-- Center: Step content -->
+      <div class="proc-center">
+        <div class="proc-step" data-step="1">
+          <h3 class="proc-step-title">Discover</h3>
+          <p class="proc-step-desc">We understand your business, audience, positioning, and goals before touching visuals. No assumptions, no templates.</p>
+        </div>
+        <div class="proc-step" data-step="2">
+          <h3 class="proc-step-title">Strategy</h3>
+          <p class="proc-step-desc">We define the structure, message, user journey, and creative direction that will guide every decision in the experience.</p>
+        </div>
+        <div class="proc-step" data-step="3">
+          <h3 class="proc-step-title">Design</h3>
+          <p class="proc-step-desc">We craft a visual system that makes the brand feel clear, premium, and memorable at every touchpoint.</p>
+        </div>
+        <div class="proc-step" data-step="4">
+          <h3 class="proc-step-title">Build</h3>
+          <p class="proc-step-desc">We develop the experience with performance, responsiveness, and interaction quality as first principles.</p>
+        </div>
+        <div class="proc-step" data-step="5">
+          <h3 class="proc-step-title">Launch</h3>
+          <p class="proc-step-desc">We test, refine, and ship with confidence, making sure the final experience works across real devices and real conditions.</p>
+        </div>
+      </div>
+      <!-- Right: Abstract system visual -->
+      <div class="proc-right" aria-hidden="true">
+        <div class="proc-vis">
+          <div class="proc-vis-node proc-vis-n1"></div>
+          <div class="proc-vis-node proc-vis-n2"></div>
+          <div class="proc-vis-node proc-vis-n3"></div>
+          <div class="proc-vis-node proc-vis-n4"></div>
+          <div class="proc-vis-node proc-vis-n5"></div>
+          <div class="proc-vis-ring proc-vis-r1"></div>
+          <div class="proc-vis-ring proc-vis-r2"></div>
+          <div class="proc-vis-ring proc-vis-r3"></div>
+          <div class="proc-vis-line proc-vis-l1"></div>
+          <div class="proc-vis-line proc-vis-l2"></div>
+          <div class="proc-vis-line proc-vis-l3"></div>
+        </div>
+      </div>
     </div>
+    <div class="imm-dot-bar proc-dot-bar" aria-hidden="true"></div>
+  </div>
+</section>
+
+<div class="section-divider" data-trigger="contact"></div>
+
+<!-- CTA — Dark Spotlight -->
+<section id="contact" class="cta-spotlight">
+  <div class="cta-spot-inner">
+    <h2 class="cta-h">Ready to stop<br><em>guessing</em><br>and start growing?</h2>
+    <p class="cta-availability">&#9679; Accepting 1 new client this quarter.</p>
+    <a href="#contact" class="btn-base btn-spot">Book a Strategy Call</a>
+    <div aria-live="polite" aria-atomic="true" class="sr-only"></div>
+    <a href="mailto:hello@tensionlessdigital.com" class="btn-spot-email">hello@tensionlessdigital.com</a>
+    <p class="cta-risk">Not sure if we&rsquo;re a fit? The call is obligation-free. If we can&rsquo;t help, we&rsquo;ll tell you.</p>
+    <p class="cta-trust">Trusted by 20+ brands across 5 industries.</p>
   </div>
 </section>
 </main>
 
+<!-- FOOTER -->
 <footer>
   <img src="logo.svg" alt="Tensionless Digital" class="footer-logo">
   <ul class="footer-links">
     <li><a href="#services">Services</a></li>
-    <li><a href="#results">Results</a></li>
-    <li><a href="#testimonials">Clients</a></li>
-    <li><a href="#process">Process</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
   <p class="footer-copy">&copy; 2026 Tensionless Digital.<br>All rights reserved.</p>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" fetchpriority="high"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="animations.js"></script>
+<script src="hero.js"></script>
+<script src="threejs-scene.js"></script>
+<script src="immersive-sections.js"></script>
+<script>
+(function() {
+  // ── 1. Kill conflicting ScrollTriggers for pinned sections + CTA ──
+  var killIds = ['contact'];
+  ScrollTrigger.getAll().forEach(function(st) {
+    if (st.trigger && killIds.indexOf(st.trigger.id) !== -1) {
+      st.kill(true, true, true);
+    }
+  });
 
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" fetchpriority="high"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-  <script src="animations.js"></script>
-  <script src="hero.js"></script>
+  // ── 2. Recreate section-divider triggers ──
+  document.querySelectorAll('.section-divider').forEach(function(div) {
+    var targetId = div.getAttribute('data-trigger');
+    if (!targetId) return;
+    var target = document.getElementById(targetId);
+    if (!target) return;
+    ScrollTrigger.create({
+      trigger: target,
+      start: 'top 90%',
+      once: true,
+      onEnter: function() {
+        gsap.to(div, { scaleX: 0.6, duration: 0.6, ease: 'expo.out', overwrite: 'auto' });
+      }
+    });
+  });
+
+  // ── Marquee reveal ──
+  ScrollTrigger.create({
+    trigger: '#clients',
+    start: 'top 85%',
+    once: true,
+    onEnter: function() {
+      gsap.to('.marquee-track', { autoAlpha: 1, duration: 0.6, ease: 'power2.out' });
+    }
+  });
+
+
+  // ── 4. CTA reveal ──
+  gsap.set('.cta-h, .cta-availability, .btn-spot, .btn-spot-email, .cta-risk, .cta-trust', { clearProps: 'all' });
+  gsap.set('.cta-h, .cta-availability, .btn-spot, .btn-spot-email, .cta-risk, .cta-trust', { autoAlpha: 0 });
+
+  // Split cta-h words preserving <br>/<em>
+  var ctaH = document.querySelector('.cta-h');
+  if (ctaH) {
+    (function wrapWords(node) {
+      if (node.nodeType === 3) {
+        var text = node.textContent;
+        if (!text.trim()) return;
+        var frag = document.createDocumentFragment();
+        var parts = text.split(/(\s+)/);
+        for (var i = 0; i < parts.length; i++) {
+          var part = parts[i];
+          if (!part.trim()) { frag.appendChild(document.createTextNode(part)); }
+          else { var span = document.createElement('span'); span.className = 'word'; span.textContent = part; frag.appendChild(span); }
+        }
+        node.parentNode.replaceChild(frag, node);
+      } else if (node.nodeType === 1 && node.tagName !== 'BR') {
+        var children = Array.from(node.childNodes);
+        for (var j = 0; j < children.length; j++) { wrapWords(children[j]); }
+      }
+    })(ctaH);
+  }
+
+  var ctaTl = gsap.timeline({
+    scrollTrigger: { trigger: '#contact', start: 'top 85%', toggleActions: 'play none none reverse' }
+  });
+  ctaTl.to('.cta-h .word', {
+    opacity: 1, y: 0, rotateX: 0,
+    duration: 0.7, stagger: 0.06, ease: 'power3.out'
+  }, 0)
+  .to('.cta-availability, .btn-spot, .btn-spot-email, .cta-risk, .cta-trust', {
+    autoAlpha: 1,
+    duration: 0.5, stagger: 0.1, ease: 'power2.out'
+  }, '-=0.2');
+})();
+</script>
 </body>
 </html>
