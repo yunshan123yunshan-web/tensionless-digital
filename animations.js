@@ -40,7 +40,8 @@
     e.preventDefault();
     const name = e.target.querySelector('[name=name]').value;
     const email = e.target.querySelector('[name=email]').value;
-    const body = 'Name: ' + name + '%0D%0AEmail: ' + email + '%0D%0A%0D%0AHi Tensionless team, I\'d like to discuss a project.%0D%0A%0D%0A---%0D%0ASent from tensionlessdigital.com';
+    const message = (e.target.querySelector('[name=message]') || {}).value || '';
+    const body = 'Name: ' + name + '%0D%0AEmail: ' + email + '%0D%0A%0D%0A' + encodeURIComponent(message) + '%0D%0A%0D%0A---%0D%0ASent from tensionlessdigital.com';
     window.location.href = 'mailto:hello@tensionlessdigital.com?subject=Project%20Inquiry%20-%20' + encodeURIComponent(name) + '&body=' + body;
     e.target.reset();
     return false;
@@ -123,7 +124,7 @@
     if (!root) return;
 
     if (config.variant === 'services') {
-      gsap.set(root.querySelectorAll('.svc-card'), { y: 64, rotation: -3, scale: 0.92 });
+      gsap.set(root.querySelectorAll('.svc-card'), { x: 160, y: 120, rotation: -4, scale: 0.55 });
     }
     if (config.variant === 'results') {
       gsap.set(root.querySelectorAll('.res-card'), { y: 64, rotation: -2 });
@@ -171,9 +172,9 @@
         .to(q('.s-head .word'), { autoAlpha: 1, y: 0, duration: 0.35, stagger: 0.035, ease: 'power2.out' }, '-=0.15')
         .to(q('.s-body'), { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power2.out' }, '-=0.1')
         .to(q('.svc-card'), {
-          autoAlpha: 1, y: 0, rotation: 0, scale: 1,
-          duration: 0.9, stagger: { each: 0.08, from: 'center' }, ease: 'power4.out'
-        }, '-=0.5');
+          autoAlpha: 1, x: 0, y: 0, rotation: 0, scale: 1,
+          duration: 1, stagger: { each: 0.1, from: 'center' }, ease: 'power3.out'
+        }, '-=0.4');
       return tl;
     }
 
@@ -181,9 +182,9 @@
       tl.to(q('.s-label'), { autoAlpha: 1, y: 0, duration: 0.45, ease: 'power2.out' })
         .to(q('.s-head .word'), { autoAlpha: 1, y: 0, duration: 0.35, stagger: 0.035, ease: 'power2.out' }, '-=0.15')
         .to(q('.s-body'), { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power2.out' }, '-=0.1')
-        .to(q('.res-card'), { autoAlpha: 1, y: 0, rotation: 0, duration: 0.8, stagger: 0.1, ease: 'power4.out' }, '-=0.5')
+        .to(q('.res-card'), { autoAlpha: 1, y: 0, rotation: 0, duration: 0.8, stagger: 0.1, ease: 'power3.out' }, '-=0.5')
         .to(q('.cs-headline'), { autoAlpha: 1, y: 0, scale: 1.06, duration: 0.5, stagger: 0.08, ease: 'expo.out' }, '-=0.35')
-        .to(q('.cs-headline'), { scale: 1, duration: 0.3, stagger: 0.08, ease: 'power1.out' })
+        .to(q('.cs-headline'), { scale: 1, duration: 0.3, stagger: 0.08, ease: 'power2.out' })
         .to(q('.cs-stats'), { autoAlpha: 1, y: 0, x: 0, duration: 0.4, stagger: 0.04, ease: 'power2.out' }, '-=0.1');
       return tl;
     }
@@ -193,7 +194,7 @@
         .to(q('.s-head .word'), { autoAlpha: 1, y: 0, duration: 0.35, stagger: 0.04, ease: 'power2.out' }, '-=0.1')
         .to(q('.testi-featured'), { autoAlpha: 1, y: 0, scale: 1, duration: 0.7, ease: 'power3.out' }, '-=0.2')
         .to(q('.testi-stat'), { autoAlpha: 1, y: 0, scale: 1, duration: 0.55, stagger: 0.08, ease: 'power3.out' }, '-=0.25')
-        .to(q('.testi-card'), { autoAlpha: 1, y: 0, rotation: 0, scale: 1, duration: 0.75, stagger: 0.1, ease: 'power4.out' }, '-=0.25');
+        .to(q('.testi-card'), { autoAlpha: 1, y: 0, rotation: 0, scale: 1, duration: 0.75, stagger: 0.1, ease: 'power3.out' }, '-=0.25');
       return tl;
     }
 
@@ -217,7 +218,7 @@
       tl.to(q('.cta-h'), { autoAlpha: 1, x: 0, duration: 0.7, ease: 'expo.out' })
         .to(q('.cta-right > *'), { autoAlpha: 1, x: 0, duration: 0.6, stagger: 0.08, ease: 'power3.out' }, '-=0.3')
         .to(q('.btn-dark'), { scale: 1.04, duration: 0.4, ease: 'power2.out' }, '-=0.2')
-        .to(q('.btn-dark'), { scale: 1, duration: 0.3, ease: 'power1.out' });
+        .to(q('.btn-dark'), { scale: 1, duration: 0.3, ease: 'power2.out' });
       return tl;
     }
 
@@ -272,38 +273,3 @@
 
 
 })();
-
-  // Section dividers — draw between sections on scroll trigger
-  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  document.querySelectorAll('.section-divider').forEach(function(div) {
-    var target = document.getElementById(div.dataset.trigger);
-    if (!target) return;
-    ScrollTrigger.create({
-      trigger: target,
-      start: 'top 90%',
-      once: true,
-      onEnter: function() {
-        gsap.to(div, {
-          scaleX: 0.6,
-          duration: 0.6,
-          ease: 'expo.out',
-          overwrite: 'auto'
-        });
-      }
-    });
-  });
-
-  // Process progress line — draws as user scrolls through section
-  var procLine = document.querySelector('.proc-track-line');
-  var procSection = document.getElementById('process');
-  if (procLine && procSection) {
-    ScrollTrigger.create({
-      trigger: procSection,
-      start: 'top 70%',
-      end: 'bottom 30%',
-      onUpdate: function(self) {
-        gsap.set(procLine, { scaleX: self.progress, transformOrigin: 'left center' });
-      }
-    });
-  }
-  }

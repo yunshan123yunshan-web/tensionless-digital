@@ -1,0 +1,22 @@
+# System files
+.DS_Store
+Thumbs.db
+
+# Claude Code config
+.claude/
+.agents/
+.continue/
+
+# Dependencies
+node_modules/
+
+# Temp / generated
+og-image.png
+tmp/
+temp/
+
+# IDE
+.idea/
+*.swp
+*.swo
+*~

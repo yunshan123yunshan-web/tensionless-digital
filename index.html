@@ -25,6 +25,28 @@
     visibility: hidden;
   }
 </style>
+<script>
+// Level-of-Detail: device performance classification
+(function() {
+  var html = document.documentElement;
+  var isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+  var hasMemory = !navigator.deviceMemory || navigator.deviceMemory >= 4;
+  var hasLowBattery = navigator.getBattery ? false : false; // async, skip for now
+  var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var prefersDataSaver = window.matchMedia('(prefers-reduced-data: reduce)').matches;
+
+  if (prefersReduced || prefersDataSaver || (isMobile && !hasMemory)) {
+    html.className += ' lod-low';
+    html.setAttribute('data-lod', 'low');
+  } else if (isMobile) {
+    html.className += ' lod-medium';
+    html.setAttribute('data-lod', 'medium');
+  } else {
+    html.className += ' lod-high';
+    html.setAttribute('data-lod', 'high');
+  }
+})();
+</script>
 <body>
 
 <!-- NAV -->
@@ -75,7 +97,7 @@
 
 <!-- SERVICES -->
 <section id="services">
-<div class="grain" aria-hidden="true"></div>
+  <div class="shard shard-spin" style="width:400px;height:400px;top:-120px;right:-80px;opacity:0.02" aria-hidden="true"></div>
   <div class="svc-intro">
     <div>
       <div class="s-chrome" aria-hidden="true"></div>
@@ -95,7 +117,6 @@
 
 <!-- DATA BREAK -->
 <section id="data-break" class="data-break">
-<div class="grain" aria-hidden="true"></div>
   <div class="db-inner">
     <div class="db-stat">
       <span class="db-num serif count" data-n="120">0</span>
@@ -155,6 +176,8 @@
      ════════════════════════════════════════════════════════════════════ -->
 <section id="case-study" class="imm-pin-wrap" data-pin-height="300" aria-label="Featured case study">
   <div class="imm-sticky cs-sticky">
+    <div class="shard shard-diamond" style="width:320px;height:500px;top:5%;left:-80px" aria-hidden="true"></div>
+    <div class="shard shard-tri" style="width:240px;height:280px;bottom:10%;right:-40px" aria-hidden="true"></div>
     <!-- Scene 01 — Project Intro -->
     <div class="cs-scene cs-s1" data-scene="1">
       <div class="cs-scene-bg" aria-hidden="true"></div>
@@ -223,64 +246,12 @@
   </div>
 </section>
 
-<div class="section-divider" data-trigger="testimonials-imm"></div>
-
 <!-- ══════════════════════════════════════════════════════════════════════
      TESTIMONIALS — Floating Layered Quote Transitions
      ════════════════════════════════════════════════════════════════════ -->
 <section id="testimonials-imm" class="imm-pin-wrap" data-pin-height="250" aria-label="Client testimonials">
   <div class="imm-sticky testi-sticky">
     <div class="testi-bg-glow" aria-hidden="true"></div>
-    <div class="testi-bg-quote" aria-hidden="true">&ldquo;</div>
-    <!-- Floating background cards — continuous random drift -->
-    <div class="testi-float" data-drift="1" aria-hidden="true">
-      <div class="testi-float-card">
-        <p class="testi-float-quote">&ldquo;Our conversion rate doubled within the first month.&rdquo;</p>
-        <span class="testi-float-name">Jordan Park</span>
-      </div>
-    </div>
-    <div class="testi-float" data-drift="2" aria-hidden="true">
-      <div class="testi-float-card">
-        <p class="testi-float-quote">&ldquo;They replaced six months of indecision with six weeks of execution.&rdquo;</p>
-        <span class="testi-float-name">Samir Khalil</span>
-      </div>
-    </div>
-    <div class="testi-float" data-drift="3" aria-hidden="true">
-      <div class="testi-float-card">
-        <p class="testi-float-quote">&ldquo;We stopped losing leads on mobile. That alone paid for the project.&rdquo;</p>
-        <span class="testi-float-name">Priya Nair</span>
-      </div>
-    </div>
-    <div class="testi-float" data-drift="4" aria-hidden="true">
-      <div class="testi-float-card">
-        <p class="testi-float-quote">&ldquo;The attention to detail in every interaction is what sets them apart.&rdquo;</p>
-        <span class="testi-float-name">Elena Rossi</span>
-      </div>
-    </div>
-    <div class="testi-float" data-drift="5" aria-hidden="true">
-      <div class="testi-float-card">
-        <p class="testi-float-quote">&ldquo;Our brand finally matches the quality of our product.&rdquo;</p>
-        <span class="testi-float-name">Marcus Webb</span>
-      </div>
-    </div>
-    <div class="testi-float" data-drift="6" aria-hidden="true">
-      <div class="testi-float-card">
-        <p class="testi-float-quote">&ldquo;We launched in half the time we budgeted for.&rdquo;</p>
-        <span class="testi-float-name">Rina Takahashi</span>
-      </div>
-    </div>
-    <div class="testi-float" data-drift="7" aria-hidden="true">
-      <div class="testi-float-card">
-        <p class="testi-float-quote">&ldquo;The site doesn&rsquo;t just look good. It performs.&rdquo;</p>
-        <span class="testi-float-name">Omar Farouk</span>
-      </div>
-    </div>
-    <div class="testi-float" data-drift="8" aria-hidden="true">
-      <div class="testi-float-card">
-        <p class="testi-float-quote">&ldquo;Every dollar we spent came back with interest.&rdquo;</p>
-        <span class="testi-float-name">Claire Donovan</span>
-      </div>
-    </div>
     <!-- Main testimonial scenes -->
     <div class="testi-main-stage">
       <div class="testi-ms testi-ms-0" data-testi="0">
@@ -313,13 +284,12 @@
   </div>
 </section>
 
-<div class="section-divider" data-trigger="process-imm"></div>
-
 <!-- ══════════════════════════════════════════════════════════════════════
      PROCESS — Scroll-Driven Step System
      ════════════════════════════════════════════════════════════════════ -->
 <section id="process-imm" class="imm-pin-wrap" data-pin-height="300" aria-label="Our process">
   <div class="imm-sticky proc-sticky">
+    <div class="shard shard-spin" style="width:280px;height:280px;top:5%;right:-60px;opacity:0.02" aria-hidden="true"></div>
     <div class="proc-layout">
       <!-- Left: Step number + progress rail -->
       <div class="proc-left" aria-hidden="true">
@@ -354,39 +324,25 @@
           <p class="proc-step-desc">We test, refine, and ship with confidence, making sure the final experience works across real devices and real conditions.</p>
         </div>
       </div>
-      <!-- Right: Abstract system visual -->
-      <div class="proc-right" aria-hidden="true">
-        <div class="proc-vis">
-          <div class="proc-vis-node proc-vis-n1"></div>
-          <div class="proc-vis-node proc-vis-n2"></div>
-          <div class="proc-vis-node proc-vis-n3"></div>
-          <div class="proc-vis-node proc-vis-n4"></div>
-          <div class="proc-vis-node proc-vis-n5"></div>
-          <div class="proc-vis-ring proc-vis-r1"></div>
-          <div class="proc-vis-ring proc-vis-r2"></div>
-          <div class="proc-vis-ring proc-vis-r3"></div>
-          <div class="proc-vis-line proc-vis-l1"></div>
-          <div class="proc-vis-line proc-vis-l2"></div>
-          <div class="proc-vis-line proc-vis-l3"></div>
-        </div>
-      </div>
     </div>
     <div class="imm-dot-bar proc-dot-bar" aria-hidden="true"></div>
   </div>
 </section>
 
-<div class="section-divider" data-trigger="contact"></div>
-
 <!-- CTA — Dark Spotlight -->
 <section id="contact" class="cta-spotlight">
   <div class="cta-spot-inner">
-    <h2 class="cta-h">Ready to stop<br><em>guessing</em><br>and start growing?</h2>
+    <h2 class="cta-h">Ready to stop <em>guessing</em> and start growing?</h2>
     <p class="cta-availability">&#9679; Accepting 1 new client this quarter.</p>
-    <a href="#contact" class="btn-base btn-spot">Book a Strategy Call</a>
-    <div aria-live="polite" aria-atomic="true" class="sr-only"></div>
-    <a href="mailto:hello@tensionlessdigital.com" class="btn-spot-email">hello@tensionlessdigital.com</a>
+    <form class="cta-form" onsubmit="return composeMail(this)">
+      <input type="text" name="name" placeholder="Your Name" required aria-label="Your name">
+      <input type="email" name="email" placeholder="Your Email" required aria-label="Your email address">
+      <textarea name="message" placeholder="Tell us about your project..." rows="3" required aria-label="Project details"></textarea>
+      <button type="submit" class="btn-base btn-spot">Send Message</button>
+    </form>
     <p class="cta-risk">Not sure if we&rsquo;re a fit? The call is obligation-free. If we can&rsquo;t help, we&rsquo;ll tell you.</p>
     <p class="cta-trust">Trusted by 20+ brands across 5 industries.</p>
+    <p class="cta-notice">We respond within 24 hours.</p>
   </div>
 </section>
 </main>
@@ -418,22 +374,6 @@
     }
   });
 
-  // ── 2. Recreate section-divider triggers ──
-  document.querySelectorAll('.section-divider').forEach(function(div) {
-    var targetId = div.getAttribute('data-trigger');
-    if (!targetId) return;
-    var target = document.getElementById(targetId);
-    if (!target) return;
-    ScrollTrigger.create({
-      trigger: target,
-      start: 'top 90%',
-      once: true,
-      onEnter: function() {
-        gsap.to(div, { scaleX: 0.6, duration: 0.6, ease: 'expo.out', overwrite: 'auto' });
-      }
-    });
-  });
-
   // ── Marquee reveal ──
   ScrollTrigger.create({
     trigger: '#clients',
@@ -446,8 +386,8 @@
 
 
   // ── 4. CTA reveal ──
-  gsap.set('.cta-h, .cta-availability, .btn-spot, .btn-spot-email, .cta-risk, .cta-trust', { clearProps: 'all' });
-  gsap.set('.cta-h, .cta-availability, .btn-spot, .btn-spot-email, .cta-risk, .cta-trust', { autoAlpha: 0 });
+  gsap.set('.cta-h, .cta-availability, .cta-form, .cta-risk, .cta-trust, .cta-notice', { clearProps: 'all' });
+  gsap.set('.cta-h, .cta-availability, .cta-form, .cta-risk, .cta-trust, .cta-notice', { autoAlpha: 0 });
 
   // Split cta-h words preserving <br>/<em>
   var ctaH = document.querySelector('.cta-h');
@@ -478,10 +418,24 @@
     opacity: 1, y: 0, rotateX: 0,
     duration: 0.7, stagger: 0.06, ease: 'power3.out'
   }, 0)
-  .to('.cta-availability, .btn-spot, .btn-spot-email, .cta-risk, .cta-trust', {
+  .to('.cta-availability, .cta-form, .cta-risk, .cta-trust, .cta-notice', {
     autoAlpha: 1,
     duration: 0.5, stagger: 0.1, ease: 'power2.out'
   }, '-=0.2');
+})();
+
+// Mouse-driven spotlight on pinned sections
+(function() {
+  var sections = document.querySelectorAll('.cs-sticky, .proc-sticky');
+  sections.forEach(function(s) {
+    s.addEventListener('mousemove', function(e) {
+      var rect = s.getBoundingClientRect();
+      var x = ((e.clientX - rect.left) / rect.width * 100).toFixed(1);
+      var y = ((e.clientY - rect.top) / rect.height * 100).toFixed(1);
+      s.style.setProperty('--spot-x', x + '%');
+      s.style.setProperty('--spot-y', y + '%');
+    });
+  });
 })();
 </script>
 </body>

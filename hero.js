@@ -61,8 +61,10 @@ const CONFIG = {
     TEXT_L2:      { start: 0.52, end: 0.62 },
     TEXT_L3:      { start: 0.60, end: 0.70 },
     TEXT_CTA:     { start: 0.70, end: 0.85 },
+    TEXT_FADE:    { start: 0.78, end: 0.92 },
+    DISSIPATE:    { start: 0.75, end: 0.95 },
   },
-  SHARD_COUNT: 280,
+  SHARD_COUNT: 450,
   LOGO_SCALE: 0.28,
   TEXT_ZONE_PAD_DEFAULT: [26, 18],
   TEXT_ZONE_PAD_HEADLINE: [42, 28],
@@ -82,6 +84,21 @@ const CONFIG = {
   FPS_BAD_FRAMES: 3,
   FPS_SAMPLE_WINDOW: 5,
 };
+// ─── MOUSE TRACKING ──────────────────────────────────────────────
+let mouseCX = -9999, mouseCY = -9999;
+let targetMouseCX = -9999, targetMouseCY = -9999;
+let mouseActive = false;
+canvas.addEventListener('mousemove', e => {
+  targetMouseCX = e.clientX;
+  targetMouseCY = e.clientY;
+  mouseCX = e.clientX;
+  mouseCY = e.clientY;
+  mouseActive = true;
+});
+canvas.addEventListener('mouseleave', () => {
+  mouseActive = false;
+});
+
 const fpsMon = { times: [], badFrames: 0, degraded: false };
 function checkPerf() {
   const now = performance.now();
@@ -163,7 +180,7 @@ const LOGO_PATHS = [
 ];
 
 // ─── SHARDS ─────────────────────────────────────────────────────
-const SHARD_COUNT = CONFIG.SHARD_COUNT;
+let SHARD_COUNT = CONFIG.SHARD_COUNT;
 let shards = [];
 
 // Colour palette: steel → silver → white
@@ -383,12 +400,14 @@ function render() {
   // ── Act 7: CTA (0.70 → 0.85) ─────────────────────────────────
   const ctaT = clamp(map(p, 0.70, 0.85, 0, 1), 0, 1);
 
-  // Text elements
-  setEl(ey, easeOut(eyT), lerp(12, 0, easeOut(eyT)));
-  setEl(l1, easeOut(l1T), lerp(16, 0, easeOut(l1T)));
-  setEl(l2, easeOut(l2T), lerp(16, 0, easeOut(l2T)));
-  setEl(l3, easeOut(l3T), lerp(16, 0, easeOut(l3T)));
-  setEl(hf, easeOut(ctaT), lerp(14, 0, easeOut(ctaT)));
+  // Text elements — fade out near hero end so there's no dead scroll zone
+  const textFadeT = clamp(map(p, 0.78, 0.92, 0, 1), 0, 1);
+  const textFade = 1 - easeIn(textFadeT);
+  setEl(ey, easeOut(eyT) * textFade, lerp(12, 0, easeOut(eyT)));
+  setEl(l1, easeOut(l1T) * textFade, lerp(16, 0, easeOut(l1T)));
+  setEl(l2, easeOut(l2T) * textFade, lerp(16, 0, easeOut(l2T)));
+  setEl(l3, easeOut(l3T) * textFade, lerp(16, 0, easeOut(l3T)));
+  setEl(hf, easeOut(ctaT) * textFade, lerp(14, 0, easeOut(ctaT)));
   setHeroFootActive(ctaT > 0.1);
   setHeroNavComplete(p >= 0.38);
   sh.classList.toggle('hidden', p > 0.05);
@@ -468,6 +487,27 @@ function render() {
       tx = safe.x;
       ty = safe.y;
       alpha *= safe.alpha;
+    }
+
+    // Dissipate constellation near hero end (prevents dead shard zone)
+    if (p > 0.75) {
+      const dissipate = 1 - easeIn(clamp(map(p, 0.75, 0.95, 0, 1), 0, 1));
+      alpha *= dissipate;
+    }
+
+    if (mouseActive) {
+      mouseCX = lerp(mouseCX, targetMouseCX, 0.1);
+      mouseCY = lerp(mouseCY, targetMouseCY, 0.1);
+      const dx = tx - mouseCX;
+      const dy = ty - mouseCY;
+      const distSq = dx * dx + dy * dy;
+      const repelRadius = 180;
+      if (distSq < repelRadius * repelRadius && distSq > 1) {
+        const dist = Math.sqrt(distSq);
+        const force = (1 - dist / repelRadius) * 60;
+        tx += (dx / dist) * force;
+        ty += (dy / dist) * force;
+      }
     }
 
     // Update position with light inertia for smoothness
@@ -605,6 +645,13 @@ function init() {
     setHeroNavComplete(true);
     document.getElementById('scroll-hint')?.classList.add('hidden');
     return;
+  }
+  // LOD-based shard count adjustment
+  var lod = document.documentElement.getAttribute('data-lod') || 'high';
+  if (lod === 'low') {
+    SHARD_COUNT = 50;
+  } else if (lod === 'medium') {
+    SHARD_COUNT = 200;
   }
   resize();
   render();
