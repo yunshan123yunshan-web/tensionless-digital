@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-05-02 — Aesthetic Polish
+
+- **Services**: Increased card corner bracket opacity (.08 → .18) and column divider visibility (.07 → .14) so resting-state details read without hover.
+- **Data Break**: Added top/bottom ruled borders to frame metrics section. Increased label font-size (9px → 10px) and letter-spacing (.18em → .2em).
+- **Testimonials**: Added large decorative opening quotation marks behind quote text (`.testi-deco-quote`, 3% opacity). Added `padding-top: 8vh` to `.testi-ms` to tighten vertical dead space.
+- **Process**: Removed intrusive right-edge rotating shard that read as a layout error. Added `padding-bottom: 10vh` to `.proc-layout` for better vertical centering.
+- **CTA**: Added `margin-top: 16px` to `.cta-availability` for separation from headline descenders. Replaced static `&#9679;` with CSS `::before` pseudo-element with pulse animation (`avail-pulse`).
+- **Footer**: Increased border-top opacity (.07 → .12) for slightly more visible section separation.
+
 ## 2026-05-02 — Visual Fixes & Section Cleanup
 
 ### Fixed

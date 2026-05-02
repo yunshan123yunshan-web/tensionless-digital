@@ -174,7 +174,7 @@
 <!-- ══════════════════════════════════════════════════════════════════════
      CASE STUDY — Pinned Cinematic Scene Transitions
      ════════════════════════════════════════════════════════════════════ -->
-<section id="case-study" class="imm-pin-wrap" data-pin-height="300" aria-label="Featured case study">
+<section id="case-study" class="imm-pin-wrap" data-pin-height="250" aria-label="Featured case study">
   <div class="imm-sticky cs-sticky">
     <div class="shard shard-diamond" style="width:320px;height:500px;top:5%;left:-80px" aria-hidden="true" data-parallax="0.06"></div>
     <div class="shard shard-tri" style="width:240px;height:280px;bottom:10%;right:-40px" aria-hidden="true" data-parallax="0.04"></div>
@@ -255,6 +255,7 @@
     <!-- Main testimonial scenes -->
     <div class="testi-main-stage">
       <div class="testi-ms testi-ms-0" data-testi="0">
+        <span class="testi-deco-quote" aria-hidden="true">"</span>
         <p class="testi-quote">They turned a vague idea into a sharp, premium digital experience that finally made our offer easy to understand.</p>
         <div class="testi-author">
           <span class="testi-author-name">Amara Chen</span>
@@ -262,6 +263,7 @@
         </div>
       </div>
       <div class="testi-ms testi-ms-1" data-testi="1">
+        <span class="testi-deco-quote" aria-hidden="true">"</span>
         <p class="testi-quote">The site feels alive without getting in the way. Every interaction supports the message. Every detail feels intentional.</p>
         <div class="testi-author">
           <span class="testi-author-name">Daniel Reyes</span>
@@ -269,6 +271,7 @@
         </div>
       </div>
       <div class="testi-ms testi-ms-2" data-testi="2">
+        <span class="testi-deco-quote" aria-hidden="true">"</span>
         <p class="testi-quote">We saw an immediate improvement in how clients responded to the brand. It finally feels as strong online as it does in person.</p>
         <div class="testi-author">
           <span class="testi-author-name">Maya Thompson</span>
@@ -289,7 +292,6 @@
      ════════════════════════════════════════════════════════════════════ -->
 <section id="process-imm" class="imm-pin-wrap" data-pin-height="400" aria-label="Our process">
   <div class="imm-sticky proc-sticky">
-    <div class="shard shard-spin" style="width:280px;height:280px;top:5%;right:-60px;opacity:0.02" aria-hidden="true" data-parallax="0.06"></div>
     <div class="proc-layout">
       <!-- Left: Step number + progress rail -->
       <div class="proc-left" aria-hidden="true">
@@ -333,7 +335,7 @@
 <section id="contact" class="cta-spotlight">
   <div class="cta-spot-inner">
     <h2 class="cta-h">Ready to stop <em>guessing</em> and start growing?</h2>
-    <p class="cta-availability">&#9679; Accepting 1 new client this quarter.</p>
+    <p class="cta-availability">Accepting 1 new client this quarter.</p>
     <form class="cta-form" onsubmit="return composeMail(this)">
       <input type="text" name="name" placeholder="Your Name" required aria-label="Your name">
       <input type="email" name="email" placeholder="Your Email" required aria-label="Your email address">
@@ -410,14 +412,14 @@
         for (var j = 0; j < children.length; j++) { wrapWords(children[j]); }
       }
     })(ctaH);
-    gsap.set(ctaH.querySelectorAll('.word'), { opacity: 0, y: 12, rotateX: 8 });
+    gsap.set(ctaH.querySelectorAll('.word'), { opacity: 0 });
   }
 
   var ctaTl = gsap.timeline({
-    scrollTrigger: { trigger: '#contact', start: 'top 85%', toggleActions: 'play none none reverse' }
+    scrollTrigger: { trigger: '#contact', start: 'top 90%', once: true }
   });
   ctaTl.to('.cta-h .word', {
-    opacity: 1, y: 0, rotateX: 0,
+    opacity: 1,
     duration: 0.7, stagger: 0.06, ease: 'power3.out'
   }, 0)
   .to('.cta-availability, .cta-form, .cta-risk, .cta-trust, .cta-notice', {
