@@ -56,7 +56,7 @@
   <ul class="nav-links">
     <li><a href="#services">Services</a></li>
   </ul>
-  <a href="#contact" class="nav-cta">Book a Free Call</a>
+  <a href="#contact" class="nav-cta" data-magnetic>Book a Free Call</a>
   <button class="nav-toggle" aria-label="Menu" aria-expanded="false">
     <span class="nav-toggle-bar"></span>
     <span class="nav-toggle-bar"></span>
@@ -78,7 +78,7 @@
       <div class="hero-foot" id="hf" aria-hidden="true">
         <p class="hero-desc">Landing pages that convert. Ads that perform. SEO that compounds. We build the full-funnel growth engine for businesses ready to scale without the guesswork.</p>
         <div class="hero-btns">
-          <a href="#contact" class="btn-primary" tabindex="-1">Start a Project</a>
+          <a href="#contact" class="btn-primary" tabindex="-1" data-magnetic>Start a Project</a>
         </div>
       </div>
     </div>
@@ -176,13 +176,13 @@
      ════════════════════════════════════════════════════════════════════ -->
 <section id="case-study" class="imm-pin-wrap" data-pin-height="300" aria-label="Featured case study">
   <div class="imm-sticky cs-sticky">
-    <div class="shard shard-diamond" style="width:320px;height:500px;top:5%;left:-80px" aria-hidden="true"></div>
-    <div class="shard shard-tri" style="width:240px;height:280px;bottom:10%;right:-40px" aria-hidden="true"></div>
+    <div class="shard shard-diamond" style="width:320px;height:500px;top:5%;left:-80px" aria-hidden="true" data-parallax="0.06"></div>
+    <div class="shard shard-tri" style="width:240px;height:280px;bottom:10%;right:-40px" aria-hidden="true" data-parallax="0.04"></div>
     <!-- Scene 01 — Project Intro -->
     <div class="cs-scene cs-s1" data-scene="1">
       <div class="cs-scene-bg" aria-hidden="true"></div>
-      <div class="cs-orb cs-orb-1" aria-hidden="true"></div>
-      <div class="cs-orb cs-orb-2" aria-hidden="true"></div>
+      <div class="cs-orb cs-orb-1" aria-hidden="true" data-parallax="0.03"></div>
+      <div class="cs-orb cs-orb-2" aria-hidden="true" data-parallax="0.04"></div>
       <div class="cs-scene-inner">
         <p class="cs-eyebrow">Featured Case Study</p>
         <h2 class="cs-title">Building a digital experience that converts attention into action.</h2>
@@ -251,7 +251,7 @@
      ════════════════════════════════════════════════════════════════════ -->
 <section id="testimonials-imm" class="imm-pin-wrap" data-pin-height="250" aria-label="Client testimonials">
   <div class="imm-sticky testi-sticky">
-    <div class="testi-bg-glow" aria-hidden="true"></div>
+    <div class="testi-bg-glow" aria-hidden="true" data-parallax="0.05"></div>
     <!-- Main testimonial scenes -->
     <div class="testi-main-stage">
       <div class="testi-ms testi-ms-0" data-testi="0">
@@ -287,9 +287,9 @@
 <!-- ══════════════════════════════════════════════════════════════════════
      PROCESS — Scroll-Driven Step System
      ════════════════════════════════════════════════════════════════════ -->
-<section id="process-imm" class="imm-pin-wrap" data-pin-height="300" aria-label="Our process">
+<section id="process-imm" class="imm-pin-wrap" data-pin-height="400" aria-label="Our process">
   <div class="imm-sticky proc-sticky">
-    <div class="shard shard-spin" style="width:280px;height:280px;top:5%;right:-60px;opacity:0.02" aria-hidden="true"></div>
+    <div class="shard shard-spin" style="width:280px;height:280px;top:5%;right:-60px;opacity:0.02" aria-hidden="true" data-parallax="0.06"></div>
     <div class="proc-layout">
       <!-- Left: Step number + progress rail -->
       <div class="proc-left" aria-hidden="true">
@@ -338,7 +338,7 @@
       <input type="text" name="name" placeholder="Your Name" required aria-label="Your name">
       <input type="email" name="email" placeholder="Your Email" required aria-label="Your email address">
       <textarea name="message" placeholder="Tell us about your project..." rows="3" required aria-label="Project details"></textarea>
-      <button type="submit" class="btn-base btn-spot">Send Message</button>
+      <button type="submit" class="btn-base btn-spot" data-magnetic>Send Message</button>
     </form>
     <p class="cta-risk">Not sure if we&rsquo;re a fit? The call is obligation-free. If we can&rsquo;t help, we&rsquo;ll tell you.</p>
     <p class="cta-trust">Trusted by 20+ brands across 5 industries.</p>
@@ -364,6 +364,7 @@
 <script src="hero.js"></script>
 <script src="threejs-scene.js"></script>
 <script src="immersive-sections.js"></script>
+<script src="interactive.js"></script>
 <script>
 (function() {
   // ── 1. Kill conflicting ScrollTriggers for pinned sections + CTA ──
@@ -387,7 +388,7 @@
 
   // ── 4. CTA reveal ──
   gsap.set('.cta-h, .cta-availability, .cta-form, .cta-risk, .cta-trust, .cta-notice', { clearProps: 'all' });
-  gsap.set('.cta-h, .cta-availability, .cta-form, .cta-risk, .cta-trust, .cta-notice', { autoAlpha: 0 });
+  gsap.set('.cta-availability, .cta-form, .cta-risk, .cta-trust, .cta-notice', { autoAlpha: 0 });
 
   // Split cta-h words preserving <br>/<em>
   var ctaH = document.querySelector('.cta-h');
@@ -409,6 +410,7 @@
         for (var j = 0; j < children.length; j++) { wrapWords(children[j]); }
       }
     })(ctaH);
+    gsap.set(ctaH.querySelectorAll('.word'), { opacity: 0, y: 12, rotateX: 8 });
   }
 
   var ctaTl = gsap.timeline({

@@ -67,7 +67,7 @@
   100% { transform: rotate(360deg) scale(1); opacity: 0.03; }
 }
 /* Slow ambient breath on dark sections */
-#services, #data-break, #results, #process-imm, .hero-pin-wrap {
+#services, #data-break, #results, .hero-pin-wrap {
   animation: ambient-breathe 8s ease-in-out infinite alternate;
 }
 @keyframes ambient-breathe {
@@ -774,6 +774,43 @@ html.gsap-active .marquee-track {
   margin-right: 10px; vertical-align: middle; opacity: .5;
 }
 
+/* ══ Custom Cursor ══ */
+.custom-cursor body {
+  cursor: none;
+}
+#cursor-dot {
+  position: fixed;
+  top: 0; left: 0;
+  width: 4px; height: 4px;
+  background: var(--white);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  opacity: 0;
+  will-change: transform;
+}
+#cursor-ring {
+  position: fixed;
+  top: 0; left: 0;
+  width: 32px; height: 32px;
+  border: 1px solid rgba(255,255,255,0.35);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99998;
+  opacity: 0;
+  will-change: transform;
+}
+/* Disable CSS transform transitions on magnetic elements — JS handles it */
+.custom-cursor [data-magnetic] {
+  transition: background .2s, box-shadow .2s, border-color .25s, color .3s !important;
+}
+
+/* Parallax — CSS translate property avoids transform conflicts */
+[data-parallax] {
+  translate: var(--px, 0px) var(--py, 0px);
+  transition: translate 0.6s ease;
+}
+
 /* ── Section chrome accent line ─────────────────────────────────────── */
 .s-chrome { width: 1px; height: 28px; background: var(--chrome); opacity: .25; margin-bottom: 14px; }
 
@@ -873,10 +910,10 @@ html.gsap-active .marquee-track {
 }
 .imm-pin-wrap[data-pin-height="250"] { height: 250vh; }
 .imm-pin-wrap[data-pin-height="300"] { height: 300vh; }
+.imm-pin-wrap[data-pin-height="400"] { height: 400vh; }
 
 .imm-sticky {
-  position: sticky;
-  top: 0;
+  position: relative;
   height: 100vh;
   width: 100%;
   overflow: hidden;
@@ -1205,15 +1242,18 @@ html.gsap-active .testi-ms-0 { opacity: 1; visibility: visible; }
 .proc-layout {
   position: absolute;
   inset: 0;
-  display: grid;
-  grid-template-columns: 120px 1fr;
+  display: flex;
+  flex-direction: row;
   align-items: center;
+  justify-content: flex-start;
   padding: 0 56px;
   gap: 48px;
 }
 
 /* Left: step number + progress rail */
 .proc-left {
+  flex-shrink: 0;
+  width: 120px;
   display: flex;
   align-items: center;
   gap: 24px;
@@ -1251,6 +1291,8 @@ html.gsap-active .testi-ms-0 { opacity: 1; visibility: visible; }
 
 /* Center: step content */
 .proc-center {
+  flex: 1;
+  align-self: stretch;
   position: relative;
   display: flex;
   align-items: center;
@@ -1258,8 +1300,14 @@ html.gsap-active .testi-ms-0 { opacity: 1; visibility: visible; }
 }
 .proc-step {
   position: absolute;
+  top: 0;
+  bottom: 0;
   left: 0;
   right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
   opacity: 0;
   visibility: hidden;
   will-change: opacity;
@@ -1302,7 +1350,8 @@ html.gsap-active .proc-step[data-step="1"] { opacity: 1; visibility: visible; }
   /* Disable pinning — stack content normally */
   .imm-pin-wrap,
   .imm-pin-wrap[data-pin-height="250"],
-  .imm-pin-wrap[data-pin-height="300"] {
+  .imm-pin-wrap[data-pin-height="300"],
+  .imm-pin-wrap[data-pin-height="400"] {
     height: auto;
   }
   .imm-sticky {
@@ -1399,7 +1448,8 @@ html.gsap-active .proc-step[data-step="1"] { opacity: 1; visibility: visible; }
 @media (prefers-reduced-motion: reduce) {
   .imm-pin-wrap,
   .imm-pin-wrap[data-pin-height="250"],
-  .imm-pin-wrap[data-pin-height="300"] {
+  .imm-pin-wrap[data-pin-height="300"],
+  .imm-pin-wrap[data-pin-height="400"] {
     height: auto;
   }
   .imm-sticky {

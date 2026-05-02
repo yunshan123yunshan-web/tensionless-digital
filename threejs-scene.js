@@ -63,11 +63,16 @@
   var points = new THREE.Points(geom, mat);
   scene.add(points);
 
-  // Mouse parallax
+  // Mouse parallax + velocity
   var mouseX = 0, mouseY = 0, camX = 0, camY = 0;
+  var mouseVel = 0, lastMX = 0, lastMY = 0;
   document.addEventListener('mousemove', function(e) {
     mouseX = (e.clientX / window.innerWidth) * 16 - 8;
     mouseY = -(e.clientY / window.innerHeight) * 16 + 8;
+    var dx = e.clientX - lastMX, dy = e.clientY - lastMY;
+    mouseVel = Math.sqrt(dx * dx + dy * dy);
+    lastMX = e.clientX;
+    lastMY = e.clientY;
   });
 
   // Scroll-driven Z oscillation
@@ -88,7 +93,7 @@
     });
 
     // Track scroll progress through content sections for Z oscillation
-    var progTriggers = ['#services', '#results', '#process'];
+    var progTriggers = ['#services', '#case-study', '#process-imm'];
     progTriggers.forEach(function(sel) {
       ScrollTrigger.create({
         trigger: sel, start: 'top bottom', end: 'bottom top',
@@ -100,6 +105,11 @@
   // Animate loop
   function anim() {
     requestAnimationFrame(anim);
+
+    // Mouse velocity glow — particles brighten on fast movement
+    mouseVel *= 0.88;
+    var velBoost = Math.min(mouseVel / 15, 1) * 0.2;
+    mat.opacity = 0.4 + velBoost;
 
     points.rotation.y += 0.0003;
 

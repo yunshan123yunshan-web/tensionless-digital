@@ -97,10 +97,7 @@
   const groups = [
     { root: '#services', items: '.s-label, .s-head, .s-body, .svc-card', variant: 'services' },
     { root: '#data-break', items: '.db-inner', variant: 'data-break' },
-    { root: '#results', items: '.s-label, .s-head, .s-body, .res-card, .cs-headline, .cs-stats', variant: 'results' },
-    { root: '#testimonials', items: '.s-label, .s-head, .testi-featured, .testi-stat, .testi-card', variant: 'testimonials' },
-    { root: '#process', items: '.s-label, .s-head, .s-body, .proc-step', variant: 'process' },
-    { root: '#contact', items: '.cta-h, .cta-availability, .cta-sub, .btn-dark, .btn-ink', variant: 'cta' },
+    { root: '#contact', items: '.cta-availability, .cta-sub, .btn-dark, .btn-ink', variant: 'cta' },
     { root: 'footer', items: '.footer-logo, .footer-links li, .footer-copy', variant: 'footer' }
   ];
 
@@ -124,7 +121,7 @@
     if (!root) return;
 
     if (config.variant === 'services') {
-      gsap.set(root.querySelectorAll('.svc-card'), { x: 160, y: 120, rotation: -4, scale: 0.55 });
+      gsap.set(root.querySelectorAll('.svc-card'), { x: 60, y: 40, rotation: -3, scale: 0.8 });
     }
     if (config.variant === 'results') {
       gsap.set(root.querySelectorAll('.res-card'), { y: 64, rotation: -2 });
@@ -138,11 +135,6 @@
     }
     if (config.variant === 'process') {
       gsap.set(root.querySelectorAll('.proc-step'), { y: 56, rotation: -1.5 });
-    }
-    if (config.variant === 'cta') {
-      gsap.set(root.querySelector('.cta-h'), { x: -24, y: 0 });
-      gsap.set(root.querySelectorAll('.cta-right > *'), { x: 24, y: 0 });
-      gsap.set(root.querySelectorAll('.btn-dark'), { scale: 0.92 });
     }
   });
 
@@ -207,18 +199,13 @@
     }
 
     if (config.variant === 'data-break') {
-      tl.to(q('.db-inner'), { autoAlpha: 1, y: 0, duration: 0.6, ease: 'power3.out' })
-        .call(function() {
-          root.querySelectorAll('.count').forEach(function(el) { countUp(el); });
-        });
+      root.querySelectorAll('.count').forEach(function(el) { countUp(el); });
+      tl.to(q('.db-inner'), { autoAlpha: 1, y: 0, duration: 0.6, ease: 'power3.out' });
       return tl;
     }
 
     if (config.variant === 'cta') {
-      tl.to(q('.cta-h'), { autoAlpha: 1, x: 0, duration: 0.7, ease: 'expo.out' })
-        .to(q('.cta-right > *'), { autoAlpha: 1, x: 0, duration: 0.6, stagger: 0.08, ease: 'power3.out' }, '-=0.3')
-        .to(q('.btn-dark'), { scale: 1.04, duration: 0.4, ease: 'power2.out' }, '-=0.2')
-        .to(q('.btn-dark'), { scale: 1, duration: 0.3, ease: 'power2.out' });
+      tl.to(q('.cta-availability, .cta-sub, .btn-dark, .btn-ink'), { autoAlpha: 1, duration: 0.5, stagger: 0.08, ease: 'power2.out' });
       return tl;
     }
 

@@ -255,8 +255,8 @@
     }
 
     // ── Final fade-out (positions 22.5–23.5) ──
-    testiTl.to('.testi-ms-2', { autoAlpha: 0, duration: 0.8, ease: 'expo.out' }, 22.5)
-            .to(testiTrust, { autoAlpha: 0, duration: 0.5, ease: 'power2.inOut' }, 22.5);
+    testiTl.to('.testi-ms-2', { autoAlpha: 0, duration: 0.8, ease: 'expo.out' }, TDUR - 0.8)
+            .to(testiTrust, { autoAlpha: 0, duration: 0.5, ease: 'power2.inOut' }, TDUR - 0.6);
 
     testiTl.to({}, { duration: 0.01 }, TDUR);
 
@@ -293,15 +293,15 @@
 
     var procTl = createPinnedTimeline(procWrap, procSticky);
 
-    var PDUR = 30;
+    var PDUR = 35;
 
     // Step definitions: { num, fadeIn, fadeOut, railPct }
     var steps = [
-      { num: '01', fadeIn: 0,    fadeOut: 4.5 },
-      { num: '02', fadeIn: 4.7,  fadeOut: 9.5 },
-      { num: '03', fadeIn: 9.7,  fadeOut: 14.5 },
-      { num: '04', fadeIn: 14.7, fadeOut: 19.5 },
-      { num: '05', fadeIn: 19.7, fadeOut: 26 }
+      { num: '01', fadeIn: 0,    fadeOut: 6.5 },
+      { num: '02', fadeIn: 6.7,  fadeOut: 13 },
+      { num: '03', fadeIn: 13.2, fadeOut: 19.5 },
+      { num: '04', fadeIn: 19.7, fadeOut: 26 },
+      { num: '05', fadeIn: 26.2, fadeOut: 32 }
     ];
 
     // ── Build step transitions ──
@@ -324,10 +324,10 @@
 
     // ── Rail fill progression ──
     procTl.to(procRailFill, { height: '20%', duration: 0.8, ease: 'power2.inOut' }, 0)
-           .to(procRailFill, { height: '40%', duration: 0.8, ease: 'power2.inOut' }, 4.5)
-           .to(procRailFill, { height: '60%', duration: 0.8, ease: 'power2.inOut' }, 9.5)
-           .to(procRailFill, { height: '80%', duration: 0.8, ease: 'power2.inOut' }, 14.5)
-           .to(procRailFill, { height: '100%', duration: 0.8, ease: 'power2.inOut' }, 19.5);
+           .to(procRailFill, { height: '40%', duration: 0.8, ease: 'power2.inOut' }, 6.5)
+           .to(procRailFill, { height: '60%', duration: 0.8, ease: 'power2.inOut' }, 13)
+           .to(procRailFill, { height: '80%', duration: 0.8, ease: 'power2.inOut' }, 19.5)
+           .to(procRailFill, { height: '100%', duration: 0.8, ease: 'power2.inOut' }, 26);
 
     // ── Progress dots ──
     if (procDots.length) {
@@ -340,8 +340,8 @@
       });
     }
 
-    // ── Final fade-out of step 5 (position 26–27) ──
-    procTl.to('.proc-step[data-step="5"]', { autoAlpha: 0, duration: 0.8, ease: 'expo.out' }, 26);
+    // ── Final fade-out of step 5 (position 32–33) ──
+    procTl.to('.proc-step[data-step="5"]', { autoAlpha: 0, duration: 0.8, ease: 'expo.out' }, 32);
 
     procTl.to({}, { duration: 0.01 }, PDUR);
 
