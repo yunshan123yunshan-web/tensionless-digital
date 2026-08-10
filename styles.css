@@ -1201,7 +1201,7 @@ p, .s-head, .cta-h, .hero-h1 { text-wrap: pretty; }
   /* process → stacked */
   .proc-layout { grid-template-columns: 1fr; }
   .proc-orbit { display: none; }
-  .proc-stage { position: relative; min-height: 0; }
+  .proc-stage { position: relative; display: block; min-height: 0; }
   .proc-step { position: relative; inset: auto; display: block; opacity: 1 !important; visibility: visible !important; margin-bottom: 40px; }
   .proc-kicker { position: static; margin-bottom: 28px; }
 
@@ -1249,7 +1249,7 @@ p, .s-head, .cta-h, .hero-h1 { text-wrap: pretty; }
   .proc-step { display: flex; flex-direction: column; justify-content: center; margin-bottom: 40px; }
   .proc-layout { grid-template-columns: 1fr; }
   .proc-orbit, .imm-dot-bar, .cs-orb, .testi-orb, .proc-orb, .hud, .hud-cross, .hero-scrollhint, .cs-gallery-kicker, .cs-hint, .cs-index, .testi-theater-kicker, .proc-kicker { display: none; }
-  .proc-stage { min-height: 0; }
+  .proc-stage { display: block; min-height: 0; }
 }
 
 /* ── LOD gating ──────────────────────────────────────────────────── */
