@@ -52,7 +52,6 @@ window.composeMail = function (form) {
   var hasGsap = !!(window.gsap && window.ScrollTrigger);
 
   // Fallback: no GSAP or reduced motion — show final values statically.
-  // gsap-active must NOT be added here; CSS already forces visibility.
   function setCountFinal(el) {
     var target = parseFloat(el.getAttribute('data-target'));
     if (isNaN(target)) return;
@@ -153,12 +152,21 @@ window.composeMail = function (form) {
     });
   }
 
+  // Scramble a section kicker when it appears (reads data-final).
+  function scrambleKicker(root) {
+    var el = root.querySelector('.sec-kicker');
+    return function () {
+      if (el && window.tdScramble) window.tdScramble(el, { duration: 650 }).start();
+    };
+  }
+
   /* ── Services ───────────────────────────────────────────────────── */
 
   var services = document.getElementById('services');
   if (services) {
     once(services, 'top 72%')
       .to(services.querySelectorAll('.sec-kicker'), { autoAlpha: 1, duration: 0.5 }, 0)
+      .call(scrambleKicker(services), [], 0.1)
       .to(services.querySelectorAll('.s-head'), { autoAlpha: 1, duration: 0.6 }, 0.1)
       .to(services.querySelectorAll('.s-head .word'), {
         clipPath: 'inset(0 0% 0 0)', duration: 0.7, stagger: 0.035, ease: 'power4.out'
@@ -173,19 +181,22 @@ window.composeMail = function (form) {
   var dataBreak = document.getElementById('data-break');
   if (dataBreak) {
     once(dataBreak, 'top 78%')
-      .to(dataBreak.querySelectorAll('.stat-tile'), { autoAlpha: 1, duration: 0.7, stagger: 0.1 }, 0)
+      .to(dataBreak.querySelector('.sec-kicker'), { autoAlpha: 1, duration: 0.5 }, 0)
+      .call(scrambleKicker(dataBreak), [], 0.1)
+      .to(dataBreak.querySelectorAll('.stat-tile'), { autoAlpha: 1, duration: 0.7, stagger: 0.1 }, 0.1)
       .call(function () {
         Array.prototype.forEach.call(dataBreak.querySelectorAll('.count'), countUp);
       }, null, 0.3)
       .eventCallback('onComplete', function () { settle(dataBreak); });
   }
 
-  /* ── Marquee ────────────────────────────────────────────────────── */
+  /* ── Marquee (dual counter-scrolling rows) ──────────────────────── */
 
   var clients = document.getElementById('clients');
   if (clients) {
     once(clients, 'top 85%')
-      .to(clients.querySelector('.marq-track'), { autoAlpha: 1, duration: 0.7 });
+      .to(clients.querySelectorAll('.marq-track-a'), { autoAlpha: 1, duration: 0.7 }, 0)
+      .to(clients.querySelectorAll('.marq-track-b'), { autoAlpha: 0.4, duration: 0.7 }, 0.15);
   }
 
   /* ── CTA ────────────────────────────────────────────────────────── */

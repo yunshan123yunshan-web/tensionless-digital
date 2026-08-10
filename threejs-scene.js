@@ -1,13 +1,24 @@
-(function() {
+/**
+ * Three.js atmosphere — layered starfield.
+ *
+ * Three depth layers (far → near) of chrome/steel particles with a few
+ * glint-a/glint-b tinted stars. Each layer rotates independently so the
+ * mouse parallax reads as depth, not a flat drift. Keeps the proven
+ * behaviors: scroll-driven Z-oscillation, per-star twinkle, and
+ * fade-in/fade-out ScrollTriggers after the hero / before the CTA.
+ *
+ * No-op on reduced-motion or non-high LOD (data-lod). Degrades silently
+ * if Three.js fails to load.
+ */
+(function () {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   if (typeof THREE === 'undefined') return;
-  // Skip ambient particles on mid/low-tier devices
   if (document.documentElement.getAttribute('data-lod') !== 'high') return;
 
   var scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0x050508, 0.0016);
-  var camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
-  camera.position.z = 300;
+  scene.fog = new THREE.FogExp2(0x050508, 0.0008);
+  var camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1200);
+  camera.position.z = 240;
 
   var renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -20,124 +31,124 @@
   document.body.prepend(container);
   container.appendChild(renderer.domElement);
 
-  // 400 particles — chrome/steel disc with warm accents
-  var count = 400;
-  var pos = new Float32Array(count * 3);
-  var col = new Float32Array(count * 3);
-  var sizes = new Float32Array(count);
-  var phases = new Float32Array(count);
+  // Glint accents from the palette — normalized 0..1.
+  var GLINT_A = [0.56, 0.69, 1.0]; // #8fb0ff
+  var GLINT_B = [0.43, 0.90, 0.84]; // #6ee7d6
 
-  for (var i = 0; i < count; i++) {
-    var r = 60 + Math.random() * 200;
-    var theta = Math.random() * Math.PI * 2;
-    var yRange = 0.35;
-    pos[i*3]   = Math.cos(theta) * r;
-    pos[i*3+1] = (Math.random() - 0.5) * r * yRange * 2;
-    pos[i*3+2] = Math.sin(theta) * r;
+  // Layer defs: far (many, tiny, dim) → near (few, large, bright).
+  var layerDefs = [
+    { count: 520, size: 0.7,  z0: 20,  z1: 120, tint: 0.05, bright: 0.55, rot: 0.00010 },
+    { count: 240, size: 1.4,  z0: 120, z1: 190, tint: 0.07, bright: 0.72, rot: 0.00016 },
+    { count: 80,  size: 2.6,  z0: 190, z1: 242, tint: 0.10, bright: 0.88, rot: 0.00022 }
+  ];
 
-    // Steel range with warm accent mix
-    var warm = Math.random() < 0.12 ? 1 : 0;
-    var base = 0.5 + Math.random() * 0.5;
-    col[i*3]   = warm ? base + 0.15 : base;
-    col[i*3+1] = warm ? base - 0.05 : base;
-    col[i*3+2] = warm ? base - 0.1  : base;
+  var layers = layerDefs.map(function (def) {
+    var pos = new Float32Array(def.count * 3);
+    var col = new Float32Array(def.count * 3);
+    var orig = new Float32Array(def.count * 3);
+    var phase = new Float32Array(def.count);
 
-    sizes[i]  = 0.8 + Math.random() * 2.8;
-    phases[i] = Math.random() * Math.PI * 2;
-  }
+    for (var i = 0; i < def.count; i++) {
+      var z = def.z0 + Math.random() * (def.z1 - def.z0);
+      var span = z * 1.6;
+      var x = (Math.random() - 0.5) * span;
+      var y = (Math.random() - 0.5) * span * 0.6;
 
-  var geom = new THREE.BufferGeometry();
-  geom.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-  geom.setAttribute('color', new THREE.BufferAttribute(col, 3));
+      var roll = Math.random();
+      var r, g, b;
+      if (roll < def.tint) { r = GLINT_A[0]; g = GLINT_A[1]; b = GLINT_A[2]; }
+      else if (roll < def.tint * 2) { r = GLINT_B[0]; g = GLINT_B[1]; b = GLINT_B[2]; }
+      else {
+        var base = 0.42 + Math.random() * def.bright;
+        r = base; g = base; b = Math.min(1, base + Math.random() * 0.07);
+      }
 
-  var mat = new THREE.PointsMaterial({
-    size: 2.2,
-    vertexColors: true,
-    transparent: true,
-    opacity: 0.4,
-    blending: THREE.AdditiveBlending,
-    depthWrite: false,
-    sizeAttenuation: true,
+      pos[i * 3] = x; pos[i * 3 + 1] = y; pos[i * 3 + 2] = z;
+      col[i * 3] = r; col[i * 3 + 1] = g; col[i * 3 + 2] = b;
+      orig[i * 3] = r; orig[i * 3 + 1] = g; orig[i * 3 + 2] = b;
+      phase[i] = Math.random() * Math.PI * 2;
+    }
+
+    var geom = new THREE.BufferGeometry();
+    geom.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    geom.setAttribute('color', new THREE.BufferAttribute(col, 3));
+
+    var mat = new THREE.PointsMaterial({
+      size: def.size,
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.5,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      sizeAttenuation: true
+    });
+
+    var points = new THREE.Points(geom, mat);
+    scene.add(points);
+    return { obj: points, geom: geom, mat: mat, phase: phase, orig: orig, count: def.count };
   });
 
-  var points = new THREE.Points(geom, mat);
-  scene.add(points);
-
-  // Mouse parallax + velocity
-  var mouseX = 0, mouseY = 0, camX = 0, camY = 0;
-  var mouseVel = 0, lastMX = 0, lastMY = 0;
-  document.addEventListener('mousemove', function(e) {
-    mouseX = (e.clientX / window.innerWidth) * 16 - 8;
-    mouseY = -(e.clientY / window.innerHeight) * 16 + 8;
-    var dx = e.clientX - lastMX, dy = e.clientY - lastMY;
-    mouseVel = Math.sqrt(dx * dx + dy * dy);
-    lastMX = e.clientX;
-    lastMY = e.clientY;
+  // Mouse parallax — normalized -1..1; near layers rotate more.
+  var mouseNX = 0, mouseNY = 0;
+  document.addEventListener('mousemove', function (e) {
+    mouseNX = (e.clientX / window.innerWidth) * 2 - 1;
+    mouseNY = -(e.clientY / window.innerHeight) * 2 + 1;
   });
 
-  // Scroll-driven Z oscillation
+  // Scroll-driven Z oscillation + fade triggers.
   var scrollProg = 0;
-
   if (typeof ScrollTrigger !== 'undefined') {
-    var st1 = ScrollTrigger.create({
+    ScrollTrigger.create({
       trigger: '#services', start: 'top bottom-=200',
-      onEnter: function() { gsap.to(container, { opacity: 0.2, duration: 0.8, ease: 'power2.out' }); },
-      onLeave: function() { gsap.to(container, { opacity: 0, duration: 0.6, ease: 'power2.out' }); },
-      onEnterBack: function() { gsap.to(container, { opacity: 0.2, duration: 0.6, ease: 'power2.out' }); },
-      onLeaveBack: function() { gsap.to(container, { opacity: 0, duration: 0.8, ease: 'power2.out' }); },
+      onEnter: function () { gsap.to(container, { opacity: 0.2, duration: 0.8, ease: 'power2.out' }); },
+      onLeave: function () { gsap.to(container, { opacity: 0, duration: 0.6, ease: 'power2.out' }); },
+      onEnterBack: function () { gsap.to(container, { opacity: 0.2, duration: 0.6, ease: 'power2.out' }); },
+      onLeaveBack: function () { gsap.to(container, { opacity: 0, duration: 0.8, ease: 'power2.out' }); }
     });
     ScrollTrigger.create({
       trigger: '#contact', start: 'top bottom-=200',
-      onEnter: function() { gsap.to(container, { opacity: 0, duration: 0.6, ease: 'power2.out' }); },
-      onLeaveBack: function() { gsap.to(container, { opacity: 0.2, duration: 0.6, ease: 'power2.out' }); },
+      onEnter: function () { gsap.to(container, { opacity: 0, duration: 0.6, ease: 'power2.out' }); },
+      onLeaveBack: function () { gsap.to(container, { opacity: 0.2, duration: 0.6, ease: 'power2.out' }); }
     });
 
-    // Track scroll progress through content sections for Z oscillation
-    var progTriggers = ['#services', '#case-study', '#process-imm'];
-    progTriggers.forEach(function(sel) {
+    ['#services', '#case-study', '#process-imm'].forEach(function (sel) {
       ScrollTrigger.create({
         trigger: sel, start: 'top bottom', end: 'bottom top',
-        onUpdate: function(self) { scrollProg = self.progress; },
+        onUpdate: function (self) { scrollProg = self.progress; }
       });
     });
   }
 
-  // Animate loop
+  var t = 0;
   function anim() {
     requestAnimationFrame(anim);
+    t += 1;
 
-    // Mouse velocity glow — particles brighten on fast movement
-    mouseVel *= 0.88;
-    var velBoost = Math.min(mouseVel / 15, 1) * 0.2;
-    mat.opacity = 0.4 + velBoost;
+    // Layer rotation: slow drift + mouse parallax (near layers move more).
+    layers.forEach(function (layer, li) {
+      var factor = 1 + li * 0.6;
+      layer.obj.rotation.y += layerDefs[li].rot;
+      layer.obj.rotation.y += (mouseNX * 0.05 * factor - layer.obj.rotation.y * 0.2) * 0.04;
+      layer.obj.rotation.x += (mouseNY * 0.03 * factor - layer.obj.rotation.x * 0.2) * 0.04;
 
-    points.rotation.y += 0.0003;
+      // Twinkle: a few stars per frame, restored from their base color.
+      for (var k = 0; k < 2; k++) {
+        var idx = Math.floor(Math.random() * layer.count);
+        var tw = 0.55 + 0.45 * Math.sin(t * 0.09 + layer.phase[idx]);
+        var arr = layer.geom.attributes.color.array;
+        arr[idx * 3] = layer.orig[idx * 3] * tw;
+        arr[idx * 3 + 1] = layer.orig[idx * 3 + 1] * tw;
+        arr[idx * 3 + 2] = layer.orig[idx * 3 + 2] * tw;
+      }
+      layer.geom.attributes.color.needsUpdate = true;
+    });
 
-    camX += (mouseX - camX) * 0.05;
-    camY += (mouseY - camY) * 0.05;
-    camera.position.x = camX;
-    camera.position.y = camY;
-
-    // Gentle Z oscillation from scroll progress
-    camera.position.z = 300 + Math.sin(scrollProg * Math.PI * 2) * 15;
-
-    // Twinkle: one random particle per frame
-    var idx = Math.floor(Math.random() * count);
-    var phase = phases[idx];
-    var twinkle = 0.6 + Math.sin(performance.now() * 0.003 + phase) * 0.4;
-    // Update individual particle opacity via color intensity
-    var arr = geom.attributes.color.array;
-    var base = 0.5 + phases[idx] * 0.5;
-    arr[idx*3]   = base * twinkle;
-    arr[idx*3+1] = base * twinkle;
-    arr[idx*3+2] = base * twinkle;
-    geom.attributes.color.needsUpdate = true;
-
+    camera.position.z = 240 + Math.sin(scrollProg * Math.PI * 2) * 16;
     renderer.render(scene, camera);
   }
   anim();
 
-  window.addEventListener('resize', function() {
+  window.addEventListener('resize', function () {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);

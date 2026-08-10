@@ -3,14 +3,19 @@
  *
  * Three pinned sections (Case Study, Testimonials, Process) driven by
  * scroll-scrubbed timelines inside gsap.matchMedia — desktop only, no
- * reduced-motion. Every scene change is a pure crossfade (autoAlpha +
- * subtle scale). No y translation, per the site's hard rule.
+ * reduced-motion. Scene changes stay inside the site's hard rule: no
+ * vertical translation. Only crossfades (autoAlpha), horizontal reel
+ * motion (xPercent on the case track), rotation (process orbital), and
+ * scale are used.
  *
- * Each section gets a short non-scrubbed "entrance" reveal (trigger
- * 'top 90%') so its first scene is already composed as it approaches the
- * pin; the pinned timeline then owns the crossfades. Scene inner content
- * is pre-hidden and re-staged so reveals read as mask/fade staggers, not a
- * flat fade of the whole frame.
+ * Case Study  — horizontal reel: the 400vw track pans sideways so each of
+ *   the 4 slides centers in the viewport. The centered slide's counters
+ *   count up once, the dot bar syncs, and the last slide fades before the
+ *   next section enters.
+ * Testimonials — theater: proven crossfade sequence (quote 1 → 2 → 3 →
+ *   trust row) with a subtle scale for depth.
+ * Process — orbital ring: a focus dot orbits each node; the active node
+ *   lights, the numeral updates, and the step copy crossfades in the stage.
  */
 
 (function () {
@@ -48,7 +53,7 @@
       scrollTrigger: {
         trigger: trigger,
         start: 'top top',
-        end: 'bottom bottom',
+        end: 'bottom top',
         scrub: 1,
         pin: pin,
         pinSpacing: true,
@@ -67,6 +72,13 @@
     });
     add(tl);
     return tl;
+  }
+
+  function scrambleKicker(root) {
+    return function () {
+      var el = root && root.querySelector('.mono[data-scramble]');
+      if (el && window.tdScramble) window.tdScramble(el, { duration: 650 }).start();
+    };
   }
 
   function fireCountUps(scene) {
@@ -98,6 +110,7 @@
 
   function clearScenes(scenes, innerSel) {
     scenes.forEach(function (scene) {
+      scene.__counted = false;
       gsap.set(scene, { clearProps: 'opacity,visibility,transform' });
       Array.prototype.forEach.call(scene.querySelectorAll(innerSel), function (el) {
         el.style.opacity = '';
@@ -111,56 +124,85 @@
     if (dots[0]) dots[0].classList.add('active');
   }
 
-  /* ── CASE STUDY — 4 scenes ──────────────────────────────────────── */
+  // power1.inOut, 0..1 — mirrors the per-segment pan easing so the
+  // scrub-driven reel decelerates as each slide centers.
+  function easeInOut01(p) {
+    return p < 0.5 ? 2 * p * p : 1 - 2 * (1 - p) * (1 - p);
+  }
+
+  /* ── CASE STUDY — horizontal reel ───────────────────────────────── */
 
   var csWrap = document.getElementById('case-study');
   var csSticky = csWrap && csWrap.querySelector('.imm-sticky');
   if (csWrap && csSticky) {
     mm.add(DESKTOP, function () {
-      var scenes = Array.prototype.slice.call(csWrap.querySelectorAll('.cs-scene'));
-      if (scenes.length < 4) return;
-      var s1 = scenes[0];
+      var slides = Array.prototype.slice.call(csWrap.querySelectorAll('.cs-slide'));
+      var track = csWrap.querySelector('.cs-track');
+      if (slides.length < 4 || !track) return;
 
-      // Pre-stage: hide inner content; back scenes 2-4 down slightly so the
-      // crossfade-in reads as an approach.
-      scenes.forEach(function (scene) {
-        gsap.set(scene.querySelectorAll('.cs-label, .cs-head, .cs-body, .cs-stat, .cs-panel'), { autoAlpha: 0 });
+      var innerSel = '.cs-label, .cs-head, .cs-body, .cs-stat, .cs-panel';
+      slides.forEach(function (slide) {
+        gsap.set(slide.querySelectorAll(innerSel), { autoAlpha: 0 });
       });
-      gsap.set(scenes.slice(1), { scale: 1.04 });
+      gsap.set(track, { xPercent: 0 });
 
-      var dots = buildProgressDots(csWrap.querySelector('.cs-dot-bar'), scenes.length);
+      var dots = buildProgressDots(csWrap.querySelector('.cs-dot-bar'), slides.length);
+      var indexNum = csWrap.querySelector('.cs-index-num');
 
       entranceTimeline(csWrap, function (tl) {
-        tl.to(s1.querySelectorAll('.cs-label, .cs-head, .cs-body'), { autoAlpha: 1, duration: 0.7, stagger: 0.12 }, 0)
-          .to(s1.querySelectorAll('.cs-stat'), { autoAlpha: 1, duration: 0.5, stagger: 0.1 }, 0.35)
-          .to(s1.querySelectorAll('.cs-panel'), { autoAlpha: 1, duration: 0.5, stagger: 0.1 }, 0.6)
-          .call(function () { countOnce(s1); }, null, 0.5);
+        tl.to(slides[0].querySelectorAll(innerSel), { autoAlpha: 1, duration: 0.7, stagger: 0.1 }, 0)
+          .call(scrambleKicker(csWrap), null, 0.2)
+          .call(function () { countOnce(slides[0]); }, null, 0.6);
       });
 
-      var DUR = 28;
+      // Slide centers along the pin. One master tween drives the pan and
+      // syncs dots/counters from its own progress — .call at exact tween
+      // boundaries does not fire when the scrub rests there, so sync lives
+      // in onUpdate instead (holds correctly in both scroll directions).
+      var DUR = 30;
+      var CENTER = [2, 9, 16, 23];
+      var X = [0, -25, -50, -75];
+
+      var drive = { u: 0 };
+      var active = 0;
       var tl = createPinnedTimeline(csWrap, csSticky);
-      tl.set(s1, { autoAlpha: 1, scale: 1 }, 0);
+      tl.to(drive, { u: 1, duration: DUR, ease: 'none', onUpdate: syncGallery }, 0);
 
-      [4.5, 10.5, 16.5].forEach(function (at, idx) {
-        var out = scenes[idx];
-        var inn = scenes[idx + 1];
-        tl.to(out, { autoAlpha: 0, scale: 0.98, duration: 0.8, ease: 'power1.inOut' }, at)
-          .to(inn, { autoAlpha: 1, scale: 1, duration: 0.8, ease: 'power1.inOut' }, at + 0.8)
-          .fromTo(inn.querySelectorAll('.cs-label, .cs-head, .cs-body'),
-            { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6, stagger: 0.12 }, at + 1.0)
-          .fromTo(inn.querySelectorAll('.cs-stat'),
-            { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, stagger: 0.1 }, at + 1.3)
-          .fromTo(inn.querySelectorAll('.cs-panel'),
-            { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, stagger: 0.12 }, at + 1.55)
-          .call(setDot, [dots, idx + 1], at + 0.9)
-          .call(countOnce, [inn], at + 1.4);
-      });
+      // Reveal each incoming slide's content while it is still sliding in —
+      // before it centers — so the reel never sits on a bare panel between
+      // slides. The fade finishes just as the panel enters the viewport.
+      for (var j = 1; j < slides.length; j += 1) {
+        tl.fromTo(slides[j].querySelectorAll(innerSel),
+          { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.55, stagger: 0.07 }, CENTER[j] - 2.2);
+      }
 
-      // Last scene fades out before the next section enters.
-      tl.to(scenes[3], { autoAlpha: 0, scale: 0.98, duration: 0.8, ease: 'power1.inOut' }, DUR - 0.8);
+      function syncGallery() {
+        var u = drive.u * DUR;
+        var xp = X[0];
+        for (var i = 0; i < X.length - 1; i += 1) {
+          if (u <= CENTER[i + 1]) {
+            var p = Math.min(1, Math.max(0, (u - CENTER[i]) / (CENTER[i + 1] - CENTER[i])));
+            xp = X[i] + (X[i + 1] - X[i]) * easeInOut01(p);
+            break;
+          }
+        }
+        if (u > CENTER[X.length - 1]) xp = X[X.length - 1];
+        gsap.set(track, { xPercent: xp });
+        var idx = Math.round(-xp / 25);
+        if (idx !== active) {
+          active = idx;
+          setDot(dots, idx);
+          if (indexNum) indexNum.textContent = '0' + (idx + 1);
+        }
+        if (u >= CENTER[idx] + 0.3) countOnce(slides[idx]);
+      }
+
+      // Last slide fades out before the next section enters.
+      tl.to(slides[slides.length - 1], { autoAlpha: 0, duration: 0.8, ease: 'power1.inOut' }, DUR - 0.8);
 
       return function () {
-        clearScenes(scenes, '.cs-label, .cs-head, .cs-body, .cs-stat, .cs-panel');
+        clearScenes(slides, innerSel);
+        gsap.set(track, { clearProps: 'xPercent' });
         resetDots(dots);
       };
     });
@@ -190,7 +232,8 @@
 
       entranceTimeline(testiWrap, function (tl) {
         tl.to(s1.querySelectorAll('.testi-glyph, .testi-quote, .testi-author'),
-          { autoAlpha: 1, duration: 0.7, stagger: 0.15 }, 0);
+          { autoAlpha: 1, duration: 0.7, stagger: 0.15 }, 0)
+          .call(scrambleKicker(testiWrap), null, 0.2);
       });
 
       var DUR = 25;
@@ -226,27 +269,29 @@
     });
   }
 
-  /* ── PROCESS — 5 steps + scroll-filled rail ─────────────────────── */
+  /* ── PROCESS — orbital ring ─────────────────────────────────────── */
 
   var procWrap = document.getElementById('process-imm');
   var procSticky = procWrap && procWrap.querySelector('.imm-sticky');
   if (procWrap && procSticky) {
     mm.add(DESKTOP, function () {
       var steps = Array.prototype.slice.call(procWrap.querySelectorAll('.proc-step'));
-      var railFill = procWrap.querySelector('.proc-rail-fill');
-      var nodes = Array.prototype.slice.call(procWrap.querySelectorAll('.proc-node'));
+      var nodes = Array.prototype.slice.call(procWrap.querySelectorAll('.proc-node-ring'));
+      var focus = procWrap.querySelector('.proc-focus');
       var num = procWrap.querySelector('.proc-num');
-      if (!steps.length || !railFill) return;
+      if (steps.length < 5) return;
 
+      var innerSel = '.proc-step-label, .proc-step-name, .proc-step-desc';
       steps.forEach(function (step) {
-        gsap.set(step.querySelectorAll('.proc-step-name, .proc-step-desc'), { autoAlpha: 0 });
+        gsap.set(step.querySelectorAll(innerSel), { autoAlpha: 0 });
       });
       gsap.set(steps.slice(1), { autoAlpha: 0 });
+      if (focus) gsap.set(focus, { rotation: 0 });
 
       var dots = buildProgressDots(procWrap.querySelector('.proc-dot-bar'), steps.length);
 
       function setActiveStep(index) {
-        nodes.forEach(function (node, i) { node.classList.toggle('lit', i === index); });
+        nodes.forEach(function (node, i) { node.classList.toggle('active', i === index); });
         setDot(dots, index);
         if (num) {
           num.textContent = '0' + (index + 1);
@@ -256,41 +301,54 @@
       }
 
       entranceTimeline(procWrap, function (tl) {
-        tl.to(steps[0].querySelectorAll('.proc-step-name, .proc-step-desc'),
-          { autoAlpha: 1, duration: 0.6, stagger: 0.12 }, 0);
+        tl.to(steps[0].querySelectorAll(innerSel),
+          { autoAlpha: 1, duration: 0.6, stagger: 0.1 }, 0)
+          .call(scrambleKicker(procWrap), null, 0.2);
       });
 
       var DUR = 30;
       var SEG = [
-        { at: 3, rail: 20 },
-        { at: 8.5, rail: 40 },
-        { at: 14, rail: 60 },
-        { at: 19.5, rail: 80 },
-        { at: 25, rail: 100 }
+        { at: 3, step: 0 },
+        { at: 8.5, step: 1 },
+        { at: 14, step: 2 },
+        { at: 19.5, step: 3 },
+        { at: 25, step: 4 }
       ];
 
       var tl = createPinnedTimeline(procWrap, procSticky);
       tl.set(steps[0], { autoAlpha: 1 }, 0);
       setActiveStep(0);
-      tl.call(setActiveStep, [0], 0);
 
-      // Rail fills continuously across the whole pin.
+      // Focus dot orbits to each node (per-segment, eases as it lands).
       var prev = 0;
       SEG.forEach(function (seg) {
-        tl.to(railFill, { height: seg.rail + '%', duration: seg.at - prev, ease: 'none' }, prev);
+        if (focus) {
+          tl.to(focus, { rotation: seg.step * 72, duration: seg.at - prev, ease: 'power1.inOut' }, prev);
+        }
         prev = seg.at;
       });
 
-      // Step crossfades + node/number sync.
+      // Node light / numeral / dots sync from timeline progress so they hold
+      // at rest (scrub-safe both directions).
+      var drive = { u: 0 };
+      var active = 0;
+      tl.to(drive, { u: 1, duration: DUR, ease: 'none', onUpdate: syncProcess }, 0);
+
+      function syncProcess() {
+        var u = drive.u * DUR;
+        var idx = 0;
+        for (var i = 0; i < SEG.length; i += 1) { if (u >= SEG[i].at) idx = i; }
+        if (idx !== active) { active = idx; setActiveStep(idx); }
+      }
+
       SEG.forEach(function (seg, idx) {
-        tl.call(setActiveStep, [idx], seg.at);
         if (idx > 0) {
           var prevStep = steps[idx - 1];
           var curr = steps[idx];
           tl.to(prevStep, { autoAlpha: 0, duration: 0.7, ease: 'power1.inOut' }, seg.at)
             .to(curr, { autoAlpha: 1, duration: 0.7, ease: 'power1.inOut' }, seg.at + 0.7)
-            .fromTo(curr.querySelectorAll('.proc-step-name, .proc-step-desc'),
-              { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, stagger: 0.1 }, seg.at + 0.9);
+            .fromTo(curr.querySelectorAll(innerSel),
+              { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, stagger: 0.09 }, seg.at + 0.9);
         }
       });
 
@@ -299,9 +357,9 @@
       if (num) tl.to(num, { autoAlpha: 0, duration: 0.6, ease: 'power1.inOut' }, DUR - 0.6);
 
       return function () {
-        clearScenes(steps, '.proc-step-name, .proc-step-desc');
-        if (railFill) railFill.style.height = '';
-        nodes.forEach(function (n) { n.classList.remove('lit'); });
+        clearScenes(steps, innerSel);
+        nodes.forEach(function (n) { n.classList.remove('active'); });
+        if (focus) focus.style.transform = '';
         if (num) {
           num.textContent = '01';
           num.style.opacity = '';

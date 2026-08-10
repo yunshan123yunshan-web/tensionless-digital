@@ -43,24 +43,44 @@
 
 <a href="#main-content" class="skip-link">Skip to main content</a>
 
-<!-- BOOT — cinematic opening veil -->
+<!-- BOOT — system calibration sequence -->
 <div id="boot" aria-hidden="true">
   <div class="boot-card">
-    <div class="boot-hairline"></div>
-    <p class="boot-title">Attention, engineered.</p>
-    <p class="boot-title">Revenue, on demand.</p>
-    <p class="boot-title">120+ campaigns delivered.</p>
-    <p class="boot-mono">Tensionless Digital &middot; Full-funnel digital marketing</p>
+    <svg class="boot-mark" viewBox="0 0 72 72" fill="none" aria-hidden="true">
+      <path class="boot-stroke" d="M36 6 66 36 36 66 6 36Z" stroke="currentColor" stroke-width="1"/>
+      <path class="boot-stroke" d="M22 22h12v28" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
+      <path class="boot-stroke" d="M34 36h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
+    </svg>
+    <p class="boot-line chrome" data-scramble data-final="Tensionless // Digital">Tensionless // Digital</p>
+    <p class="boot-line mono" data-scramble data-final="INITIALIZING LIQUID CHROME">INITIALIZING LIQUID CHROME</p>
+    <p class="boot-line mono" data-scramble data-final="CALIBRATING FULL-FUNNEL ENGINE">CALIBRATING FULL-FUNNEL ENGINE</p>
+    <p class="boot-line mono" data-scramble data-final="120+ CAMPAIGNS ONLINE">120+ CAMPAIGNS ONLINE</p>
+    <p class="boot-mono">Attention, engineered. Revenue, on demand.</p>
   </div>
 </div>
 
-<!-- Liquid chrome atmosphere -->
-<canvas id="liquid" aria-hidden="true"></canvas>
+<!-- AURORA — atmosphere behind immersive sections -->
+<div class="aurora" aria-hidden="true"></div>
+
+<!-- CHAPTER RAIL — the film's acts -->
+<aside id="chapters" aria-label="Chapters">
+  <div class="chapters-inner">
+    <a class="chap active" href="#hero-pin" data-chap="0"><span class="chap-num">01</span><span class="chap-name">Manifest</span></a>
+    <a class="chap" href="#services" data-chap="1"><span class="chap-num">02</span><span class="chap-name">Arsenal</span></a>
+    <a class="chap" href="#case-study" data-chap="2"><span class="chap-num">03</span><span class="chap-name">Proof</span></a>
+    <a class="chap" href="#process-imm" data-chap="3"><span class="chap-num">04</span><span class="chap-name">Craft</span></a>
+    <a class="chap" href="#contact" data-chap="4"><span class="chap-num">05</span><span class="chap-name">Connect</span></a>
+    <div class="chapters-track"><div class="chapters-fill" id="chapters-fill"></div></div>
+  </div>
+</aside>
+
+<!-- ACT CARD — chapter-cut label -->
+<div id="act-card" aria-hidden="true"><span class="act-card-num">02</span><span class="act-card-name">Arsenal</span></div>
 
 <!-- NAV -->
 <nav id="nav" aria-label="Primary">
   <div class="nav-pill">
-    <a class="wordmark" href="#top">Tensionless<span class="d">.</span></a>
+    <a class="wordmark" href="#top">Tensionless<span class="d"> // </span>Digital</a>
     <div class="nav-links">
       <a href="#services">Services</a>
       <a href="#case-study">Case Studies</a>
@@ -68,7 +88,7 @@
       <a href="#contact">Contact</a>
     </div>
     <a href="#contact" class="nav-cta btn btn-primary" data-magnetic>Book a Free Call</a>
-    <span class="nav-signal"><i aria-hidden="true"></i>Accepting 1 client</span>
+    <span class="nav-signal"><i aria-hidden="true"></i>Signal: Growth Online</span>
     <button class="nav-toggle" aria-label="Menu" aria-expanded="false">
       <span class="nav-toggle-bar"></span>
       <span class="nav-toggle-bar"></span>
@@ -79,18 +99,23 @@
 
 <main id="main-content">
 
-<!-- HERO -->
-<div class="hero-pin-wrap" id="hero-pin">
+<!-- ════════════ ACT I — MANIFEST (Hero) ════════════ -->
+<div class="hero-pin-wrap" id="hero-pin" data-chapter="0">
+  <canvas id="chrome-shader" aria-hidden="true"></canvas>
   <div class="hero-sticky">
     <div class="hero-vignette" aria-hidden="true"></div>
-    <div class="hud hud-tl"><span class="hl">Campaigns</span><span class="vals" id="hud-camp">120</span></div>
-    <div class="hud hud-tr"><span class="vals" id="hud-roas">58.2x</span><span class="hl">Avg ROAS</span></div>
-    <div class="hud hud-bl"><span class="hl">CTR</span><span class="vals" id="hud-ctr">4.7%</span></div>
-    <div class="hud hud-br"><span class="vals" id="hud-coord">x 0 &mdash; y 0</span><span class="hl">Signal</span></div>
+    <div class="hud hud-tl"><span class="hl">//</span> Attention &rarr; Revenue</div>
+    <div class="hud hud-tr">Campaigns <span class="vals" id="hud-camp">120</span><br>Status <span class="hl">Live</span></div>
+    <div class="hud hud-bl"><span class="vals" id="hud-coord">x &mdash; y &mdash;</span></div>
+    <div class="hud hud-br">ROAS <span class="vals" id="hud-roas">58.2x</span> &middot; CTR <span class="vals" id="hud-ctr">4.7%</span></div>
     <div class="hud-cross" id="hud-cross" aria-hidden="true"></div>
     <div class="hero-inner">
-      <p class="hero-eyebrow">Digital Marketing Agency &middot; 120+ Campaigns Delivered</p>
-      <h1 class="hero-h1" id="hero-h1">We turn <em class="serif">attention</em> into revenue.</h1>
+      <p class="hero-eyebrow" data-scramble data-final="Digital Marketing Agency · 120+ Campaigns Delivered">Digital Marketing Agency &middot; 120+ Campaigns Delivered</p>
+      <h1 class="hero-h1" id="hero-h1">
+        <span class="row"><span class="in">We turn</span></span>
+        <span class="row"><span class="in chrome">attention</span></span>
+        <span class="row"><span class="in">into revenue.</span></span>
+      </h1>
       <p class="hero-sub">Landing pages that convert. Ads that perform. SEO that compounds. We build the full-funnel growth engine for businesses ready to scale without the guesswork.</p>
       <div class="hero-actions">
         <a href="#contact" class="btn btn-primary" data-magnetic>Book a Free Call<span class="sheen" aria-hidden="true"></span></a>
@@ -101,28 +126,30 @@
   </div>
 </div>
 
-<!-- SERVICES -->
-<section id="services" class="sec">
+<!-- ════════════ ACT II — ARSENAL (Services / Data / Marquee) ════════════ -->
+<section id="services" class="sec" data-chapter="1">
   <div class="wrap">
     <div class="sec-head">
-      <p class="sec-kicker reveal">What We Do</p>
-      <h2 class="s-head reveal">Every channel.<br><em>One team.</em></h2>
+      <p class="sec-kicker reveal" data-scramble data-final="What We Do">What We Do</p>
+      <h2 class="s-head reveal">Every channel.<br><span class="chrome">One team.</span></h2>
       <p class="s-body reveal">We don&rsquo;t offer fragments of a strategy. We architect the entire growth system, from the first ad impression to the landing page to the closed lead, so nothing leaks.</p>
     </div>
     <div class="svc-grid">
-      <div class="svc-card holo reveal"><svg class="svc-icon" viewBox="0 0 28 28" fill="none" aria-hidden="true"><rect x="3" y="5" width="22" height="18" rx="2" stroke="currentColor" stroke-width="1.1"/><line x1="3" y1="10" x2="25" y2="10" stroke="currentColor" stroke-width="1.1"/><line x1="10" y1="10" x2="10" y2="23" stroke="currentColor" stroke-width="1.1"/></svg><div class="svc-num"><span class="svc-diamond" aria-hidden="true"></span>01</div><div class="svc-name">Landing<br>Pages</div><div class="svc-desc">High-converting pages built for a single purpose: turning visitors into customers.</div><span class="svc-arrow">&#8599;</span></div>
-      <div class="svc-card holo reveal d1"><svg class="svc-icon" viewBox="0 0 28 28" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="7" stroke="currentColor" stroke-width="1.1"/><line x1="17" y1="17" x2="23" y2="23" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg><div class="svc-num"><span class="svc-diamond" aria-hidden="true"></span>02</div><div class="svc-name">Google<br>Ads</div><div class="svc-desc">Intent-driven paid search campaigns with obsessive keyword and bid management.</div><span class="svc-arrow">&#8599;</span></div>
-      <div class="svc-card holo reveal d2"><svg class="svc-icon" viewBox="0 0 28 28" fill="none" aria-hidden="true"><circle cx="14" cy="6" r="2.5" stroke="currentColor" stroke-width="1"/><circle cx="7" cy="20" r="2.5" stroke="currentColor" stroke-width="1"/><circle cx="21" cy="20" r="2.5" stroke="currentColor" stroke-width="1"/><line x1="12" y1="8" x2="9" y2="18" stroke="currentColor" stroke-width="1"/><line x1="16" y1="8" x2="19" y2="18" stroke="currentColor" stroke-width="1"/></svg><div class="svc-num"><span class="svc-diamond" aria-hidden="true"></span>03</div><div class="svc-name">Facebook<br>Ads</div><div class="svc-desc">Scroll-stopping creative paired with precise audience targeting across Meta platforms.</div><span class="svc-arrow">&#8599;</span></div>
-      <div class="svc-card holo reveal d3"><svg class="svc-icon" viewBox="0 0 28 28" fill="none" aria-hidden="true"><polyline points="4,20 10,13 15,17 24,6" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/><line x1="19" y1="6" x2="24" y2="6" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/><line x1="24" y1="6" x2="24" y2="11" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg><div class="svc-num"><span class="svc-diamond" aria-hidden="true"></span>04</div><div class="svc-name">SEO &amp;<br>SEM</div><div class="svc-desc">Organic authority built to compound. Paid search to accelerate. Both working in sync.</div><span class="svc-arrow">&#8599;</span></div>
-      <div class="svc-card holo reveal d4"><svg class="svc-icon" viewBox="0 0 28 28" fill="none" aria-hidden="true"><circle cx="12" cy="9" r="4" stroke="currentColor" stroke-width="1.1"/><path d="M4 24c0-4.418 3.582-8 8-8s8 3.582 8 8" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/><line x1="22" y1="12" x2="22" y2="20" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/><line x1="18" y1="16" x2="26" y2="16" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg><div class="svc-num"><span class="svc-diamond" aria-hidden="true"></span>05</div><div class="svc-name">Lead<br>Generation</div><div class="svc-desc">Full-funnel lead systems: capture, qualify, nurture, and deliver pipeline-ready prospects.</div><span class="svc-arrow">&#8599;</span></div>
+      <div class="svc-card holo reveal" data-tilt><svg class="svc-icon" viewBox="0 0 28 28" fill="none" aria-hidden="true"><rect x="3" y="5" width="22" height="18" rx="2" stroke="currentColor" stroke-width="1.1"/><line x1="3" y1="10" x2="25" y2="10" stroke="currentColor" stroke-width="1.1"/><line x1="10" y1="10" x2="10" y2="23" stroke="currentColor" stroke-width="1.1"/></svg><div class="svc-num">SYS.01</div><div class="svc-name">Landing Pages</div><div class="svc-desc">High-converting pages built for a single purpose: turning visitors into customers.</div><p class="svc-data"><span class="ok" aria-hidden="true">&#9656;</span> conversion-optimized &middot; sub-second loads</p><span class="svc-arrow">&#8599;</span></div>
+      <div class="svc-card holo reveal d1" data-tilt><svg class="svc-icon" viewBox="0 0 28 28" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="7" stroke="currentColor" stroke-width="1.1"/><line x1="17" y1="17" x2="23" y2="23" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg><div class="svc-num">SYS.02</div><div class="svc-name">Google Ads</div><div class="svc-desc">Intent-driven paid search campaigns with obsessive keyword and bid management.</div><p class="svc-data"><span class="ok" aria-hidden="true">&#9656;</span> intent keywords &middot; full-funnel tracking</p><span class="svc-arrow">&#8599;</span></div>
+      <div class="svc-card holo reveal d2" data-tilt><svg class="svc-icon" viewBox="0 0 28 28" fill="none" aria-hidden="true"><circle cx="14" cy="6" r="2.5" stroke="currentColor" stroke-width="1"/><circle cx="7" cy="20" r="2.5" stroke="currentColor" stroke-width="1"/><circle cx="21" cy="20" r="2.5" stroke="currentColor" stroke-width="1"/><line x1="12" y1="8" x2="9" y2="18" stroke="currentColor" stroke-width="1"/><line x1="16" y1="8" x2="19" y2="18" stroke="currentColor" stroke-width="1"/></svg><div class="svc-num">SYS.03</div><div class="svc-name">Facebook Ads</div><div class="svc-desc">Scroll-stopping creative paired with precise audience targeting across Meta platforms.</div><p class="svc-data"><span class="ok" aria-hidden="true">&#9656;</span> scroll-stopping creative &middot; precise audiences</p><span class="svc-arrow">&#8599;</span></div>
+      <div class="svc-card holo reveal d3" data-tilt><svg class="svc-icon" viewBox="0 0 28 28" fill="none" aria-hidden="true"><polyline points="4,20 10,13 15,17 24,6" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/><line x1="19" y1="6" x2="24" y2="6" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/><line x1="24" y1="6" x2="24" y2="11" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg><div class="svc-num">SYS.04</div><div class="svc-name">SEO &amp; SEM</div><div class="svc-desc">Organic authority built to compound. Paid search to accelerate. Both working in sync.</div><p class="svc-data"><span class="ok" aria-hidden="true">&#9656;</span> organic authority &middot; paid acceleration</p><span class="svc-arrow">&#8599;</span></div>
+      <div class="svc-card holo reveal d4" data-tilt><svg class="svc-icon" viewBox="0 0 28 28" fill="none" aria-hidden="true"><circle cx="12" cy="9" r="4" stroke="currentColor" stroke-width="1.1"/><path d="M4 24c0-4.418 3.582-8 8-8s8 3.582 8 8" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/><line x1="22" y1="12" x2="22" y2="20" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/><line x1="18" y1="16" x2="26" y2="16" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg><div class="svc-num">SYS.05</div><div class="svc-name">Lead Generation</div><div class="svc-desc">Full-funnel lead systems: capture, qualify, nurture, and deliver pipeline-ready prospects.</div><p class="svc-data"><span class="ok" aria-hidden="true">&#9656;</span> capture &middot; qualify &middot; nurture</p><span class="svc-arrow">&#8599;</span></div>
+      <div class="svc-card holo reveal d5" data-tilt><svg class="svc-icon" viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="M4 14c3-3 6-3 9 0s6 3 9 0" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/><path d="M4 20c3-3 6-3 9 0s6 3 9 0" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/><circle cx="14" cy="6" r="1.6" fill="currentColor"/></svg><div class="svc-num">SYS.06</div><div class="svc-name">Optimization Loop</div><div class="svc-desc">Every campaign is a learning system. We measure, refine, and compound the wins across the whole funnel.</div><p class="svc-data"><span class="ok" aria-hidden="true">&#9656;</span> measure every step &middot; compound gains</p><span class="svc-arrow">&#8599;</span></div>
     </div>
   </div>
 </section>
 
-<!-- DATA BREAK -->
-<section id="data-break" class="sec">
+<!-- DATA BREAK — telemetry readout -->
+<section id="data-break" class="sec" data-chapter="1">
   <div class="db-beam" aria-hidden="true"></div>
   <div class="wrap">
+    <p class="sec-kicker reveal" data-scramble data-final="Telemetry">Telemetry</p>
     <div class="db-grid">
       <div class="stat-tile holo reveal"><b class="stat-num chrome count" data-target="120">0</b><span class="stat-lbl">Campaigns<br>Delivered</span></div>
       <div class="stat-tile holo reveal d1"><b class="stat-num chrome count" data-target="58" data-suffix="&times;">0</b><span class="stat-lbl">Highest<br>ROAS</span></div>
@@ -132,128 +159,144 @@
   </div>
 </section>
 
-<!-- MARQUEE — industries -->
+<!-- MARQUEE — industries (dual counter-scrolling rows) -->
 <section id="clients" class="marq" aria-label="Industries we work in">
   <div class="marq-fade" aria-hidden="true"></div>
-  <div class="marq-track">
-    <span>Automotive</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
-    <span>Financial Services</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
-    <span>Immigration Law</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
-    <span>Real Estate</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
-    <span>E-Commerce</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
-    <span>Enterprise SaaS</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
-    <span>Home Services</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
-    <span>Healthcare</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
-    <span>Automotive</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
-    <span>Financial Services</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
-    <span>Immigration Law</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
-    <span>Real Estate</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
-    <span>E-Commerce</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
-    <span>Enterprise SaaS</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
-    <span>Home Services</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
-    <span>Healthcare</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+  <div class="marq-row">
+    <div class="marq-track marq-track-a">
+      <span>Automotive</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+      <span>Financial Services</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+      <span>Immigration Law</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+      <span>Real Estate</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+      <span>E-Commerce</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+      <span>Enterprise SaaS</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+      <span>Home Services</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+      <span>Healthcare</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+      <span>Automotive</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+      <span>Financial Services</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+      <span>Immigration Law</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+      <span>Real Estate</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+      <span>E-Commerce</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+      <span>Enterprise SaaS</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+      <span>Home Services</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+      <span>Healthcare</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+    </div>
+  </div>
+  <div class="marq-row marq-row-b">
+    <div class="marq-track marq-track-b">
+      <span>Landing Pages</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+      <span>Google Ads</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+      <span>Facebook Ads</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+      <span>SEO &amp; SEM</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+      <span>Lead Generation</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+      <span>Optimization Loop</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+      <span>Landing Pages</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+      <span>Google Ads</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+      <span>Facebook Ads</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+      <span>SEO &amp; SEM</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+      <span>Lead Generation</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+      <span>Optimization Loop</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+    </div>
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════════════════════════════════
-     CASE STUDY — Pinned Cinematic Scene Transitions
-     ════════════════════════════════════════════════════════════════════ -->
-<section id="case-study" class="imm-pin-wrap" data-pin-height="250" aria-label="Featured case studies">
+<!-- ════════════ ACT III — PROOF (Case Studies — horizontal reel) ════════════ -->
+<section id="case-study" class="imm-pin-wrap cs-gallery" data-pin-height="240" data-chapter="2" aria-label="Featured case studies">
   <div class="imm-sticky cs-sticky">
     <div class="cs-orb cs-orb-1" aria-hidden="true" data-parallax="0.03"></div>
     <div class="cs-orb cs-orb-2" aria-hidden="true" data-parallax="0.04"></div>
+    <p class="cs-gallery-kicker"><span class="mono" data-scramble data-final="PROOF">PROOF</span> <em class="serif">case studies, on a reel.</em></p>
 
-    <!-- Scene 01 — Automotive -->
-    <div class="cs-scene cs-s1 scene-active" data-scene="1">
-      <div class="cs-inner">
-        <p class="cs-label">Case Study 01</p>
-        <h3 class="cs-head"><em>$350K Profit</em> on $6K Spend</h3>
-        <p class="cs-body">Full-funnel Google Ads campaign paired with SEO. Precision keyword targeting and dedicated landing pages drove revenue within the first week, while organic held top-3 positions across two competitive verticals.</p>
-        <div class="cs-stats">
-          <span class="cs-stat"><b class="chrome count-imm" data-target="58" data-suffix="&times;">0&times;</b>ROAS</span>
-          <span class="cs-stat"><b>Google</b>Ads</span>
-          <span class="cs-stat"><b>Top 3</b>SEO</span>
+    <div class="cs-track" id="cs-track">
+      <div class="cs-slide" data-slide="1">
+        <div class="cs-inner panel holo">
+          <p class="cs-label">Signal &middot; Automotive</p>
+          <h3 class="cs-head"><em class="chrome">$350K Profit</em> on $6K Spend</h3>
+          <p class="cs-body">Full-funnel Google Ads campaign paired with SEO. Precision keyword targeting and dedicated landing pages drove revenue within the first week, while organic held top-3 positions across two competitive verticals.</p>
+          <div class="cs-stats">
+            <span class="cs-stat"><b class="chrome count-imm" data-target="58" data-suffix="&times;">0&times;</b><span class="cs-stat-lbl">ROAS</span></span>
+            <span class="cs-stat"><b>Google Ads</b><span class="cs-stat-lbl">Channel</span></span>
+            <span class="cs-stat"><b>Top 3</b><span class="cs-stat-lbl">SEO Positions</span></span>
+          </div>
+          <div class="cs-panels" aria-hidden="true">
+            <div class="cs-panel">Precision Targeting</div>
+            <div class="cs-panel">Dedicated Landing Pages</div>
+            <div class="cs-panel">Organic Authority</div>
+          </div>
         </div>
-        <div class="cs-panels" aria-hidden="true">
-          <div class="cs-panel">Precision Targeting</div>
-          <div class="cs-panel">Dedicated Landing Pages</div>
-          <div class="cs-panel">Organic Authority</div>
+      </div>
+
+      <div class="cs-slide" data-slide="2">
+        <div class="cs-inner panel holo">
+          <p class="cs-label">Signal &middot; Financial Services</p>
+          <h3 class="cs-head"><em class="chrome">$2M Production</em> in One Month</h3>
+          <p class="cs-body">Facebook Ads for high-ticket financial services. Prospect-audience targeting with direct-response creative delivered $2M in total production — yielding $150K in commissions — within a single calendar month.</p>
+          <div class="cs-stats">
+            <span class="cs-stat"><b class="chrome count-imm" data-target="150" data-prefix="$" data-suffix="K">$0</b><span class="cs-stat-lbl">Commissions</span></span>
+            <span class="cs-stat"><b>Facebook Ads</b><span class="cs-stat-lbl">Channel</span></span>
+            <span class="cs-stat"><b class="count-imm" data-target="30">0</b><span class="cs-stat-lbl">Days</span></span>
+          </div>
+          <div class="cs-panels" aria-hidden="true">
+            <div class="cs-panel">High-Ticket Funnel</div>
+            <div class="cs-panel">Direct-Response Creative</div>
+            <div class="cs-panel">Prospect Audiences</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cs-slide" data-slide="3">
+        <div class="cs-inner panel holo">
+          <p class="cs-label">Signal &middot; Immigration Law</p>
+          <h3 class="cs-head"><em class="chrome">$100K Revenue</em> at $4K Ad Spend</h3>
+          <p class="cs-body">Multi-channel campaign for an immigration firm. Funnel restructure and audience refinement dropped cost-per-lead 70% below industry standard while delivering a consistent flow of high-intent, case-ready prospects.</p>
+          <div class="cs-stats">
+            <span class="cs-stat"><b class="chrome count-imm" data-target="25" data-suffix="&times;">0&times;</b><span class="cs-stat-lbl">ROAS</span></span>
+            <span class="cs-stat"><b>FB + Lead Gen</b><span class="cs-stat-lbl">Channels</span></span>
+            <span class="cs-stat"><b class="chrome count-imm" data-target="70" data-suffix="%">0%</b><span class="cs-stat-lbl">Lower CPL</span></span>
+          </div>
+          <div class="cs-panels" aria-hidden="true">
+            <div class="cs-panel">Funnel Restructure</div>
+            <div class="cs-panel">Audience Refinement</div>
+            <div class="cs-panel">Case-Ready Leads</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cs-slide" data-slide="4">
+        <div class="cs-inner panel holo">
+          <p class="cs-label">Signal &middot; Real Estate</p>
+          <h3 class="cs-head"><em class="chrome">8 Closures</em> at $3K Ad Spend</h3>
+          <p class="cs-body">Facebook Ads targeting new-development buyers. Hyperlocal strategy and purchase-intent creative delivered 8 closed sales from a minimal budget — proving precise targeting beats high spend every time.</p>
+          <div class="cs-stats">
+            <span class="cs-stat"><b class="chrome count-imm" data-target="8">0</b><span class="cs-stat-lbl">Closures</span></span>
+            <span class="cs-stat"><b>Facebook Ads</b><span class="cs-stat-lbl">Channel</span></span>
+            <span class="cs-stat"><b class="chrome count-imm" data-prefix="$" data-target="375">$0</b><span class="cs-stat-lbl">Cost per Closure</span></span>
+          </div>
+          <div class="cs-panels" aria-hidden="true">
+            <div class="cs-panel">Hyperlocal Strategy</div>
+            <div class="cs-panel">Purchase-Intent Creative</div>
+            <div class="cs-panel">Minimal Budget</div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Scene 02 — Financial Services -->
-    <div class="cs-scene cs-s2" data-scene="2">
-      <div class="cs-inner">
-        <p class="cs-label">Case Study 02</p>
-        <h3 class="cs-head"><em>$2M Production</em> in One Month</h3>
-        <p class="cs-body">Facebook Ads for high-ticket financial services. Prospect-audience targeting with direct-response creative delivered $2M in total production — yielding $150K in commissions — within a single calendar month.</p>
-        <div class="cs-stats">
-          <span class="cs-stat"><b class="chrome count-imm" data-target="150" data-prefix="$" data-suffix="K">$0</b>Commissions</span>
-          <span class="cs-stat"><b>Facebook</b>Ads</span>
-          <span class="cs-stat"><b class="count-imm" data-target="30">0</b>Days</span>
-        </div>
-        <div class="cs-panels" aria-hidden="true">
-          <div class="cs-panel">High-Ticket Funnel</div>
-          <div class="cs-panel">Direct-Response Creative</div>
-          <div class="cs-panel">Prospect Audiences</div>
-        </div>
-      </div>
-    </div>
+    <div class="cs-index" aria-hidden="true"><span class="cs-index-num">01</span><span class="cs-index-total">/ 04</span></div>
 
-    <!-- Scene 03 — Immigration Law -->
-    <div class="cs-scene cs-s3" data-scene="3">
-      <div class="cs-inner">
-        <p class="cs-label">Case Study 03</p>
-        <h3 class="cs-head"><em>$100K Revenue</em> at $4K Ad Spend</h3>
-        <p class="cs-body">Multi-channel campaign for an immigration firm. Funnel restructure and audience refinement dropped cost-per-lead 70% below industry standard while delivering a consistent flow of high-intent, case-ready prospects.</p>
-        <div class="cs-stats">
-          <span class="cs-stat"><b class="chrome count-imm" data-target="25" data-suffix="&times;">0&times;</b>ROAS</span>
-          <span class="cs-stat"><b>FB +</b>Lead Gen</span>
-          <span class="cs-stat"><b class="chrome count-imm" data-target="70" data-suffix="%">0%</b>Lower CPL</span>
-        </div>
-        <div class="cs-panels" aria-hidden="true">
-          <div class="cs-panel">Funnel Restructure</div>
-          <div class="cs-panel">Audience Refinement</div>
-          <div class="cs-panel">Case-Ready Leads</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Scene 04 — Real Estate -->
-    <div class="cs-scene cs-s4" data-scene="4">
-      <div class="cs-inner">
-        <p class="cs-label">Case Study 04</p>
-        <h3 class="cs-head"><em>8 Closures</em> at $3K Ad Spend</h3>
-        <p class="cs-body">Facebook Ads targeting new-development buyers. Hyperlocal strategy and purchase-intent creative delivered 8 closed sales from a minimal budget — proving precise targeting beats high spend every time.</p>
-        <div class="cs-stats">
-          <span class="cs-stat"><b class="chrome count-imm" data-target="8">0</b>Closures</span>
-          <span class="cs-stat"><b>Facebook</b>Ads</span>
-          <span class="cs-stat"><b class="chrome count-imm" data-prefix="$" data-target="375">$0</b>/ Closure</span>
-        </div>
-        <div class="cs-panels" aria-hidden="true">
-          <div class="cs-panel">Hyperlocal Strategy</div>
-          <div class="cs-panel">Purchase-Intent Creative</div>
-          <div class="cs-panel">Minimal Budget</div>
-        </div>
-      </div>
-    </div>
-
+    <p class="cs-hint"><span aria-hidden="true">&#8592; &rarr;</span> Keep scrolling — the reel moves sideways</p>
     <div class="imm-dot-bar cs-dot-bar" aria-hidden="true"></div>
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════════════════════════════════
-     TESTIMONIALS — Pinned Quote Scene Transitions
-     ════════════════════════════════════════════════════════════════════ -->
-<section id="testimonials-imm" class="imm-pin-wrap" data-pin-height="250" aria-label="Client testimonials">
+<!-- ════════════ ACT IV — CRAFT (Testimonials theater + Process orbital) ════════════ -->
+<section id="testimonials-imm" class="imm-pin-wrap" data-pin-height="120" data-chapter="3" aria-label="Client testimonials">
   <div class="imm-sticky testi-sticky">
     <div class="testi-orb testi-orb-neutral" aria-hidden="true" data-parallax="0.03"></div>
     <div class="testi-orb testi-orb-warm" aria-hidden="true" data-parallax="0.04"></div>
+    <p class="testi-theater-kicker"><span class="mono" data-scramble data-final="VERDICT">VERDICT</span> <em class="serif">straight from the people we work with.</em></p>
 
-    <!-- Scene 01 — A. Chen -->
     <div class="testi-scene testi-s1 scene-active" data-testi="1">
-      <div>
+      <div class="panel holo">
         <span class="testi-glyph" aria-hidden="true">&ldquo;</span>
         <p class="testi-quote">They didn&rsquo;t just run our ads — they rebuilt how we think about customer acquisition entirely. Within three months we had more qualified leads than our sales team could handle.</p>
         <div class="testi-author">
@@ -263,9 +306,8 @@
       </div>
     </div>
 
-    <!-- Scene 02 — M. Torres -->
     <div class="testi-scene testi-s2" data-testi="2">
-      <div>
+      <div class="panel holo">
         <span class="testi-glyph" aria-hidden="true">&ldquo;</span>
         <p class="testi-quote">Our Google Ads were burning cash for two years. Tensionless Digital fixed our account structure in the first week and we saw the difference within days.</p>
         <div class="testi-author">
@@ -275,9 +317,8 @@
       </div>
     </div>
 
-    <!-- Scene 03 — J. Patel -->
     <div class="testi-scene testi-s3" data-testi="3">
-      <div>
+      <div class="panel holo">
         <span class="testi-glyph" aria-hidden="true">&ldquo;</span>
         <p class="testi-quote">The landing page they built converted at nearly triple the rate of our old one. Not a redesign — a completely different understanding of our customer.</p>
         <div class="testi-author">
@@ -287,7 +328,6 @@
       </div>
     </div>
 
-    <!-- Trust row -->
     <div class="testi-trust" aria-hidden="true">
       <div class="testi-trust-inner">
         <p>Straight from the <em class="serif">people we work with.</em></p>
@@ -303,56 +343,59 @@
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════════════════════════════════
-     PROCESS — Scroll-Driven Step System
-     ════════════════════════════════════════════════════════════════════ -->
-<section id="process-imm" class="imm-pin-wrap" data-pin-height="400" aria-label="Our process">
+<section id="process-imm" class="imm-pin-wrap" data-pin-height="220" data-chapter="3" aria-label="Our process">
   <div class="imm-sticky proc-sticky">
     <div class="proc-orb proc-orb-neutral" aria-hidden="true" data-parallax="0.03"></div>
     <div class="proc-orb proc-orb-cool" aria-hidden="true" data-parallax="0.04"></div>
+    <p class="proc-kicker"><span class="mono" data-scramble data-final="CRAFT">CRAFT</span> <em class="serif">the machine, in five movements.</em></p>
+
     <div class="proc-layout">
-      <div class="proc-beam" aria-hidden="true">
-        <div class="proc-rail"><div class="proc-rail-fill"></div></div>
-        <div class="proc-node"></div>
-        <div class="proc-node"></div>
-        <div class="proc-node"></div>
-        <div class="proc-node"></div>
-        <div class="proc-node"></div>
-      </div>
-      <div>
-        <div class="proc-num-stage">
-          <span class="proc-num">01</span>
+      <div class="proc-orbit" id="proc-orbit">
+        <div class="proc-ring" id="proc-ring">
+          <div class="proc-node-ring" data-i="0"><span class="ring-node"></span><span class="ring-tag">Discover</span></div>
+          <div class="proc-node-ring" data-i="1"><span class="ring-node"></span><span class="ring-tag">Strategy</span></div>
+          <div class="proc-node-ring" data-i="2"><span class="ring-node"></span><span class="ring-tag">Design</span></div>
+          <div class="proc-node-ring" data-i="3"><span class="ring-node"></span><span class="ring-tag">Build</span></div>
+          <div class="proc-node-ring" data-i="4"><span class="ring-node"></span><span class="ring-tag">Launch</span></div>
+          <div class="proc-focus" id="proc-focus" aria-hidden="true"><i></i></div>
         </div>
-        <div class="proc-steps">
-          <div class="proc-step scene-active" data-step="1">
-            <h3 class="proc-step-name">Discover</h3>
-            <p class="proc-step-desc">We understand your business, audience, positioning, and goals before touching visuals. No assumptions, no templates.</p>
-          </div>
-          <div class="proc-step" data-step="2">
-            <h3 class="proc-step-name">Strategy</h3>
-            <p class="proc-step-desc">We define the structure, message, user journey, and creative direction that will guide every decision in the experience.</p>
-          </div>
-          <div class="proc-step" data-step="3">
-            <h3 class="proc-step-name">Design</h3>
-            <p class="proc-step-desc">We craft a visual system that makes the brand feel clear, premium, and memorable at every touchpoint.</p>
-          </div>
-          <div class="proc-step" data-step="4">
-            <h3 class="proc-step-name">Build</h3>
-            <p class="proc-step-desc">We develop the experience with performance, responsiveness, and interaction quality as first principles.</p>
-          </div>
-          <div class="proc-step" data-step="5">
-            <h3 class="proc-step-name">Launch</h3>
-            <p class="proc-step-desc">We test, refine, and ship with confidence, making sure the final experience works across real devices and real conditions.</p>
-          </div>
+        <div class="proc-num-stage"><span class="proc-num" id="proc-num">01</span></div>
+      </div>
+      <div class="proc-stage">
+        <div class="proc-step panel holo scene-active" data-step="1">
+          <span class="proc-step-label">Step.01</span>
+          <h3 class="proc-step-name">Discover</h3>
+          <p class="proc-step-desc">We understand your business, audience, positioning, and goals before touching visuals. No assumptions, no templates.</p>
+        </div>
+        <div class="proc-step panel holo" data-step="2">
+          <span class="proc-step-label">Step.02</span>
+          <h3 class="proc-step-name">Strategy</h3>
+          <p class="proc-step-desc">We define the structure, message, user journey, and creative direction that will guide every decision in the experience.</p>
+        </div>
+        <div class="proc-step panel holo" data-step="3">
+          <span class="proc-step-label">Step.03</span>
+          <h3 class="proc-step-name">Design</h3>
+          <p class="proc-step-desc">We craft a visual system that makes the brand feel clear, premium, and memorable at every touchpoint.</p>
+        </div>
+        <div class="proc-step panel holo" data-step="4">
+          <span class="proc-step-label">Step.04</span>
+          <h3 class="proc-step-name">Build</h3>
+          <p class="proc-step-desc">We develop the experience with performance, responsiveness, and interaction quality as first principles.</p>
+        </div>
+        <div class="proc-step panel holo" data-step="5">
+          <span class="proc-step-label">Step.05</span>
+          <h3 class="proc-step-name">Launch</h3>
+          <p class="proc-step-desc">We test, refine, and ship with confidence, making sure the final experience works across real devices and real conditions.</p>
         </div>
       </div>
     </div>
+
     <div class="imm-dot-bar proc-dot-bar" aria-hidden="true"></div>
   </div>
 </section>
 
-<!-- CTA -->
-<section id="contact" class="cta-sec">
+<!-- ════════════ ACT V — CONNECT (CTA + Footer) ════════════ -->
+<section id="contact" class="cta-sec" data-chapter="4">
   <div class="cta-box holo" id="cta-box">
     <h2 class="cta-h">Ready to stop <em>guessing</em> and start growing?</h2>
     <p class="cta-availability"><i aria-hidden="true"></i>Accepting 1 new client this quarter.</p>
@@ -386,17 +429,15 @@
 
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" fetchpriority="high"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-<script src="animations.js"></script>
-<script src="liquid.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="chrome-shader.js"></script>
 <script src="hero.js"></script>
+<script src="animations.js"></script>
 <script src="immersive-sections.js"></script>
 <script src="interactive.js"></script>
+<script src="threejs-scene.js"></script>
 <script>
 (function() {
-  // Start the liquid atmosphere + HUD telemetry
-  if (window.tdLiquid && typeof window.tdLiquid.initLiquid === 'function') window.tdLiquid.initLiquid();
-  if (window.tdLiquid && typeof window.tdLiquid.initHud === 'function') window.tdLiquid.initHud();
-
   // Mouse spotlight on the CTA box
   var box = document.getElementById('cta-box');
   if (box) {
