@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>Transition · Section 2 → 3</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" href="../shared/slide.css">
+<style>
+.burst-container {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+}
+.burst-shard {
+  position: absolute;
+  background: #7a8796;
+  pointer-events: none;
+}
+</style>
+</head>
+<body>
+<div class="slide section-theme-3">
+  <div class="burst-container">
+    <div class="burst-shard" style="width:200pt;height:200pt;clip-path:polygon(100% 0%,0% 100%,100% 100%);opacity:0.025;top:-50pt;right:-30pt;"></div>
+    <div class="burst-shard" style="width:90pt;height:90pt;clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);opacity:0.04;top:90pt;right:120pt;transform:rotate(45deg);"></div>
+    <div class="burst-shard" style="width:240pt;height:240pt;clip-path:polygon(0% 0%,100% 0%,0% 100%);opacity:0.015;bottom:-40pt;left:-40pt;"></div>
+    <div class="burst-shard" style="width:70pt;height:70pt;clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);opacity:0.03;bottom:100pt;left:120pt;transform:rotate(-15deg);"></div>
+    <div class="burst-shard" style="width:16pt;height:16pt;clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);opacity:0.03;top:42%;right:25%;"></div>
+  </div>
+
+  <div class="accent-band top" style="--sec-accent:#5a6067;"></div>
+
+  <div class="transition-content" style="z-index:2;">
+    <p class="label" style="margin-bottom:10pt;">End of Section 2</p>
+    <h1>How Models Work</h1>
+    <div style="display:flex;justify-content:center;">
+      <div class="sec-divider"></div>
+    </div>
+    <p style="text-align:center;margin-top:8pt;color:#7a8796;">Up next — Choosing the right model for the job</p>
+  </div>
+
+  <div class="transition-diamond" style="top:80pt;right:52pt;width:50pt;height:50pt;opacity:0.02;"></div>
+</div>
+</body>
+</html>

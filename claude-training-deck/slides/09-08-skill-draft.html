@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>Drafting a Skill</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" href="../shared/slide.css">
+<style>
+.skill-steps { margin-top:10pt; }
+.skill-step { display:flex; gap:14pt; margin-bottom:10pt; align-items:flex-start; }
+.skill-step .num { font-size:14pt; font-weight:500; color:#d4dde8; min-width:32pt; font-family:'Cormorant Garamond',Georgia,serif; }
+.skill-step .content { flex:1; }
+.skill-step .content h4 { margin-bottom:2pt; }
+.skill-step .content p { font-size:11pt; color:#96a4b2; margin:0; }
+</style>
+</head>
+<body>
+<div class="slide section-theme-5">
+  <div class="accent-band top" style="--sec-accent:#d4dde8;"></div>
+  <div class="corner-accent tr"></div>
+
+  <div class="slide-inner" style="position:relative;z-index:2;">
+    <div class="section-indicator"><p>09 / 10 · Templates &amp; Skills</p></div>
+
+    <div style="display:flex;gap:24pt;flex:1;">
+      <div style="flex:1;display:flex;flex-direction:column;">
+        <h1>Drafting a Skill</h1>
+        <div class="sec-divider"></div>
+        <p style="font-size:12pt;color:#96a4b2;margin-bottom:6pt;">Creating a skill is a four-step process. Start from a template you already use.</p>
+
+        <div class="skill-steps">
+          <div class="skill-step">
+            <span class="num">01</span>
+            <div class="content">
+              <h4>Find a repeatable task</h4>
+              <p>Look at your prompt history. What do you ask Claude to do more than once a week? Meeting recaps, email drafts, code reviews — these are skill candidates.</p>
+            </div>
+          </div>
+          <div class="skill-step">
+            <span class="num">02</span>
+            <div class="content">
+              <h4>Extract the template</h4>
+              <p>Take your best prompt for that task and remove the specific content. What remains is the reusable structure — role, context, task, format, verification.</p>
+            </div>
+          </div>
+          <div class="skill-step">
+            <span class="num">03</span>
+            <div class="content">
+              <h4>Package it</h4>
+              <p>Create a folder in ~/.claude/skills/your-skill-name/. Write the instructions in SKILL.md with clear name, description, and step-by-step guidance.</p>
+            </div>
+          </div>
+          <div class="skill-step">
+            <span class="num">04</span>
+            <div class="content">
+              <h4>Test and iterate</h4>
+              <p>Run the skill 3 times with different inputs. Refine the instructions based on what doesn't work. Share with a teammate for feedback.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="flex:0.7;">
+        <div class="focus-box" style="height:auto;background:#0d0d0f;">
+          <p style="font-size:11pt;color:#d4dde8;margin:0;"><strong>Quick start:</strong></p>
+          <p style="font-size:11pt;color:#96a4b2;margin-top:6pt;">Ask Claude to help you create a skill. Say: <em>"I want to create a skill for [task]. Help me write the SKILL.md file."</em></p>
+          <p style="font-size:11pt;color:#96a4b2;margin-top:6pt;">Claude will guide you through the structure and generate the file.</p>
+        </div>
+
+        <div class="focus-box" style="margin-top:10pt;background:#0d0d0f;">
+          <p style="font-size:10.5pt;color:#96a4b2;margin:0;"><strong>File structure:</strong></p>
+          <p style="font-size:10pt;color:#7a8796;margin-top:6pt;">
+            ~/.claude/skills/meeting-recap/<br>
+            &nbsp;&nbsp;├── SKILL.md<br>
+            &nbsp;&nbsp;├── assets/<br>
+            &nbsp;&nbsp;└── scripts/
+          </p>
+        </div>
+
+        <p style="font-size:10pt;color:#5a6067;margin-top:6pt;">Skills can be collaborated on in shared drives or git repos.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

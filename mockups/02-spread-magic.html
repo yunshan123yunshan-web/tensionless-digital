@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tensionless Digital — Spells That Convert // Magic</title>
+<meta name="description" content="Design mockup B: a spellbook of micro-interactions for Tensionless Digital. Playful, magical, detail-obsessed.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@400;500&family=Cormorant+Garamond:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #0c0b10;
+    --bg-deep:   #08070c;
+    --surface:   #14121a;
+    --surface-2: #1a1724;
+    --ink:       #ece9e2;
+    --dim:       #8a8496;
+    --faint:     #56505f;
+    --line:      rgba(236,233,226,.1);
+    --magic:     #a78bfa;
+    --magic-hi:  #c9b8ff;
+    --magic-dim: rgba(167,139,250,.16);
+    --gold:      #ffd98c;
+    --ok:        #7ee787;
+    --display: 'Space Grotesk', system-ui, sans-serif;
+    --body: 'Inter', system-ui, sans-serif;
+    --script: 'Cormorant Garamond', Georgia, serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  ::selection { background: var(--magic); color: #0c0b10; }
+  a { color: inherit; text-decoration: none; }
+  .wrap { width: min(1200px, 92vw); margin: 0 auto; }
+
+  /* glow field behind everything */
+  .ambient {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(600px 420px at 12% -6%, var(--magic-dim), transparent 65%),
+      radial-gradient(700px 520px at 90% 20%, rgba(167,139,250,.08), transparent 60%),
+      radial-gradient(500px 400px at 20% 90%, rgba(255,217,140,.05), transparent 60%);
+  }
+
+  /* ── nav + wand charge bar ──────────────────────────────────────── */
+  .magic-bar { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 90; background: rgba(167,139,250,.12); }
+  .magic-bar i { display: block; height: 100%; width: 0%; background: linear-gradient(90deg, var(--magic), var(--gold)); box-shadow: 0 0 12px var(--magic); }
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 50; padding-top: 3px; border-bottom: 1px solid var(--line); background: rgba(12,11,16,.7); backdrop-filter: blur(12px); }
+  .nav-inner { display: flex; align-items: center; gap: 26px; height: 60px; padding: 0 max(24px, 4vw); }
+  .wordmark { font-family: var(--display); font-weight: 600; font-size: 15px; letter-spacing: .02em; }
+  .wordmark .d { color: var(--magic-hi); }
+  .nav-links { display: flex; gap: 6px; margin-left: auto; font-size: 14px; }
+  .nav-links a { color: var(--dim); padding: 6px 12px; border-radius: 999px; transition: color .2s, background .2s; }
+  .nav-links a:hover { color: var(--ink); background: rgba(167,139,250,.1); }
+  .nav-spark { color: var(--faint); font-size: 12px; display: none; }
+  @media (min-width: 860px) { .nav-spark { display: block; } }
+
+  /* ── hero ───────────────────────────────────────────────────────── */
+  .hero { position: relative; min-height: 100vh; display: flex; align-items: center; padding: 120px 0 90px; z-index: 1; overflow: hidden; }
+  .hero-inner { text-align: center; }
+  .hero-tags { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 34px; }
+  .chip { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--dim); border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px; transition: color .2s, border-color .2s, box-shadow .2s; }
+  .chip .st { color: var(--gold); }
+  .chip:hover { color: var(--ink); border-color: var(--magic-dim); box-shadow: 0 0 18px var(--magic-dim); }
+  .hero-h1 { font-family: var(--display); font-weight: 600; letter-spacing: -.03em; font-size: clamp(40px, 8.2vw, 104px); line-height: 1.02; }
+  .hero-h1 .magic { font-family: var(--script); font-style: italic; font-weight: 500; letter-spacing: .01em; background: linear-gradient(100deg, var(--magic-hi), var(--gold) 55%, var(--magic-hi)); background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: sheen 5s linear infinite; }
+  @keyframes sheen { to { background-position: -200% 0; } }
+  .hero-h1 .ln { display: block; }
+  .hero-sub { color: var(--dim); max-width: 52ch; margin: 26px auto 0; font-size: 16px; }
+  .hero-cta { margin-top: 40px; display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  .spell-btn {
+    font-family: var(--display); font-weight: 600; font-size: 15px; color: #0c0b10;
+    background: linear-gradient(100deg, var(--magic-hi), var(--gold));
+    border: 0; border-radius: 999px; padding: 16px 34px; cursor: pointer;
+    box-shadow: 0 8px 30px var(--magic-dim); position: relative; overflow: hidden;
+    transition: transform .25s, box-shadow .25s;
+  }
+  .spell-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 44px rgba(167,139,250,.4); }
+  .spell-btn.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); box-shadow: none; }
+  .spell-btn.ghost:hover { border-color: var(--magic-dim); }
+  .hero-scroll { margin-top: 56px; color: var(--faint); font-size: 13px; letter-spacing: .1em; text-transform: uppercase; }
+  .hero-scroll .fl { animation: floaty 2.4s ease-in-out infinite; display: inline-block; }
+  @keyframes floaty { 50% { transform: translateY(6px); } }
+
+  /* ── marquee ────────────────────────────────────────────────────── */
+  .marq { border-block: 1px solid var(--line); padding: 18px 0; overflow: hidden; position: relative; z-index: 1; background: var(--bg-deep); }
+  .marq-track { display: flex; width: max-content; animation: slide 26s linear infinite; }
+  .marq-track span { font-family: var(--display); font-weight: 500; font-size: 15px; color: var(--dim); white-space: nowrap; padding: 0 22px; }
+  .marq-track .sp { color: var(--gold); }
+  @keyframes slide { to { transform: translateX(-50%); } }
+
+  /* ── section scaffolding ────────────────────────────────────────── */
+  section.sec { position: relative; z-index: 1; padding: 110px 0; }
+  .sec-head { max-width: 720px; margin-bottom: 54px; }
+  .sec-head.center { margin-left: auto; margin-right: auto; text-align: center; }
+  .sec-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--magic-hi); margin-bottom: 18px; }
+  .sec-title { font-family: var(--display); font-weight: 600; letter-spacing: -.02em; font-size: clamp(30px, 4.6vw, 54px); line-height: 1.08; }
+  .sec-title em { font-family: var(--script); font-style: italic; font-weight: 500; color: var(--magic-hi); }
+  .sec-sub { color: var(--dim); margin-top: 16px; font-size: 15.5px; }
+
+  /* ── spell cards ────────────────────────────────────────────────── */
+  .cards { display: grid; gap: 18px; }
+  @media (min-width: 720px) { .cards { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1040px) { .cards { grid-template-columns: repeat(3, 1fr); } }
+  .card {
+    position: relative; border: 1px solid var(--line); border-radius: 18px;
+    background: linear-gradient(160deg, var(--surface-2), var(--surface)); overflow: hidden;
+    padding: 28px 26px 26px; transition: transform .3s cubic-bezier(.2,.8,.2,1), border-color .3s, box-shadow .3s;
+  }
+  .card::before {
+    content: ''; position: absolute; inset: 0; border-radius: 18px; opacity: 0;
+    background: linear-gradient(120deg, transparent 30%, rgba(167,139,250,.16) 48%, rgba(255,217,140,.14) 52%, transparent 70%);
+    background-size: 250% 100%; transition: opacity .3s; pointer-events: none;
+  }
+  .card:hover { border-color: var(--magic-dim); box-shadow: 0 24px 60px rgba(0,0,0,.45); }
+  .card:hover::before { opacity: 1; animation: sweep 1.1s ease forwards; }
+  @keyframes sweep { from { background-position: 120% 0; } to { background-position: -130% 0; } }
+  .card-corners { position: absolute; top: 10px; right: 12px; color: var(--faint); font-size: 15px; }
+  .card-corners i { font-style: normal; }
+  .card-num { font-family: var(--display); font-weight: 600; font-size: 13px; color: var(--gold); letter-spacing: .12em; }
+  .card-title { font-family: var(--display); font-weight: 600; font-size: 22px; margin: 14px 0 10px; }
+  .card-desc { color: var(--dim); font-size: 14px; }
+  .card-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+  .card-tags span { font-size: 11px; color: var(--faint); border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; }
+
+  /* ── stats ──────────────────────────────────────────────────────── */
+  .stats { background: var(--bg-deep); border-block: 1px solid var(--line); }
+  .stat-grid { display: grid; gap: 18px; }
+  @media (min-width: 720px) { .stat-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1040px) { .stat-grid { grid-template-columns: repeat(4, 1fr); } }
+  .stat {
+    text-align: center; border: 1px solid var(--line); border-radius: 18px;
+    background: var(--surface); padding: 40px 18px; position: relative; overflow: hidden;
+  }
+  .stat::after { content: ''; position: absolute; inset: -40%; background: radial-gradient(circle at 50% 120%, var(--magic-dim), transparent 60%); pointer-events: none; }
+  .stat-num { font-family: var(--display); font-weight: 600; font-size: clamp(40px, 5vw, 64px); letter-spacing: -.02em; background: linear-gradient(180deg, var(--ink), var(--dim)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .stat-num .suf { background: linear-gradient(100deg, var(--magic-hi), var(--gold)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .stat-lbl { color: var(--dim); font-size: 13px; margin-top: 8px; letter-spacing: .04em; }
+
+  /* ── ritual / process ───────────────────────────────────────────── */
+  .ritual { display: grid; gap: 0; position: relative; }
+  .ritual-line { position: absolute; left: 17px; top: 10px; bottom: 10px; width: 2px; background: rgba(167,139,250,.14); }
+  .ritual-line i { display: block; width: 100%; height: 0%; background: linear-gradient(180deg, var(--magic-hi), var(--gold)); box-shadow: 0 0 14px var(--magic); }
+  .rstep { position: relative; display: grid; grid-template-columns: 36px 1fr; gap: 20px; padding: 18px 0; }
+  .rnode {
+    width: 30px; height: 30px; border-radius: 50%; margin-top: 4px;
+    border: 1px solid var(--magic-dim); background: var(--surface);
+    display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--faint);
+    transition: all .4s;
+  }
+  .rstep.lit .rnode { border-color: var(--magic); color: var(--magic-hi); background: var(--magic-dim); box-shadow: 0 0 22px var(--magic-dim); }
+  .rbody { padding-top: 2px; }
+  .rname { font-family: var(--display); font-weight: 600; font-size: 21px; }
+  .rdesc { color: var(--dim); font-size: 14.5px; margin-top: 6px; max-width: 46ch; }
+
+  /* ── case ───────────────────────────────────────────────────────── */
+  .case { border: 1px solid var(--line); border-radius: 22px; background: linear-gradient(150deg, var(--surface-2), var(--surface)); padding: clamp(28px, 5vw, 56px); position: relative; overflow: hidden; }
+  .case::before { content: '✦'; position: absolute; right: 24px; top: 18px; color: var(--gold); font-size: 22px; opacity: .7; }
+  .case-grid { display: grid; gap: 20px; align-items: center; }
+  @media (min-width: 960px) { .case-grid { grid-template-columns: 1.3fr 1fr; gap: 60px; } }
+  .case-label { font-size: 12.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--magic-hi); margin-bottom: 16px; }
+  .case-title { font-family: var(--display); font-weight: 600; font-size: clamp(26px, 3.4vw, 40px); letter-spacing: -.02em; line-height: 1.1; }
+  .case-title em { font-family: var(--script); font-style: italic; color: var(--gold); }
+  .case-copy { color: var(--dim); margin-top: 16px; }
+  .case-metrics { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .case-metric { border: 1px solid var(--line); border-radius: 14px; padding: 18px; text-align: center; background: rgba(12,11,16,.4); }
+  .case-metric .v { font-family: var(--display); font-weight: 600; font-size: 26px; color: var(--magic-hi); }
+  .case-metric .l { color: var(--faint); font-size: 11.5px; margin-top: 4px; letter-spacing: .04em; }
+
+  /* ── CTA ────────────────────────────────────────────────────────── */
+  .cta { background: var(--bg-deep); border-top: 1px solid var(--line); text-align: center; }
+  .cta-title { font-family: var(--display); font-weight: 600; letter-spacing: -.02em; font-size: clamp(32px, 5.4vw, 64px); line-height: 1.05; }
+  .cta-title em { font-family: var(--script); font-style: italic; color: var(--magic-hi); }
+  .cta-sub { color: var(--dim); margin: 20px auto 0; max-width: 46ch; }
+  .form { max-width: 560px; margin: 44px auto 0; display: grid; gap: 16px; text-align: left; }
+  .form label { font-size: 12.5px; color: var(--dim); display: block; margin-bottom: 8px; letter-spacing: .04em; }
+  .form input, .form textarea { width: 100%; font-family: var(--body); font-size: 15px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 18px; outline: none; transition: border-color .2s, box-shadow .2s; }
+  .form input:focus, .form textarea:focus { border-color: var(--magic-dim); box-shadow: 0 0 0 4px var(--magic-dim); }
+  .form textarea { resize: vertical; }
+  .form-grid { display: grid; gap: 16px; }
+  @media (min-width: 640px) { .form-grid { grid-template-columns: 1fr 1fr; } }
+  .form .cta-row { text-align: center; margin-top: 8px; }
+  .cta-note { color: var(--faint); font-size: 12.5px; margin-top: 18px; }
+
+  /* ── footer ─────────────────────────────────────────────────────── */
+  footer { position: relative; z-index: 1; border-top: 1px solid var(--line); padding: 44px 0; }
+  .foot-inner { display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-between; align-items: center; color: var(--faint); font-size: 13px; }
+  .foot-inner .wm { color: var(--ink); font-family: var(--display); font-weight: 500; }
+  .foot-links { display: flex; gap: 20px; }
+  .foot-links a { color: var(--dim); } .foot-links a:hover { color: var(--ink); }
+
+  /* ── cursor + sparkles ──────────────────────────────────────────── */
+  html.has-cursor, html.has-cursor * { cursor: none !important; }
+  #cur { position: fixed; top: 0; left: 0; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 12px var(--gold); pointer-events: none; z-index: 300; mix-blend-mode: screen; }
+  #cur-ring { position: fixed; top: 0; left: 0; width: 34px; height: 34px; margin: -17px 0 0 -17px; border: 1px solid rgba(255,217,140,.45); border-radius: 50%; pointer-events: none; z-index: 299; transition: transform .2s ease-out; }
+  #cur-ring.big { transform: scale(1.6); border-color: var(--magic-hi); }
+  .confetti { position: fixed; width: 8px; height: 8px; z-index: 400; pointer-events: none; }
+
+  /* reveal */
+  [data-reveal] { opacity: 0; }
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal] { opacity: 1; }
+    .marq-track, .hero-h1 .magic { animation: none; }
+  }
+  @media (max-width: 640px) { section.sec { padding: 80px 0; } }
+</style>
+<script>
+(function () {
+  var html = document.documentElement;
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var touch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+  if (reduced) html.classList.add('rm');
+  if (!touch && !reduced) html.classList.add('has-cursor');
+})();
+</script>
+</head>
+<body>
+<div class="ambient" aria-hidden="true"></div>
+
+<!-- wand charge bar -->
+<div class="magic-bar" aria-hidden="true"><i id="charge"></i></div>
+
+<nav aria-label="Primary">
+  <div class="nav-inner">
+    <a href="#top" class="wordmark" id="wordmark">Tensionless <span class="d">✦</span> Digital</a>
+    <div class="nav-links">
+      <a href="#spells">Spells</a>
+      <a href="#proof">Proof</a>
+      <a href="#ritual">Ritual</a>
+      <a href="#contact" style="color:var(--magic-hi)">Invoke</a>
+    </div>
+    <span class="nav-spark">casting: <span class="blink" style="color:var(--gold)">attention</span> → revenue</span>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap hero-inner">
+    <div class="hero-tags" data-reveal>
+      <span class="chip"><span class="st">✦</span> Interaction</span>
+      <span class="chip"><span class="st">✦</span> Motion</span>
+      <span class="chip"><span class="st">✦</span> Conversion</span>
+      <span class="chip"><span class="st">✦</span> Easter Egg</span>
+    </div>
+    <h1 class="hero-h1" id="hero-h1">
+      <span class="ln">We turn</span>
+      <span class="ln"><em class="magic" id="m-word">attention</em></span>
+      <span class="ln">into <em class="magic">revenue</em></span>
+    </h1>
+    <p class="hero-sub" data-reveal>Landing pages, ads and SEO that compound — a full-funnel growth engine where every detail is a small spell cast in your favor.</p>
+    <div class="hero-cta" data-reveal>
+      <button class="spell-btn" id="cast-cta" data-magnetic>Cast the first spell ✦</button>
+      <a href="#spells" class="spell-btn ghost" data-magnetic>Browse the spellbook</a>
+    </div>
+    <p class="hero-scroll"><span class="fl">✦</span> scroll to keep casting</p>
+  </div>
+</header>
+
+<div class="marq" aria-hidden="true">
+  <div class="marq-track">
+    <span>Automotive</span><span class="sp">✦</span><span>Financial Services</span><span class="sp">✦</span><span>Immigration Law</span><span class="sp">✦</span><span>Real Estate</span><span class="sp">✦</span><span>E-Commerce</span><span class="sp">✦</span><span>Enterprise SaaS</span><span class="sp">✦</span><span>Home Services</span><span class="sp">✦</span><span>Healthcare</span><span class="sp">✦</span>
+  </div>
+</div>
+
+<main>
+  <!-- spells -->
+  <section class="sec" id="spells">
+    <div class="wrap">
+      <div class="sec-head" data-reveal>
+        <p class="sec-eyebrow">✦ The spellbook</p>
+        <h2 class="sec-title">Five <em>incantations</em>,<br>one growth engine.</h2>
+        <p class="sec-sub">Each capability is a precise spell. Cast alone they work. Cast together they compound into a funnel that never leaks.</p>
+      </div>
+      <div class="cards">
+        <div class="card" data-reveal>
+          <span class="card-corners"><i>✦</i></span>
+          <div class="card-num">SPELL 01</div>
+          <div class="card-title">Landing Pages</div>
+          <div class="card-desc">Single-purpose pages built to turn visitors into customers — structure, copy and speed tuned for the click.</div>
+          <div class="card-tags"><span>interaction</span><span>motion</span><span>conversion</span></div>
+        </div>
+        <div class="card" data-reveal>
+          <span class="card-corners"><i>✦</i></span>
+          <div class="card-num">SPELL 02</div>
+          <div class="card-title">Google Ads</div>
+          <div class="card-desc">Intent-driven paid search with obsessive keyword, bid and quality-score management.</div>
+          <div class="card-tags"><span>intent</span><span>precision</span></div>
+        </div>
+        <div class="card" data-reveal>
+          <span class="card-corners"><i>✦</i></span>
+          <div class="card-num">SPELL 03</div>
+          <div class="card-title">Facebook &amp; Meta Ads</div>
+          <div class="card-desc">Scroll-stopping creative paired with surgical audience targeting across Meta platforms.</div>
+          <div class="card-tags"><span>creative</span><span>audience</span></div>
+        </div>
+        <div class="card" data-reveal>
+          <span class="card-corners"><i>✦</i></span>
+          <div class="card-num">SPELL 04</div>
+          <div class="card-title">SEO &amp; SEM</div>
+          <div class="card-desc">Organic authority built to compound, paid search to accelerate. Both running in sync.</div>
+          <div class="card-tags"><span>compounding</span><span>authority</span></div>
+        </div>
+        <div class="card" data-reveal>
+          <span class="card-corners"><i>✦</i></span>
+          <div class="card-num">SPELL 05</div>
+          <div class="card-title">Lead Generation</div>
+          <div class="card-desc">Full-funnel lead systems: capture, qualify, nurture and deliver pipeline-ready prospects.</div>
+          <div class="card-tags"><span>pipeline</span><span>nurture</span></div>
+        </div>
+        <div class="card" data-reveal>
+          <span class="card-corners"><i>✦</i></span>
+          <div class="card-num">SPELL 06</div>
+          <div class="card-title">Continuous Optimization</div>
+          <div class="card-desc">Weekly testing and iteration on creative, offers and landing experience. The funnel never stops improving.</div>
+          <div class="card-tags"><span>iterate</span><span>grow</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- proof -->
+  <section class="sec stats" id="proof">
+    <div class="wrap">
+      <div class="sec-head center" data-reveal>
+        <p class="sec-eyebrow">✦ Magic numbers</p>
+        <h2 class="sec-title">Proof, <em>counted.</em></h2>
+      </div>
+      <div class="stat-grid">
+        <div class="stat" data-reveal><div class="stat-num"><span class="count" data-target="120">0</span></div><div class="stat-lbl">Campaigns Delivered</div></div>
+        <div class="stat" data-reveal><div class="stat-num"><span class="count" data-target="58" data-dec="1">0</span><span class="suf">x</span></div><div class="stat-lbl">Highest ROAS</div></div>
+        <div class="stat" data-reveal><div class="stat-num"><span class="count" data-target="6">0</span></div><div class="stat-lbl">Years Operating</div></div>
+        <div class="stat" data-reveal><div class="stat-num"><span class="count" data-target="100">0</span><span class="suf">%</span></div><div class="stat-lbl">Client Retention</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ritual -->
+  <section class="sec" id="ritual">
+    <div class="wrap">
+      <div class="sec-head" data-reveal>
+        <p class="sec-eyebrow">✦ The ritual</p>
+        <h2 class="sec-title">Five steps, <em>executed</em> in order.</h2>
+        <p class="sec-sub">No incantation skips a verse. Every project follows the same disciplined sequence.</p>
+      </div>
+      <div class="ritual" id="ritual">
+        <div class="ritual-line" aria-hidden="true"><i id="ritual-fill"></i></div>
+        <div class="rstep" data-step>
+          <div class="rnode">1</div>
+          <div class="rbody"><div class="rname">Discover</div><div class="rdesc">Business, audience, positioning and goals — mapped before any visual touches the screen.</div></div>
+        </div>
+        <div class="rstep" data-step>
+          <div class="rnode">2</div>
+          <div class="rbody"><div class="rname">Strategy</div><div class="rdesc">Structure, message, user journey and creative direction that guides every decision.</div></div>
+        </div>
+        <div class="rstep" data-step>
+          <div class="rnode">3</div>
+          <div class="rbody"><div class="rname">Design</div><div class="rdesc">A visual system that makes the brand feel clear, premium and memorable everywhere it appears.</div></div>
+        </div>
+        <div class="rstep" data-step>
+          <div class="rnode">4</div>
+          <div class="rbody"><div class="rname">Build</div><div class="rdesc">Performance, responsiveness and interaction quality as first principles of development.</div></div>
+        </div>
+        <div class="rstep" data-step>
+          <div class="rnode">5</div>
+          <div class="rbody"><div class="rname">Launch</div><div class="rdesc">Test, refine, ship — then iterate on real data with weekly optimization cycles.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- case -->
+  <section class="sec" id="case" style="padding-top:20px">
+    <div class="wrap">
+      <div class="case-grid">
+        <div data-reveal>
+          <p class="case-label">✦ A recent spell</p>
+          <h2 class="case-title">We rebuilt a journey until it <em>felt</em> inevitable.</h2>
+          <p class="case-copy">Motion became a tool for guiding attention instead of decorating the page. Every scroll step built confidence and reduced friction. The results spoke for themselves.</p>
+        </div>
+        <div class="case-metrics" data-reveal>
+          <div class="case-metric"><div class="v">+42%</div><div class="l">conversion lift</div></div>
+          <div class="case-metric"><div class="v">3.1x</div><div class="l">longer sessions</div></div>
+          <div class="case-metric"><div class="v">-28%</div><div class="l">bounce rate</div></div>
+          <div class="case-metric"><div class="v">100%</div><div class="l">happy client</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="sec cta" id="contact">
+    <div class="wrap">
+      <h2 class="cta-title" data-reveal>Ready to stop guessing<br>and start <em>growing</em>?</h2>
+      <p class="cta-sub" data-reveal>One new client accepted this quarter. Invoke the spell — we respond within 24 hours.</p>
+      <form class="form" id="form" data-reveal onsubmit="return false">
+        <div class="form-grid">
+          <div><label for="b-name">Your name</label><input id="b-name" name="name" placeholder="Merlin, or similar" required></div>
+          <div><label for="b-email">Your email</label><input id="b-email" name="email" type="email" placeholder="you@company.com" required></div>
+        </div>
+        <div><label for="b-msg">Tell us about the project</label><textarea id="b-msg" name="message" rows="3" placeholder="What should the magic do for you?" required></textarea></div>
+        <div class="cta-row"><button class="spell-btn" id="cast-form" data-magnetic>Cast it ✦</button></div>
+      </form>
+      <p class="cta-note" id="cta-note">The call is obligation-free. If we can't help, we'll tell you.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot-inner">
+    <div class="wm">Tensionless <span style="color:var(--gold)">✦</span> Digital</div>
+    <div class="foot-links"><a href="#spells">Spells</a><a href="#proof">Proof</a><a href="#ritual">Ritual</a><a href="#top">Back up</a></div>
+    <div>© 2026 Tensionless Digital. Crafted with attention.</div>
+  </div>
+</footer>
+
+<div id="cur" aria-hidden="true"></div>
+<div id="cur-ring" aria-hidden="true"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script>
+(function () {
+  var rm = document.documentElement.classList.contains('rm');
+  var hasCursor = document.documentElement.classList.contains('has-cursor');
+
+  /* ── wand charge: scroll progress top bar ───────────────────────── */
+  function initCharge() {
+    if (!window.ScrollTrigger) return;
+    gsap.to('#charge', { width: '100%', ease: 'none',
+      scrollTrigger: { start: 0, end: 'max', scrub: 0.3 } });
+  }
+
+  /* ── hero: flip the magic word + flutter lines ──────────────────── */
+  function initHero() {
+    var m = document.getElementById('m-word');
+    if (m && !rm) {
+      var words = ['attention', 'desire', 'clicks', 'attention'];
+      var i = 0;
+      setInterval(function () {
+        i = (i + 1) % words.length;
+        gsap.to(m, { yPercent: -110, opacity: 0, duration: 0.28, ease: 'power2.in', onComplete: function () {
+          m.textContent = words[i];
+          gsap.fromTo(m, { yPercent: 110, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.32, ease: 'power3.out' });
+        }});
+      }, 2400);
+    }
+    gsap.fromTo('#hero-h1 .ln', { autoAlpha: 0, y: 40, rotateX: -40, transformOrigin: '50% 100%' },
+      { autoAlpha: 1, y: 0, rotateX: 0, duration: 0.9, stagger: 0.12, ease: 'power3.out', delay: 0.2 });
+    gsap.fromTo('[data-reveal]', { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.12, ease: 'power3.out' });
+  }
+
+  /* ── scroll reveals ─────────────────────────────────────────────── */
+  function initReveals() {
+    if (rm) return;
+    gsap.utils.toArray('[data-reveal]').forEach(function (el) {
+      gsap.fromTo(el, { autoAlpha: 0, y: 34 }, {
+        autoAlpha: 1, y: 0, duration: 1, ease: 'back.out(1.4)',
+        scrollTrigger: { trigger: el, start: 'top 90%', toggleActions: 'play none none reverse' }
+      });
+    });
+    gsap.utils.toArray('.card').forEach(function (el, i) {
+      gsap.fromTo(el, { autoAlpha: 0, y: 40, scale: .96 }, {
+        autoAlpha: 1, y: 0, scale: 1, duration: 0.8, delay: (i % 3) * 0.09, ease: 'back.out(1.6)',
+        scrollTrigger: { trigger: el, start: 'top 94%', toggleActions: 'play none none reverse' }
+      });
+    });
+  }
+
+  /* ── card tilt ──────────────────────────────────────────────────── */
+  function initTilt() {
+    if (rm) return;
+    gsap.utils.toArray('.card').forEach(function (card) {
+      card.addEventListener('mousemove', function (e) {
+        var r = card.getBoundingClientRect();
+        var x = (e.clientX - r.left) / r.width - 0.5;
+        var y = (e.clientY - r.top) / r.height - 0.5;
+        gsap.to(card, { rotationY: x * 7, rotationX: -y * 7, transformPerspective: 700, duration: 0.4, ease: 'power2.out' });
+      });
+      card.addEventListener('mouseleave', function () { gsap.to(card, { rotationX: 0, rotationY: 0, duration: 0.6, ease: 'power3.out' }); });
+    });
+  }
+
+  /* ── stats count-up ─────────────────────────────────────────────── */
+  function initCounters() {
+    gsap.utils.toArray('.count').forEach(function (el) {
+      var target = parseFloat(el.getAttribute('data-target') || '0');
+      var dec = parseInt(el.getAttribute('data-dec') || '0', 10);
+      var state = { v: 0 };
+      gsap.to(state, { v: target, duration: 1.8, ease: 'expo.out',
+        scrollTrigger: { trigger: el, start: 'top 90%', once: true },
+        onUpdate: function () { el.textContent = dec ? state.v.toFixed(dec) : Math.round(state.v); } });
+    });
+  }
+
+  /* ── ritual: light nodes as they enter ──────────────────────────── */
+  function initRitual() {
+    var steps = gsap.utils.toArray('.rstep');
+    var fill = document.getElementById('ritual-fill');
+    if (!steps.length) return;
+    if (rm) {
+      steps.forEach(function (s) { s.classList.add('lit'); });
+      if (fill) fill.style.height = '100%';
+      return;
+    }
+    var trigger = ScrollTrigger.create({
+      trigger: '#ritual', start: 'top 70%', end: 'bottom 60%', scrub: true,
+      onUpdate: function (self) {
+        var t = self.progress;
+        if (fill) fill.style.height = (t * 100).toFixed(1) + '%';
+        var lit = Math.round(t * (steps.length - 1));
+        steps.forEach(function (s, i) { s.classList.toggle('lit', i <= lit); });
+      }
+    });
+  }
+
+  /* ── sparkle burst (easter egg + CTA) ───────────────────────────── */
+  var colors = ['#a78bfa', '#c9b8ff', '#ffd98c', '#f0e6ff', '#ffffff'];
+  function burst(x, y, n) {
+    if (rm) return;
+    for (var i = 0; i < n; i++) {
+      var s = document.createElement('div');
+      s.className = 'confetti';
+      s.style.left = x + 'px'; s.style.top = y + 'px';
+      s.style.background = colors[i % colors.length];
+      s.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+      document.body.appendChild(s);
+      gsap.to(s, {
+        x: (Math.random() - 0.5) * 260, y: (Math.random() - 0.5) * 240,
+        rotation: Math.random() * 360, scale: Math.random() * 0.8 + 0.3,
+        opacity: 0, duration: 1 + Math.random() * 0.8, ease: 'power2.out',
+        onComplete: function () { if (s.parentNode) s.parentNode.removeChild(s); }
+      });
+    }
+  }
+  function initEasterEgg() {
+    var wm = document.getElementById('wordmark');
+    var clicks = 0;
+    if (wm) wm.addEventListener('click', function (e) {
+      clicks++;
+      burst(e.clientX, e.clientY, 8);
+      if (clicks >= 3) { burst(e.clientX, e.clientY, 40); clicks = 0; }
+    });
+  }
+
+  /* ── cursor ─────────────────────────────────────────────────────── */
+  function initCursor() {
+    if (!hasCursor || rm || !window.gsap) return;
+    var cur = document.getElementById('cur');
+    var ring = document.getElementById('cur-ring');
+    var mx = -100, my = -100, rx = -100, ry = -100;
+    document.addEventListener('mousemove', function (e) { mx = e.clientX; my = e.clientY; });
+    gsap.ticker.add(function () {
+      rx += (mx - rx) * 0.18; ry += (my - ry) * 0.18;
+      gsap.set(cur, { x: mx, y: my });
+      gsap.set(ring, { x: rx, y: ry });
+    });
+    gsap.utils.toArray('a, button, input, textarea, .card').forEach(function (el) {
+      el.addEventListener('mouseenter', function () { ring.classList.add('big'); });
+      el.addEventListener('mouseleave', function () { ring.classList.remove('big'); });
+    });
+  }
+
+  /* ── magnetic buttons ───────────────────────────────────────────── */
+  function initMagnetic() {
+    if (rm || !window.gsap) return;
+    gsap.utils.toArray('[data-magnetic]').forEach(function (el) {
+      el.addEventListener('mousemove', function (e) {
+        var r = el.getBoundingClientRect();
+        gsap.to(el, { x: (e.clientX - r.left - r.width / 2) * 0.25, y: (e.clientY - r.top - r.height / 2) * 0.25, duration: 0.4, ease: 'power2.out' });
+      });
+      el.addEventListener('mouseleave', function () { gsap.to(el, { x: 0, y: 0, duration: 0.5, ease: 'power3.out' }); });
+    });
+  }
+
+  /* ── form sparkle ───────────────────────────────────────────────── */
+  function initForm() {
+    var form = document.getElementById('form');
+    var btn = document.getElementById('cast-form');
+    var note = document.getElementById('cta-note');
+    if (!form || !btn || !note) return;
+    btn.addEventListener('click', function (e) {
+      var name = (document.getElementById('b-name') || {}).value || '';
+      var email = (document.getElementById('b-email') || {}).value || '';
+      if (!name || !email) { note.innerHTML = '✦ <span style="color:var(--magic-hi)">Spell needs a name and an email</span> to land.'; return; }
+      burst(e.clientX, e.clientY, 34);
+      note.innerHTML = '✦ <span style="color:var(--gold)">Spell cast.</span> We respond within 24 hours.';
+    });
+  }
+
+  function ready() {
+    if (!window.gsap || !window.ScrollTrigger) { document.body.classList.add('rm'); return; }
+    gsap.registerPlugin(ScrollTrigger);
+    initCharge();
+    initHero();
+    initReveals();
+    initTilt();
+    initCounters();
+    initRitual();
+    initEasterEgg();
+    initCursor();
+    initMagnetic();
+    initForm();
+  }
+  if (document.readyState !== 'loading') { ready(); } else { document.addEventListener('DOMContentLoaded', ready); }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>Modern Delegation</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" href="../shared/slide.css">
+<style>
+.delegation-step { display:flex; gap:14pt; align-items:flex-start; margin-bottom:8pt; }
+.delegation-step .step-num { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 20pt; color: #96a4b2; min-width: 32pt; line-height: 1.3; }
+.delegation-step .step-content { flex:1; }
+.delegation-step .step-content p { font-size: 12pt; margin: 0; }
+.delegation-step .step-content p:first-child { font-weight: 500; color: #d4dde8; }
+.delegation-step .step-content p:second-child { color: #7a8796; }
+</style>
+</head>
+<body>
+<div class="slide section-theme-2">
+  <!-- Subtle dot grid bg -->
+  <svg class="bg-photo" viewBox="0 0 960 540" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <rect width="960" height="540" fill="#090909"/>
+    <g fill="#96a4b2" opacity="0.03">
+      <circle cx="40" cy="40" r="1.5"/><circle cx="120" cy="40" r="1.5"/><circle cx="200" cy="40" r="1.5"/>
+      <circle cx="280" cy="40" r="1.5"/><circle cx="360" cy="40" r="1.5"/><circle cx="440" cy="40" r="1.5"/>
+      <circle cx="520" cy="40" r="1.5"/><circle cx="600" cy="40" r="1.5"/><circle cx="680" cy="40" r="1.5"/>
+      <circle cx="760" cy="40" r="1.5"/><circle cx="840" cy="40" r="1.5"/><circle cx="920" cy="40" r="1.5"/>
+      <circle cx="40" cy="100" r="1.5"/><circle cx="120" cy="100" r="1.5"/><circle cx="200" cy="100" r="1.5"/>
+      <circle cx="280" cy="100" r="1.5"/><circle cx="360" cy="100" r="1.5"/><circle cx="440" cy="100" r="1.5"/>
+      <circle cx="520" cy="100" r="1.5"/><circle cx="600" cy="100" r="1.5"/><circle cx="680" cy="100" r="1.5"/>
+      <circle cx="760" cy="100" r="1.5"/><circle cx="840" cy="100" r="1.5"/><circle cx="920" cy="100" r="1.5"/>
+      <circle cx="40" cy="160" r="1.5"/><circle cx="920" cy="160" r="1.5"/>
+      <circle cx="40" cy="220" r="1.5"/><circle cx="920" cy="220" r="1.5"/>
+      <circle cx="40" cy="280" r="1.5"/><circle cx="920" cy="280" r="1.5"/>
+      <circle cx="40" cy="340" r="1.5"/><circle cx="920" cy="340" r="1.5"/>
+      <circle cx="40" cy="400" r="1.5"/><circle cx="920" cy="400" r="1.5"/>
+      <circle cx="40" cy="460" r="1.5"/><circle cx="920" cy="460" r="1.5"/>
+      <circle cx="40" cy="520" r="1.5"/><circle cx="120" cy="520" r="1.5"/><circle cx="200" cy="520" r="1.5"/>
+      <circle cx="280" cy="520" r="1.5"/><circle cx="360" cy="520" r="1.5"/><circle cx="440" cy="520" r="1.5"/>
+      <circle cx="520" cy="520" r="1.5"/><circle cx="600" cy="520" r="1.5"/><circle cx="680" cy="520" r="1.5"/>
+      <circle cx="760" cy="520" r="1.5"/><circle cx="840" cy="520" r="1.5"/><circle cx="920" cy="520" r="1.5"/>
+    </g>
+  </svg>
+
+  <div class="accent-band top" style="--sec-accent:#96a4b2;"></div>
+  <div class="accent-strip right" style="background:rgba(150,164,178,0.05);"></div>
+
+  <div class="slide-inner" style="position:relative;z-index:2;">
+    <div class="section-indicator"><p>01 / 10 · AI Has Changed</p></div>
+
+    <div style="display:flex;gap:32pt;flex:1;max-width:92%;">
+      <div style="flex:1.2;">
+        <h1>Modern Delegation</h1>
+        <div class="sec-divider"></div>
+        <p style="font-size:12pt;color:#7a8796;">The mental model shift from "query" to "delegation" is the single most important skill you can learn.</p>
+
+        <div class="focus-box" style="margin-top:14pt;">
+          <p style="font-size:11pt;color:#96a4b2;margin:0;"><strong style="color:#d4dde8;">Instead of:</strong> "Write a blog post about AI"</p>
+          <p style="font-size:11pt;color:#96a4b2;margin:4pt 0 0 0;"><strong style="color:#d4dde8;">Try:</strong> "I'm writing a blog post for CTOs who are skeptical about AI. The tone should be direct and evidence-heavy. Here's the outline I have so far…"</p>
+        </div>
+      </div>
+      <div style="flex:0.8;">
+        <div class="delegation-step">
+          <p class="step-num">01</p>
+          <div class="step-content"><p>Give context</p><p>Who, what, why — set the stage.</p></div>
+        </div>
+        <div class="delegation-step">
+          <p class="step-num">02</p>
+          <div class="step-content"><p>Set constraints</p><p>Tone, format, audience, dealbreakers.</p></div>
+        </div>
+        <div class="delegation-step">
+          <p class="step-num">03</p>
+          <div class="step-content"><p>Define success</p><p>What does "good" look like? Give examples.</p></div>
+        </div>
+        <div class="delegation-step">
+          <p class="step-num">04</p>
+          <div class="step-content"><p>Iterate</p><p>Review, refine, repeat — like a human teammate.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

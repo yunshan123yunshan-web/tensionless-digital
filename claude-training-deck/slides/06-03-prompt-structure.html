@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>Prompt Structure Template</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" href="../shared/slide.css">
+<style>
+.template-line { display:flex; gap:10pt; padding:3pt 0; align-items:flex-start; }
+.template-line .t-label { font-size:9pt; font-weight:600; color:#96a4b2; text-transform:uppercase; letter-spacing:0.08em; min-width:80pt; padding-top:3pt; }
+.template-line .t-content { font-size:11pt; color:#7a8796; flex:1; }
+.template-line .t-content strong { color:#b8c4d0; }
+</style>
+</head>
+<body>
+<div class="slide section-theme-2">
+  <div class="accent-band top" style="--sec-accent:#96a4b2;"></div>
+  <div class="corner-accent tr"></div>
+  <div class="corner-accent bl"></div>
+
+  <div class="slide-inner" style="position:relative;z-index:2;">
+    <div class="section-indicator"><p>06 / 10 · Prompting Basics</p></div>
+
+    <div style="display:flex;gap:28pt;flex:1;max-width:92%;">
+      <div style="flex:1;">
+        <h1>Prompt Structure Template</h1>
+        <div class="sec-divider"></div>
+        <p style="font-size:12pt;color:#96a4b2;">A well-structured prompt is a template you can reuse:</p>
+
+        <div class="code-block" style="margin-top:8pt;">
+          <p><strong style="color:#d4dde8;">Role</strong> — "You are a [role] specializing in [area]"</p>
+          <p><strong style="color:#d4dde8;">Context</strong> — "We are [situation], and the goal is [goal]"</p>
+          <p><strong style="color:#d4dde8;">Task</strong> — "Please [specific action] with [specific inputs]"</p>
+          <p><strong style="color:#d4dde8;">Constraints</strong> — "Do not [X]. Must include [Y]. Max [Z] words."</p>
+          <p><strong style="color:#d4dde8;">Output</strong> — "Format as [type] with [structure]"</p>
+          <p><strong style="color:#d4dde8;">Verify</strong> — "Check that [criteria] before responding"</p>
+        </div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;">
+        <div class="focus-box">
+          <p style="font-size:11pt;color:#d4dde8;margin:0;"><strong>Example</strong></p>
+          <div style="margin-top:6pt;">
+            <div class="template-line"><span class="t-label">Role</span><span class="t-content"><strong>Senior product marketer</strong> specializing in B2B SaaS</span></div>
+            <div class="template-line"><span class="t-label">Context</span><span class="t-content">We're launching a new analytics feature next quarter</span></div>
+            <div class="template-line"><span class="t-label">Task</span><span class="t-content"><strong>Write launch copy</strong> for our homepage and email sequence</span></div>
+            <div class="template-line"><span class="t-label">Constraints</span><span class="t-content">No jargon, <strong>under 150 words</strong>, must include pricing mention</span></div>
+            <div class="template-line"><span class="t-label">Output</span><span class="t-content">Two variants — <strong>headline + 3 bullet points</strong></span></div>
+            <div class="template-line"><span class="t-label">Verify</span><span class="t-content">Check tone is <strong>confident, not hype-y</strong></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

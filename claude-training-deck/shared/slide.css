@@ -1,0 +1,425 @@
+/* Tensionless Digital × Huashu-Design — Slide Design System */
+/* 1920×1080 Full HD · Editorial · Restrained · High-end */
+
+/* ── Reset & Base ──────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { width: 100%; height: 100%; overflow: hidden; }
+
+body {
+  width: 1920pt;
+  height: 1080pt;
+  background: #090909;
+  color: #b8c4d0;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 18pt;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+}
+
+/* ── Brand Tokens ──────────────────────────────────────── */
+/* ink: #090909 | ink-soft: #0c0d0f | ink-mid: #1e1e1e */
+/* steel: #7a8796 | steel-light: #96a4b2 */
+/* chrome: #b8c4d0 | chrome-hi: #d4dde8 | off-white: #f0f2f4 */
+
+/* ── Section Color Themes ──────────────────────────────── */
+.section-theme-1 { --sec-accent: #9aaabc; --sec-accent-soft: rgba(154,170,188,0.07); }
+.section-theme-2 { --sec-accent: #96a4b2; --sec-accent-soft: rgba(150,164,178,0.07); }
+.section-theme-3 { --sec-accent: #7a8796; --sec-accent-soft: rgba(122,135,150,0.07); }
+.section-theme-4 { --sec-accent: #b8c4d0; --sec-accent-soft: rgba(184,196,208,0.07); }
+.section-theme-5 { --sec-accent: #d4dde8; --sec-accent-soft: rgba(212,221,232,0.07); }
+
+/* ── Typography ────────────────────────────────────────── */
+h1 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 400;
+  font-size: 60pt;
+  color: #d4dde8;
+  line-height: 1.12;
+  margin: 0 0 20pt 0;
+  letter-spacing: -0.01em;
+}
+
+h1.display-large {
+  font-size: 76pt;
+  letter-spacing: -0.015em;
+  line-height: 1.08;
+}
+
+h2 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 400;
+  font-size: 40pt;
+  color: #d4dde8;
+  line-height: 1.2;
+  margin: 0 0 16pt 0;
+}
+
+h3 {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 26pt;
+  color: #96a4b2;
+  line-height: 1.3;
+  margin: 0 0 14pt 0;
+}
+
+h4 {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 20pt;
+  color: #d4dde8;
+  line-height: 1.4;
+  margin: 0 0 10pt 0;
+}
+
+p {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 400;
+  font-size: 18pt;
+  color: #b8c4d0;
+  line-height: 1.55;
+  margin: 0 0 10pt 0;
+}
+
+p.small {
+  font-size: 15pt;
+  color: #7a8796;
+}
+
+p.label {
+  font-size: 14pt;
+  font-weight: 500;
+  color: #96a4b2;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+p.subtitle {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: 28pt;
+  color: #7a8796;
+}
+
+strong { color: #d4dde8; font-weight: 500; }
+em { color: #96a4b2; font-style: italic; }
+
+/* ── Code / Prompt Blocks ──────────────────────────────── */
+.code-block {
+  background: #0c0d0f;
+  border: 1px solid #1a1c20;
+  padding: 22pt 28pt;
+  margin: 14pt 0;
+  font-family: 'Inter', monospace;
+  font-size: 16pt;
+  line-height: 1.5;
+  color: #96a4b2;
+  border-radius: 0;
+}
+
+.code-block p {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+  margin: 0;
+}
+
+.code-block p + p {
+  margin-top: 6pt;
+}
+
+/* ── Tables ────────────────────────────────────────────── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 14pt 0;
+  border: 1px solid #1a1c20;
+}
+
+th {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 16pt;
+  color: #96a4b2;
+  text-align: left;
+  padding: 12pt 16pt;
+  border-bottom: 1px solid #1a1c20;
+  background: #0c0d0f;
+}
+
+td {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 400;
+  font-size: 16pt;
+  color: #b8c4d0;
+  padding: 10pt 16pt;
+  border-bottom: 1px solid #1a1c20;
+  vertical-align: top;
+}
+
+tr:last-child td { border-bottom: none; }
+
+/* ── Slide Layout ──────────────────────────────────────── */
+.slide {
+  position: relative;
+  width: 1920pt;
+  height: 1080pt;
+  background: #090909;
+  overflow: hidden;
+}
+
+.slide-inner {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  padding: 72pt 80pt;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Section indicator */
+.section-indicator p {
+  font-size: 14pt;
+  font-weight: 500;
+  color: #7a8796;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin: 0 0 10pt 0;
+}
+
+/* ── Title Slide ───────────────────────────────────────── */
+.title-content {
+  position: absolute;
+  top: 50%;
+  left: 80pt;
+  right: 80pt;
+  transform: translateY(-50%);
+}
+
+.title-content h1 {
+  font-size: 76pt;
+  margin-bottom: 16pt;
+  max-width: 70%;
+}
+
+.title-content p.subtitle {
+  font-size: 28pt;
+  max-width: 55%;
+}
+
+/* ── Section Title Slide ───────────────────────────────── */
+.section-title-content {
+  position: absolute;
+  top: 50%;
+  left: 80pt;
+  right: 80pt;
+  transform: translateY(-50%);
+}
+
+.section-title-content h1 {
+  font-size: 68pt;
+  max-width: 75%;
+}
+
+/* ── Two-Column ────────────────────────────────────────── */
+.two-col {
+  display: flex;
+  gap: 48pt;
+  flex: 1;
+}
+
+.two-col > div {
+  flex: 1;
+}
+
+/* ── Exercise Card ─────────────────────────────────────── */
+.exercise-card {
+  border-left: 3pt solid #9aaabc;
+  padding: 18pt 0 18pt 24pt;
+  margin: 18pt 0;
+}
+
+.exercise-card p {
+  font-size: 17pt;
+  margin-bottom: 6pt;
+}
+
+/* ── Focus Box ─────────────────────────────────────────── */
+.focus-box {
+  border: 1px solid #1a1c20;
+  background: #0c0d0f;
+  padding: 22pt 28pt;
+  margin: 16pt 0;
+}
+
+.focus-box p {
+  font-size: 17pt;
+  color: #d4dde8;
+}
+
+/* ── Warning Box ───────────────────────────────────────── */
+.warning-box {
+  border-left: 3pt solid #7a8796;
+  padding: 14pt 0 14pt 24pt;
+  margin: 14pt 0;
+}
+
+.warning-box p {
+  font-size: 17pt;
+  color: #96a4b2;
+}
+
+/* ── Transition Slide ──────────────────────────────────── */
+.transition-diamond {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.04;
+  width: 240pt;
+  height: 240pt;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  background: #d4dde8;
+}
+
+.transition-diamond.tl { top: 60pt; left: 60pt; }
+.transition-diamond.br { bottom: 60pt; right: 60pt; }
+.transition-diamond.small { width: 120pt; height: 120pt; opacity: 0.025; }
+
+.transition-content {
+  position: absolute;
+  top: 50%;
+  left: 80pt;
+  right: 80pt;
+  transform: translateY(-50%);
+}
+
+.transition-content h1 {
+  font-size: 56pt;
+  text-align: center;
+}
+
+.transition-content p.label {
+  text-align: center;
+  margin-bottom: 12pt;
+}
+
+/* ── Accent Elements ───────────────────────────────────── */
+.accent-band {
+  position: absolute;
+  height: 4pt;
+  background: var(--sec-accent, #9aaabc);
+  opacity: 0.5;
+}
+.accent-band.top { top: 0; left: 0; width: 100%; }
+.accent-band.side { top: 0; right: 0; width: 4pt; height: 100%; }
+
+.accent-strip {
+  position: absolute;
+  width: 360pt;
+  height: 100%;
+  background: var(--sec-accent-soft, rgba(154,170,188,0.06));
+  pointer-events: none;
+}
+.accent-strip.left { left: 0; top: 0; }
+.accent-strip.right { right: 0; top: 0; }
+
+.corner-accent {
+  position: absolute;
+  width: 120pt;
+  height: 120pt;
+  pointer-events: none;
+}
+.corner-accent.tr {
+  top: 0; right: 0;
+  border-right: 1pt solid rgba(212,221,232,0.08);
+  border-top: 1pt solid rgba(212,221,232,0.08);
+}
+.corner-accent.bl {
+  bottom: 0; left: 0;
+  border-left: 1pt solid rgba(212,221,232,0.08);
+  border-bottom: 1pt solid rgba(212,221,232,0.08);
+}
+
+/* ── Section Divider ───────────────────────────────────── */
+.sec-divider {
+  width: 60pt;
+  height: 1px;
+  background: #96a4b2;
+  margin: 20pt 0 26pt 0;
+  opacity: 0.4;
+}
+
+/* ── Photo Background ──────────────────────────────────── */
+.bg-photo {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.bg-overlay {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: #090909;
+  opacity: 0.55;
+  pointer-events: none;
+}
+.bg-overlay-heavy { opacity: 0.75; }
+.bg-overlay-soft { opacity: 0.35; }
+
+/* ── Shard Burst ───────────────────────────────────────── */
+.shard-burst {
+  position: absolute;
+  pointer-events: none;
+}
+.shard-burst .shard-piece {
+  position: absolute;
+  background: #d4dde8;
+  opacity: 0.03;
+  pointer-events: none;
+}
+.shard-burst .shard-piece.dim { opacity: 0.015; }
+.shard-burst .shard-piece.bright { opacity: 0.06; }
+
+/* ── Huashu signature detail: large section number ─────── */
+.section-number {
+  position: absolute;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-size: 240pt;
+  color: #d4dde8;
+  opacity: 0.025;
+  pointer-events: none;
+  line-height: 1;
+  user-select: none;
+}
+
+.section-number.tr {
+  top: 40pt;
+  right: 60pt;
+}
+
+.section-number.bl {
+  bottom: -20pt;
+  left: 40pt;
+}
+
+/* ── Content Compact (info-dense slides) ───────────────── */
+.content-compact h1 {
+  font-size: 44pt;
+  margin-bottom: 14pt;
+}
+.content-compact p {
+  font-size: 17pt;
+  margin-bottom: 6pt;
+}
+
+/* ── Responsive Scaling ────────────────────────────────── */
+@media screen and (max-width: 1920px) {
+  body { transform: scale(0.5); transform-origin: top left; }
+}
+@media screen and (max-width: 960px) {
+  body { transform: scale(0.25); transform-origin: top left; }
+}

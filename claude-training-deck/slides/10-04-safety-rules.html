@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>Safety DO NOTs</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" href="../shared/slide.css">
+</head>
+<body>
+<div class="slide section-theme-1">
+  <!-- Warning hatch bg -->
+  <svg class="bg-photo" viewBox="0 0 960 540" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <pattern id="hatch10" width="40" height="40" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="40" stroke="#9aaabc" stroke-width="0.5" opacity="0.025"/>
+      </pattern>
+    </defs>
+    <rect width="960" height="540" fill="#090909"/>
+    <rect width="960" height="540" fill="url(#hatch10)"/>
+  </svg>
+
+  <div class="accent-band top" style="--sec-accent:#9aaabc;"></div>
+  <div class="corner-accent tr"></div>
+
+  <div class="slide-inner" style="position:relative;z-index:2;">
+    <div class="section-indicator"><p>10 / 10 · Safety &amp; Final Test</p></div>
+
+    <div style="flex:1;display:flex;flex-direction:column;max-width:88%;">
+      <h1>Safety: What NOT to Do</h1>
+      <div class="sec-divider"></div>
+
+      <div style="display:flex;gap:20pt;margin-top:8pt;">
+        <div style="flex:1;">
+          <h3 style="color:#7a8796;">Never trust Claude with:</h3>
+          <ul style="list-style:none;padding:0;margin-top:6pt;">
+            <li style="padding:10pt 0 10pt 16pt;border-left:3pt solid #5a6067;font-size:12pt;color:#7a8796;margin-bottom:6pt;">
+              <strong style="color:#b8c4d0;">Production database operations</strong><br>
+              <span style="font-size:10pt;color:#5a6067;">Always review generated SQL before running</span>
+            </li>
+            <li style="padding:10pt 0 10pt 16pt;border-left:3pt solid #5a6067;font-size:12pt;color:#7a8796;margin-bottom:6pt;">
+              <strong style="color:#b8c4d0;">Security-critical code</strong><br>
+              <span style="font-size:10pt;color:#5a6067;">Authentication, encryption, access control</span>
+            </li>
+            <li style="padding:10pt 0 10pt 16pt;border-left:3pt solid #5a6067;font-size:12pt;color:#7a8796;margin-bottom:6pt;">
+              <strong style="color:#b8c4d0;">Financial calculations</strong><br>
+              <span style="font-size:10pt;color:#5a6067;">Invoicing, tax, payroll — verify every number</span>
+            </li>
+            <li style="padding:10pt 0 10pt 16pt;border-left:3pt solid #5a6067;font-size:12pt;color:#7a8796;">
+              <strong style="color:#b8c4d0;">Legal agreements</strong><br>
+              <span style="font-size:10pt;color:#5a6067;">Drafts are starting points, not final documents</span>
+            </li>
+          </ul>
+        </div>
+
+        <div style="flex:1;">
+          <h3>Safety habits to build:</h3>
+          <ul style="list-style:none;padding:0;margin-top:6pt;">
+            <li style="padding:8pt 0 8pt 14pt;border-left:2pt solid #9aaabc;font-size:12pt;color:#b8c4d0;margin-bottom:6pt;">
+              <strong>Review before running</strong><br>
+              <span style="font-size:10pt;color:#7a8796;">Read generated code/commands before executing</span>
+            </li>
+            <li style="padding:8pt 0 8pt 14pt;border-left:2pt solid #9aaabc;font-size:12pt;color:#b8c4d0;margin-bottom:6pt;">
+              <strong>Use sandbox first</strong><br>
+              <span style="font-size:10pt;color:#7a8796;">Test in a safe environment before production</span>
+            </li>
+            <li style="padding:8pt 0 8pt 14pt;border-left:2pt solid #9aaabc;font-size:12pt;color:#b8c4d0;margin-bottom:6pt;">
+              <strong>Never share secrets</strong><br>
+              <span style="font-size:10pt;color:#7a8796;">Don't paste API keys, passwords, or personal data</span>
+            </li>
+            <li style="padding:8pt 0 8pt 14pt;border-left:2pt solid #9aaabc;font-size:12pt;color:#b8c4d0;">
+              <strong>Verify factual claims</strong><br>
+              <span style="font-size:10pt;color:#7a8796;">Cross-check important statements</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="warning-box" style="margin-top:auto;border-left-color:#9aaabc;">
+        <p style="font-size:12pt;color:#d4dde8;margin:0;"><strong>Bottom line:</strong>Claude is a tool, not a replacement for judgment. You are responsible for everything you ship.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

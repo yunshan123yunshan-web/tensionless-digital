@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>Global Instructions</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" href="../shared/slide.css">
+</head>
+<body>
+<div class="slide section-theme-3">
+  <!-- Abstract document/scroll SVG bg -->
+  <svg class="bg-photo" viewBox="0 0 960 540" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="bg7-5" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#090909"/><stop offset="50%" stop-color="#0c0c0e"/><stop offset="100%" stop-color="#090909"/></linearGradient>
+    </defs>
+    <rect width="960" height="540" fill="url(#bg7-5)"/>
+    <!-- Document line pattern -->
+    <g stroke="#7a8796" stroke-width="0.4" opacity="0.03">
+      <line x1="100" y1="100" x2="860" y2="100"/>
+      <line x1="100" y1="120" x2="860" y2="120"/>
+      <line x1="100" y1="140" x2="600" y2="140"/>
+      <line x1="100" y1="170" x2="860" y2="170"/>
+      <line x1="100" y1="190" x2="860" y2="190"/>
+      <line x1="100" y1="210" x2="700" y2="210"/>
+      <line x1="100" y1="240" x2="860" y2="240"/>
+      <line x1="100" y1="260" x2="860" y2="260"/>
+      <line x1="100" y1="280" x2="500" y2="280"/>
+      <line x1="100" y1="310" x2="860" y2="310"/>
+      <line x1="100" y1="330" x2="600" y2="330"/>
+      <line x1="100" y1="350" x2="860" y2="350"/>
+      <line x1="100" y1="380" x2="750" y2="380"/>
+    </g>
+  </svg>
+  <div class="bg-overlay" style="opacity:0.65;"></div>
+
+  <div class="accent-band top" style="--sec-accent:#7a8796;"></div>
+  <div class="corner-accent tr"></div>
+
+  <div class="slide-inner" style="position:relative;z-index:2;">
+    <div class="section-indicator"><p>07 / 10 · Cowork Setup</p></div>
+
+    <div style="display:flex;gap:24pt;flex:1;">
+      <div style="flex:1.2;display:flex;flex-direction:column;">
+        <h1>Global Instructions (CLAUDE.md)</h1>
+        <div class="sec-divider"></div>
+        <p style="font-size:12pt;color:#96a4b2;">The single most important file in your Cowork setup. Claude reads this at the start of every session.</p>
+
+        <div class="code-block" style="max-width:95%;flex:1;">
+          <p><strong style="color:#d4dde8;"># Project Name</strong></p>
+          <p style="color:#7a8796;margin-top:2pt;">Brief description of what this project does.</p>
+          <p style="margin-top:6pt;"><strong style="color:#d4dde8;">## Tech Stack</strong></p>
+          <p style="color:#7a8796;">React 18 · TypeScript · Tailwind · PostgreSQL</p>
+          <p style="margin-top:6pt;"><strong style="color:#d4dde8;">## Conventions</strong></p>
+          <p style="color:#7a8796;">- Barrel exports for components</p>
+          <p style="color:#7a8796;">- Prettier for formatting</p>
+          <p style="color:#7a8796;">- Tests colocated with components</p>
+          <p style="margin-top:6pt;"><strong style="color:#d4dde8;">## Architecture</strong></p>
+          <p style="color:#7a8796;">Feature-based directory structure</p>
+        </div>
+      </div>
+
+      <div style="flex:0.8;">
+        <h2 style="font-size:24pt;font-family:'Cormorant Garamond',Georgia,serif;">What to include</h2>
+        <div class="sec-divider"></div>
+        <ul style="list-style:none;padding:0;">
+          <li style="padding:6pt 0 6pt 14pt;border-left:2pt solid #7a8796;font-size:12pt;color:#b8c4d0;margin-bottom:4pt;">
+            <strong style="color:#d4dde8;">Project purpose</strong><br>
+            <span style="font-size:10pt;color:#7a8796;">What are you building?</span>
+          </li>
+          <li style="padding:6pt 0 6pt 14pt;border-left:2pt solid #7a8796;font-size:12pt;color:#b8c4d0;margin-bottom:4pt;">
+            <strong style="color:#d4dde8;">Tech stack</strong><br>
+            <span style="font-size:10pt;color:#7a8796;">Languages, frameworks, tools</span>
+          </li>
+          <li style="padding:6pt 0 6pt 14pt;border-left:2pt solid #7a8796;font-size:12pt;color:#b8c4d0;margin-bottom:4pt;">
+            <strong style="color:#d4dde8;">Code conventions</strong><br>
+            <span style="font-size:10pt;color:#7a8796;">Style, patterns, preferences</span>
+          </li>
+          <li style="padding:6pt 0 6pt 14pt;border-left:2pt solid #7a8796;font-size:12pt;color:#b8c4d0;margin-bottom:4pt;">
+            <strong style="color:#d4dde8;">Architecture</strong><br>
+            <span style="font-size:10pt;color:#7a8796;">How the project is organized</span>
+          </li>
+          <li style="padding:6pt 0 6pt 14pt;border-left:2pt solid #7a8796;font-size:12pt;color:#b8c4d0;">
+            <strong style="color:#d4dde8;">Testing strategy</strong><br>
+            <span style="font-size:10pt;color:#7a8796;">Framework and coverage expectations</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

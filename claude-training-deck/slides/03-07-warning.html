@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>Important Warning</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" href="../shared/slide.css">
+</head>
+<body>
+<div class="slide section-theme-4">
+  <!-- Diagonal warning bg -->
+  <svg class="bg-photo" viewBox="0 0 960 540" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <pattern id="hatch" width="40" height="40" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="40" stroke="#b8c4d0" stroke-width="0.5" opacity="0.03"/>
+      </pattern>
+    </defs>
+    <rect width="960" height="540" fill="#090909"/>
+    <rect width="960" height="540" fill="url(#hatch)"/>
+  </svg>
+
+  <div class="accent-band top" style="--sec-accent:#b8c4d0;"></div>
+  <div class="corner-accent tr"></div>
+
+  <div class="slide-inner" style="position:relative;z-index:2;">
+    <div class="section-indicator"><p>03 / 10 · Choosing Models</p></div>
+
+    <div style="display:flex;flex-direction:column;justify-content:center;flex:1;max-width:82%;">
+      <h1>An Important Warning</h1>
+      <div class="sec-divider"></div>
+
+      <p style="font-size:13pt;color:#b8c4d0;">Better prompting with a weaker model <strong>almost always beats</strong>weak prompting with a stronger model.</p>
+
+      <div style="display:flex;gap:24pt;margin-top:14pt;">
+        <div class="focus-box" style="flex:1;border-left:3pt solid #5a6067;background:#0f0f0f;">
+          <p style="font-size:11pt;color:#7a8796;margin:0;"><strong style="color:#96a4b2;">Don't:</strong>"Write a strategy doc" → Opus<br>— No context, no direction, expensive waste</p>
+        </div>
+        <div class="focus-box" style="flex:1;border-left:3pt solid #b8c4d0;">
+          <p style="font-size:11pt;color:#96a4b2;margin:0;"><strong style="color:#d4dde8;">Do:</strong>Full context + examples → Sonnet<br>— Better result at ⅓ the cost of Opus</p>
+        </div>
+      </div>
+
+      <div class="warning-box" style="margin-top:12pt;border-left-color:#96a4b2;">
+        <p style="font-size:12pt;color:#b8c4d0;"><strong>The real hierarchy:</strong></p>
+        <p style="font-size:11.5pt;color:#7a8796;margin-top:4pt;">Great prompt + Sonnet &gt; Mediocre prompt + Opus &gt; Bad prompt + anything</p>
+      </div>
+
+      <p style="font-size:11pt;color:#5a6067;margin-top:6pt;">Invest in your prompting skills first. The model is a multiplier, not a substitute.</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

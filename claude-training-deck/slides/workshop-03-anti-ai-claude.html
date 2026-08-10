@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>Workshop: anti-ai.md + CLAUDE.md</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" href="../shared/slide.css">
+<style>
+  .col { flex:1; }
+  .col h3 { font-size:18pt; margin: 0 0 8pt 0; }
+  .col p  { font-size:12pt; margin: 0 0 6pt 0; }
+  .code-block p { font-size:12.5pt; }
+</style>
+</head>
+<body>
+<div class="slide section-theme-2">
+  <div class="accent-band top" style="--sec-accent:#96a4b2;"></div>
+  <div class="corner-accent tr"></div>
+  <div class="corner-accent bl"></div>
+  <div class="section-number tr" style="opacity:0.015;">03</div>
+
+  <div class="slide-inner" style="position:relative;z-index:2;justify-content:center;">
+    <div class="section-indicator"><p>Workshop &middot; 15 minutes</p></div>
+
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:center;">
+      <h1 style="font-size:44pt;">Workshop: anti-ai.md + CLAUDE.md</h1>
+      <div class="sec-divider"></div>
+      <p style="font-size:14pt;color:#b8c4d0;max-width:80%;">Two files that transform Claude from "generic AI" to "sounds like you."</p>
+
+      <div style="display:flex;gap:24pt;margin-top:14pt;">
+        <div class="col">
+          <h3>anti-ai-writing-style.md</h3>
+          <p style="color:#7a8796;font-size:11pt;">Banned words, rules, patterns Claude must avoid.</p>
+          <div class="code-block" style="background:#0c0d0f;border:1px solid #1a1c20;padding:12pt 16pt;">
+            <p>"Create anti-ai-writing-style.md in _context/.</p>
+            <p>Ask me questions one at a time (use AskUserQuestion).</p>
+            <p> </p>
+            <p>Cover:</p>
+            <p>- Words I hate (e.g., 'delve', 'leverage')</p>
+            <p>- AI patterns I want to avoid</p>
+            <p>- Sentence/paragraph length</p>
+            <p>- Emoji and punctuation rules</p>
+            <p>- Tone that fits my team</p>
+            <p> </p>
+            <p>After ~6 questions, compile and save."</p>
+          </div>
+          <p style="font-size:11pt;color:#5a6067;margin-top:6pt;"><strong>Tip:</strong> Add to this file every time Claude generates something that feels "off."</p>
+        </div>
+
+        <div style="width:1px;background:#1e1e1e;align-self:stretch;"></div>
+
+        <div class="col">
+          <h3>CLAUDE.md</h3>
+          <p style="color:#7a8796;font-size:11pt;">Read automatically by Claude every session.</p>
+          <div class="code-block" style="background:#0c0d0f;border:1px solid #1a1c20;padding:12pt 16pt;">
+            <p style="color:#7a8796;"># CLAUDE.md</p>
+            <p> </p>
+            <p style="color:#7a8796;">## Project</p>
+            <p>[What is this project for?]</p>
+            <p> </p>
+            <p style="color:#7a8796;">## Context Files</p>
+            <p>Read _context/ before every task:</p>
+            <p>- about-me.md — who I am</p>
+            <p>- anti-ai-writing-style.md — tone rules</p>
+            <p> </p>
+            <p style="color:#7a8796;">## Rules</p>
+            <p>- Save outputs to _outputs/</p>
+            <p>- Ask if something is unclear</p>
+            <p>- Use markdown unless told otherwise</p>
+          </div>
+          <p style="font-size:11pt;color:#5a6067;margin-top:6px;"><strong>Place it</strong> in the root of your project folder (not inside _context/).</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

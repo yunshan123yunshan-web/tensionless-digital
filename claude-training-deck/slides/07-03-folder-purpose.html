@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>What Each Folder Does</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" href="../shared/slide.css">
+</head>
+<body>
+<div class="slide section-theme-3">
+  <div class="accent-band top" style="--sec-accent:#7a8796;"></div>
+  <div class="accent-strip right" style="background:rgba(122,135,150,0.05);"></div>
+
+  <div class="slide-inner" style="position:relative;z-index:2;">
+    <div class="section-indicator"><p>07 / 10 · Cowork Setup</p></div>
+
+    <h1>What Each Folder Does</h1>
+    <div class="sec-divider"></div>
+    <p style="font-size:12pt;color:#96a4b2;max-width:80%;">Each directory in your project tells Claude something about how to work.</p>
+
+    <table style="max-width:92%;margin-top:10pt;">
+      <tr><th style="width:22%;">Folder / File</th><th>Purpose</th><th style="width:28%;">What Claude learns</th></tr>
+      <tr>
+        <td style="color:#d4dde8;font-weight:500;">CLAUDE.md</td>
+        <td>Project-level instructions for Claude</td>
+        <td style="color:#96a4b2;">Goals, conventions, rules, architecture</td>
+      </tr>
+      <tr>
+        <td style="color:#d4dde8;font-weight:500;">src/</td>
+        <td>Source code</td>
+        <td style="color:#96a4b2;">Language, framework, code style, patterns</td>
+      </tr>
+      <tr>
+        <td style="color:#d4dde8;font-weight:500;">docs/</td>
+        <td>Architecture, API docs, guides</td>
+        <td style="color:#96a4b2;">Design decisions, rationale, context</td>
+      </tr>
+      <tr>
+        <td style="color:#d4dde8;font-weight:500;">tests/</td>
+        <td>Test suites</td>
+        <td style="color:#96a4b2;">Testing patterns, coverage expectations</td>
+      </tr>
+      <tr>
+        <td style="color:#d4dde8;font-weight:500;">scripts/</td>
+        <td>Build, deploy, utility scripts</td>
+        <td style="color:#96a4b2;">DevOps workflow, automation patterns</td>
+      </tr>
+      <tr>
+        <td style="color:#d4dde8;font-weight:500;">config files</td>
+        <td>package.json, tsconfig, etc.</td>
+        <td style="color:#96a4b2;">Dependencies, tooling, project metadata</td>
+      </tr>
+    </table>
+
+    <div class="focus-box" style="margin-top:auto;">
+      <p style="font-size:11pt;color:#d4dde8;margin:0;"><strong>Key insight:</strong> You don't need a perfect structure to start. Even a CLAUDE.md and one src/ folder gives Claude 80% of what it needs.</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

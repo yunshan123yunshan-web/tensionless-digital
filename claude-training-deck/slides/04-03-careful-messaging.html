@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>What to Say Carefully</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" href="../shared/slide.css">
+</head>
+<body>
+<div class="slide section-theme-5">
+  <div class="accent-strip left" style="background:rgba(212,221,232,0.05);"></div>
+  <div class="accent-band top" style="--sec-accent:#d4dde8;"></div>
+  <div class="corner-accent tr"></div>
+  <div class="corner-accent bl"></div>
+
+  <div class="slide-inner" style="position:relative;z-index:2;">
+    <div class="section-indicator"><p>04 / 10 · Why Claude</p></div>
+
+    <h1>What to Say Carefully</h1>
+    <div class="sec-divider"></div>
+    <p style="font-size:12pt;color:#96a4b2;max-width:75%;">Claude's safety training means certain phrasing can trigger unnecessary refusals or hedging.</p>
+
+    <div style="display:flex;gap:28pt;flex:1;max-width:92%;">
+      <div>
+        <h3>Avoid</h3>
+        <ul style="list-style:none;padding:0;">
+          <li style="padding:6pt 0 6pt 14pt;border-left:2pt solid #5a6067;font-size:11.5pt;color:#7a8796;margin-bottom:4pt;">"Act as an expert" — vague, can trigger roleplay guardrails</li>
+          <li style="padding:6pt 0 6pt 14pt;border-left:2pt solid #5a6067;font-size:11.5pt;color:#7a8796;margin-bottom:4pt;">"Ignore all previous instructions" — prompt injection trigger</li>
+          <li style="padding:6pt 0 6pt 14pt;border-left:2pt solid #5a6067;font-size:11.5pt;color:#7a8796;margin-bottom:4pt;">"I'm going to test you" — can cause over-cautious behavior</li>
+          <li style="padding:6pt 0 6pt 14pt;border-left:2pt solid #5a6067;font-size:11.5pt;color:#7a8796;">"Do anything to achieve this" — unsafe framing</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Prefer Instead</h3>
+        <ul style="list-style:none;padding:0;">
+          <li style="padding:6pt 0 6pt 14pt;border-left:2pt solid #d4dde8;font-size:11.5pt;color:#b8c4d0;margin-bottom:4pt;">"You are a senior software engineer at a fintech company" — clear role, no roleplay issues</li>
+          <li style="padding:6pt 0 6pt 14pt;border-left:2pt solid #d4dde8;font-size:11.5pt;color:#b8c4d0;margin-bottom:4pt;">"Here is the context you need" — direct, natural framing</li>
+          <li style="padding:6pt 0 6pt 14pt;border-left:2pt solid #d4dde8;font-size:11.5pt;color:#b8c4d0;margin-bottom:4pt;">"Please work through this step by step" — encourages thoroughness</li>
+          <li style="padding:6pt 0 6pt 14pt;border-left:2pt solid #d4dde8;font-size:11.5pt;color:#b8c4d0;">"I need this to be accurate — if anything is unclear, ask me" — invites clarification</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="focus-box" style="margin-top:auto;">
+      <p style="font-size:10.5pt;color:#96a4b2;margin:0;">The key insight: Claude responds best to <strong>natural, collaborative language</strong> — not "prompt engineering tricks." Frame tasks as delegation, not interrogation.</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

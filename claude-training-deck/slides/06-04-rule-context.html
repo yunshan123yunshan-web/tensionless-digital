@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>Rule 1: Give Context</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" href="../shared/slide.css">
+</head>
+<body>
+<div class="slide section-theme-2">
+  <div class="accent-strip left" style="background:rgba(150,164,178,0.05);"></div>
+  <div class="accent-band top" style="--sec-accent:#96a4b2;"></div>
+  <div class="corner-accent tr"></div>
+
+  <div class="slide-inner" style="position:relative;z-index:2;">
+    <div class="section-indicator"><p>06 / 10 · Prompting Basics</p></div>
+
+    <div style="flex:1;display:flex;flex-direction:column;max-width:88%;">
+      <h1>Rule 1: Give Context</h1>
+      <div class="sec-divider"></div>
+
+      <p style="font-size:12pt;color:#96a4b2;">Claude doesn't know your situation unless you tell it. Context is the difference between generic and specific outputs.</p>
+
+      <div style="display:flex;gap:24pt;margin-top:10pt;">
+        <div class="focus-box" style="flex:1;">
+          <p style="font-size:11pt;color:#7a8796;margin:0;"><strong style="color:#96a4b2;">Without context:</strong><br>"Write a project update."<br><span style="font-size:10pt;color:#5a6067;">→ Generic, could be anything</span></p>
+        </div>
+        <div class="focus-box" style="flex:1;border-left:3pt solid #96a4b2;">
+          <p style="font-size:11pt;color:#b8c4d0;margin:0;"><strong style="color:#d4dde8;">With context:</strong><br>"Write a project update for our <strong>stakeholders</strong> about the <strong>migration project</strong>. They're most concerned about <strong>timeline risk</strong>. Be <strong>transparent about delays</strong> but <strong>show mitigation plans</strong>."</p>
+        </div>
+      </div>
+
+      <h3 style="margin-top:14pt;">Context to include:</h3>
+      <ul style="list-style:none;padding:0;">
+        <li style="padding:4pt 0 4pt 16pt;border-left:2pt solid #1e1e1e;font-size:11.5pt;color:#b8c4d0;margin-bottom:3pt;"><strong>Who</strong> — Who is the audience? Who is the speaker?</li>
+        <li style="padding:4pt 0 4pt 16pt;border-left:2pt solid #1e1e1e;font-size:11.5pt;color:#b8c4d0;margin-bottom:3pt;"><strong>What</strong> — What is the situation? What happened before?</li>
+        <li style="padding:4pt 0 4pt 16pt;border-left:2pt solid #1e1e1e;font-size:11.5pt;color:#b8c4d0;margin-bottom:3pt;"><strong>Why</strong> — Why does this matter? What's at stake?</li>
+        <li style="padding:4pt 0 4pt 16pt;border-left:2pt solid #1e1e1e;font-size:11.5pt;color:#b8c4d0;"><strong>Goal</strong> — What does success look like?</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</body>
+</html>

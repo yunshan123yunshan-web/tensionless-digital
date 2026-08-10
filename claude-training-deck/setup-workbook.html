@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>Claude Setup Workbook</title>
+<link rel="stylesheet" href="shared/fonts.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #090909;
+    color: #b8c4d0;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 16pt;
+    line-height: 1.6;
+    padding: 60pt 80pt;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  h1 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-weight: 400;
+    font-size: 52pt;
+    color: #d4dde8;
+    line-height: 1.12;
+    margin: 0 0 8pt 0;
+  }
+  h2 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-weight: 400;
+    font-size: 34pt;
+    color: #d4dde8;
+    line-height: 1.2;
+    margin: 40pt 0 16pt 0;
+    padding-bottom: 8pt;
+    border-bottom: 1px solid #1e1e1e;
+  }
+  h3 {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 500;
+    font-size: 22pt;
+    color: #96a4b2;
+    line-height: 1.3;
+    margin: 28pt 0 12pt 0;
+  }
+  p {
+    margin: 0 0 14pt 0;
+    color: #b8c4d0;
+  }
+  p.small {
+    font-size: 14pt;
+    color: #7a8796;
+  }
+  strong { color: #d4dde8; font-weight: 500; }
+  em { color: #96a4b2; font-style: italic; }
+
+  .step {
+    border-left: 3pt solid #9aaabc;
+    padding: 20pt 0 20pt 24pt;
+    margin: 24pt 0;
+  }
+  .step .num {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 13pt;
+    color: #5a6067;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 4pt;
+  }
+  .step h3 {
+    margin: 0 0 10pt 0;
+    font-size: 22pt;
+    color: #d4dde8;
+  }
+  .step p {
+    margin: 0 0 10pt 0;
+  }
+
+  .code-block {
+    background: #0c0d0f;
+    border: 1px solid #1a1c20;
+    padding: 18pt 22pt;
+    margin: 14pt 0;
+    font-family: 'Inter', monospace;
+    font-size: 14pt;
+    line-height: 1.5;
+    color: #96a4b2;
+    border-radius: 0;
+    overflow-x: auto;
+    white-space: pre-wrap;
+  }
+  .code-block p {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    color: inherit;
+    margin: 0;
+  }
+  .code-block p + p { margin-top: 6pt; }
+
+  .tip {
+    border-left: 3pt solid #5a6067;
+    padding: 14pt 0 14pt 20pt;
+    margin: 16pt 0;
+  }
+  .tip p {
+    font-size: 14pt;
+    color: #96a4b2;
+    margin: 0;
+  }
+  .tip strong { color: #d4dde8; }
+
+  .outcome-box {
+    border: 1px solid #1a1c20;
+    background: #0c0d0f;
+    padding: 20pt 24pt;
+    margin: 20pt 0;
+  }
+  .outcome-box p {
+    font-size: 15pt;
+    color: #d4dde8;
+    margin: 0;
+  }
+
+  .checklist {
+    list-style: none;
+    padding: 0;
+    margin: 16pt 0;
+  }
+  .checklist li {
+    padding: 6pt 0 6pt 28pt;
+    font-size: 15pt;
+    color: #b8c4d0;
+    position: relative;
+    margin-bottom: 4pt;
+  }
+  .checklist li::before {
+    content: "☐";
+    position: absolute;
+    left: 0;
+    color: #5a6067;
+    font-size: 16pt;
+  }
+  .checklist li.done::before {
+    content: "☑";
+    color: #96a4b2;
+  }
+
+  .section-tag {
+    display: inline-block;
+    font-size: 11pt;
+    font-weight: 500;
+    color: #7a8796;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 4pt;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid #1a1c20;
+    margin: 40pt 0;
+  }
+
+  .header-bar {
+    width: 60pt;
+    height: 2px;
+    background: #96a4b2;
+    margin: 16pt 0 32pt 0;
+    opacity: 0.4;
+  }
+</style>
+</head>
+<body>
+
+<h1>Claude Setup Workbook</h1>
+<div class="header-bar"></div>
+<p style="font-size:18pt;color:#96a4b2;">Follow these 5 steps during the workshop. By the end, you'll have a working Claude setup.</p>
+<p class="small">Estimated time: 45 minutes &middot; You'll need: Claude desktop app (installed) &middot; Pro account</p>
+
+<!-- ============ STEP 1 ============ -->
+<div class="step">
+  <p class="num">Step 1 &middot; 5 minutes</p>
+  <h3>Create Your Project Folder</h3>
+  <p>Claude works best when it has its own folder. This is where it reads your context files and saves its work.</p>
+
+  <div class="code-block"><p>1. Open Finder (or File Explorer)</p><p>2. Go to your Desktop or Documents</p><p>3. Create a new folder called <strong style="color:#d4dde8;">claude-projects</strong></p><p>4. Inside it, create these subfolders:</p><p>&nbsp;&nbsp;&nbsp;<strong style="color:#d4dde8;">_context/</strong> &mdash; your about-me, rules, company info</p><p>&nbsp;&nbsp;&nbsp;<strong style="color:#d4dde8;">_outputs/</strong> &mdash; where Claude saves its work</p><p>&nbsp;&nbsp;&nbsp;<strong style="color:#d4dde8;">_templates/</strong> &mdash; reusable prompt templates</p></div>
+
+  <div class="tip">
+    <p><strong>Tip:</strong> The underscore (<code style="color:#d4dde8;">_</code>) keeps these folders at the top of your file list. You'll thank yourself later.</p>
+  </div>
+</div>
+
+<!-- ============ STEP 2 ============ -->
+<div class="step">
+  <p class="num">Step 2 &middot; 15 minutes</p>
+  <h3>Write about-me.md &mdash; Your Personal Briefing</h3>
+  <p>This is the most important file you'll create. It tells Claude who you are, how you work, and what you value. <strong>Every prompt you write will be better because of this file.</strong></p>
+
+  <p style="color:#96a4b2;">The fastest way to create it: <em>let Claude interview you.</em></p>
+
+  <p><strong>1. Open Cowork Mode</strong></p>
+  <p class="small" style="margin-left: 14pt;">Desktop app &rarr; Top menu &rarr; Cowork &rarr; Select your <strong>claude-projects</strong> folder</p>
+
+  <p><strong>2. Copy and paste this prompt exactly:</strong></p>
+  <div class="code-block"><p>I want to create an about-me.md file in my _context/ folder.</p><p></p><p>Ask me questions one at a time (use AskUserQuestion).</p><p>I'll answer each one before you ask the next.</p><p></p><p>Cover these topics:</p><p>- What I do (role, industry, experience)</p><p>- How I like to work (communication style, preferences)</p><p>- What good looks like to me (quality standards)</p><p>- What I hate (pet peeves, things that waste my time)</p><p>- My goals (what I'm trying to accomplish)</p><p></p><p>After about 8 questions, compile everything into</p><p>a concise about-me.md file and save it.</p><p>Keep it under 2,000 tokens &mdash; tight and specific.</p></div>
+
+  <p><strong>3. Answer Claude's questions</strong></p>
+  <p class="small" style="margin-left: 14pt;">Claude will ask you ~8 questions, one at a time. Just answer naturally. Don't overthink it.</p>
+
+  <p><strong>4. Check the result</strong></p>
+  <p class="small" style="margin-left: 14pt;">Claude saves about-me.md in your _context/ folder. Open it and make any edits you want.</p>
+
+  <div class="tip">
+    <p><strong>Tip:</strong> Keep this file under 2,000 tokens. Ruben Hassid (who wrote the guide we're following) trimmed his from 22,000 words down to under 2,000. The secret: extract the patterns, throw away the raw transcripts.</p>
+  </div>
+</div>
+
+<!-- ============ STEP 3 ============ -->
+<div class="step">
+  <p class="num">Step 3 &middot; 10 minutes</p>
+  <h3>Write anti-ai-writing-style.md &mdash; The "Don't Sound Like AI" File</h3>
+  <p>Without this file, Claude writes in its default voice &mdash; which sounds exactly like every other AI output. This file tells it what <strong>not</strong> to do.</p>
+
+  <p><strong>1. In the same Cowork session (or a new one), paste:</strong></p>
+  <div class="code-block"><p>I want to create an anti-ai-writing-style.md file</p><p>in my _context/ folder.</p><p></p><p>Ask me questions one at a time (use AskUserQuestion).</p><p></p><p>Cover:</p><p>- What words and phrases do I hate? (e.g., "delve," "leverage," "game-changer")</p><p>- What patterns feel obviously "AI-written"?</p><p>- How long should sentences and paragraphs be?</p><p>- Should we use emojis? Exclamation marks?</p><p>- What tone is right for my team?</p><p></p><p>After about 6 questions, compile everything</p><p>into a tight anti-ai-writing-style.md and save it.</p></div>
+
+  <p><strong>2. Be honest about what annoys you</strong></p>
+  <p class="small" style="margin-left: 14pt;">This file only helps if it reflects what you actually hate. If "circle back" makes you cringe, put it in the banned list.</p>
+
+  <div class="tip">
+    <p><strong>Tip:</strong> Ruben's version bans 80+ AI words like "delve," "harness," "tapestry," and kills "reframe patterns" (e.g., "this isn't X, this is Y"). Without this file, Claude writes like Claude. With it, Claude writes like you.</p>
+  </div>
+</div>
+
+<!-- ============ STEP 4 ============ -->
+<div class="step">
+  <p class="num">Step 4 &middot; 10 minutes</p>
+  <h3>Set Up CLAUDE.md &mdash; Your Project's Permanent Briefing</h3>
+  <p>CLAUDE.md is a special file. Claude reads it <strong>automatically</strong> every time it starts working in your project folder. It's like "global instructions" for your project.</p>
+
+  <p><strong>1. Create CLAUDE.md in the root of your claude-projects folder</strong></p>
+  <p class="small" style="margin-left: 14pt;">(Not inside _context/ &mdash; right in claude-projects/)</p>
+
+  <p><strong>2. Start with this template:</strong></p>
+  <div class="code-block"><p># CLAUDE.md</p><p></p><p>## Project</p><p>[What is this project for? One sentence.]</p><p></p><p>## Context Files</p><p>Before every task, read these files in _context/: </p><p>- about-me.md &mdash; who I am and how I work</p><p>- anti-ai-writing-style.md &mdash; tone and banned words</p><p></p><p>## Key Conventions</p><p>- [Rule 1: e.g., Save all outputs to _outputs/]</p><p>- [Rule 2: e.g., Use markdown format unless told otherwise]</p><p>- [Rule 3: e.g., Ask if something is unclear]</p><p></p><p>## Outputs</p><p>Save deliverables to _outputs/ in a subfolder</p><p>named by project or date.</p></div>
+
+  <p><strong>3. Ask Claude to improve it</strong></p>
+  <p class="small" style="margin-left: 14pt;">Prompt: "Read my CLAUDE.md and suggest 3 things I should add. Use AskUserQuestion to learn about my workflow."</p>
+
+  <div class="tip">
+    <p><strong>Tip:</strong> CLAUDE.md is what transforms Claude from a chatbot into a teammate who remembers context. It's the single highest-leverage file you can create.</p>
+  </div>
+</div>
+
+<!-- ============ STEP 5 ============ -->
+<div class="step">
+  <p class="num">Step 5 &middot; 10 minutes</p>
+  <h3>Test Your Setup &mdash; First Real Task</h3>
+  <p>Now let's see if everything works. Run a real task to confirm Claude reads your context files and produces useful output.</p>
+
+  <p><strong>1. Open a new Cowork session on your claude-projects folder</strong></p>
+
+  <p><strong>2. Run this test prompt:</strong></p>
+  <div class="code-block"><p>Read my CLAUDE.md, about-me.md, and anti-ai-writing-style.md.</p><p></p><p>Then draft a weekly status update for my team.</p><p>Save it as _outputs/test-output.md.</p><p></p><p>Before you write, use AskUserQuestion to ask me:</p><p>1. What did I accomplish this week?</p><p>2. What am I working on next?</p><p>3. Any blockers?</p></div>
+
+  <p><strong>3. Check the result</strong></p>
+  <p class="small" style="margin-left: 14pt;">Open _outputs/test-output.md. Does it sound like you? Does it follow your writing rules? If yes &mdash; your setup is complete!</p>
+</div>
+
+<hr>
+
+<!-- ============ CHEATSHEET ============ -->
+<h2>Your Setup Cheatsheet</h2>
+
+<p>After completing all 5 steps, your folder should look like this:</p>
+
+<div class="code-block"><p><strong style="color:#d4dde8;">claude-projects/</strong></p><p>├── <strong style="color:#96a4b2;">CLAUDE.md</strong>           &lt;-- Read automatically by Claude</p><p>├── <strong style="color:#96a4b2;">_context/</strong></p><p>│   ├── about-me.md</p><p>│   └── anti-ai-writing-style.md</p><p>├── <strong style="color:#96a4b2;">_outputs/</strong>          &lt;-- Claude saves work here</p><p>│   └── test-output.md</p><p>└── <strong style="color:#96a4b2;">_templates/</strong>        &lt;-- Reusable prompt structures</p></div>
+
+<div class="outcome-box">
+  <p><strong>You're done when:</strong> You open Cowork, point it at claude-projects, run a prompt, and Claude produces output that sounds like you &mdash; without you having to explain who you are or how you work.</p>
+</div>
+
+<h3>Quick Reference: The Cowork Template</h3>
+<p>Use this template for any task after your setup is complete:</p>
+<div class="code-block"><p>Read my context files.</p><p></p><p>I want to [YOUR TASK] so that [WHAT SUCCESS LOOKS LIKE].</p><p></p><p>Don't start yet. First, ask me clarifying questions</p><p>(use AskUserQuestion) so we refine the approach together.</p><p></p><p>Only begin work once we've aligned.</p></div>
+
+<h3>What To Do In Your First Week</h3>
+<ul class="checklist">
+  <li>Day 1: Use the template above for one real task</li>
+  <li>Day 2: Add 2 banned words to anti-ai-writing-style.md</li>
+  <li>Day 3: Try "Read my _outputs/[file] and suggest improvements"</li>
+  <li>Day 4: Ask Claude to create a template for a recurring task</li>
+  <li>Day 5: Review and refine your about-me.md</li>
+</ul>
+
+<div class="tip">
+  <p><strong>Remember:</strong> Claude is the worst it has ever been right now &mdash; meaning it will only get better. Every file you create today compounds in value as the technology improves.</p>
+</div>
+
+</body>
+</html>

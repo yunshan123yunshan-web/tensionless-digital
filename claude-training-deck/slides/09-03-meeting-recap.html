@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>Meeting Recap Template</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" href="../shared/slide.css">
+</head>
+<body>
+<div class="slide section-theme-5">
+  <div class="accent-band top" style="--sec-accent:#d4dde8;"></div>
+  <div class="corner-accent tr"></div>
+
+  <div class="slide-inner" style="position:relative;z-index:2;">
+    <div class="section-indicator"><p>09 / 10 · Templates &amp; Skills</p></div>
+
+    <div style="display:flex;gap:24pt;flex:1;">
+      <div style="flex:1;display:flex;flex-direction:column;">
+        <h1>Meeting Recap Template</h1>
+        <div class="sec-divider"></div>
+        <p style="font-size:12pt;color:#96a4b2;margin-bottom:8pt;">A prompt template you can reuse for every meeting. Paste the transcript, get structured output.</p>
+
+        <div class="code-block" style="max-width:95%;flex:1;">
+          <p><strong style="color:#d4dde8;">Meeting Recap</strong></p>
+          <p style="color:#7a8796;margin-top:4pt;">---</p>
+          <p style="margin-top:4pt;"><strong style="color:#96a4b2;">Role:</strong> You are a professional meeting scribe.</p>
+          <p style="margin-top:6pt;"><strong style="color:#96a4b2;">Task:</strong> Summarize this meeting transcript into:</p>
+          <p style="color:#7a8796;">1. Key decisions made (bullet points)</p>
+          <p style="color:#7a8796;">2. Action items (owner + deadline)</p>
+          <p style="color:#7a8796;">3. Open questions that need follow-up</p>
+          <p style="color:#7a8796;">4. Next meeting agenda suggestions</p>
+          <p style="margin-top:6pt;"><strong style="color:#96a4b2;">Format:</strong> Use sections with bold headers. Keep each section under 4 bullet points. If something is unclear, note it as "needs clarification."</p>
+          <p style="margin-top:6pt;"><strong style="color:#96a4b2;">Verify:</strong> Flag any statements that sound like opinions presented as facts.</p>
+          <p style="color:#7a8796;margin-top:6pt;">---</p>
+          <p style="margin-top:4pt;"><strong style="color:#96a4b2;">[Paste transcript here]</strong></p>
+        </div>
+      </div>
+
+      <div style="flex:0.7;">
+        <div class="focus-box" style="height:auto;background:#0d0d0f;">
+          <p style="font-size:11pt;color:#d4dde8;margin:0;"><strong>Why it works:</strong></p>
+          <ul style="list-style:none;padding:0;margin-top:6pt;">
+            <li style="font-size:11pt;color:#96a4b2;padding:4pt 0;">Clear role definition</li>
+            <li style="font-size:11pt;color:#96a4b2;padding:4pt 0;">Structured output sections</li>
+            <li style="font-size:11pt;color:#96a4b2;padding:4pt 0;">Format constraints prevent verbosity</li>
+            <li style="font-size:11pt;color:#96a4b2;padding:4pt 0;">Verification catches misinterpretations</li>
+          </ul>
+        </div>
+
+        <div class="focus-box" style="margin-top:10pt;background:#0d0d0f;">
+          <p style="font-size:10.5pt;color:#96a4b2;margin:0;"><strong>Pro tip:</strong> Save this as .claude/prompts/meeting-recap.md. In Cowork mode, just say: "Run the meeting recap template on this transcript."</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

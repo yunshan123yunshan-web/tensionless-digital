@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>Workshop: Test Your Setup</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" href="../shared/slide.css">
+<style>
+  .code-block p { font-size:13.5pt; }
+  .check-item { border-left: 2pt solid #1e1e1e; padding: 5pt 0 5pt 16pt; margin-bottom: 4pt; }
+  .check-item p { font-size: 13pt; margin: 0; }
+  .check-item.done { border-left-color: #96a4b2; }
+  .check-item.done p { color: #b8c4d0; }
+</style>
+</head>
+<body>
+<div class="slide section-theme-2">
+  <div class="accent-band top" style="--sec-accent:#96a4b2;"></div>
+  <div class="corner-accent tr"></div>
+  <div class="section-number bl" style="opacity:0.015;">04</div>
+
+  <div class="slide-inner" style="position:relative;z-index:2;justify-content:center;">
+    <div class="section-indicator"><p>Workshop &middot; 10 minutes</p></div>
+
+    <div style="display:flex;gap:32pt;flex:1;">
+      <div style="flex:1.1;display:flex;flex-direction:column;justify-content:center;">
+        <h1 style="font-size:44pt;">Workshop: Test Your Setup</h1>
+        <div class="sec-divider"></div>
+        <p style="font-size:14pt;color:#b8c4d0;">One prompt to confirm everything works.</p>
+
+        <div class="code-block" style="background:#0c0d0f;border:1px solid #1a1c20;padding:16pt 20pt;margin-top:8pt;">
+          <p>Read my CLAUDE.md, about-me.md, and anti-ai-writing-style.md.</p>
+          <p> </p>
+          <p>Draft a weekly status update for my team.</p>
+          <p>Save it as _outputs/test-output.md.</p>
+          <p> </p>
+          <p>Before writing, ask me (use AskUserQuestion):</p>
+          <p>1. What did I accomplish this week?</p>
+          <p>2. What am I working on next?</p>
+          <p>3. Any blockers?</p>
+        </div>
+
+        <p style="font-size:12pt;color:#96a4b2;margin-top:10pt;">After Claude saves the file, open _outputs/test-output.md.</p>
+        <p style="font-size:12pt;color:#7a8796;">Does it sound like you? Does it follow your rules?</p>
+      </div>
+
+      <div style="flex:0.9;display:flex;flex-direction:column;justify-content:center;">
+        <div class="focus-box" style="margin:0;">
+          <p style="font-size:14pt;color:#d4dde8;margin:0 0 10pt 0;"><strong>If the output sounds like you</strong> — you're done. Your setup works.</p>
+          <p style="font-size:14pt;color:#d4dde8;margin:0;"><strong>If it doesn't</strong> — check:</p>
+        </div>
+
+        <div class="check-item done"><p>✓ about-me.md is in _context/ folder</p></div>
+        <div class="check-item done"><p>✓ anti-ai-writing-style.md is in _context/</p></div>
+        <div class="check-item done"><p>✓ CLAUDE.md is in the project root</p></div>
+        <div class="check-item done"><p>✓ You're in Cowork mode, not Chat</p></div>
+        <div class="check-item done"><p>✓ You selected the right folder</p></div>
+
+        <p style="font-size:13pt;color:#5a6067;margin-top:12pt;"><strong>You now have:</strong></p>
+        <p style="font-size:12pt;color:#7a8796;margin:0;">
+          ✓ Project folder<br>
+          ✓ about-me.md<br>
+          ✓ anti-ai-writing-style.md<br>
+          ✓ CLAUDE.md<br>
+          ✓ First successful Cowork task
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

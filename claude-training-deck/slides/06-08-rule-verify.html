@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>Rule 5: Verification</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" href="../shared/slide.css">
+</head>
+<body>
+<div class="slide section-theme-2">
+  <div class="accent-strip left" style="background:rgba(150,164,178,0.06);"></div>
+  <div class="accent-band top" style="--sec-accent:#96a4b2;"></div>
+  <div class="corner-accent tr"></div>
+  <div class="corner-accent bl"></div>
+
+  <div class="slide-inner" style="position:relative;z-index:2;">
+    <div class="section-indicator"><p>06 / 10 · Prompting Basics</p></div>
+
+    <div style="flex:1;display:flex;flex-direction:column;max-width:85%;">
+      <h1>Rule 5: Ask Claude to Verify</h1>
+      <div class="sec-divider"></div>
+
+      <p style="font-size:12pt;color:#96a4b2;">Claude can check its own work — if you ask it to. Verification prompts catch mistakes before you do.</p>
+
+      <div style="display:flex;gap:20pt;margin-top:10pt;">
+        <div style="flex:1;">
+          <div class="code-block">
+            <p style="color:#7a8796;">✕ "Write a SQL query to find duplicate users."</p>
+          </div>
+          <div class="code-block" style="border-left:3pt solid #96a4b2;">
+            <p style="color:#b8c4d0;">✓ "Write a SQL query to find duplicate users. <strong>Before responding, check: does this handle NULL emails? Does it exclude test accounts? Is it indexed efficiently?</strong>"</p>
+          </div>
+        </div>
+        <div style="flex:0.8;">
+          <h3>Verification prompts:</h3>
+          <ul style="list-style:none;padding:0;">
+            <li style="padding:4pt 0 4pt 14pt;border-left:2pt solid #96a4b2;font-size:11pt;color:#b8c4d0;margin-bottom:3pt;">"Check your work for errors"</li>
+            <li style="padding:4pt 0 4pt 14pt;border-left:2pt solid #96a4b2;font-size:11pt;color:#b8c4d0;margin-bottom:3pt;">"List any assumptions you made"</li>
+            <li style="padding:4pt 0 4pt 14pt;border-left:2pt solid #96a4b2;font-size:11pt;color:#b8c4d0;margin-bottom:3pt;">"Rate your confidence 1-10"</li>
+            <li style="padding:4pt 0 4pt 14pt;border-left:2pt solid #96a4b2;font-size:11pt;color:#b8c4d0;">"What edge cases did you consider?"</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="focus-box" style="margin-top:auto;">
+        <p style="font-size:11pt;color:#d4dde8;margin:0;"><strong>Always verify anything that matters.</strong> Claude is fluent and confident — even when wrong. Treat outputs as a <strong>first draft</strong> from a capable but imperfect teammate.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>Add to Your Rules</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" href="../shared/slide.css">
+</head>
+<body>
+<div class="slide section-theme-1">
+  <div class="accent-strip left" style="background:rgba(154,170,188,0.06);"></div>
+  <div class="accent-band top" style="--sec-accent:#9aaabc;"></div>
+  <div class="corner-accent tr"></div>
+
+  <div class="slide-inner" style="position:relative;z-index:2;">
+    <div class="section-indicator"><p>10 / 10 · Safety &amp; Final Test</p></div>
+
+    <div style="display:flex;gap:24pt;flex:1;">
+      <div style="flex:1;display:flex;flex-direction:column;">
+        <h1>What to Add to Your Rules</h1>
+        <div class="sec-divider"></div>
+        <p style="font-size:12pt;color:#96a4b2;margin-bottom:8pt;">Your CLAUDE.md should include safety guardrails. Here's what the best ones contain.</p>
+
+        <div class="code-block" style="max-width:95%;flex:1;">
+          <p><strong style="color:#d4dde8;"># Safety Rules</strong></p>
+          <p style="margin-top:6pt;"><strong style="color:#96a4b2;">## Never do without explicit approval:</strong></p>
+          <p style="color:#7a8796;">- Modify production data (databases, live configs)</p>
+          <p style="color:#7a8796;">- Delete files or folders</p>
+          <p style="color:#7a8796;">- Run commands with sudo or elevated privileges</p>
+          <p style="color:#7a8796;">- Make irreversible changes without a rollback plan</p>
+          <p style="margin-top:6pt;"><strong style="color:#96a4b2;">## Always verify:</strong></p>
+          <p style="color:#7a8796;">- SQL queries before execution</p>
+          <p style="color:#7a8796;">- Deployment commands before running</p>
+          <p style="color:#7a8796;">- Financial calculations before sharing</p>
+          <p style="color:#7a8796;">- Code with security implications</p>
+          <p style="margin-top:6pt;"><strong style="color:#96a4b2;">## Data privacy:</strong></p>
+          <p style="color:#7a8796;">- Never paste production credentials</p>
+          <p style="color:#7a8796;">- Mask sensitive data in logs and examples</p>
+          <p style="color:#7a8796;">- Use environment variables for secrets</p>
+        </div>
+      </div>
+
+      <div style="flex:0.8;">
+        <div class="focus-box" style="height:auto;background:#0d0d0f;">
+          <p style="font-size:11pt;color:#d4dde8;margin:0;"><strong>Why this matters:</strong></p>
+          <ul style="list-style:none;padding:0;margin-top:6pt;">
+            <li style="font-size:11pt;color:#96a4b2;padding:4pt 0;">Claude follows your rules — so the rules need to be right</li>
+            <li style="font-size:11pt;color:#96a4b2;padding:4pt 0;">Safety rules in CLAUDE.md are always loaded</li>
+            <li style="font-size:11pt;color:#96a4b2;padding:4pt 0;">They protect you when you forget to add a safety reminder</li>
+            <li style="font-size:11pt;color:#96a4b2;padding:4pt 0;">They also protect new team members learning the workflow</li>
+          </ul>
+        </div>
+
+        <div class="focus-box" style="margin-top:10pt;background:#0d0d0f;">
+          <p style="font-size:10.5pt;color:#96a4b2;margin:0;"><strong>Next step:</strong> Open your CLAUDE.md right now and add a "# Safety" section. Even 3 rules make a difference.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

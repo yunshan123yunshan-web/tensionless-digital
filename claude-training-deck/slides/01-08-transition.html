@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>Transition · Section 1 → 2</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" href="../shared/slide.css">
+<style>
+.burst-container {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+}
+.burst-shard {
+  position: absolute;
+  background: #96a4b2;
+  pointer-events: none;
+}
+</style>
+</head>
+<body>
+<div class="slide section-theme-2">
+  <div class="burst-container">
+    <!-- Top cluster -->
+    <div class="burst-shard" style="width:180pt;height:180pt;clip-path:polygon(0% 0%,100% 0%,50% 100%);opacity:0.025;top:-30pt;left:-30pt;"></div>
+    <div class="burst-shard" style="width:100pt;height:100pt;clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);opacity:0.04;top:80pt;left:100pt;transform:rotate(15deg);"></div>
+    <div class="burst-shard" style="width:50pt;height:50pt;clip-path:polygon(50% 0%,100% 100%,0% 100%);opacity:0.02;top:40pt;left:240pt;"></div>
+
+    <!-- Bottom-right cluster -->
+    <div class="burst-shard" style="width:220pt;height:220pt;clip-path:polygon(100% 0%,100% 100%,0% 100%);opacity:0.02;bottom:-40pt;right:-40pt;transform:rotate(-10deg);"></div>
+    <div class="burst-shard" style="width:80pt;height:80pt;clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);opacity:0.035;bottom:120pt;right:140pt;transform:rotate(30deg);"></div>
+
+    <!-- Scattered -->
+    <div class="burst-shard" style="width:18pt;height:18pt;clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);opacity:0.03;top:45%;left:12%;"></div>
+    <div class="burst-shard" style="width:14pt;height:14pt;clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);opacity:0.025;top:38%;right:18%;"></div>
+  </div>
+
+  <div class="accent-band top" style="--sec-accent:#7a8796;"></div>
+
+  <div class="transition-content" style="z-index:2;">
+    <p class="label" style="margin-bottom:10pt;">End of Section 1</p>
+    <h1>AI Has Changed</h1>
+    <div style="display:flex;justify-content:center;">
+      <div class="sec-divider"></div>
+    </div>
+    <p style="text-align:center;margin-top:8pt;color:#7a8796;">Up next — How models actually work under the hood</p>
+  </div>
+
+  <div class="transition-diamond" style="top:auto;bottom:80pt;left:52pt;width:60pt;height:60pt;opacity:0.02;"></div>
+</div>
+</body>
+</html>

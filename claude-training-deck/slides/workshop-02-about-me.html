@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>Workshop: Write about-me.md</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" href="../shared/slide.css">
+<style>
+  .code-block { font-size:13pt; }
+  .code-block p { font-size:13pt; }
+  .focus-box p { font-size:13pt; }
+</style>
+</head>
+<body>
+<div class="slide section-theme-2">
+  <div class="accent-strip left" style="background:rgba(150,164,178,0.05);"></div>
+  <div class="accent-band top" style="--sec-accent:#96a4b2;"></div>
+  <div class="corner-accent tr"></div>
+
+  <div class="slide-inner" style="position:relative;z-index:2;justify-content:center;">
+    <div class="section-indicator"><p>Workshop &middot; 15 minutes</p></div>
+
+    <div style="display:flex;flex-direction:column;flex:1;max-width:92%;justify-content:center;">
+      <h1 style="font-size:44pt;">Workshop: Write about-me.md</h1>
+      <div class="sec-divider"></div>
+      <p style="font-size:14pt;color:#b8c4d0;max-width:80%;">This is the most important file you'll create. The fastest way: <em>let Claude interview you.</em></p>
+
+      <div style="display:flex;gap:28pt;margin-top:14pt;">
+        <div style="flex:1.1;">
+          <h3 style="font-size:18pt;margin:0 0 8pt 0;">Copy this prompt into Cowork:</h3>
+          <div class="code-block" style="background:#0c0d0f;border:1px solid #1a1c20;padding:14pt 18pt;margin:0;">
+            <p>I want to create an about-me.md file in my _context/ folder.</p>
+            <p> </p>
+            <p>Ask me questions one at a time (use AskUserQuestion).</p>
+            <p>I'll answer each before you ask the next.</p>
+            <p> </p>
+            <p>Cover these topics:</p>
+            <p>- What I do (role, industry, experience)</p>
+            <p>- How I work (communication style, preferences)</p>
+            <p>- What good looks like (quality standards)</p>
+            <p>- What I hate (pet peeves, time-wasters)</p>
+            <p>- My goals (what I'm trying to accomplish)</p>
+            <p> </p>
+            <p>After ~8 questions, compile everything into</p>
+            <p>a concise about-me.md and save it to _context/.</p>
+            <p>Keep it under 2,000 tokens — tight and specific.</p>
+          </div>
+        </div>
+        <div style="flex:0.9;display:flex;flex-direction:column;justify-content:center;">
+          <div class="focus-box" style="margin:0;">
+            <p style="font-size:12pt;margin:0;"><strong>How it works:</strong></p>
+            <p style="font-size:12pt;color:#96a4b2;margin-top:6pt;">
+              1. Paste the prompt &rarr; Claude asks Q1<br>
+              2. Type your answer &rarr; Claude asks Q2<br>
+              3. Repeat for ~8 questions<br>
+              4. Claude compiles and saves about-me.md<br>
+              5. Open the file &rarr; make any edits
+            </p>
+          </div>
+          <p style="font-size:12pt;color:#5a6067;margin-top:10pt;"><strong>Key insight:</strong> Ruben Hassid trimmed his from 22,000 words to under 2,000. Extract patterns, throw away raw transcripts.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

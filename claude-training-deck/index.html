@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Claude Training Deck</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    height: 100%;
+    background: #0a0a0a;
+    overflow: hidden;
+    font-family: -apple-system, "Inter", system-ui, sans-serif;
+  }
+  #stage {
+    position: fixed;
+    top: 50%; left: 50%;
+    transform-origin: top left;
+    will-change: transform;
+    background: #090909;
+    box-shadow: 0 10px 60px rgba(0,0,0,0.4);
+  }
+  iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+    background: #090909;
+  }
+  .counter {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(0,0,0,0.65);
+    color: #b8c4d0;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    font-variant-numeric: tabular-nums;
+    z-index: 100;
+    user-select: none;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+  .counter:hover { opacity: 1; }
+  .counter .label { color: #7a8796; margin-left: 8px; }
+  .nav-zone {
+    position: fixed;
+    top: 0; bottom: 0;
+    width: 15%;
+    cursor: pointer;
+    z-index: 50;
+  }
+  .nav-zone.left  { left: 0; }
+  .nav-zone.right { right: 0; }
+  .nav-hint {
+    position: absolute;
+    top: 50%; transform: translateY(-50%);
+    width: 44px; height: 44px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .nav-zone.left  .nav-hint { left: 20px; }
+  .nav-zone.right .nav-hint { right: 20px; }
+  .nav-zone:hover .nav-hint { opacity: 1; }
+
+  #loading {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 100;
+    background: #090909;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.5s ease;
+  }
+  #loading.hidden { opacity: 0; pointer-events: none; }
+  #loading p {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 28px;
+    color: #5a6067;
+    margin-top: 16px;
+  }
+  .shard-loader {
+    width: 32px; height: 32px;
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    background: #5a6067;
+    animation: shard-pulse 1.5s ease-in-out infinite alternate;
+  }
+  @keyframes shard-pulse {
+    0%   { transform: rotate(0deg) scale(0.8); opacity: 0.3; }
+    100% { transform: rotate(180deg) scale(1.2); opacity: 0.8; }
+  }
+  #section-label {
+    position: fixed;
+    bottom: 24px;
+    left: 28px;
+    z-index: 20;
+    font-size: 10px;
+    color: #5a6067;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    user-select: none;
+  }
+  @media print {
+    @page { size: 1920px 1080px; margin: 0; }
+    html, body { background: #090909; overflow: visible; height: auto; }
+    #stage { position: static; transform: none !important; box-shadow: none; }
+    .counter, .nav-zone, #loading, #section-label { display: none !important; }
+    .print-stack { display: block; }
+    .print-stack iframe {
+      width: 1920px;
+      height: 1080px;
+      page-break-after: always;
+      display: block;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div id="loading">
+  <div class="shard-loader"></div>
+  <p>Loading deck…</p>
+</div>
+
+<div id="stage">
+  <iframe id="frame" src="about:blank"></iframe>
+</div>
+
+<div class="nav-zone left"  id="navL"><div class="nav-hint">‹</div></div>
+<div class="nav-zone right" id="navR"><div class="nav-hint">›</div></div>
+<div class="counter" id="counter">1 / 89</div>
+<div id="section-label"></div>
+
+<div class="print-stack" id="printStack" style="display:none;"></div>
+
+<script>
+window.DECK_MANIFEST = [
+  // Part 1 — Opening & Foundations (8)
+  { file: "slides/01-01-title.html",       label: "01 · The Way You Work Is About to Change" },
+  { file: "slides/01-02-old-vs-new.html",  label: "01 · Old Paradigm vs New Reality" },
+  { file: "slides/01-03-evolution-eras.html", label: "01 · What AI Actually Is" },
+  { file: "slides/01-04-why-it-matters.html", label: "01 · How We Get From Patterns to Useful" },
+  { file: "slides/01-05-old-habit.html",   label: "01 · Tokens: Building Blocks" },
+  { file: "slides/01-06-modern-habit.html",label: "01 · Context Window" },
+  { file: "slides/01-07-exercise.html",    label: "01 · The Beginner Trap" },
+  { file: "slides/01-08-transition.html",  label: "01 · Delegation, Not Questions" },
+
+  // Part 2 — Claude & The Landscape (8)
+  { file: "slides/02-01-title.html",       label: "02 · Claude & The AI Landscape" },
+  { file: "slides/02-02-tokens.html",      label: "02 · What Is Claude?" },
+  { file: "slides/02-03-context-window.html", label: "02 · Claude vs ChatGPT" },
+  { file: "slides/02-04-usage-vs-context.html", label: "02 · Three Ways to Use Claude" },
+  { file: "slides/02-05-beginner-trap.html", label: "02 · What You Can Actually Do" },
+  { file: "slides/02-06-practical-rule.html", label: "02 · Our Running Example" },
+  { file: "slides/02-07-exercise.html",    label: "02 · Exercise" },
+  { file: "slides/02-08-transition.html",  label: "02 · Section Transition" },
+
+  // Part 3 — Prompting (8)
+  { file: "slides/03-01-title.html",       label: "03 · Prompting" },
+  { file: "slides/03-02-core-explanation.html", label: "03 · Delegation, Not Magic" },
+  { file: "slides/03-03-model-table.html", label: "03 · The 6-Part Prompt Framework" },
+  { file: "slides/03-04-simple-rule.html", label: "03 · Rule 1: Give Context" },
+  { file: "slides/03-05-extended-thinking.html", label: "03 · Rule 2: Give Examples" },
+  { file: "slides/03-06-bad-vs-good.html", label: "03 · Bad Prompt → Good Prompt" },
+  { file: "slides/03-06-examples-table.html", label: "03 · Writing With Our Example" },
+  { file: "slides/03-07-warning.html",     label: "03 · An Important Warning" },
+  { file: "slides/03-08-exercise.html",    label: "03 · Exercise" },
+
+  // Part 4 — Your Project Folder (6)
+  { file: "slides/04-01-title.html",       label: "04 · Your Project Folder" },
+  { file: "slides/04-02-key-reasons.html", label: "04 · Why Work in a Folder?" },
+  { file: "slides/04-03-careful-messaging.html", label: "04 · Setting Up Your Project Folder" },
+  { file: "slides/04-04-use-case-map.html", label: "04 · Exercise: Create Your Folder" },
+  { file: "slides/04-05-exercise.html",    label: "04 · Exercise" },
+  { file: "slides/04-06-transition.html",  label: "04 · Section Transition" },
+
+  // Workshop Break 1 — Folder Setup + about-me.md
+  { file: "slides/workshop-01-folder.html",      label: "⚡ Workshop: Create Your Folder" },
+  { file: "slides/workshop-02-about-me.html",    label: "⚡ Workshop: Write about-me.md" },
+
+  // Part 5 — Context Files (8)
+  { file: "slides/05-01-title.html",       label: "05 · Context Files" },
+  { file: "slides/05-02-core-explanation.html", label: "05 · Why Context Files Matter" },
+  { file: "slides/05-03-mode-table.html",  label: "05 · The 4 Essential Context Files" },
+  { file: "slides/05-04-when-chat.html",   label: "05 · Template: about-me.md" },
+  { file: "slides/05-05-when-cowork.html", label: "05 · Template: my-company.md" },
+  { file: "slides/05-06-when-skills.html", label: "05 · Template: writing-rules.md" },
+  { file: "slides/05-07-exercise.html",    label: "05 · Template: decision-rules.md" },
+  { file: "slides/05-08-transition.html",  label: "05 · Section Transition" },
+
+  // Part 6 — Cowork Mode (10)
+  { file: "slides/06-01-title.html",       label: "06 · Cowork Mode" },
+  { file: "slides/06-02-core-principle.html", label: "06 · What Changes in Cowork Mode" },
+  { file: "slides/06-03-prompt-structure.html", label: "06 · How Cowork Mode Works" },
+  { file: "slides/06-04-rule-context.html", label: "06 · The Read Before Write Principle" },
+  { file: "slides/06-05-rule-examples.html", label: "06 · What Claude Can and Cannot Do" },
+  { file: "slides/06-06-rule-specify.html", label: "06 · First Safe Tasks to Try" },
+  { file: "slides/06-07-rule-format.html", label: "06 · When to Use Chat vs Cowork" },
+  { file: "slides/06-08-rule-verify.html", label: "06 · Our Example in Cowork Mode" },
+  { file: "slides/06-09-comparison.html",  label: "06 · Bad vs Good Prompt" },
+  { file: "slides/06-10-exercise.html",    label: "06 · Exercise" },
+
+  // Part 7 — Building The Habit (8)
+  { file: "slides/07-01-title.html",       label: "07 · Building The Habit" },
+  { file: "slides/07-02-folder-structure.html", label: "07 · The Iteration Loop" },
+  { file: "slides/07-03-folder-purpose.html", label: "07 · When Claude Gets It Wrong" },
+  { file: "slides/07-04-sandbox.html",     label: "07 · Troubleshooting: Prompt Issues" },
+  { file: "slides/07-05-global-instructions.html", label: "07 · Troubleshooting: Context Issues" },
+  { file: "slides/07-06-first-task.html",  label: "07 · Troubleshooting: Mode Issues" },
+  { file: "slides/07-07-exercise.html",    label: "07 · When to Start Fresh" },
+  { file: "slides/07-08-transition.html",  label: "07 · Exercise" },
+
+  // Part 8 — Trust & Judgment (10)
+  { file: "slides/08-01-title.html",       label: "08 · Trust & Judgment" },
+  { file: "slides/08-02-principle.html",   label: "08 · Trust, But Always Verify" },
+  { file: "slides/08-03-files-overview.html", label: "08 · What to Verify" },
+  { file: "slides/08-04-about-me.html",    label: "08 · What NOT to Share" },
+  { file: "slides/08-05-my-company.html",  label: "08 · Your Judgment Is What Matters" },
+  { file: "slides/08-06-writing-style.html", label: "08 · Writing Style" },
+  { file: "slides/08-07-anti-ai.html",     label: "08 · Anti-AI Writing" },
+  { file: "slides/08-08-decision-rules.html", label: "08 · Decision Rules" },
+  { file: "slides/08-09-exercise.html",    label: "08 · Exercise" },
+  { file: "slides/08-10-transition.html",  label: "08 · Section Transition" },
+
+  // Workshop Break 2 — anti-ai.md + CLAUDE.md
+  { file: "slides/workshop-03-anti-ai-claude.html", label: "⚡ Workshop: anti-ai.md + CLAUDE.md" },
+
+  // Part 9 — Templates & Skills (10)
+  { file: "slides/09-01-title.html",       label: "09 · Templates & Skills" },
+  { file: "slides/09-02-templates-overview.html", label: "09 · What Are Templates" },
+  { file: "slides/09-03-meeting-recap.html", label: "09 · Meeting Recap Template" },
+  { file: "slides/09-04-client-email.html", label: "09 · Client Email Template" },
+  { file: "slides/09-05-project-summary.html", label: "09 · Project Summary Template" },
+  { file: "slides/09-06-skills-overview.html", label: "09 · What Are Skills" },
+  { file: "slides/09-07-good-skill.html",  label: "09 · What Makes a Good Skill" },
+  { file: "slides/09-08-skill-draft.html", label: "09 · Skill Draft" },
+  { file: "slides/09-09-exercise.html",    label: "09 · Exercise" },
+  { file: "slides/09-10-transition.html",  label: "09 · Section Transition" },
+
+  // Part 10 — Safety & Closing (8)
+  { file: "slides/10-01-title.html",       label: "10 · Safety & Final Test" },
+  { file: "slides/10-02-trust-verify.html", label: "10 · Trust Then Verify" },
+  { file: "slides/10-03-verification-table.html", label: "10 · Verification Examples" },
+  { file: "slides/10-04-safety-rules.html", label: "10 · Safety Rules" },
+  { file: "slides/10-05-add-to-rules.html", label: "10 · Add to decision-rules.md" },
+  { file: "slides/10-06-final-test.html",   label: "10 · Final Test" },
+  { file: "slides/10-07-expected-output.html", label: "10 · Expected Output" },
+  { file: "slides/10-08-closing.html",     label: "10 · Closing & Next Steps" },
+
+  // Workshop Final — Test Your Setup
+  { file: "slides/workshop-04-final-test.html", label: "⚡ Workshop: Test Your Setup" },
+];
+
+window.DECK_WIDTH = 960;
+window.DECK_HEIGHT = 540;
+
+(function () {
+  const W = window.DECK_WIDTH || 1920;
+  const H = window.DECK_HEIGHT || 1080;
+  const deck = window.DECK_MANIFEST || [];
+  const stage = document.getElementById('stage');
+  const frame = document.getElementById('frame');
+  const counter = document.getElementById('counter');
+  const sectionLabel = document.getElementById('section-label');
+  const printStack = document.getElementById('printStack');
+  const loading = document.getElementById('loading');
+  const storageKey = 'td-deck-index';
+  let current = 0;
+  let loaded = false;
+
+  stage.style.width  = W + 'px';
+  stage.style.height = H + 'px';
+
+  function fit() {
+    const s = Math.min(window.innerWidth / W, window.innerHeight / H);
+    const x = (window.innerWidth  - W * s) / 2;
+    const y = (window.innerHeight - H * s) / 2;
+    stage.style.transform = `translate(${x}px, ${y}px) scale(${s})`;
+    stage.style.top = '0';
+    stage.style.left = '0';
+  }
+
+  function show(idx) {
+    if (idx < 0 || idx >= deck.length) return;
+    current = idx;
+    frame.src = deck[idx].file;
+    counter.innerHTML = `${idx + 1} / ${deck.length} <span class="label">${deck[idx].label || ''}</span>`;
+    const section = deck[idx].label ? deck[idx].label.match(/^(\d+)/) : null;
+    sectionLabel.textContent = section ? `Part ${section[1]}` : '';
+    try { localStorage.setItem(storageKey, String(idx)); } catch (_) {}
+    if (location.hash !== '#' + (idx + 1)) {
+      history.replaceState(null, '', '#' + (idx + 1));
+    }
+    if (!loaded) {
+      loaded = true;
+      loading.classList.add('hidden');
+      setTimeout(() => { loading.style.display = 'none'; }, 500);
+    }
+  }
+
+  function next() { show(Math.min(current + 1, deck.length - 1)); }
+  function prev() { show(Math.max(current - 1, 0)); }
+
+  // Keyboard
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    switch (e.key) {
+      case 'ArrowRight': case ' ': case 'PageDown': e.preventDefault(); next(); break;
+      case 'ArrowLeft':  case 'PageUp':              e.preventDefault(); prev(); break;
+      case 'Home':       e.preventDefault(); show(0); break;
+      case 'End':        e.preventDefault(); show(deck.length - 1); break;
+      case 'p': case 'P': window.print(); break;
+      default:
+        if (e.key >= '1' && e.key <= '9') {
+          const i = parseInt(e.key, 10) - 1;
+          if (i < deck.length) { e.preventDefault(); show(i); }
+        }
+    }
+  });
+
+  document.getElementById('navL').addEventListener('click', prev);
+  document.getElementById('navR').addEventListener('click', next);
+  window.addEventListener('resize', fit);
+  window.addEventListener('hashchange', () => {
+    const m = location.hash.match(/^#(\d+)$/);
+    if (m) show(parseInt(m[1], 10) - 1);
+  });
+
+  // Initial: hash > localStorage > 0
+  const hashMatch = location.hash.match(/^#(\d+)$/);
+  if (hashMatch) current = Math.min(parseInt(hashMatch[1], 10) - 1, deck.length - 1);
+  else try {
+    const v = parseInt(localStorage.getItem(storageKey), 10);
+    if (!isNaN(v) && v >= 0 && v < deck.length) current = v;
+  } catch (_) {}
+  fit();
+  show(current);
+
+  // Print: build stack of all iframes so browser prints every slide
+  window.addEventListener('beforeprint', () => {
+    printStack.innerHTML = '';
+    deck.forEach(item => {
+      const f = document.createElement('iframe');
+      f.src = item.file;
+      printStack.appendChild(f);
+    });
+    printStack.style.display = 'block';
+    stage.style.display = 'none';
+  });
+  window.addEventListener('afterprint', () => {
+    printStack.innerHTML = '';
+    printStack.style.display = 'none';
+    stage.style.display = '';
+  });
+})();
+</script>
+</body>
+</html>

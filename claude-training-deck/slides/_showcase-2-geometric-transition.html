@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>Showcase · Geometric Transition</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" href="../shared/slide.css">
+<style>
+/* Large shard burst composition */
+.burst-container {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+}
+.burst-shard {
+  position: absolute;
+  background: #d4dde8;
+  pointer-events: none;
+}
+</style>
+</head>
+<body>
+<div class="slide section-theme-3">
+  <!-- Large shard burst pattern -->
+  <div class="burst-container">
+    <!-- Top-left cluster -->
+    <div class="burst-shard" style="width:200pt;height:200pt;clip-path:polygon(0% 0%,100% 0%,50% 100%);opacity:0.03;top:-40pt;left:-40pt;"></div>
+    <div class="burst-shard" style="width:120pt;height:120pt;clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);opacity:0.05;top:60pt;left:80pt;transform:rotate(15deg);"></div>
+    <div class="burst-shard" style="width:60pt;height:60pt;clip-path:polygon(50% 0%,100% 100%,0% 100%);opacity:0.025;top:30pt;left:220pt;"></div>
+
+    <!-- Bottom-right cluster -->
+    <div class="burst-shard" style="width:250pt;height:250pt;clip-path:polygon(100% 0%,100% 100%,0% 100%);opacity:0.02;bottom:-60pt;right:-60pt;transform:rotate(-10deg);"></div>
+    <div class="burst-shard" style="width:100pt;height:100pt;clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);opacity:0.04;bottom:100pt;right:120pt;transform:rotate(30deg);"></div>
+    <div class="burst-shard" style="width:40pt;height:80pt;clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);opacity:0.03;bottom:50pt;right:280pt;transform:rotate(-20deg);"></div>
+
+    <!-- Scattered small pieces -->
+    <div class="burst-shard" style="width:20pt;height:20pt;clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);opacity:0.04;top:40%;left:15%;"></div>
+    <div class="burst-shard" style="width:15pt;height:15pt;clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);opacity:0.03;top:35%;right:20%;"></div>
+    <div class="burst-shard" style="width:25pt;height:25pt;clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);opacity:0.02;top:55%;right:35%;"></div>
+    <div class="burst-shard" style="width:30pt;height:30pt;clip-path:polygon(50% 0%,0% 100%,100% 100%);opacity:0.02;bottom:30%;left:12%;transform:rotate(180deg);"></div>
+  </div>
+
+  <!-- Accent band -->
+  <div class="accent-band top" style="--sec-accent:#7a8796;"></div>
+
+  <!-- Transition content -->
+  <div class="transition-content" style="z-index:2;">
+    <p class="label" style="margin-bottom:10pt;">Start of Section 2</p>
+    <h1>How Models Work</h1>
+    <div style="display:flex;justify-content:center;">
+      <div class="sec-divider"></div>
+    </div>
+    <p style="text-align:center;margin-top:8pt;color:#7a8796;">Tokens · Context · Limits · Choosing the right model</p>
+  </div>
+
+  <!-- Small shard deco near center -->
+  <div class="transition-diamond" style="top:auto;bottom:80pt;left:52pt;width:60pt;height:60pt;opacity:0.02;"></div>
+</div>
+</body>
+</html>

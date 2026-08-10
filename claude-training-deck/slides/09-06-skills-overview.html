@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>Skills Overview</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" href="../shared/slide.css">
+</head>
+<body>
+<div class="slide section-theme-5">
+  <div class="accent-strip left" style="background:rgba(212,221,232,0.06);"></div>
+  <div class="accent-band top" style="--sec-accent:#d4dde8;"></div>
+  <div class="corner-accent tr"></div>
+
+  <div class="slide-inner" style="position:relative;z-index:2;">
+    <div class="section-indicator"><p>09 / 10 · Templates &amp; Skills</p></div>
+
+    <div style="display:flex;gap:24pt;flex:1;">
+      <div style="flex:1;display:flex;flex-direction:column;">
+        <h1>Anatomy of a Skill</h1>
+        <div class="sec-divider"></div>
+        <p style="font-size:12pt;color:#96a4b2;margin-bottom:8pt;">A skill packages a prompt into a reusable /command. It lives in <strong>~/.claude/skills/</strong> and can be invoked by anyone on your team.</p>
+
+        <div class="code-block" style="max-width:95%;flex:1;">
+          <p><strong style="color:#d4dde8;">meeting-recap/</strong></p>
+          <p style="color:#7a8796;margin-top:4pt;">├── <strong style="color:#d4dde8;">SKILL.md</strong>  ← The instruction file</p>
+          <p style="color:#7a8796;">├── assets/      ← Optional images, templates</p>
+          <p style="color:#7a8796;">└── scripts/     ← Optional automation scripts</p>
+          <p style="margin-top:10pt;"><strong style="color:#96a4b2;"># SKILL.md</strong></p>
+          <p style="color:#7a8796;margin-top:4pt;">---</p>
+          <p style="margin-top:4pt;"><strong style="color:#96a4b2;">name:</strong> meeting-recap</p>
+          <p><strong style="color:#96a4b2;">description:</strong> Generate structured meeting summaries from transcripts</p>
+          <p style="margin-top:6pt;"><strong style="color:#96a4b2;"># Skill instructions</strong></p>
+          <p style="color:#7a8796;">When invoked, I will:</p>
+          <p style="color:#7a8796;">1. Ask for the meeting transcript</p>
+          <p style="color:#7a8796;">2. Extract: decisions, action items, open questions</p>
+          <p style="color:#7a8796;">3. Output in a structured format</p>
+          <p style="color:#7a8796;">4. Flag unclear items</p>
+        </div>
+      </div>
+
+      <div style="flex:0.7;">
+        <h2 style="font-size:24pt;font-family:'Cormorant Garamond',Georgia,serif;">Skill benefits</h2>
+        <div class="sec-divider"></div>
+        <ul style="list-style:none;padding:0;">
+          <li style="padding:6pt 0 6pt 14pt;border-left:2pt solid #d4dde8;font-size:12pt;color:#b8c4d0;margin-bottom:6pt;">
+            <strong style="color:#d4dde8;">One-word invocation</strong><br>
+            <span style="font-size:10pt;color:#7a8796;">Type /meeting-recap instead of re-writing the prompt</span>
+          </li>
+          <li style="padding:6pt 0 6pt 14pt;border-left:2pt solid #d4dde8;font-size:12pt;color:#b8c4d0;margin-bottom:6pt;">
+            <strong style="color:#d4dde8;">Team sharing</strong><br>
+            <span style="font-size:10pt;color:#7a8796;">Everyone on your team uses the same workflow</span>
+          </li>
+          <li style="padding:6pt 0 6pt 14pt;border-left:2pt solid #d4dde8;font-size:12pt;color:#b8c4d0;margin-bottom:6pt;">
+            <strong style="color:#d4dde8;">Consistent output</strong><br>
+            <span style="font-size:10pt;color:#7a8796;">Same format every time, no variations</span>
+          </li>
+          <li style="padding:6pt 0 6pt 14pt;border-left:2pt solid #d4dde8;font-size:12pt;color:#b8c4d0;margin-bottom:6pt;">
+            <strong style="color:#d4dde8;">Version control</strong><br>
+            <span style="font-size:10pt;color:#7a8796;">Skills live in files — track changes in git</span>
+          </li>
+          <li style="padding:6pt 0 6pt 14pt;border-left:2pt solid #d4dde8;font-size:12pt;color:#b8c4d0;">
+            <strong style="color:#d4dde8;">Composability</strong><br>
+            <span style="font-size:10pt;color:#7a8796;">Skills can reference other skills</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

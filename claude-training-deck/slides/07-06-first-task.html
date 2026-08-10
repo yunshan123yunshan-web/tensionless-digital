@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>Your First Task</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" href="../shared/slide.css">
+<style>
+.task-flow { display:flex; gap:12pt; margin-top:10pt; }
+.task-step { flex:1; padding:12pt 14pt; border:1px solid #1e1e1e; background:#0d0d0f; }
+.task-step .step-num { font-size:10pt; color:#7a8796; font-weight:500; }
+.task-step .step-title { font-size:13pt; color:#d4dde8; font-weight:500; margin:4pt 0; }
+.task-step p { font-size:10.5pt; color:#96a4b2; margin:0; }
+.arrow { display:flex; align-items:center; color:#5a6067; font-size:18pt; }
+</style>
+</head>
+<body>
+<div class="slide section-theme-3">
+  <div class="accent-band top" style="--sec-accent:#7a8796;"></div>
+  <div class="accent-strip right" style="background:rgba(122,135,150,0.04);"></div>
+  <div class="corner-accent tr"></div>
+
+  <div class="slide-inner" style="position:relative;z-index:2;">
+    <div class="section-indicator"><p>07 / 10 · Cowork Setup</p></div>
+
+    <div style="flex:1;display:flex;flex-direction:column;max-width:90%;">
+      <h1>Your First Cowork Task</h1>
+      <div class="sec-divider"></div>
+
+      <p style="font-size:12pt;color:#96a4b2;">Once your project is set up, a Cowork session follows a simple rhythm.</p>
+
+      <div class="task-flow">
+        <div class="task-step">
+          <p class="step-num">01</p>
+          <p class="step-title">Open the project</p>
+          <p>Launch Claude in your project directory. It reads CLAUDE.md automatically.</p>
+        </div>
+        <div class="arrow">→</div>
+        <div class="task-step">
+          <p class="step-num">02</p>
+          <p class="step-title">Describe the task</p>
+          <p>Tell Claude what you need. Be specific — just like a good prompt.</p>
+        </div>
+        <div class="arrow">→</div>
+        <div class="task-step">
+          <p class="step-num">03</p>
+          <p class="step-title">Review &amp; iterate</p>
+          <p>Claude reads files, makes changes, explains reasoning. You approve or refine.</p>
+        </div>
+        <div class="arrow">→</div>
+        <div class="task-step">
+          <p class="step-num">04</p>
+          <p class="step-title">Commit &amp; continue</p>
+          <p>Satisfied with the changes? Commit and move to the next task.</p>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:24pt;margin-top:14pt;">
+        <div class="focus-box" style="flex:1;border-left:3pt solid #7a8796;">
+          <p style="font-size:11pt;color:#96a4b2;margin:0;"><strong style="color:#d4dde8;">Pro tip:</strong> Start with a small, well-scoped task. "Add error handling to this function" is better than "Refactor the entire auth system." Build trust incrementally.</p>
+        </div>
+      </div>
+
+      <div class="warning-box" style="margin-top:6pt;">
+        <p style="font-size:11pt;color:#96a4b2;">After each task, review Claude's changes before accepting. Over time, you'll develop a rhythm and know when to trust the output.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

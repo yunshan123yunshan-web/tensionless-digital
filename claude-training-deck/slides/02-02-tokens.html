@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>Tokens Explained</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" href="../shared/slide.css">
+<style>
+.token-example { display:flex; flex-wrap:wrap; gap:3pt; margin:10pt 0; }
+.token-example span { background: #1e1e1e; padding: 2pt 5pt; font-size: 11pt; font-family: 'Inter', monospace; color: #b8c4d0; border-radius: 2px; }
+.token-example span.space { background: transparent; min-width: 6pt; }
+.token-example span.highlight { background: #2a2a2a; color: #d4dde8; }
+.tok-stat { display:flex; gap:16pt; margin-top:10pt; }
+.tok-stat-item { flex:1; border-left: 2pt solid #1e1e1e; padding-left: 12pt; }
+.tok-stat-item p.num { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 22pt; color: #d4dde8; margin: 0 0 2pt 0; line-height: 1; }
+.tok-stat-item p.desc { font-size: 10.5pt; color: #7a8796; margin: 0; }
+</style>
+</head>
+<body>
+<div class="slide section-theme-3">
+  <div class="accent-band top" style="--sec-accent:#7a8796;"></div>
+  <div class="accent-strip right" style="background:rgba(122,135,150,0.06);"></div>
+  <div class="corner-accent tr"></div>
+
+  <div class="slide-inner" style="position:relative;z-index:2;">
+    <div class="section-indicator"><p>02 / 10 · How Models Work</p></div>
+
+    <div style="display:flex;gap:28pt;flex:1;max-width:92%;">
+      <div style="flex:1.1;">
+        <h1>Tokens: The Currency of Thought</h1>
+        <div class="sec-divider"></div>
+        <p style="font-size:12pt;color:#96a4b2;">LLMs don't read words — they read <strong style="color:#d4dde8;">tokens</strong>. A token is ~4 characters or ~¾ of a word in English.</p>
+
+        <div class="focus-box" style="margin:10pt 0;">
+          <p style="font-size:10.5pt;color:#7a8796;margin:0;font-family:'Inter',monospace;">"Claude is an AI assistant created by Anthropic"</p>
+          <div class="token-example" style="margin:6pt 0 0 0;">
+            <span>Cl</span><span>aude</span><span class="space"></span><span> is</span><span class="space"></span><span> an</span><span class="space"></span><span> AI</span><span class="space"></span><span> assist</span><span>ant</span><span class="space"></span><span> created</span><span class="space"></span><span> by</span><span class="space"></span><span> An</span><span>throp</span><span>ic</span>
+          </div>
+          <p style="font-size:9pt;color:#5a6067;margin:4pt 0 0 0;">→ 14 tokens · ~10 words</p>
+        </div>
+
+        <p style="font-size:11pt;color:#7a8796;">Why this matters: <strong>tokens = money</strong>. Every API call, every prompt, every output — all priced per token. And context windows are measured in tokens.</p>
+      </div>
+      <div style="flex:0.9;">
+        <h3 style="margin-bottom:10pt;">Token Facts</h3>
+        <div class="tok-stat">
+          <div class="tok-stat-item">
+            <p class="num">~75K</p>
+            <p class="desc">Words in a 100K context window (roughly a novel)</p>
+          </div>
+        </div>
+        <div class="tok-stat">
+          <div class="tok-stat-item">
+            <p class="num">~30¢</p>
+            <p class="desc">Cost to process that novel through Claude Opus</p>
+          </div>
+        </div>
+        <div class="tok-stat">
+          <div class="tok-stat-item">
+            <p class="num">~75</p>
+            <p class="desc">Tokens per second — typical Claude output speed</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

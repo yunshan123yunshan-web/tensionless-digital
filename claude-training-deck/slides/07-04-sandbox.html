@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>Sandbox Mode</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" href="../shared/slide.css">
+<style>
+.sandbox-grid { display:flex; gap:16pt; margin-top:10pt; }
+.sandbox-card { flex:1; border:1px solid #1e1e1e; padding:14pt 16pt; background: #0f0f11; }
+.sandbox-card h4 { margin-bottom:4pt; }
+.sandbox-card p { font-size:11pt; color:#7a8796; margin:0; }
+.sandbox-card .sand-icon { font-size:20pt; margin-bottom:6pt; display:block; }
+.sandbox-card.safe { border-left:3pt solid #7a8796; }
+.sandbox-card.scoped { border-left:3pt solid #96a4b2; }
+.sandbox-card.full { border-left:3pt solid #d4dde8; }
+</style>
+</head>
+<body>
+<div class="slide section-theme-3">
+  <div class="accent-strip left" style="background:rgba(122,135,150,0.06);"></div>
+  <div class="accent-strip right" style="background:rgba(122,135,150,0.03);"></div>
+  <div class="accent-band top" style="--sec-accent:#7a8796;"></div>
+  <div class="corner-accent tr"></div>
+
+  <div class="slide-inner" style="position:relative;z-index:2;">
+    <div class="section-indicator"><p>07 / 10 · Cowork Setup</p></div>
+
+    <div style="flex:1;display:flex;flex-direction:column;max-width:88%;">
+      <h1>Understanding the Sandbox</h1>
+      <div class="sec-divider"></div>
+
+      <p style="font-size:12pt;color:#96a4b2;">Claude in Cowork mode runs in a <strong>sandboxed environment</strong> — it can read and write files, but within boundaries you define.</p>
+
+      <div class="sandbox-grid" style="max-width:100%;">
+        <div class="sandbox-card safe">
+          <span class="sand-icon">🛡️</span>
+          <h4>Safe Mode</h4>
+          <p>Claude asks for permission before any file write. Best for exploration and review.</p>
+        </div>
+        <div class="sandbox-card scoped">
+          <span class="sand-icon">📁</span>
+          <h4>Scoped Access</h4>
+          <p>Claude can write to specific directories you define. Good for active development.</p>
+        </div>
+        <div class="sandbox-card full">
+          <span class="sand-icon">•</span>
+          <h4>Full Access</h4>
+          <p>Claude reads and writes freely within the project. Full trust, full speed.</p>
+        </div>
+      </div>
+
+      <div class="focus-box" style="margin-top:auto;">
+        <p style="font-size:11pt;color:#96a4b2;margin:0;"><strong>Rule of thumb:</strong> Start in safe mode. Move to scoped when you trust the patterns. Full access is for experienced users who've built good CLAUDE.md guardrails.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

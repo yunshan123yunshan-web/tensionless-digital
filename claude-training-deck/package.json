@@ -1,0 +1,9 @@
+{
+  "name": "claude-training-deck",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "export-pptx": "node scripts/export_deck_pptx.mjs --slides slides/ --out output/claude-training-deck.pptx",
+    "verify": "node scripts/verify.py"
+  }
+}

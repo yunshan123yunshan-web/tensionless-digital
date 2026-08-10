@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>Bad Prompt vs Good Prompt</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" href="../shared/slide.css">
+<style>
+/* 120% detail: the code blocks have a refined note-card treatment */
+.prompt-col { flex: 1; display: flex; flex-direction: column; }
+.prompt-col h3 { margin-bottom: 14pt; }
+.prompt-col .code-block {
+  flex: 1;
+  padding: 24pt 30pt;
+  margin: 0;
+  position: relative;
+}
+.prompt-col .code-block::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 3pt;
+  pointer-events: none;
+}
+.prompt-col.bad .code-block::before { background: #5a6067; }
+.prompt-col.good .code-block::before { background: #9aaabc; }
+.prompt-col .code-block p {
+  font-size: 15pt;
+  line-height: 1.6;
+}
+.prompt-col .annotation {
+  font-size: 14pt;
+  margin-top: 10pt;
+  line-height: 1.5;
+}
+.prompt-col.bad .annotation { color: #5a6067; }
+.prompt-col.good .annotation { color: #96a4b2; }
+.prompt-col .check-item {
+  font-size: 14pt;
+  color: #5a6067;
+  padding: 2pt 0;
+}
+.prompt-col.good .check-item { color: #96a4b2; }
+/* Vertical divider treatment */
+.col-divider {
+  width: 1px;
+  background: linear-gradient(180deg, transparent 0%, #1a1c20 20%, #1a1c20 80%, transparent 100%);
+  align-self: stretch;
+  flex-shrink: 0;
+}
+</style>
+</head>
+<body>
+<div class="slide section-theme-3">
+  <div class="accent-band top"></div>
+  <div class="corner-accent tr"></div>
+
+  <div class="slide-inner" style="position:relative;z-index:2;">
+    <div class="section-indicator"><p>03 / 09 · Prompting</p></div>
+
+    <h1 style="max-width:65%;">Bad Prompt to Good Prompt</h1>
+    <div class="sec-divider"></div>
+
+    <div style="display:flex;gap:40pt;flex:1;max-width:92%;">
+      <div class="prompt-col bad">
+        <h3 style="color:#7a8796;">Bad Prompt</h3>
+        <div class="code-block" style="border-left:3pt solid #5a6067;">
+          <p style="color:#7a8796;">"Write a blog post about AI."</p>
+        </div>
+        <div class="annotation">
+          <div class="check-item">No audience specified</div>
+          <div class="check-item">No tone or voice</div>
+          <div class="check-item">No structure or format</div>
+          <div class="check-item">No examples</div>
+          <div class="check-item">No constraints</div>
+        </div>
+      </div>
+
+      <div class="col-divider"></div>
+
+      <div class="prompt-col good">
+        <h3>Good Prompt</h3>
+        <div class="code-block" style="border-left:3pt solid #9aaabc;">
+          <p><strong style="color:#d4dde8;">Role:</strong> You are a technology writer for a B2B audience.</p>
+          <p><strong style="color:#d4dde8;">Context:</strong> Our readers are operations leaders skeptical about AI's practical value.</p>
+          <p><strong style="color:#d4dde8;">Task:</strong> Write 500 words explaining 3 concrete ways AI saves time in daily operations.</p>
+          <p><strong style="color:#d4dde8;">Tone:</strong> Direct, evidence-backed, no hype. Short paragraphs.</p>
+          <p><strong style="color:#d4dde8;">Format:</strong> Headline + 3 sections with bullet points. End with a 1-sentence takeaway.</p>
+          <p><strong style="color:#d4dde8;">Verify:</strong> Check that every claim could be backed by a real example. Flag any overgeneralizations.</p>
+        </div>
+        <div class="annotation">
+          <div class="check-item">Role &bull; Context &bull; Task &bull; Tone &bull; Format &bull; Verification</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="focus-box" style="margin-top:auto;">
+      <p style="font-size:17pt;color:#b8c4d0;margin:0;">The good prompt takes <strong>30 seconds longer</strong> to write. It saves <strong>30 minutes</strong> of back-and-forth editing.</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

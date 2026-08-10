@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>Bad vs Good Prompt</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" href="../shared/slide.css">
+</head>
+<body>
+<div class="slide section-theme-2">
+  <div class="accent-band top" style="--sec-accent:#96a4b2;"></div>
+  <div class="corner-accent tr"></div>
+
+  <div class="slide-inner" style="position:relative;z-index:2;">
+    <div class="section-indicator"><p>06 / 10 · Prompting Basics</p></div>
+
+    <h1>Bad Prompt → Good Prompt</h1>
+    <div class="sec-divider"></div>
+
+    <div style="display:flex;gap:24pt;flex:1;max-width:95%;">
+      <div style="flex:1;display:flex;flex-direction:column;">
+        <h3 style="color:#7a8796;">Bad Prompt</h3>
+        <div class="code-block" style="flex:1;border-left:3pt solid #5a6067;">
+          <p style="color:#7a8796;">"Write a blog post about AI."</p>
+        </div>
+        <p style="font-size:10pt;color:#5a6067;margin-top:4pt;">✗ No audience · No tone · No structure · No examples · No constraints</p>
+      </div>
+
+      <div style="width:1px;background:#1e1e1e;align-self:stretch;"></div>
+
+      <div style="flex:1;display:flex;flex-direction:column;">
+        <h3>Good Prompt</h3>
+        <div class="code-block" style="flex:1;border-left:3pt solid #96a4b2;">
+          <p><strong style="color:#d4dde8;">Role:</strong> You're a technology writer for a B2B audience.</p>
+          <p><strong style="color:#d4dde8;">Context:</strong> Our readers are operations leaders who are skeptical about AI's practical value.</p>
+          <p><strong style="color:#d4dde8;">Task:</strong> Write a 500-word post explaining 3 concrete ways AI saves time in daily operations.</p>
+          <p><strong style="color:#d4dde8;">Tone:</strong> Direct, evidence-backed, no hype. Use short paragraphs.</p>
+          <p><strong style="color:#d4dde8;">Format:</strong> Headline + 3 sections with bullet points. End with a 1-sentence takeaway.</p>
+          <p><strong style="color:#d4dde8;">Verify:</strong> Check that every claim could be backed by a real example. Flag any overgeneralizations.</p>
+        </div>
+        <p style="font-size:10pt;color:#96a4b2;margin-top:4px;">✓ Role · Context · Task · Tone · Format · Verification</p>
+      </div>
+    </div>
+
+    <div class="focus-box" style="margin-top:auto;">
+      <p style="font-size:11pt;color:#96a4b2;margin:0;">The good prompt takes 30 seconds longer to write. It saves <strong>30 minutes</strong> of back-and-forth editing.</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>Rule 3: Say What You Want</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" href="../shared/slide.css">
+</head>
+<body>
+<div class="slide section-theme-2">
+  <div class="accent-strip left" style="background:rgba(150,164,178,0.05);"></div>
+  <div class="accent-strip right" style="background:rgba(150,164,178,0.03);"></div>
+  <div class="accent-band top" style="--sec-accent:#96a4b2;"></div>
+
+  <div class="slide-inner" style="position:relative;z-index:2;">
+    <div class="section-indicator"><p>06 / 10 · Prompting Basics</p></div>
+
+    <div style="flex:1;display:flex;flex-direction:column;max-width:88%;">
+      <h1>Rule 3: Say What You Want</h1>
+      <div class="sec-divider"></div>
+
+      <p style="font-size:12pt;color:#96a4b2;">Be explicit. Don't make Claude guess your preferences. <strong>Spell out your constraints.</strong></p>
+
+      <div style="display:flex;gap:20pt;margin-top:8pt;">
+        <div>
+          <h3 style="color:#7a8796;">Vague → Specific</h3>
+          <div class="code-block" style="margin-top:6pt;">
+            <p style="color:#7a8796;">✕ "Make it shorter"</p>
+            <p style="color:#b8c4d0;margin-top:2pt;">✓ "Cut to <strong>under 200 words</strong>. Remove the third paragraph entirely. Merge the first two points."</p>
+          </div>
+          <div class="code-block">
+            <p style="color:#7a8796;">✕ "Add some data"</p>
+            <p style="color:#b8c4d0;margin-top:2pt;">✓ "Include <strong>3 statistics</strong> from the attached report to support each claim. Cite the source."</p>
+          </div>
+        </div>
+        <div>
+          <div class="focus-box" style="height:auto;">
+            <p style="font-size:11pt;color:#d4dde8;margin:0;"><strong>Constraints to specify:</strong></p>
+            <ul style="list-style:none;padding:0;margin-top:6pt;">
+              <li style="font-size:11pt;color:#96a4b2;padding:3pt 0;">• Word / length limits</li>
+              <li style="font-size:11pt;color:#96a4b2;padding:3pt 0;">• Tone (formal, casual, urgent, empathetic)</li>
+              <li style="font-size:11pt;color:#96a4b2;padding:3pt 0;">• What to exclude</li>
+              <li style="font-size:11pt;color:#96a4b2;padding:3pt 0;">• Level of detail</li>
+              <li style="font-size:11pt;color:#96a4b2;padding:3pt 0;">• Audience knowledge level</li>
+              <li style="font-size:11pt;color:#96a4b2;padding:3pt 0;">• Dealbreakers / must-haves</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="warning-box" style="margin-top:auto;">
+        <p style="font-size:11pt;color:#96a4b2;"><strong>Remember:</strong> Claude will try to give you what you ask for. If you're not specific about what you want, you'll get what you <em>asked</em> for, not what you <em>wanted</em>.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

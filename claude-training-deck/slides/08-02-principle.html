@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>Why Context Matters</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" href="../shared/slide.css">
+</head>
+<body>
+<div class="slide section-theme-4">
+  <div class="accent-strip left" style="background:rgba(184,196,208,0.06);"></div>
+  <div class="accent-band top" style="--sec-accent:#b8c4d0;"></div>
+  <div class="corner-accent tr"></div>
+
+  <div class="slide-inner" style="position:relative;z-index:2;">
+    <div class="section-indicator"><p>08 / 10 · Building Context</p></div>
+
+    <div style="display:flex;gap:24pt;flex:1;">
+      <div style="flex:1;display:flex;flex-direction:column;">
+        <h1>Why Context Matters</h1>
+        <div class="sec-divider"></div>
+        <p style="font-size:12pt;color:#96a4b2;margin-bottom:8pt;">Claude arrives at every conversation knowing a lot about the world — but <strong>nothing about you.</strong> Context files bridge that gap.</p>
+
+        <div class="code-block" style="border-left:3pt solid #b8c4d0;background:#0d0d0f;">
+          <p style="color:#7a8796;">Without context:</p>
+          <p style="color:#b8c4d0;margin-top:2pt;">"Draft a proposal for a new client."</p>
+          <p style="color:#5a6067;margin-top:6pt;">→ Generic template, wrong tone, no brand voice</p>
+        </div>
+
+        <div class="code-block" style="border-left:3pt solid #d4dde8;margin-top:8pt;">
+          <p style="color:#7a8796;">With context:</p>
+          <p style="color:#b8c4d0;margin-top:2pt;">"Draft a proposal for a new client. Read my-company.md for positioning and writing-style.md for tone."</p>
+          <p style="color:#96a4b2;margin-top:6pt;">→ On-brand, right tone, specific to your business</p>
+        </div>
+
+        <div class="focus-box" style="margin-top:auto;">
+          <p style="font-size:11pt;color:#96a4b2;margin:0;"><strong>Think of context files as Claude's onboarding packet.</strong> The more it knows about you, the less it has to guess.</p>
+        </div>
+      </div>
+
+      <div style="flex:0.8;display:flex;flex-direction:column;">
+        <h2 style="font-size:24pt;font-family:'Cormorant Garamond',Georgia,serif;">What good context does</h2>
+        <div class="sec-divider"></div>
+        <ul style="list-style:none;padding:0;">
+          <li style="padding:8pt 0 8pt 14pt;border-left:2pt solid #b8c4d0;font-size:12pt;color:#b8c4d0;margin-bottom:6pt;">
+            Eliminates generic output
+          </li>
+          <li style="padding:8pt 0 8pt 14pt;border-left:2pt solid #b8c4d0;font-size:12pt;color:#b8c4d0;margin-bottom:6pt;">
+            Reduces back-and-forth editing
+          </li>
+          <li style="padding:8pt 0 8pt 14pt;border-left:2pt solid #b8c4d0;font-size:12pt;color:#b8c4d0;margin-bottom:6pt;">
+            Maintains consistency across sessions
+          </li>
+          <li style="padding:8pt 0 8pt 14pt;border-left:2pt solid #b8c4d0;font-size:12pt;color:#b8c4d0;">
+            Lets new team members inherit your style
+          </li>
+        </ul>
+        <p style="font-size:11pt;color:#5a6067;margin-top:auto;">Context files are stored in <strong style="color:#96a4b2;">~/.claude/</strong> or per-project in <strong style="color:#96a4b2;">CLAUDE.md</strong></p>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

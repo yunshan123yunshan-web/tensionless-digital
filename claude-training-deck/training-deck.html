@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960">
+<title>Claude Training Workshop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#090909;overflow:hidden;font-family:'Inter',system-ui,sans-serif;color:#b8c4d0;font-size:18pt;line-height:1.55;-webkit-font-smoothing:antialiased}
+
+#stage{position:fixed;top:50%;left:50%;transform-origin:top left;width:960px;height:540px;background:#090909;box-shadow:0 10px 60px rgba(0,0,0,0.4)}
+.slide{position:absolute;top:0;left:0;width:960px;height:540px;background:#090909;padding:42pt 48pt;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .35s ease;overflow:hidden}
+.slide.active{opacity:1;pointer-events:auto}
+.slide .bg{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden}
+.slide .content{position:relative;z-index:2;display:flex;flex-direction:column;flex:1}
+
+/* Section themes */
+.theme-1{--accent:#9aaabc;--accent-soft:rgba(154,170,188,0.06)}
+.theme-2{--accent:#96a4b2;--accent-soft:rgba(150,164,178,0.06)}
+.theme-3{--accent:#7a8796;--accent-soft:rgba(122,135,150,0.06)}
+.theme-4{--accent:#b8c4d0;--accent-soft:rgba(184,196,208,0.06)}
+.theme-5{--accent:#d4dde8;--accent-soft:rgba(212,221,232,0.06)}
+.theme-ws{--accent:#96a4b2;--accent-soft:rgba(150,164,178,0.08)}
+
+.accent-bar{position:absolute;top:0;left:0;width:100%;height:3pt;background:var(--accent,#9aaabc);opacity:.5;z-index:3}
+.accent-strip{position:absolute;width:200pt;height:100%;background:var(--accent-soft);pointer-events:none}
+.accent-strip.l{left:0;top:0}
+.accent-strip.r{right:0;top:0}
+.corner{position:absolute;width:70pt;height:70pt;pointer-events:none;z-index:3}
+.corner.tr{top:0;right:0;border-right:1pt solid rgba(212,221,232,0.06);border-top:1pt solid rgba(212,221,232,0.06)}
+.corner.bl{bottom:0;left:0;border-left:1pt solid rgba(212,221,232,0.06);border-bottom:1pt solid rgba(212,221,232,0.06)}
+
+h1{font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;font-size:42pt;color:#d4dde8;line-height:1.12;margin:0 0 12pt 0;letter-spacing:-.01em}
+h1.lg{font-size:50pt}
+h2{font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;font-size:28pt;color:#d4dde8;line-height:1.2;margin:0 0 10pt 0}
+h3{font-family:'Inter',system-ui,sans-serif;font-weight:500;font-size:16pt;color:#96a4b2;line-height:1.3;margin:0 0 8pt 0}
+p{margin:0 0 8pt 0;font-size:14pt;color:#b8c4d0;line-height:1.5}
+p.sm{font-size:12pt;color:#7a8796}
+p.xs{font-size:10pt;color:#5a6067;letter-spacing:.08em;text-transform:uppercase;font-weight:500}
+p.label{font-size:10pt;font-weight:500;color:#5a6067;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+strong{color:#d4dde8;font-weight:500}
+em{color:#96a4b2;font-style:italic}
+
+.divider{width:48pt;height:1px;background:var(--accent,#96a4b2);margin:8pt 0 16pt 0;opacity:.35}
+
+.focus{border:1px solid #1a1c20;background:#0c0d0f;padding:14pt 18pt;margin:10pt 0}
+.focus p{font-size:13pt;color:#d4dde8;margin:0}
+.focus p.sm{font-size:11pt;color:#96a4b2;margin-top:4pt}
+
+.tip{border-left:3pt solid #5a6067;padding:10pt 0 10pt 16pt;margin:8pt 0}
+.tip p{font-size:12pt;color:#96a4b2;margin:0}
+
+.code{border:1px solid #1a1c20;background:#0c0d0f;padding:12pt 16pt;margin:8pt 0;font-family:'Inter',monospace;font-size:11pt;line-height:1.5;color:#96a4b2;white-space:pre-wrap}
+.code p{font-family:inherit;font-size:inherit;line-height:inherit;color:inherit;margin:0}
+
+.cols{display:flex;gap:24pt;flex:1}
+.col{flex:1}
+.col-2{flex:2}
+
+/* Title slide */
+.s-title{align-items:center;justify-content:center;text-align:center}
+.s-title h1{font-size:52pt;margin-bottom:8pt}
+.s-title p{font-size:16pt;color:#96a4b2}
+.s-title .meta{position:absolute;bottom:32pt;left:0;width:100%;text-align:center}
+.s-title .meta p{font-size:10pt;color:#5a6067}
+
+/* Section title slide */
+.s-section{align-items:center;justify-content:center;text-align:center}
+.s-section h1{font-size:44pt}
+.s-section .num{font-family:'Cormorant Garamond',Georgia,serif;font-weight:300;font-size:80pt;color:var(--accent,#96a4b2);opacity:.15;line-height:1;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+
+/* Workshop slide */
+.ws-label{display:inline-block;font-size:10pt;font-weight:600;color:var(--accent,#96a4b2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4pt}
+.ws-step{border-left:2pt solid var(--accent,#96a4b2);padding:4pt 0 4pt 14pt;margin-bottom:4pt}
+.ws-step p{font-size:12pt;margin:0}
+.ws-step .n{font-size:9pt;font-weight:600;color:#5a6067;letter-spacing:.08em;text-transform:uppercase}
+
+/* Counter */
+#counter{position:fixed;bottom:16px;right:20px;background:rgba(0,0,0,.65);color:#b8c4d0;padding:4px 12px;border-radius:999px;font-size:11px;letter-spacing:.05em;z-index:100;user-select:none;opacity:.7}
+#counter:hover{opacity:1}
+
+/* Nav */
+.nav-z{position:fixed;top:0;bottom:0;width:12%;cursor:pointer;z-index:50}
+.nav-z.l{left:0}
+.nav-z.r{right:0}
+.nav-h{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:999px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:18px;opacity:0;transition:opacity .2s}
+.nav-z.l .nav-h{left:12px}
+.nav-z.r .nav-h{right:12px}
+.nav-z:hover .nav-h{opacity:1}
+
+/* Lists */
+ul{list-style:none;padding:0;margin:4pt 0}
+li{padding:3pt 0 3pt 14pt;border-left:2pt solid #1e1e1e;font-size:12pt;color:#b8c4d0;margin-bottom:3pt}
+li.accent{border-left-color:var(--accent,#96a4b2);color:#d4dde8}
+li.sm{font-size:11pt;color:#7a8796}
+
+/* Table */
+.tbl{width:100%;border-collapse:collapse;margin:6pt 0}
+.tbl th{font-size:11pt;font-weight:500;color:#96a4b2;text-align:left;padding:6pt 10pt;border-bottom:1px solid #1e1e1e;background:#0c0d0f}
+.tbl td{font-size:11pt;color:#b8c4d0;padding:5pt 10pt;border-bottom:1px solid #1a1c20;vertical-align:top}
+
+/* Checklist (for final slide) */
+.cl{list-style:none;padding:0;margin:6pt 0}
+.cl li{padding:3pt 0 3pt 20pt;font-size:11pt;color:#b8c4d0;position:relative;margin-bottom:2pt}
+.cl li::before{content:"☐";position:absolute;left:0;color:#5a6067}
+.cl li.done::before{content:"☑";color:#96a4b2}
+
+/* Print */
+@media print{@page{size:960pt 540pt;margin:0}html,body{background:#090909;overflow:visible;height:auto}#stage{position:static;transform:none!important;box-shadow:none}.nav-z,#counter{display:none!important}.slide{opacity:1!important;position:relative!important;page-break-after:always;height:540pt;pointer-events:auto!important}}
+</style>
+</head>
+<body>
+
+<div id="stage"><div id="deck"></div></div>
+<div class="nav-z l" id="navL"><div class="nav-h">‹</div></div>
+<div class="nav-z r" id="navR"><div class="nav-h">›</div></div>
+<div id="counter">1 / 25</div>
+
+<script>
+// ── Slide data ──
+const SLIDES = [
+  // ═══ PART 1 — AI FOUNDATIONS ═══
+  { theme: 'theme-1', render: function(d) {
+    // Title slide
+    d.className='slide active s-title theme-1';
+    d.innerHTML=`
+      <div class="accent-bar"></div>
+      <div class="bg"><div class="accent-strip l"></div><div class="accent-strip r"></div></div>
+      <div class="content">
+        <h1>AI That Actually Works</h1>
+        <p>A hands-on workshop &mdash; walk away with your files set up</p>
+        <div class="meta"><p>Claude Training · ~75 min</p></div>
+      </div>
+      <div class="corner tr"></div><div class="corner bl"></div>`;
+  }},
+  { theme: 'theme-1', render: function(d) {
+    d.className='slide theme-1';
+    d.innerHTML=`
+      <div class="accent-bar"></div>
+      <div class="bg"><div class="accent-strip l"></div></div>
+      <div class="content">
+        <p class="xs">01 · Foundations</p>
+        <h1>What AI Actually Is</h1>
+        <div class="divider"></div>
+        <div class="cols" style="flex:1;margin-top:6pt">
+          <div class="col">
+            <h3>What AI is NOT</h3>
+            <ul>
+              <li>Not conscious or sentient</li>
+              <li class="accent">Not a search engine</li>
+              <li>Not always right</li>
+              <li>Not reading your mind</li>
+            </ul>
+          </div>
+          <div class="col">
+            <h3>What AI IS</h3>
+            <ul>
+              <li class="accent">A pattern-recognition engine</li>
+              <li>Extremely good at predicting next words</li>
+              <li class="accent">A reasoning tool that follows instructions</li>
+              <li>A collaborator that gets better with good input</li>
+            </ul>
+          </div>
+        </div>
+        <div class="focus" style="margin-top:auto">
+          <p>A brilliant intern who needs clear instructions, context, and supervision. Not a psychic.</p>
+        </div>
+      </div>
+      <div class="corner tr"></div><div class="corner bl"></div>`;
+  }},
+  { theme: 'theme-1', render: function(d) {
+    d.className='slide theme-1';
+    d.innerHTML=`
+      <div class="accent-bar"></div>
+      <div class="bg"><div class="accent-strip r"></div></div>
+      <div class="content">
+        <p class="xs">01 · Foundations</p>
+        <h1>How Patterns Become Useful</h1>
+        <div class="divider"></div>
+        <p style="margin-bottom:10pt">The chain from raw training to something you can use:</p>
+        <div style="display:flex;gap:6pt;flex-wrap:wrap;margin-bottom:8pt">
+          <div style="flex:1;background:#0c0d0f;border:1px solid #1a1c20;padding:8pt 10pt;text-align:center;min-width:80pt">
+            <p style="font-size:10pt;color:#5a6067;margin:0">Training</p>
+            <p style="font-size:9pt;color:#7a8796;margin:0">Reading billions of pages</p>
+          </div>
+          <div style="display:flex;align-items:center;color:#5a6067;font-size:16pt;padding:0 2pt">→</div>
+          <div style="flex:1;background:#0c0d0f;border:1px solid #1a1c20;padding:8pt 10pt;text-align:center;min-width:80pt">
+            <p style="font-size:10pt;color:#5a6067;margin:0">Patterns</p>
+            <p style="font-size:9pt;color:#7a8796;margin:0">Learning what language looks like</p>
+          </div>
+          <div style="display:flex;align-items:center;color:#5a6067;font-size:16pt;padding:0 2pt">→</div>
+          <div style="flex:1;background:#0c0d0f;border:1px solid #1a1c20;padding:8pt 10pt;text-align:center;min-width:80pt">
+            <p style="font-size:10pt;color:#5a6067;margin:0">Your Input</p>
+            <p style="font-size:9pt;color:#7a8796;margin:0">Instructions + context + examples</p>
+          </div>
+          <div style="display:flex;align-items:center;color:#5a6067;font-size:16pt;padding:0 2pt">→</div>
+          <div style="flex:1;background:#0c0d0f;border:1px solid #1a1c20;padding:8pt 10pt;text-align:center;min-width:80pt">
+            <p style="font-size:10pt;color:#5a6067;margin:0">Output</p>
+            <p style="font-size:9pt;color:#7a8796;margin:0">Draft, analysis, summary</p>
+          </div>
+          <div style="display:flex;align-items:center;color:#5a6067;font-size:16pt;padding:0 2pt">→</div>
+          <div style="flex:1;background:#0c0d0f;border:1px solid #1a1c20;padding:8pt 10pt;text-align:center;min-width:80pt">
+            <p style="font-size:10pt;color:#5a6067;margin:0">You Judge</p>
+            <p style="font-size:9pt;color:#7a8796;margin:0">Is it good? Fix what's not</p>
+          </div>
+        </div>
+        <div class="focus" style="margin-top:auto">
+          <p>The quality of what you get out depends entirely on what you put in. <strong>Good in = gold out.</strong></p>
+        </div>
+      </div>
+      <div class="corner tr"></div><div class="corner bl"></div>`;
+  }},
+  { theme: 'theme-1', render: function(d) {
+    d.className='slide theme-1';
+    d.innerHTML=`
+      <div class="accent-bar"></div>
+      <div class="bg"><div class="accent-strip l"></div><div class="accent-strip r"></div></div>
+      <div class="content">
+        <p class="xs">01 · Foundations</p>
+        <h1>The Mindset Shift</h1>
+        <div class="divider"></div>
+        <div class="cols" style="flex:1;margin-top:6pt">
+          <div class="col">
+            <h3 style="color:#5a6067">Old Way</h3>
+            <ul>
+              <li style="border-left-color:#3a3a3a;color:#5a6067">Treat AI like a search engine</li>
+              <li style="border-left-color:#3a3a3a;color:#5a6067">Zero context provided</li>
+              <li style="border-left-color:#3a3a3a;color:#5a6067">One-shot prompts, no iteration</li>
+              <li style="border-left-color:#3a3a3a;color:#5a6067">Starts fresh every time</li>
+            </ul>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:center;flex:0 0 40pt">
+            <p style="font-size:24pt;color:#5a6067;margin:0">→</p>
+          </div>
+          <div class="col">
+            <h3>New Way</h3>
+            <ul>
+              <li class="accent">Delegate like a teammate</li>
+              <li class="accent">Rich context and examples</li>
+              <li class="accent">Iterate: review → refine → repeat</li>
+              <li class="accent">Builds on shared understanding</li>
+            </ul>
+          </div>
+        </div>
+        <div class="focus" style="margin-top:auto">
+          <p><strong>From asking questions → delegating outcomes.</strong> <span class="sm" style="font-size:12pt;color:#96a4b2">That's the whole shift.</span></p>
+        </div>
+      </div>
+      <div class="corner tr"></div><div class="corner bl"></div>`;
+  }},
+
+  // ═══ PART 2 — CLAUDE BASICS ═══
+  { theme: 'theme-2', render: function(d) {
+    d.className='slide s-section theme-2';
+    d.innerHTML=`
+      <div class="accent-bar"></div>
+      <div class="bg"><div class="accent-strip l"></div><div class="accent-strip r"></div></div>
+      <div class="num">02</div>
+      <div class="content" style="align-items:center;justify-content:center;text-align:center">
+        <p class="xs">Part 2</p>
+        <h1>Claude Basics</h1>
+        <p>What it is, how it compares, how to use it</p>
+      </div>
+      <div class="corner tr"></div><div class="corner bl"></div>`;
+  }},
+  { theme: 'theme-2', render: function(d) {
+    d.className='slide theme-2';
+    d.innerHTML=`
+      <div class="accent-bar"></div>
+      <div class="bg"><div class="accent-strip r"></div></div>
+      <div class="content">
+        <p class="xs">02 · Claude Basics</p>
+        <h1>What Is Claude?</h1>
+        <div class="divider"></div>
+        <div class="cols" style="flex:1">
+          <div class="col">
+            <p style="font-size:13pt">An AI assistant built by <strong>Anthropic</strong> (founded by former OpenAI researchers). Built to be helpful, honest, and safe.</p>
+            <ul style="margin-top:8pt">
+              <li class="accent">200K token context window — can read entire books</li>
+              <li>Handle 200-page documents in one go</li>
+              <li class="accent">Reads local files (Desktop app)</li>
+              <li>Drafts, summarizes, analyzes, brainstorms</li>
+            </ul>
+          </div>
+          <div class="col">
+            <h3 style="font-size:13pt">The 3 Models</h3>
+            <table class="tbl">
+              <tr><th>Model</th><th>Best For</th><th>Think of it as</th></tr>
+              <tr><td>Haiku</td><td>Quick tasks, simple Q&amp;A</td><td>Your quick assistant</td></tr>
+              <tr><td>Sonnet</td><td>Everyday work, writing</td><td>Your main collaborator</td></tr>
+              <tr><td>Opus</td><td>Complex analysis, strategy</td><td>Your senior advisor</td></tr>
+            </table>
+            <div class="tip"><p>Rule: use the lightest model that does the job.</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="corner tr"></div><div class="corner bl"></div>`;
+  }},
+  { theme: 'theme-2', render: function(d) {
+    d.className='slide theme-2';
+    d.innerHTML=`
+      <div class="accent-bar"></div>
+      <div class="bg"><div class="accent-strip l"></div></div>
+      <div class="content">
+        <p class="xs">02 · Claude Basics</p>
+        <h1>Claude vs ChatGPT</h1>
+        <div class="divider"></div>
+        <div class="cols" style="flex:1;margin-top:4pt">
+          <div class="col">
+            <h3 style="color:#96a4b2">Claude wins at</h3>
+            <ul>
+              <li class="accent">Long documents (200K vs 128K tokens)</li>
+              <li class="accent">Following detailed instructions</li>
+              <li>Nuanced, less "AI-flavored" writing</li>
+              <li class="accent">Reading local files (Desktop app)</li>
+              <li>Cowork mode — runs tasks autonomously</li>
+            </ul>
+          </div>
+          <div class="col">
+            <h3 style="color:#5a6067">ChatGPT wins at</h3>
+            <ul style="color:#5a6067;border-left-color:#3a3a3a">
+              <li>Voice mode (stronger)</li>
+              <li>Image generation (DALL-E)</li>
+              <li>Faster web search</li>
+              <li>Broader plugin ecosystem</li>
+            </ul>
+          </div>
+        </div>
+        <div class="focus" style="margin-top:auto">
+          <p>Neither is "better" overall. They excel at different things. <strong>For our work, Claude's instruction-following and context handling make it the stronger choice.</strong></p>
+        </div>
+      </div>
+      <div class="corner tr"></div><div class="corner bl"></div>`;
+  }},
+  { theme: 'theme-2', render: function(d) {
+    d.className='slide theme-2';
+    d.innerHTML=`
+      <div class="accent-bar"></div>
+      <div class="bg"><div class="accent-strip l"></div><div class="accent-strip r"></div></div>
+      <div class="content">
+        <p class="xs">02 · Claude Basics</p>
+        <h1>3 Ways to Use Claude</h1>
+        <div class="divider"></div>
+        <div class="cols" style="flex:1;margin-top:8pt;gap:16pt">
+          <div class="col" style="background:#0c0d0f;border:1px solid #1a1c20;padding:12pt 14pt">
+            <p class="xs" style="color:#96a4b2;margin-bottom:4pt">Chat</p>
+            <h2 style="font-size:22pt;margin:0">Ask</h2>
+            <p class="sm" style="margin-top:4pt">Browser or desktop. Quick drafts, questions, brainstorming. <strong>No setup.</strong></p>
+          </div>
+          <div class="col" style="background:#0c0d0f;border:1px solid var(--accent,#96a4b2);padding:12pt 14pt">
+            <p class="xs" style="color:#96a4b2;margin-bottom:4pt">Cowork ⭐</p>
+            <h2 style="font-size:22pt;margin:0">Work Together</h2>
+            <p class="sm" style="margin-top:4pt">Reads/writes files in your project folder. Runs tasks autonomously. <strong>This is what we're setting up today.</strong></p>
+          </div>
+          <div class="col" style="background:#0c0d0f;border:1px solid #1a1c20;padding:12pt 14pt">
+            <p class="xs" style="color:#5a6067;margin-bottom:4pt">Code</p>
+            <h2 style="font-size:22pt;margin:0">Terminal</h2>
+            <p class="sm" style="margin-top:4pt">For developers. Runs in terminal. <strong>Not needed to start.</strong></p>
+          </div>
+        </div>
+        <div class="focus" style="margin-top:auto">
+          <p>Chat = ask. Cowork = ask + file access + it does the work. <strong>Cowork is the unlock.</strong></p>
+        </div>
+      </div>
+      <div class="corner tr"></div><div class="corner bl"></div>`;
+  }},
+
+  // ═══ PART 3 — PROMPTING ═══
+  { theme: 'theme-3', render: function(d) {
+    d.className='slide s-section theme-3';
+    d.innerHTML=`
+      <div class="accent-bar"></div>
+      <div class="bg"><div class="accent-strip l"></div><div class="accent-strip r"></div></div>
+      <div class="num">03</div>
+      <div class="content" style="align-items:center;justify-content:center;text-align:center">
+        <p class="xs">Part 3</p>
+        <h1>Prompting</h1>
+        <p>How to talk to AI so it actually understands you</p>
+      </div>
+      <div class="corner tr"></div><div class="corner bl"></div>`;
+  }},
+  { theme: 'theme-3', render: function(d) {
+    d.className='slide theme-3';
+    d.innerHTML=`
+      <div class="accent-bar"></div>
+      <div class="bg"><div class="accent-strip l"></div></div>
+      <div class="content">
+        <p class="xs">03 · Prompting</p>
+        <h1>Prompting Is Delegation</h1>
+        <div class="divider"></div>
+        <p>If you asked a new team member to write a client email, you'd tell them:</p>
+        <ul>
+          <li class="accent">Who the client is and what they care about</li>
+          <li class="accent">What the email should accomplish</li>
+          <li class="accent">What tone to use</li>
+          <li class="accent">What to include and what to avoid</li>
+        </ul>
+        <p style="margin-top:4pt">The same rules apply to prompting AI.</p>
+        <div class="focus" style="margin-top:auto">
+          <p>Prompting is a <strong>conversation skill</strong>, not a technical skill. If you can explain a task to a colleague, you can prompt.</p>
+        </div>
+      </div>
+      <div class="corner tr"></div><div class="corner bl"></div>`;
+  }},
+  { theme: 'theme-3', render: function(d) {
+    d.className='slide theme-3';
+    d.innerHTML=`
+      <div class="accent-bar"></div>
+      <div class="bg"><div class="accent-strip r"></div></div>
+      <div class="content">
+        <p class="xs">03 · Prompting</p>
+        <h1>6-Part Prompt Framework</h1>
+        <div class="divider"></div>
+        <table class="tbl">
+          <tr><th style="width:100pt">Element</th><th>What It Means</th><th style="width:200pt">Example</th></tr>
+          <tr><td><strong style="color:#d4dde8">Role</strong></td><td>Who is Claude acting as?</td><td>"You are a senior copywriter..."</td></tr>
+          <tr><td><strong style="color:#d4dde8">Context</strong></td><td>Background, audience, situation</td><td>"We met yesterday about Q3 redesign..."</td></tr>
+          <tr><td><strong style="color:#d4dde8">Task</strong></td><td>What exactly should it do?</td><td>"Draft a follow-up email..."</td></tr>
+          <tr><td><strong style="color:#d4dde8">Constraints</strong></td><td>Boundaries, length, tone, avoid</td><td>"Under 200 words, warm but professional"</td></tr>
+          <tr><td><strong style="color:#d4dde8">Format</strong></td><td>How should the response look?</td><td>"Bullet points, then email draft"</td></tr>
+          <tr><td><strong style="color:#d4dde8">Verify</strong></td><td>How should it check its work?</td><td>"Flag anything uncertain"</td></tr>
+        </table>
+        <div class="focus" style="margin-top:auto">
+          <p>Not every prompt needs all 6. Aim for at least <strong>3-4 elements</strong>. Context + Task + Format gets you 80% of the way.</p>
+        </div>
+      </div>
+      <div class="corner tr"></div><div class="corner bl"></div>`;
+  }},
+  { theme: 'theme-3', render: function(d) {
+    d.className='slide theme-3';
+    d.innerHTML=`
+      <div class="accent-bar"></div>
+      <div class="bg"><div class="accent-strip l"></div><div class="accent-strip r"></div></div>
+      <div class="content">
+        <p class="xs">03 · Prompting</p>
+        <h1>2 Rules That Matter Most</h1>
+        <div class="divider"></div>
+        <div class="cols" style="flex:1;margin-top:4pt;gap:20pt">
+          <div class="col">
+            <h3>Rule 1: Give Context</h3>
+            <p class="sm">Claude has no idea who you are or what's happened. Set the scene.</p>
+            <div class="code" style="font-size:9pt;border-left:2pt solid #5a6067;margin-top:6pt">
+Bad: "Write an email to a client."
+
+Good: "Write to Sarah Chen at Acme Corp.
+We met yesterday about their Q3 redesign.
+She's concerned about timeline. Purpose
+is to reassure her and confirm next steps.
+Relationship is friendly but professional."
+            </div>
+          </div>
+          <div class="col">
+            <h3>Rule 2: Give Examples</h3>
+            <p class="sm">Claude learns from patterns. One example &gt; 100 words of instruction.</p>
+            <div class="code" style="font-size:9pt;border-left:2pt solid #5a6067;margin-top:6pt">
+Bad: "Write a professional bio."
+
+Good: "Write a professional bio. Here's
+one I like — notice the tone:
+[example]. Write mine in the same style."
+            </div>
+          </div>
+        </div>
+        <div class="focus" style="margin-top:auto">
+          <p>Context tells Claude <strong>what</strong> to think about. Examples tell it <strong>how</strong> to sound.</p>
+        </div>
+      </div>
+      <div class="corner tr"></div><div class="corner bl"></div>`;
+  }},
+  { theme: 'theme-3', render: function(d) {
+    d.className='slide theme-3';
+    d.innerHTML=`
+      <div class="accent-bar"></div>
+      <div class="bg"><div class="accent-strip l"></div></div>
+      <div class="content">
+        <p class="xs">03 · Prompting</p>
+        <h1>Bad Prompt → Good Prompt</h1>
+        <div class="divider"></div>
+        <div class="cols" style="flex:1;margin-top:4pt;gap:20pt">
+          <div class="col">
+            <h3 style="color:#5a6067">Bad</h3>
+            <div class="code" style="border-left:2pt solid #5a6067;font-size:10pt;flex:1">
+"Write a blog post about AI."
+            </div>
+            <p class="xs" style="margin-top:4pt">✗ No audience · No tone · No structure · No constraints</p>
+          </div>
+          <div class="col">
+            <h3>Good</h3>
+            <div class="code" style="border-left:2pt solid var(--accent,#7a8796);font-size:10pt;flex:1">
+Role: Technology writer for B2B ops leaders
+skeptical about AI's practical value.
+
+Task: 500 words explaining 3 concrete
+ways AI saves time in daily operations.
+
+Tone: Direct, evidence-backed, no hype.
+
+Format: Headline + 3 sections with bullets.
+End with 1-sentence takeaway.
+
+Verify: Flag overgeneralizations.
+            </div>
+            <p class="xs" style="margin-top:4pt">✓ Takes 30 seconds longer to write. Saves 30 minutes of editing.</p>
+          </div>
+        </div>
+      </div>
+      <div class="corner tr"></div><div class="corner bl"></div>`;
+  }},
+
+  // ═══ WORKSHOP BREAK 1 ═══
+  { theme: 'theme-ws', render: function(d) {
+    d.className='slide theme-ws';
+    d.innerHTML=`
+      <div class="accent-bar"></div>
+      <div class="bg"><div class="accent-strip l"></div><div class="accent-strip r"></div></div>
+      <div class="content" style="justify-content:center">
+        <p class="ws-label">⚡ Workshop · 5 minutes</p>
+        <h1>Create Your Project Folder</h1>
+        <div class="divider"></div>
+        <div class="ws-step"><p class="n">Step 1</p><p>Open Finder → go to your <strong>Desktop</strong></p></div>
+        <div class="ws-step"><p class="n">Step 2</p><p>Create a folder called <strong>claude-projects</strong></p></div>
+        <div class="ws-step"><p class="n">Step 3</p><p>Inside it, create three subfolders:</p><p style="font-family:monospace;font-size:11pt;color:#96a4b2;margin-top:2pt">_context/ &nbsp; _outputs/ &nbsp; _templates/</p></div>
+        <div class="ws-step"><p class="n">Step 4</p><p>Open Claude Desktop → Cowork → Select your folder</p></div>
+        <div class="ws-step"><p class="n">Step 5</p><p>Run this to confirm: <span style="font-family:monospace;font-size:11pt;color:#7a8796">"What files are in my project folder?"</span></p></div>
+        <div class="focus" style="margin-top:8pt">
+          <p>The underscore <strong style="font-family:monospace">_</strong> keeps these folders at the top of your list. You'll thank yourself later.</p>
+        </div>
+      </div>
+      <div class="corner tr"></div><div class="corner bl"></div>`;
+  }},
+
+  // ═══ PART 4 — CONTEXT FILES ═══
+  { theme: 'theme-4', render: function(d) {
+    d.className='slide s-section theme-4';
+    d.innerHTML=`
+      <div class="accent-bar"></div>
+      <div class="bg"><div class="accent-strip l"></div><div class="accent-strip r"></div></div>
+      <div class="num">04</div>
+      <div class="content" style="align-items:center;justify-content:center;text-align:center">
+        <p class="xs">Part 4</p>
+        <h1>Context Files</h1>
+        <p>Give Claude your world so it can help you better</p>
+      </div>
+      <div class="corner tr"></div><div class="corner bl"></div>`;
+  }},
+  { theme: 'theme-4', render: function(d) {
+    d.className='slide theme-4';
+    d.innerHTML=`
+      <div class="accent-bar"></div>
+      <div class="bg"><div class="accent-strip r"></div></div>
+      <div class="content">
+        <p class="xs">04 · Context Files</p>
+        <h1>Why Context Files Matter</h1>
+        <div class="divider"></div>
+        <div class="cols" style="flex:1;margin-top:6pt;gap:20pt">
+          <div class="col">
+            <h3 style="color:#5a6067">Without context files</h3>
+            <p class="sm" style="font-size:11pt">Every conversation starts blank:</p>
+            <ul>
+              <li style="border-left-color:#3a3a3a;color:#5a6067;font-size:11pt">"Who are you?" → Claude doesn't know</li>
+              <li style="border-left-color:#3a3a3a;color:#5a6067;font-size:11pt">"What's your style?" → Claude guesses</li>
+              <li style="border-left-color:#3a3a3a;color:#5a6067;font-size:11pt">"What happened before?" → Claude doesn't know</li>
+            </ul>
+            <p class="sm" style="font-size:11pt;margin-top:4pt;color:#5a6067">Result: <strong style="color:#7a8796">generic AI output</strong> that sounds like everyone else.</p>
+          </div>
+          <div class="col">
+            <h3>With context files</h3>
+            <p class="sm" style="font-size:11pt">Claude knows before you ask:</p>
+            <ul>
+              <li class="accent" style="font-size:11pt">✓ Your role, company, audience</li>
+              <li class="accent" style="font-size:11pt">✓ Your writing style and banned words</li>
+              <li class="accent" style="font-size:11pt">✓ Your past decisions and guidelines</li>
+            </ul>
+            <p class="sm" style="font-size:11pt;margin-top:4pt">Result: <strong>output that sounds like you</strong>, not generic AI.</p>
+          </div>
+        </div>
+        <div class="focus" style="margin-top:auto">
+          <p>Context files are a "briefing document" you hand Claude once. <strong>Write them once. Use them forever.</strong></p>
+        </div>
+      </div>
+      <div class="corner tr"></div><div class="corner bl"></div>`;
+  }},
+  { theme: 'theme-4', render: function(d) {
+    d.className='slide theme-4';
+    d.innerHTML=`
+      <div class="accent-bar"></div>
+      <div class="bg"><div class="accent-strip l"></div></div>
+      <div class="content">
+        <p class="xs">04 · Context Files</p>
+        <h1>about-me.md</h1>
+        <div class="divider"></div>
+        <p class="sm" style="font-size:12pt">Who you are, how you work, what you value. <strong>This personalizes every interaction.</strong></p>
+        <div class="cols" style="flex:1;margin-top:6pt;gap:20pt">
+          <div class="col">
+            <div class="code" style="font-size:9.5pt;flex:1">
+# About Me
+
+## My Role
+Senior Product Designer at B2B SaaS
+
+## Communication Style
+- Direct but warm
+- Bullet points over paragraphs
+- Use "we" not "I"
+- No jargon — plain language
+
+## Preferences
+- Review everything before sending
+- Want options, not single picks
+- Flag risks before benefits
+
+## What I Value
+- Clarity over cleverness
+- Specificity over generalization
+- Actionable over theoretical
+            </div>
+          </div>
+          <div class="col" style="display:flex;flex-direction:column;justify-content:center">
+            <div class="focus" style="margin:0 0 8pt 0">
+              <p style="font-size:11pt">What it enables:</p>
+              <p class="sm" style="font-size:10pt;margin-top:4pt">Claude addresses you appropriately<br>Output matches your experience<br>Tone aligns with your style</p>
+            </div>
+            <div class="tip" style="margin:0">
+              <p style="font-size:10pt;color:#7a8796"><strong>Keep it tight:</strong> Under 2,000 tokens. Extract patterns, not raw transcripts.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="corner tr"></div><div class="corner bl"></div>`;
+  }},
+  { theme: 'theme-4', render: function(d) {
+    d.className='slide theme-4';
+    d.innerHTML=`
+      <div class="accent-bar"></div>
+      <div class="bg"><div class="accent-strip r"></div></div>
+      <div class="content">
+        <p class="xs">04 · Context Files</p>
+        <h1>anti-ai-writing-style.md</h1>
+        <div class="divider"></div>
+        <p class="sm" style="font-size:12pt">Without this, Claude writes in its generic AI voice. <strong>This file makes it sound like you.</strong></p>
+        <div class="cols" style="flex:1;margin-top:6pt;gap:20pt">
+          <div class="col">
+            <div class="code" style="font-size:9.5pt;border-left:2pt solid #5a6067;flex:1">
+# Anti-AI Writing Style — Do Not
+
+## Banned Words
+- ✕ "Delve," "harness," "tapestry"
+- ✕ "Game-changer," "best-in-class"
+- ✕ "Unlock potential," "drive innovation"
+- ✕ "In today's digital landscape"
+- ✕ "Leverage," "synergy," "circle back"
+
+## Bad Patterns
+- ✕ "This isn't X, this is Y" reframes
+- ✕ "I hope this email finds you well"
+- ✕ Ending every paragraph with !
+- ✕ Adding "friendly" or "just" before verbs
+
+## Rules
+- Max 3 sentences per paragraph
+- Active voice only
+- No emojis in professional writing
+            </div>
+          </div>
+          <div class="col" style="display:flex;flex-direction:column;justify-content:center">
+            <div class="focus" style="margin:0 0 8pt 0">
+              <p style="font-size:11pt">Without this file:</p>
+              <p class="sm" style="font-size:10pt;margin-top:4pt">Every output starts with "In today's fast-paced world..." and needs manual editing.</p>
+            </div>
+            <div class="focus" style="margin:0">
+              <p style="font-size:11pt">With this file:</p>
+              <p class="sm" style="font-size:10pt;margin-top:4pt">Output sounds like your team, not a marketing bot.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="corner tr"></div><div class="corner bl"></div>`;
+  }},
+  { theme: 'theme-4', render: function(d) {
+    d.className='slide theme-4';
+    d.innerHTML=`
+      <div class="accent-bar"></div>
+      <div class="bg"><div class="accent-strip l"></div><div class="accent-strip r"></div></div>
+      <div class="content">
+        <p class="xs">04 · Context Files</p>
+        <h1>CLAUDE.md</h1>
+        <div class="divider"></div>
+        <p class="sm" style="font-size:12pt">A special file Claude reads <strong>automatically</strong> every time it starts in your project. Your project's permanent briefing.</p>
+        <div class="cols" style="flex:1;margin-top:6pt;gap:20pt">
+          <div class="col-2">
+            <div class="code" style="font-size:9.5pt">
+# CLAUDE.md
+
+## Project
+My work projects — client deliverables, proposals, and internal docs.
+
+## Context Files
+Before every task, read _context/:
+- about-me.md — who I am and how I work
+- anti-ai-writing-style.md — banned words and tone
+
+## Rules
+- Save all outputs to _outputs/ in project-named subfolders
+- Use markdown format unless told otherwise
+- Ask if something is unclear — don't fill gaps with filler
+- Never read _outputs/ or _templates/ unless I point you there
+
+## Templates
+Reusable structures stored in _templates/
+            </div>
+          </div>
+          <div class="col" style="display:flex;flex-direction:column;justify-content:center">
+            <div class="focus" style="margin:0">
+              <p style="font-size:11pt">What goes in it:</p>
+              <p class="sm" style="font-size:10pt;margin-top:4pt">✓ Project context (big picture)<br>✓ Links to your context files<br>✓ Key conventions and rules<br>✓ Starting instructions</p>
+            </div>
+            <div class="tip" style="margin-top:8pt">
+              <p style="font-size:10pt"><strong>Place it</strong> in the root of your project folder (not inside _context/).</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="corner tr"></div><div class="corner bl"></div>`;
+  }},
+
+  // ═══ WORKSHOP BREAK 2 ═══
+  { theme: 'theme-ws', render: function(d) {
+    d.className='slide theme-ws';
+    d.innerHTML=`
+      <div class="accent-bar"></div>
+      <div class="bg"><div class="accent-strip l"></div><div class="accent-strip r"></div></div>
+      <div class="content" style="justify-content:center">
+        <p class="ws-label">⚡ Workshop · 20 minutes</p>
+        <h1>Write Your Context Files</h1>
+        <div class="divider"></div>
+        <div class="cols" style="flex:1;gap:16pt;margin-top:4pt">
+          <div class="col" style="background:#0c0d0f;border:1px solid #1a1c20;padding:10pt 12pt">
+            <p class="ws-label" style="margin-bottom:4pt">about-me.md</p>
+            <div class="code" style="font-size:8.5pt;padding:8pt 10pt;border-left:2pt solid var(--accent,#96a4b2)">
+"Create about-me.md in _context/.
+Ask me questions one at a time
+(use AskUserQuestion).
+
+Cover: my role, communication style,
+quality standards, pet peeves, goals.
+
+After ~8 questions, compile into
+a tight about-me.md and save it."
+            </div>
+            <p class="sm" style="font-size:9pt;margin-top:4pt;color:#7a8796">Claude interviews you → saves the file. ~8 min.</p>
+          </div>
+          <div class="col" style="background:#0c0d0f;border:1px solid #1a1c20;padding:10pt 12pt">
+            <p class="ws-label" style="margin-bottom:4pt">anti-ai-writing-style.md</p>
+            <div class="code" style="font-size:8.5pt;padding:8pt 10pt;border-left:2pt solid var(--accent,#96a4b2)">
+"Create anti-ai-writing-style.md
+in _context/. Ask me questions
+one at a time (use AskUserQuestion).
+
+Cover: words I hate, AI patterns to
+avoid, paragraph rules, tone.
+
+After ~6 questions, compile and save."
+            </div>
+            <p class="sm" style="font-size:9pt;margin-top:4pt;color:#7a8796">Claude interviews you → saves the file. ~8 min.</p>
+          </div>
+        </div>
+        <div class="focus" style="margin-top:auto;padding:10pt 14pt">
+          <p style="font-size:11pt">Tip: <strong>Just answer naturally.</strong> Don't overthink. Claude extracts the patterns and compiles them.</p>
+        </div>
+      </div>
+      <div class="corner tr"></div><div class="corner bl"></div>`;
+  }},
+  { theme: 'theme-ws', render: function(d) {
+    d.className='slide theme-ws';
+    d.innerHTML=`
+      <div class="accent-bar"></div>
+      <div class="bg"><div class="accent-strip l"></div><div class="accent-strip r"></div></div>
+      <div class="content" style="justify-content:center">
+        <p class="ws-label">⚡ Workshop · 10 minutes</p>
+        <h1>Set Up CLAUDE.md</h1>
+        <div class="divider"></div>
+        <p style="font-size:12pt">Copy this template into a file called <strong>CLAUDE.md</strong> in your claude-projects folder (not inside _context/).</p>
+        <div class="cols" style="flex:1;gap:20pt;margin-top:6pt">
+          <div class="col-2">
+            <div class="code" style="font-size:9pt">
+# CLAUDE.md
+
+## Project
+[What is this project for? One sentence.]
+
+## Context Files
+Before every task, read _context/:
+- about-me.md — who I am and how I work
+- anti-ai-writing-style.md — tone and banned words
+
+## Key Conventions
+- [e.g., Save all outputs to _outputs/]
+- [e.g., Use markdown unless told otherwise]
+- [e.g., Ask if something is unclear]
+
+## Outputs
+Save deliverables to _outputs/ in a subfolder
+named by project or date.
+            </div>
+          </div>
+          <div class="col" style="display:flex;flex-direction:column;justify-content:center">
+            <div class="focus" style="margin:0">
+              <p style="font-size:11pt">Then ask Claude to improve it:</p>
+              <p class="sm" style="font-size:9pt;margin-top:4pt">"Read my CLAUDE.md and suggest 3 things I should add. Ask me questions to learn about my workflow."</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="corner tr"></div><div class="corner bl"></div>`;
+  }},
+
+  // ═══ PART 5 — COWORK ═══
+  { theme: 'theme-2', render: function(d) {
+    d.className='slide s-section theme-2';
+    d.innerHTML=`
+      <div class="accent-bar"></div>
+      <div class="bg"><div class="accent-strip l"></div><div class="accent-strip r"></div></div>
+      <div class="num">05</div>
+      <div class="content" style="align-items:center;justify-content:center;text-align:center">
+        <p class="xs">Part 5</p>
+        <h1>Cowork Mode</h1>
+        <p>Claude becomes a real teammate</p>
+      </div>
+      <div class="corner tr"></div><div class="corner bl"></div>`;
+  }},
+  { theme: 'theme-2', render: function(d) {
+    d.className='slide theme-2';
+    d.innerHTML=`
+      <div class="accent-bar"></div>
+      <div class="bg"><div class="accent-strip l"></div><div class="accent-strip r"></div></div>
+      <div class="content">
+        <p class="xs">05 · Cowork</p>
+        <h1>What Changes in Cowork</h1>
+        <div class="divider"></div>
+        <div class="cols" style="flex:1;margin-top:6pt;gap:20pt">
+          <div class="col">
+            <h3 style="color:#5a6067">Chat mode</h3>
+            <ul>
+              <li style="border-left-color:#3a3a3a;color:#5a6067;font-size:11pt">Can only talk to you</li>
+              <li style="border-left-color:#3a3a3a;color:#5a6067;font-size:11pt">No access to your files</li>
+              <li style="border-left-color:#3a3a3a;color:#5a6067;font-size:11pt">No memory of past work</li>
+              <li style="border-left-color:#3a3a3a;color:#5a6067;font-size:11pt">Everything typed manually</li>
+            </ul>
+          </div>
+          <div class="col">
+            <h3>Cowork mode ⭐</h3>
+            <ul>
+              <li class="accent" style="font-size:11pt">Reads and analyzes your files</li>
+              <li class="accent" style="font-size:11pt">Creates and edits documents</li>
+              <li class="accent" style="font-size:11pt">Runs your context files automatically</li>
+              <li class="accent" style="font-size:11pt">Works WITH you, not just responding</li>
+            </ul>
+          </div>
+        </div>
+        <div class="focus" style="margin-top:auto">
+          <p>Chat = ask a colleague a question. <strong>Cowork = work on a document together.</strong></p>
+        </div>
+      </div>
+      <div class="corner tr"></div><div class="corner bl"></div>`;
+  }},
+  { theme: 'theme-2', render: function(d) {
+    d.className='slide theme-2';
+    d.innerHTML=`
+      <div class="accent-bar"></div>
+      <div class="bg"><div class="accent-strip r"></div></div>
+      <div class="content">
+        <p class="xs">05 · Cowork</p>
+        <h1>The Golden Rule: Read Before Write</h1>
+        <div class="divider"></div>
+        <p>A simple rule that saves hours of fixes:</p>
+        <div style="display:flex;gap:12pt;margin:6pt 0">
+          <div style="flex:1;text-align:center;padding:10pt;background:#0c0d0f;border:1px solid var(--accent,#96a4b2)">
+            <p style="font-size:20pt;color:#d4dde8;margin:0">1</p>
+            <p style="font-size:11pt;color:#96a4b2;margin:2pt 0 0">Read first</p>
+          </div>
+          <div style="display:flex;align-items:center;color:#5a6067">→</div>
+          <div style="flex:1;text-align:center;padding:10pt;background:#0c0d0f;border:1px solid #1a1c20">
+            <p style="font-size:20pt;color:#d4dde8;margin:0">2</p>
+            <p style="font-size:11pt;color:#96a4b2;margin:2pt 0 0">Write second</p>
+          </div>
+          <div style="display:flex;align-items:center;color:#5a6067">→</div>
+          <div style="flex:1;text-align:center;padding:10pt;background:#0c0d0f;border:1px solid #1a1c20">
+            <p style="font-size:20pt;color:#d4dde8;margin:0">3</p>
+            <p style="font-size:11pt;color:#96a4b2;margin:2pt 0 0">Verify third</p>
+          </div>
+        </div>
+        <div class="code" style="font-size:10pt;margin-top:4pt">
+Good workflow:
+"Read this document and tell me what it's about."
+"Now update the timeline section based on the new dates."
+"Show me what you changed."
+        </div>
+        <div class="focus" style="margin-top:auto">
+          <p>Reading prevents hallucinations. Claude works from facts, not guesses.</p>
+        </div>
+      </div>
+      <div class="corner tr"></div><div class="corner bl"></div>`;
+  }},
+  { theme: 'theme-2', render: function(d) {
+    d.className='slide theme-2';
+    d.innerHTML=`
+      <div class="accent-bar"></div>
+      <div class="bg"><div class="accent-strip l"></div></div>
+      <div class="content">
+        <p class="xs">05 · Cowork</p>
+        <h1>First Tasks to Try</h1>
+        <div class="divider"></div>
+        <p class="sm" style="font-size:12pt">Start with these no-risk tasks to build confidence:</p>
+        <div class="cols" style="flex:1;margin-top:6pt;gap:20pt">
+          <div class="col">
+            <div class="ws-step" style="border-left-color:var(--accent,#96a4b2)">
+              <p><strong style="font-size:11pt">1. Read your context files</strong></p>
+              <p style="font-size:10pt;color:#7a8796">"Read my about-me.md and tell me what you understand about me."</p>
+            </div>
+            <div class="ws-step" style="border-left-color:var(--accent,#96a4b2)">
+              <p><strong style="font-size:11pt">2. Create a document</strong></p>
+              <p style="font-size:10pt;color:#7a8796">"Create a meeting-notes-template.md in my project folder."</p>
+            </div>
+            <div class="ws-step" style="border-left-color:var(--accent,#96a4b2)">
+              <p><strong style="font-size:11pt">3. Ask about your project</strong></p>
+              <p style="font-size:10pt;color:#7a8796">"What files do I have? What do you notice about them?"</p>
+            </div>
+          </div>
+          <div class="col">
+            <div class="ws-step" style="border-left-color:var(--accent,#96a4b2)">
+              <p><strong style="font-size:11pt">4. Draft something</strong></p>
+              <p style="font-size:10pt;color:#7a8796">"Draft a status update email using info in my project notes."</p>
+            </div>
+            <div class="ws-step" style="border-left-color:var(--accent,#96a4b2)">
+              <p><strong style="font-size:11pt">5. Review your work</strong></p>
+              <p style="font-size:10pt;color:#7a8796">"Read this document and suggest 3 improvements."</p>
+            </div>
+            <div class="ws-step" style="border-left-color:var(--accent,#96a4b2)">
+              <p><strong style="font-size:11pt">6. Summarize</strong></p>
+              <p style="font-size:10pt;color:#7a8796">"Summarize this meeting notes file in 3 bullet points."</p>
+            </div>
+          </div>
+        </div>
+        <div class="focus" style="margin-top:auto">
+          <p>Start with reading and drafting. Move to editing once you're comfortable. <strong>You're always in control.</strong></p>
+        </div>
+      </div>
+      <div class="corner tr"></div><div class="corner bl"></div>`;
+  }},
+
+  // ═══ WORKSHOP BREAK 3 ═══
+  { theme: 'theme-ws', render: function(d) {
+    d.className='slide theme-ws';
+    d.innerHTML=`
+      <div class="accent-bar"></div>
+      <div class="bg"><div class="accent-strip l"></div><div class="accent-strip r"></div></div>
+      <div class="content" style="justify-content:center">
+        <p class="ws-label">⚡ Workshop · 10 minutes</p>
+        <h1>Test Your Setup</h1>
+        <div class="divider"></div>
+        <p style="font-size:12pt">Open a new Cowork session on your claude-projects folder. Run this:</p>
+        <div class="code" style="font-size:10pt;border-left:2pt solid var(--accent,#96a4b2)">
+Read my CLAUDE.md, about-me.md, and anti-ai-writing-style.md.
+
+Draft a weekly status update for my team.
+Save it as _outputs/test-output.md.
+
+Before writing, use AskUserQuestion to ask me:
+1. What did I accomplish this week?
+2. What am I working on next?
+3. Any blockers?
+        </div>
+        <div style="display:flex;gap:12pt;margin-top:8pt">
+          <div style="flex:1;background:#0c0d0f;border:1px solid #1a1c20;padding:10pt 12pt">
+            <p style="font-size:11pt;color:#d4dde8;margin:0 0 4pt">If output sounds like you</p>
+            <p style="font-size:10pt;color:#7a8796;margin:0">✓ Your setup works. You're done.</p>
+          </div>
+          <div style="flex:1;background:#0c0d0f;border:1px solid #1a1c20;padding:10pt 12pt">
+            <p style="font-size:11pt;color:#d4dde8;margin:0 0 4pt">If not, check</p>
+            <p style="font-size:10pt;color:#7a8796;margin:0">✓ Files in _context/? ✓ In Cowork mode? ✓ Right folder?</p>
+          </div>
+        </div>
+        <div class="focus" style="margin-top:auto;padding:10pt 14pt">
+          <p style="font-size:11pt"><strong>You now have:</strong> Project folder · about-me.md · anti-ai-writing-style.md · CLAUDE.md · First successful task</p>
+        </div>
+      </div>
+      <div class="corner tr"></div><div class="corner bl"></div>`;
+  }},
+
+  // ═══ PART 6 — TRUST & CLOSING ═══
+  { theme: 'theme-5', render: function(d) {
+    d.className='slide s-section theme-5';
+    d.innerHTML=`
+      <div class="accent-bar"></div>
+      <div class="bg"><div class="accent-strip l"></div><div class="accent-strip r"></div></div>
+      <div class="num">06</div>
+      <div class="content" style="align-items:center;justify-content:center;text-align:center">
+        <p class="xs">Part 6</p>
+        <h1>Trust &amp; Next Steps</h1>
+        <p>Claude is brilliant. You're responsible.</p>
+      </div>
+      <div class="corner tr"></div><div class="corner bl"></div>`;
+  }},
+  { theme: 'theme-5', render: function(d) {
+    d.className='slide theme-5';
+    d.innerHTML=`
+      <div class="accent-bar"></div>
+      <div class="bg"><div class="accent-strip l"></div><div class="accent-strip r"></div></div>
+      <div class="content">
+        <p class="xs">06 · Trust &amp; Next Steps</p>
+        <h1>Trust But Verify</h1>
+        <div class="divider"></div>
+        <p>Claude is fluent, confident, and sometimes wrong. <strong>Verification isn't optional.</strong></p>
+        <div class="cols" style="flex:1;margin-top:6pt;gap:20pt">
+          <div class="col">
+            <h3 style="color:#5a6067">Before using anything Claude produces:</h3>
+            <ul>
+              <li class="accent" style="font-size:11pt">☐ Facts — are names, dates, numbers correct?</li>
+              <li class="accent" style="font-size:11pt">☐ Tone — does it sound like you or generic AI?</li>
+              <li class="accent" style="font-size:11pt">☐ Assumptions — did Claude assume something wrong?</li>
+              <li class="accent" style="font-size:11pt">☐ Completeness — is anything missing?</li>
+              <li class="accent" style="font-size:11pt">☐ Safety — sensitive info or inappropriate content?</li>
+            </ul>
+          </div>
+          <div class="col" style="display:flex;flex-direction:column;justify-content:center">
+            <div class="focus" style="margin:0">
+              <p style="font-size:11pt">Claude's output is a first draft from a brilliant but imperfect teammate. <strong>Always review before sending.</strong></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="corner tr"></div><div class="corner bl"></div>`;
+  }},
+  { theme: 'theme-5', render: function(d) {
+    d.className='slide theme-5';
+    d.innerHTML=`
+      <div class="accent-bar"></div>
+      <div class="bg"><div class="accent-strip r"></div></div>
+      <div class="content">
+        <p class="xs">06 · Trust &amp; Next Steps</p>
+        <h1>What NOT to Share</h1>
+        <div class="divider"></div>
+        <div class="cols" style="flex:1;margin-top:4pt">
+          <div class="col">
+            <h3 style="color:#5a6067">Never put these in a prompt</h3>
+            <ul>
+              <li style="border-left-color:#5a6067;font-size:11pt;color:#b8c4d0">❌ Passwords, API keys, credentials</li>
+              <li style="border-left-color:#5a6067;font-size:11pt;color:#b8c4d0">❌ Personal private data (passport, addresses)</li>
+              <li style="border-left-color:#5a6067;font-size:11pt;color:#b8c4d0">❌ Confidential business secrets</li>
+              <li style="border-left-color:#5a6067;font-size:11pt;color:#b8c4d0">❌ NDA-covered info without checking</li>
+              <li style="border-left-color:#5a6067;font-size:11pt;color:#b8c4d0">❌ Proprietary code or data</li>
+            </ul>
+          </div>
+          <div class="col">
+            <h3>Generally OK</h3>
+            <ul>
+              <li class="accent" style="font-size:11pt">✓ Meeting notes (without sensitive data)</li>
+              <li class="accent" style="font-size:11pt">✓ Draft documents</li>
+              <li class="accent" style="font-size:11pt">✓ General project context</li>
+              <li class="accent" style="font-size:11pt">✓ Writing samples and templates</li>
+            </ul>
+            <div class="tip" style="margin-top:8pt">
+              <p style="font-size:10pt">When in doubt: would I share this with a contractor?</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="corner tr"></div><div class="corner bl"></div>`;
+  }},
+  { theme: 'theme-5', render: function(d) {
+    d.className='slide theme-5';
+    d.innerHTML=`
+      <div class="accent-bar"></div>
+      <div class="bg"><div class="accent-strip l"></div></div>
+      <div class="content">
+        <p class="xs">06 · Trust &amp; Next Steps</p>
+        <h1>Your First Week Plan</h1>
+        <div class="divider"></div>
+        <p style="font-size:12pt">One task per day. Five minutes each. <strong>Build the habit.</strong></p>
+        <div style="display:flex;gap:10pt;margin-top:8pt;flex-wrap:wrap">
+          <div style="flex:1;min-width:120pt;background:#0c0d0f;border:1px solid #1a1c20;padding:8pt 10pt">
+            <p style="font-size:9pt;color:#5a6067;letter-spacing:.08em;text-transform:uppercase;font-weight:600;margin:0 0 2pt">Day 1</p>
+            <p style="font-size:11pt;color:#d4dde8;margin:0">Run a real task</p>
+            <p style="font-size:9pt;color:#7a8796;margin:2pt 0 0">Use the Cowork template</p>
+          </div>
+          <div style="flex:1;min-width:120pt;background:#0c0d0f;border:1px solid #1a1c20;padding:8pt 10pt">
+            <p style="font-size:9pt;color:#5a6067;letter-spacing:.08em;text-transform:uppercase;font-weight:600;margin:0 0 2pt">Day 2</p>
+            <p style="font-size:11pt;color:#d4dde8;margin:0">Add 2 banned words</p>
+            <p style="font-size:9pt;color:#7a8796;margin:2pt 0 0">Update anti-ai-writing-style.md</p>
+          </div>
+          <div style="flex:1;min-width:120pt;background:#0c0d0f;border:1px solid #1a1c20;padding:8pt 10pt">
+            <p style="font-size:9pt;color:#5a6067;letter-spacing:.08em;text-transform:uppercase;font-weight:600;margin:0 0 2pt">Day 3</p>
+            <p style="font-size:11pt;color:#d4dde8;margin:0">Get a review</p>
+            <p style="font-size:9pt;color:#7a8796;margin:2pt 0 0">Claude reviews your work</p>
+          </div>
+          <div style="flex:1;min-width:120pt;background:#0c0d0f;border:1px solid #1a1c20;padding:8pt 10pt">
+            <p style="font-size:9pt;color:#5a6067;letter-spacing:.08em;text-transform:uppercase;font-weight:600;margin:0 0 2pt">Day 4</p>
+            <p style="font-size:11pt;color:#d4dde8;margin:0">Create a template</p>
+            <p style="font-size:9pt;color:#7a8796;margin:2pt 0 0">For a recurring task</p>
+          </div>
+          <div style="flex:1;min-width:120pt;background:#0c0d0f;border:1px solid #1a1c20;padding:8pt 10pt">
+            <p style="font-size:9pt;color:#5a6067;letter-spacing:.08em;text-transform:uppercase;font-weight:600;margin:0 0 2pt">Day 5</p>
+            <p style="font-size:11pt;color:#d4dde8;margin:0">Refine about-me.md</p>
+            <p style="font-size:9pt;color:#7a8796;margin:2pt 0 0">Update based on real use</p>
+          </div>
+        </div>
+        <div class="focus" style="margin-top:auto">
+          <p><strong>The best time to start using AI well was six months ago. The second best time is right now.</strong></p>
+        </div>
+      </div>
+      <div class="corner tr"></div><div class="corner bl"></div>`;
+  }},
+];
+
+// ── Deck logic ──
+const deck = document.getElementById('deck');
+let current = 0;
+
+function show(idx) {
+  if (idx < 0 || idx >= SLIDES.length) return;
+  // Clear
+  deck.innerHTML = '';
+  // Render slide
+  const div = document.createElement('div');
+  SLIDES[idx].render(div);
+  deck.appendChild(div);
+  // Make it active
+  const slide = deck.querySelector('.slide');
+  if (slide) slide.classList.add('active');
+  current = idx;
+  document.getElementById('counter').textContent = `${idx + 1} / ${SLIDES.length}`;
+  history.replaceState(null, '', '#' + (idx + 1));
+}
+
+function fit() {
+  const s = Math.min(window.innerWidth / 960, window.innerHeight / 540);
+  const x = (window.innerWidth - 960 * s) / 2;
+  const y = (window.innerHeight - 540 * s) / 2;
+  const stage = document.getElementById('stage');
+  stage.style.transform = `translate(${x}px, ${y}px) scale(${s})`;
+  stage.style.top = '0';
+  stage.style.left = '0';
+}
+
+// Navigation
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  switch (e.key) {
+    case 'ArrowRight': case ' ': case 'PageDown': e.preventDefault(); show(Math.min(current + 1, SLIDES.length - 1)); break;
+    case 'ArrowLeft':  case 'PageUp':              e.preventDefault(); show(Math.max(current - 1, 0)); break;
+    case 'Home': e.preventDefault(); show(0); break;
+    case 'End':  e.preventDefault(); show(SLIDES.length - 1); break;
+    default:
+      if (e.key >= '1' && e.key <= '9') { const i = parseInt(e.key,10)-1; if (i < SLIDES.length) { e.preventDefault(); show(i); } }
+  }
+});
+
+document.getElementById('navL').addEventListener('click', () => show(Math.max(current - 1, 0)));
+document.getElementById('navR').addEventListener('click', () => show(Math.min(current + 1, SLIDES.length - 1)));
+window.addEventListener('resize', fit);
+window.addEventListener('hashchange', () => { const m = location.hash.match(/^#(\d+)$/); if (m) show(parseInt(m[1],10)-1); });
+
+// Start
+const hash = location.hash.match(/^#(\d+)$/);
+if (hash) current = Math.min(parseInt(hash[1],10)-1, SLIDES.length-1);
+fit();
+show(current);
+</script>
+</body>
+</html>

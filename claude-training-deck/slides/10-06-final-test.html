@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>Final Test</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" href="../shared/slide.css">
+<style>
+.test-section { margin-top:10pt; }
+.test-item { display:flex; gap:12pt; padding:8pt 0; border-bottom:1px solid #1e1e1e; align-items:flex-start; }
+.test-item:last-child { border-bottom:none; }
+.test-item .num { font-size:13pt; font-weight:500; color:#9aaabc; min-width:30pt; font-family:'Cormorant Garamond',Georgia,serif; }
+.test-item .content { flex:1; }
+.test-item .content p { font-size:11.5pt; color:#b8c4d0; margin:0; }
+.test-item .content .hint { font-size:9.5pt; color:#5a6067; margin-top:2pt; }
+</style>
+</head>
+<body>
+<div class="slide section-theme-1">
+  <div class="accent-band top" style="--sec-accent:#9aaabc;"></div>
+  <div class="corner-accent tr"></div>
+  <div class="corner-accent bl"></div>
+
+  <div class="slide-inner" style="position:relative;z-index:2;">
+    <div class="section-indicator"><p>10 / 10 · Safety &amp; Final Test</p></div>
+
+    <div style="flex:1;display:flex;flex-direction:column;max-width:88%;">
+      <h1>🏁 Final Test: The Full Workflow</h1>
+      <div class="sec-divider"></div>
+
+      <p style="font-size:12pt;color:#96a4b2;margin-bottom:6pt;">You'll apply everything you've learned. Complete this workflow using Claude.</p>
+
+      <div class="test-section">
+        <div class="test-item">
+          <span class="num">01</span>
+          <div class="content">
+            <p><strong style="color:#d4dde8;">Choose a model</strong> — Your task: draft a client proposal for a web redesign project. Which model do you use? Why?</p>
+            <p class="hint">Hint: Consider complexity, audience, and cost.</p>
+          </div>
+        </div>
+        <div class="test-item">
+          <span class="num">02</span>
+          <div class="content">
+            <p><strong style="color:#d4dde8;">Set the context</strong> — Reference your about-me.md, my-company.md, and writing-style.md files. Tell Claude what it needs to know.</p>
+            <p class="hint">Hint: Be specific about the client and the project scope.</p>
+          </div>
+        </div>
+        <div class="test-item">
+          <span class="num">03</span>
+          <div class="content">
+            <p><strong style="color:#d4dde8;">Write the prompt</strong> — Use the 5 rules: context, examples, specifics, format, and verification. Draft a complete prompt.</p>
+            <p class="hint">Hint: Add "Check your work" at the end.</p>
+          </div>
+        </div>
+        <div class="test-item">
+          <span class="num">04</span>
+          <div class="content">
+            <p><strong style="color:#d4dde8;">Review the output</strong> — Check facts, tone, assumptions, and format. What would you change?</p>
+            <p class="hint">Hint: Ask Claude to rate its own confidence on each section.</p>
+          </div>
+        </div>
+        <div class="test-item" style="border-bottom:none;">
+          <span class="num">05</span>
+          <div class="content">
+            <p><strong style="color:#d4dde8;">Package for reuse</strong> — Turn your prompt into a reusable skill. What would you name it? What would the SKILL.md contain?</p>
+            <p class="hint">Hint: Think about what parts are reusable and what changes each time.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

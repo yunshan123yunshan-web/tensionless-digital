@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>Transition · Section 7 → 8</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" href="../shared/slide.css">
+<style>
+.burst-container {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+}
+.burst-shard { position:absolute; background:#d4dde8; pointer-events:none; }
+</style>
+</head>
+<body>
+<div class="slide section-theme-3">
+  <div class="burst-container">
+    <div class="burst-shard" style="width:180pt;height:180pt;clip-path:polygon(100% 0%,0% 100%,100% 100%);opacity:0.025;top:-30pt;right:-30pt;"></div>
+    <div class="burst-shard" style="width:90pt;height:90pt;clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);opacity:0.04;top:120pt;right:100pt;transform:rotate(25deg);"></div>
+    <div class="burst-shard" style="width:200pt;height:200pt;clip-path:polygon(0% 0%,0% 100%,100% 0%);opacity:0.015;bottom:-30pt;left:-30pt;"></div>
+    <div class="burst-shard" style="width:70pt;height:70pt;clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);opacity:0.03;bottom:140pt;left:110pt;"></div>
+    <div class="burst-shard" style="width:16pt;height:16pt;clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);opacity:0.03;top:35%;right:25%;"></div>
+  </div>
+
+  <div class="accent-band top" style="--sec-accent:#7a8796;"></div>
+
+  <div class="transition-content" style="z-index:2;">
+    <p class="label" style="margin-bottom:10pt;">End of Section 7</p>
+    <h1>Setting Up Cowork</h1>
+    <div style="display:flex;justify-content:center;"><div class="sec-divider"></div></div>
+    <p style="text-align:center;margin-top:8pt;color:#7a8796;">Up next — Building Context: giving Claude what it needs to help you</p>
+  </div>
+
+  <div class="transition-diamond" style="top:auto;bottom:80pt;left:52pt;width:50pt;height:50pt;opacity:0.02;"></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>Transition · Section 8 → 9</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" href="../shared/slide.css">
+<style>
+.burst-container {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+}
+.burst-shard { position:absolute; background:#d4dde8; pointer-events:none; }
+</style>
+</head>
+<body>
+<div class="slide section-theme-4">
+  <div class="burst-container">
+    <div class="burst-shard" style="width:170pt;height:170pt;clip-path:polygon(0% 0%,100% 100%,0% 100%);opacity:0.025;top:-20pt;left:-20pt;"></div>
+    <div class="burst-shard" style="width:100pt;height:100pt;clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);opacity:0.04;top:80pt;left:120pt;transform:rotate(-30deg);"></div>
+    <div class="burst-shard" style="width:220pt;height:220pt;clip-path:polygon(100% 0%,100% 100%,0% 100%);opacity:0.015;bottom:-30pt;right:-30pt;"></div>
+    <div class="burst-shard" style="width:60pt;height:60pt;clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);opacity:0.03;bottom:100pt;right:140pt;transform:rotate(15deg);"></div>
+    <div class="burst-shard" style="width:15pt;height:15pt;clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);opacity:0.03;top:30%;left:30%;"></div>
+  </div>
+
+  <div class="accent-band top" style="--sec-accent:#b8c4d0;"></div>
+
+  <div class="transition-content" style="z-index:2;">
+    <p class="label" style="margin-bottom:10pt;">End of Section 8</p>
+    <h1>Building Context</h1>
+    <div style="display:flex;justify-content:center;"><div class="sec-divider"></div></div>
+    <p style="text-align:center;margin-top:8pt;color:#7a8796;">Up next — Templates &amp; Skills: packaging your workflows for reuse</p>
+  </div>
+
+  <div class="transition-diamond" style="top:auto;bottom:80pt;right:52pt;width:50pt;height:50pt;opacity:0.02;"></div>
+</div>
+</body>
+</html>

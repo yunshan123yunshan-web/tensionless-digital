@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>Showcase · Color-coded Content</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" href="../shared/slide.css">
+</head>
+<body>
+<div class="slide section-theme-4">
+  <!-- Accent strip left side -->
+  <div class="accent-strip left" style="background:rgba(184,196,208,0.06);"></div>
+
+  <!-- Top accent band -->
+  <div class="accent-band top" style="--sec-accent:#b8c4d0;"></div>
+
+  <!-- Corner accents -->
+  <div class="corner-accent tr"></div>
+
+  <div class="slide-inner" style="position:relative;z-index:2;">
+    <!-- Section indicator -->
+    <div class="section-indicator"><p>06 / 10 · Prompting Basics</p></div>
+
+    <!-- Content area -->
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:center;max-width:88%;padding-left:12pt;">
+      <h1>Prompting Is Delegation,<br>Not Magic Words</h1>
+
+      <div class="sec-divider"></div>
+
+      <p style="margin-top:4pt;">A good prompt gives Claude everything needed to do the work without back-and-forth corrections. Think of it like briefing a smart colleague — you explain context, constraints, and what success looks like.</p>
+
+      <div style="display:flex;gap:24pt;margin-top:14pt;">
+        <div style="flex:1;">
+          <div class="focus-box" style="height:100%;">
+            <h4>A weak prompt</h4>
+            <p style="font-size:12pt;color:#7a8796;font-style:italic;">"Make this email better."</p>
+          </div>
+        </div>
+        <div style="flex:1;">
+          <div class="focus-box" style="height:100%;border-left:3pt solid #b8c4d0;">
+            <h4>A strong prompt</h4>
+            <p style="font-size:12pt;color:#b8c4d0;">Adds context, tone, constraints, output format, and verification criteria.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="exercise-card" style="margin-top:14pt;">
+        <p class="exercise-title">Exercise</p>
+        <p>Rewrite <em>"Act as an expert and make this email better"</em> as a structured delegation prompt.</p>
+        <p style="font-size:12pt;color:#96a4b2;margin-top:4pt;">Include: role, context, task, constraints, output format.</p>
+      </div>
+    </div>
+
+    <!-- Small shard decoration -->
+    <div class="transition-diamond small" style="bottom:36pt;right:44pt;top:auto;left:auto;"></div>
+  </div>
+</div>
+</body>
+</html>

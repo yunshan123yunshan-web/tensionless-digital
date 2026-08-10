@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>Rule 2: Give Examples</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" "../shared/slide.css">
+</head>
+<body>
+<div class="slide section-theme-2">
+  <div class="accent-band top" style="--sec-accent:#96a4b2;"></div>
+  <div class="corner-accent tr"></div>
+  <div class="corner-accent bl"></div>
+
+  <div class="slide-inner" style="position:relative;z-index:2;">
+    <div class="section-indicator"><p>06 / 10 · Prompting Basics</p></div>
+
+    <div style="flex:1;display:flex;flex-direction:column;max-width:85%;">
+      <h1>Rule 2: Give Examples</h1>
+      <div class="sec-divider"></div>
+
+      <p style="font-size:12pt;color:#96a4b2;">One good example is worth 100 words of instructions. Examples show Claude what "good" looks like in your specific context.</p>
+
+      <div style="display:flex;gap:20pt;margin-top:10pt;">
+        <div class="focus-box" style="flex:1;">
+          <p style="font-size:11pt;color:#7a8796;margin:0;"><strong style="color:#96a4b2;">Before:</strong><br>"Write in a professional tone."<br><span style="font-size:10pt;color:#5a6067;">→ Vague, subjective</span></p>
+        </div>
+        <div class="focus-box" style="flex:1;border-left:3pt solid #96a4b2;">
+          <p style="font-size:11pt;color:#b8c4d0;margin:0;"><strong style="color:#d4dde8;">After:</strong><br>"Write in the same tone as this example:<br><em style="font-size:10pt;">[paste a paragraph you love]</em>"<br><span style="font-size:10pt;color:#7a8796;">→ Clear, specific, imitatable</span></p>
+        </div>
+      </div>
+
+      <h3 style="margin-top:14pt;">Where examples help most:</h3>
+      <ul style="list-style:none;padding:0;display:flex;gap:20pt;">
+        <li style="flex:1;padding:8pt 12pt;border:1px solid #1e1e1e;font-size:11pt;color:#b8c4d0;">
+          <strong style="color:#96a4b2;">Tone &amp; voice</strong><br>Show the style you want
+        </li>
+        <li style="flex:1;padding:8pt 12pt;border:1px solid #1e1e1e;font-size:11pt;color:#b8c4d0;">
+          <strong style="color:#96a4b2;">Output format</strong><br>Show the structure you expect
+        </li>
+        <li style="flex:1;padding:8pt 12pt;border:1px solid #1e1e1e;font-size:11pt;color:#b8c4d0;">
+          <strong style="color:#96a4b2;">Quality bar</strong><br>Show what "good enough" looks like
+        </li>
+      </ul>
+
+      <div class="focus-box" style="margin-top:10pt;">
+        <p style="font-size:11pt;color:#96a4b2;margin:0;"><strong>Pro tip:</strong> "Few-shot prompting" — give 2-3 input → output pairs. Claude will infer the pattern and follow it.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

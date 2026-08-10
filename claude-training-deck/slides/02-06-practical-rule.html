@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>The Restart Rule</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" href="../shared/slide.css">
+<style>
+.rule-card { border: 1px solid #1e1e1e; padding: 12pt 16pt; margin-bottom: 8pt; }
+.rule-card .q { font-size: 11pt; color: #7a8796; margin: 0 0 4pt 0; }
+.rule-card .a { font-size: 12pt; color: #d4dde8; margin: 0; }
+</style>
+</head>
+<body>
+<div class="slide section-theme-3">
+  <div class="accent-band top" style="--sec-accent:#7a8796;"></div>
+  <div class="corner-accent tr"></div>
+  <div class="corner-accent bl"></div>
+
+  <!-- Shard -->
+  <div class="transition-diamond small" style="bottom:60pt;right:48pt;top:auto;left:auto;opacity:0.025;"></div>
+
+  <div class="slide-inner" style="position:relative;z-index:2;">
+    <div class="section-indicator"><p>02 / 10 · How Models Work</p></div>
+
+    <div style="display:flex;gap:32pt;flex:1;max-width:92%;">
+      <div style="flex:1.1;">
+        <h1>The Restart Rule</h1>
+        <div class="sec-divider"></div>
+        <p style="font-size:12pt;color:#96a4b2;">When you feel the conversation getting long or the model starting to lose track of details:</p>
+
+        <div class="focus-box" style="margin:10pt 0;">
+          <p style="font-size:12pt;color:#d4dde8;margin:0;"><strong>Rule of thumb:</strong> If your chat has more than ~50 messages or is getting repetitive, start a fresh one.</p>
+        </div>
+
+        <p style="font-size:11.5pt;color:#7a8796;">Before you start fresh, ask Claude to write a <strong>handoff summary</strong> — a condensed version of what's been decided, what's pending, and any key context the new chat needs.</p>
+      </div>
+      <div style="flex:0.9;">
+        <h3>When to restart:</h3>
+        <div class="rule-card">
+          <p class="q">Conversation feels sluggish?</p>
+          <p class="a">Restart. Long context slows processing.</p>
+        </div>
+        <div class="rule-card">
+          <p class="q">Model repeats itself?</p>
+          <p class="a">It's likely losing early context. Fresh start.</p>
+        </div>
+        <div class="rule-card">
+          <p class="q">Topic has shifted?</p>
+          <p class="a">Don't pile topics in one chat. New topic = new chat.</p>
+        </div>
+        <div class="rule-card">
+          <p class="q">Need to preserve progress?</p>
+          <p class="a">Ask for a handoff doc first, then restart fresh.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

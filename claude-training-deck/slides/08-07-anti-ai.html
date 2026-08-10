@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>anti-ai.md</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" href="../shared/slide.css">
+</head>
+<body>
+<div class="slide section-theme-4">
+  <!-- Hatched warning bg -->
+  <svg class="bg-photo" viewBox="0 0 960 540" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <pattern id="hatch8" width="50" height="50" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
+        <line x1="0" y1="0" x2="0" y2="50" stroke="#b8c4d0" stroke-width="0.4" opacity="0.025"/>
+      </pattern>
+    </defs>
+    <rect width="960" height="540" fill="#090909"/>
+    <rect width="960" height="540" fill="url(#hatch8)"/>
+  </svg>
+
+  <div class="accent-band top" style="--sec-accent:#b8c4d0;"></div>
+  <div class="corner-accent tr"></div>
+
+  <div class="slide-inner" style="position:relative;z-index:2;">
+    <div class="section-indicator"><p>08 / 10 · Building Context</p></div>
+
+    <div style="flex:1;display:flex;flex-direction:column;max-width:88%;">
+      <h1>anti-ai.md — What to Avoid</h1>
+      <div class="sec-divider"></div>
+      <p style="font-size:12pt;color:#96a4b2;">Claude has default patterns from training data. This file tells it what NOT to do.</p>
+
+      <div style="display:flex;gap:20pt;margin-top:10pt;">
+        <div style="flex:1;">
+          <div class="code-block" style="border-left:3pt solid #5a6067;">
+            <p><strong style="color:#d4dde8;"># Anti-AI — Do Not</strong></p>
+            <p style="margin-top:4pt;"><strong style="color:#96a4b2;">✕ Clichés to avoid:</strong></p>
+            <p style="color:#7a8796;">- "Game-changer," "best-in-class," "cutting-edge"</p>
+            <p style="color:#7a8796;">- "Unlock potential," "drive innovation," "leverage technology"</p>
+            <p style="color:#7a8796;">- "In today's digital landscape" or "In today's fast-paced world"</p>
+            <p style="margin-top:6pt;"><strong style="color:#96a4b2;">✕ Bad habits:</strong></p>
+            <p style="color:#7a8796;">- Don't open emails with "I hope this email finds you well"</p>
+            <p style="color:#7a8796;">- Don't use emojis in professional communication</p>
+            <p style="color:#7a8796;">- Don't add "friendly" or "just" before verbs</p>
+            <p style="color:#7a8796;">- Don't end every paragraph with an exclamation mark!</p>
+          </div>
+        </div>
+        <div style="flex:0.8;">
+          <h3>Why you need this</h3>
+          <ul style="list-style:none;padding:0;">
+            <li style="padding:6pt 0 6pt 14pt;border-left:2pt solid #b8c4d0;font-size:11pt;color:#b8c4d0;margin-bottom:4pt;">Claude defaults to corporate-friendly language — which often sounds like "AI wrote this"</li>
+            <li style="padding:6pt 0 6pt 14pt;border-left:2pt solid #b8c4d0;font-size:11pt;color:#b8c4d0;margin-bottom:4pt;">Without anti-AI rules, every output needs manual editing to remove AI-isms</li>
+            <li style="padding:6pt 0 6pt 14pt;border-left:2pt solid #b8c4d0;font-size:11pt;color:#b8c4d0;">This file is the difference between "obviously AI" and "sounds like us"</li>
+          </ul>
+          <div class="focus-box" style="margin-top:10pt;background:#0d0d0f;">
+            <p style="font-size:10.5pt;color:#96a4b2;margin:0;"><strong>Best practice:</strong> Add to this file every time Claude generates something that feels "off." Over 2-3 weeks, you'll build a comprehensive list.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

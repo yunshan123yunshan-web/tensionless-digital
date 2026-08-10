@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>Rule 4: Output Format</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" href="../shared/slide.css">
+</head>
+<body>
+<div class="slide section-theme-2">
+  <div class="accent-band top" style="--sec-accent:#96a4b2;"></div>
+  <div class="corner-accent tr"></div>
+
+  <div class="slide-inner" style="position:relative;z-index:2;">
+    <div class="section-indicator"><p>06 / 10 · Prompting Basics</p></div>
+
+    <div style="flex:1;display:flex;flex-direction:column;max-width:88%;">
+      <h1>Rule 4: Specify Output Format</h1>
+      <div class="sec-divider"></div>
+
+      <p style="font-size:12pt;color:#96a4b2;">Tell Claude exactly how to structure the response. This saves you reformatting time and ensures the output is immediately usable.</p>
+
+      <div style="display:flex;gap:20pt;margin-top:10pt;">
+        <div style="flex:1;">
+          <div class="code-block">
+            <p style="color:#7a8796;">✕ "Give me a list of ideas"</p>
+          </div>
+          <div class="code-block" style="border-left:3pt solid #96a4b2;">
+            <p style="color:#b8c4d0;">✓ "Output as a <strong>table</strong> with columns: Idea | Effort (Low/Med/High) | Impact (1-5) | Notes</p>
+            <p style="color:#b8c4d0;margin-top:4pt;"><strong>Example:</strong></p>
+            <p style="color:#7a8796;font-size:9pt;">| Idea | Effort | Impact | Notes |</p>
+            <p style="color:#7a8796;font-size:9pt;">|------|--------|--------|-------|</p>
+            <p style="color:#7a8796;font-size:9pt;">| X | Low | 4 | Quick win |</p>
+          </div>
+        </div>
+        <div style="flex:1;">
+          <h3>Common format specs:</h3>
+          <ul style="list-style:none;padding:0;">
+            <li style="padding:4pt 0 4pt 14pt;border-left:2pt solid #1e1e1e;font-size:11pt;color:#b8c4d0;margin-bottom:3pt;">Markdown / plain text / JSON</li>
+            <li style="padding:4pt 0 4pt 14pt;border-left:2pt solid #1e1e1e;font-size:11pt;color:#b8c4d0;margin-bottom:3pt;">Table with specific columns</li>
+            <li style="padding:4pt 0 4pt 14pt;border-left:2pt solid #1e1e1e;font-size:11pt;color:#b8c4d0;margin-bottom:3pt;">Bullet list vs numbered steps</li>
+            <li style="padding:4pt 0 4pt 14pt;border-left:2pt solid #1e1e1e;font-size:11pt;color:#b8c4d0;margin-bottom:3pt;">Headline + subheadings + body</li>
+            <li style="padding:4pt 0 4pt 14pt;border-left:2pt solid #1e1e1e;font-size:11pt;color:#b8c4d0;">CSV for spreadsheet import</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="focus-box" style="margin-top:auto;">
+        <p style="font-size:11pt;color:#96a4b2;margin:0;"><strong>Rule of thumb:</strong> If you can describe the output structure, Claude can follow it. Be as specific as if you were telling a human assistant exactly how you want the document laid out.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>Folder Structure</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" href="../shared/slide.css">
+<style>
+.dir-tree { font-family: 'Inter', monospace; font-size: 11.5pt; line-height: 1.6; margin: 10pt 0; }
+.dir-tree .file { color: #96a4b2; }
+.dir-tree .folder { color: #d4dde8; font-weight: 500; }
+.dir-tree .highlight { color: #7a8796; background: rgba(122,135,150,0.08); padding: 1pt 6pt; border-radius: 2pt; }
+.dir-tree .comment { color: #5a6067; font-style: italic; font-size: 9.5pt; }
+.dir-tree .indent1 { padding-left: 20pt; }
+.dir-tree .indent2 { padding-left: 40pt; }
+.dir-tree .indent3 { padding-left: 60pt; }
+</style>
+</head>
+<body>
+<div class="slide section-theme-3">
+  <div class="accent-strip left" style="background:rgba(122,135,150,0.06);"></div>
+  <div class="accent-band top" style="--sec-accent:#7a8796;"></div>
+  <div class="corner-accent tr"></div>
+  <div class="corner-accent bl"></div>
+
+  <div class="slide-inner" style="position:relative;z-index:2;">
+    <div class="section-indicator"><p>07 / 10 · Cowork Setup</p></div>
+
+    <div style="display:flex;gap:24pt;flex:1;">
+      <div style="flex:1;display:flex;flex-direction:column;">
+        <h1>Project Folder Structure</h1>
+        <div class="sec-divider"></div>
+        <p style="font-size:12pt;color:#96a4b2;margin-bottom:6pt;">Cowork mode works best when your project has a clear, predictable layout. Claude reads the structure to understand context.</p>
+
+        <div class="code-block" style="max-width:95%;font-size:10.5pt;">
+          <div class="dir-tree">
+            <span class="folder">project/</span><br>
+            <span class="indent1"><span class="file"> CLAUDE.md</span> <span class="comment">← global instructions</span></span><br>
+            <span class="indent1"><span class="folder">📁 src/</span></span><br>
+            <span class="indent2"><span class="file"> index.ts</span></span><br>
+            <span class="indent2"><span class="file"> components/</span></span><br>
+            <span class="indent1"><span class="folder">📁 docs/</span></span><br>
+            <span class="indent2"><span class="file"> architecture.md</span></span><br>
+            <span class="indent1"><span class="folder">📁 tests/</span></span><br>
+            <span class="indent2"><span class="file"> ...</span></span><br>
+            <span class="indent1"><span class="folder">📁 scripts/</span></span><br>
+            <span class="indent1"><span class="file"> package.json</span></span><br>
+            <span class="indent1"><span class="file"> tsconfig.json</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div style="flex:1;display:flex;flex-direction:column;">
+        <h2 style="font-size:24pt;font-family:'Cormorant Garamond',Georgia,serif;">Why structure matters</h2>
+        <div class="sec-divider"></div>
+        <ul style="list-style:none;padding:0;">
+          <li style="padding:8pt 0 8pt 14pt;border-left:2pt solid #7a8796;font-size:12pt;color:#b8c4d0;margin-bottom:6pt;">
+            <strong style="color:#d4dde8;">Claude reads CLAUDE.md</strong><br>
+            <span style="font-size:10pt;color:#7a8796;">On every session start — it's your project's brain</span>
+          </li>
+          <li style="padding:8pt 0 8pt 14pt;border-left:2pt solid #7a8796;font-size:12pt;color:#b8c4d0;margin-bottom:6pt;">
+            <strong style="color:#d4dde8;">Predictable structure</strong><br>
+            <span style="font-size:10pt;color:#7a8796;">Helps Claude find files and understand conventions</span>
+          </li>
+          <li style="padding:8pt 0 8pt 14pt;border-left:2pt solid #7a8796;font-size:12pt;color:#b8c4d0;margin-bottom:6pt;">
+            <strong style="color:#d4dde8;">Context files</strong><br>
+            <span style="font-size:10pt;color:#7a8796;">Store project patterns, style guides, and domain knowledge</span>
+          </li>
+          <li style="padding:8pt 0 8pt 14pt;border-left:2pt solid #7a8796;font-size:12pt;color:#b8c4d0;">
+            <strong style="color:#d4dde8;">Sandbox safety</strong><br>
+            <span style="font-size:10pt;color:#7a8796;">Claude can read and write files, but you control the scope</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

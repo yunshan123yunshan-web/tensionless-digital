@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>decision-rules.md</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" href="../shared/slide.css">
+</head>
+<body>
+<div class="slide section-theme-4">
+  <div class="accent-band top" style="--sec-accent:#b8c4d0;"></div>
+  <div class="corner-accent tr"></div>
+  <div class="corner-accent bl"></div>
+
+  <div class="slide-inner" style="position:relative;z-index:2;">
+    <div class="section-indicator"><p>08 / 10 · Building Context</p></div>
+
+    <div style="display:flex;gap:24pt;flex:1;">
+      <div style="flex:1;display:flex;flex-direction:column;">
+        <h1>decision-rules.md</h1>
+        <div class="sec-divider"></div>
+        <p style="font-size:12pt;color:#96a4b2;">Your principles for making trade-offs. When Claude needs to choose between options, this file guides the decision.</p>
+
+        <div class="code-block" style="max-width:95%;">
+          <p><strong style="color:#d4dde8;"># Decision Rules</strong></p>
+          <p style="margin-top:4pt;"><strong style="color:#96a4b2;">When choosing between speed and quality:</strong></p>
+          <p style="color:#7a8796;">- Default: quality first. Speed is secondary unless explicitly stated.</p>
+          <p style="margin-top:6pt;"><strong style="color:#96a4b2;">When choosing simple vs flexible:</strong></p>
+          <p style="color:#7a8796;">- Prefer simple. We can add complexity later. We can't remove it easily.</p>
+          <p style="margin-top:6pt;"><strong style="color:#96a4b2;">When choosing build vs buy:</strong></p>
+          <p style="color:#7a8796;">- Build if it's core to our product. Buy if it's a commodity capability.</p>
+          <p style="margin-top:6pt;"><strong style="color:#96a4b2;">When prioritizing features:</strong></p>
+          <p style="color:#7a8796;">- Impact over effort. Use a simple 2×2 matrix, not weighted scoring.</p>
+          <p style="margin-top:6pt;"><strong style="color:#96a4b2;">When giving feedback:</strong></p>
+          <p style="color:#7a8796;">- Be direct but kind. No sandwich technique. Say what needs to change.</p>
+        </div>
+      </div>
+
+      <div style="flex:0.7;">
+        <div class="focus-box" style="height:auto;background:#0d0d0f;">
+          <p style="font-size:11pt;color:#d4dde8;margin:0;"><strong>When to use:</strong></p>
+          <ul style="list-style:none;padding:0;margin-top:6pt;">
+            <li style="font-size:11pt;color:#96a4b2;padding:4pt 0;">Technical architecture choices</li>
+            <li style="font-size:11pt;color:#96a4b2;padding:4pt 0;">Strategy &amp; planning</li>
+            <li style="font-size:11pt;color:#96a4b2;padding:4pt 0;">Prioritization decisions</li>
+            <li style="font-size:11pt;color:#96a4b2;padding:4pt 0;">Any "it depends" scenario</li>
+          </ul>
+        </div>
+
+        <div class="focus-box" style="margin-top:10pt;background:#0d0d0f;">
+          <p style="font-size:10.5pt;color:#96a4b2;margin:0;"><strong>Tip:</strong> Start with 5 rules. Add more as you notice Claude making choices you wouldn't have made. Each rule captures a judgment call you've already made — once.</p>
+        </div>
+
+        <p style="font-size:10pt;color:#5a6067;margin-top:8pt;">Think of this as encoding your intuition into reproducible guidelines.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

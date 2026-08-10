@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>Showcase · Title with Photo BG</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" href="../shared/slide.css">
+<style>
+/* Abstract mountain landscape as SVG data URI for the background image */
+.bg-mountains {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+}
+.bg-mountains img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+</style>
+</head>
+<body>
+<div class="slide section-theme-1">
+  <!-- Photo background as SVG abstract landscape (self-contained) -->
+  <div class="bg-mountains">
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 960 540'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0%25' stop-color='%23090909'/%3E%3Cstop offset='40%25' stop-color='%23141414'/%3E%3Cstop offset='70%25' stop-color='%231e1e1e'/%3E%3Cstop offset='100%25' stop-color='%23090909'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='960' height='540' fill='url(%23g)'/%3E%3Cpath d='M0 380 L120 320 L200 350 L280 280 L350 310 L420 250 L500 290 L580 220 L650 260 L720 200 L800 240 L880 210 L960 260 L960 540 L0 540 Z' fill='%231a1a1e' opacity='0.5'/%3E%3Cpath d='M0 420 L80 380 L160 400 L240 360 L320 390 L400 340 L480 370 L560 330 L640 360 L720 310 L800 340 L880 320 L960 350 L960 540 L0 540 Z' fill='%232a2a30' opacity='0.3'/%3E%3Ccircle cx='780' cy='100' r='60' fill='%23d4dde8' opacity='0.04'/%3E%3Ccircle cx='800' cy='95' r='40' fill='%23d4dde8' opacity='0.06'/%3E%3C/svg%3E"
+       alt="">
+  </div>
+  <!-- Dark overlay -->
+  <div class="bg-overlay bg-overlay-soft"></div>
+
+  <!-- Corner accents -->
+  <div class="corner-accent tr"></div>
+  <div class="corner-accent bl"></div>
+
+  <!-- Title content -->
+  <div class="title-content" style="z-index:2;">
+    <p class="label" style="margin-bottom:12pt;">Workshop Training</p>
+    <h1 class="display-large">Claude Chat, Cowork<br>&amp; Skills Training</h1>
+    <p class="subtitle">How to delegate work to AI safely and effectively</p>
+    <div class="sec-divider"></div>
+    <p style="font-size:11pt;color:#7a8796;max-width:50%;">A hands-on workshop for teams building with AI</p>
+  </div>
+
+  <!-- Shard decoration -->
+  <div class="transition-diamond small" style="bottom:48pt;right:52pt;top:auto;left:auto;opacity:0.05;"></div>
+</div>
+</body>
+</html>

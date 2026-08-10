@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>Beginner Trap</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" href="../shared/slide.css">
+<style>
+.trap { border-left: 2pt solid #5a6067; padding: 10pt 0 10pt 16pt; margin-bottom: 10pt; }
+.trap p { font-size: 12pt; margin: 0; color: #7a8796; }
+.trap strong { color: #96a4b2; }
+.cycle-step { display:flex; gap:10pt; align-items:center; margin-bottom:4pt; }
+.cycle-step .num { font-size: 10pt; font-weight:600; color:#5a6067; background:#1e1e1e; width:20pt; height:20pt; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.cycle-step p { font-size:11pt; margin:0; color:#b8c4d0; }
+</style>
+</head>
+<body>
+<div class="slide section-theme-3">
+  <div class="accent-strip left" style="background:rgba(122,135,150,0.06);"></div>
+  <div class="accent-strip right" style="background:rgba(122,135,150,0.03);"></div>
+  <div class="accent-band top" style="--sec-accent:#7a8796;"></div>
+
+  <div class="slide-inner" style="position:relative;z-index:2;">
+    <div class="section-indicator"><p>02 / 10 · How Models Work</p></div>
+
+    <h1 style="max-width:75%;">The "Why Did My Chat Break?" Trap</h1>
+    <div class="sec-divider"></div>
+
+    <div style="display:flex;gap:28pt;flex:1;max-width:92%;">
+      <div style="flex:1;">
+        <p style="font-size:12pt;color:#96a4b2;">A common pattern: you've been working in a long chat session, and suddenly Claude starts "forgetting" things you discussed earlier.</p>
+
+        <div class="trap">
+          <p><strong>What happened:</strong> You hit the context window limit. The older messages are no longer visible to the model — not because it's "broken," but because its working memory is full.</p>
+        </div>
+
+        <div class="trap">
+          <p><strong>What it feels like:</strong> "Why doesn't Claude remember? We just talked about this!"</p>
+        </div>
+
+        <div class="trap">
+          <p><strong>What helps:</strong> Start a new chat with a fresh summary of what matters. Or remove content you no longer need from the conversation.</p>
+        </div>
+      </div>
+      <div style="flex:1;">
+        <h3>The cycle:</h3>
+        <div class="cycle-step"><span class="num">1</span><p>Chat grows long with context, examples, iterations</p></div>
+        <div class="cycle-step"><span class="num">2</span><p>Context window fills up</p></div>
+        <div class="cycle-step"><span class="num">3</span><p>Model starts losing earlier content</p></div>
+        <div class="cycle-step"><span class="num">4</span><p>User blames the model</p></div>
+        <div class="cycle-step"><span class="num">5</span><p>User restarts — and loses all context</p></div>
+
+        <div class="focus-box" style="margin-top:14pt;">
+          <p style="font-size:11pt;color:#d4dde8;margin:0;">The fix isn't a bigger context window — it's knowing <strong>when to reset</strong> and <strong>what to preserve</strong>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

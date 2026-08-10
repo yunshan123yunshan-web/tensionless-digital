@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>Templates Overview</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet"="../shared/slide.css">
+<style>
+.temp-card { flex:1; border:1px solid #1e1e1e; padding:14pt 16pt; background:#0c0c0e; }
+.temp-card h3 { margin-bottom:4pt; }
+.temp-card p { font-size:11pt; color:#7a8796; margin:0; }
+.temp-card .temp-icon { font-size:20pt; margin-bottom:6pt; display:block; color:#d4dde8; }
+</style>
+</head>
+<body>
+<div class="slide section-theme-5">
+  <div class="accent-strip left" style="background:rgba(212,221,232,0.06);"></div>
+  <div class="accent-band top" style="--sec-accent:#d4dde8;"></div>
+  <div class="corner-accent tr"></div>
+  <div class="corner-accent bl"></div>
+
+  <div class="slide-inner" style="position:relative;z-index:2;">
+    <div class="section-indicator"><p>09 / 10 · Templates &amp; Skills</p></div>
+
+    <div style="flex:1;display:flex;flex-direction:column;max-width:90%;">
+      <h1>Three Types of Templates</h1>
+      <div class="sec-divider"></div>
+      <p style="font-size:12pt;color:#96a4b2;margin-bottom:10pt;">Templates range from simple copy-paste prompts to full /command skills. Start simple, level up as you go.</p>
+
+      <div style="display:flex;gap:16pt;">
+        <div class="temp-card" style="border-left:3pt solid #7a8796;">
+          <span class="temp-icon"></span>
+          <h3 style="color:#7a8796;">Level 1: Prompt Templates</h3>
+          <p>Reusable text prompts you copy and paste. Store in a doc or note. Best for: individual use, quick tasks, exploring a pattern.</p>
+          <p style="color:#5a6067;font-size:9.5pt;margin-top:6px;">Example: "Summarize this article in 3 bullet points"</p>
+        </div>
+        <div class="temp-card" style="border-left:3pt solid #96a4b2;">
+          <span class="temp-icon">📁</span>
+          <h3 style="color:#96a4b2;">Level 2: Prompt Files</h3>
+          <p>Markdown files in your project (e.g., .claude/prompts/). Claude can read them via Cowork mode. Best for: shared team patterns, documented workflows.</p>
+          <p style="color:#5a6067;font-size:9.5pt;margin-top:6px;">Example: .claude/prompts/meeting-recap.md</p>
+        </div>
+        <div class="temp-card" style="border-left:3pt solid #d4dde8;">
+          <span class="temp-icon">•</span>
+          <h3>Level 3: Skills</h3>
+          <p>Fully packaged /commands with SLK.md + optional scripts. Invoke with /skill-name. Best for: frequent tasks, team-wide distribution, complex workflows.</p>
+          <p style="color:#5a6067;font-size:9.5pt;margin-top:6px;">Example: /meeting-recap generates structured summaries</p>
+        </div>
+      </div>
+
+      <div class="focus-box" style="margin-top:auto;">
+        <p style="font-size:11pt;color:#96a4b2;margin:0;"><strong>Rule of thumb:</strong> If you've done the same task with Claude 3 times, turn it into a template. If you'd do it weekly, turn it into a skill.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

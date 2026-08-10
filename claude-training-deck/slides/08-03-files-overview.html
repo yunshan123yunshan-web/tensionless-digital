@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>Five Context Files</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" href="../shared/slide.css">
+</head>
+<body>
+<div class="slide section-theme-4">
+  <div class="accent-band top" style="--sec-accent:#b8c4d0;"></div>
+
+  <div class="slide-inner" style="position:relative;z-index:2;">
+    <div class="section-indicator"><p>08 / 10 · Building Context</p></div>
+
+    <h1>The Five Context Files</h1>
+    <div class="sec-divider"></div>
+    <p style="font-size:12pt;color:#96a4b2;max-width:75%;">Build these files once. Reference them forever. Each solves a specific problem.</p>
+
+    <table style="max-width:95%;margin-top:10pt;">
+      <tr><th style="width:18%;">File</th><th>What it contains</th><th style="width:22%;">When to reference</th></tr>
+      <tr>
+        <td style="color:#d4dde8;font-weight:500;">about-me.md</td>
+        <td>Your role, responsibilities, goals, preferences, experience level</td>
+        <td style="color:#96a4b2;">Every conversation — sets the baseline</td>
+      </tr>
+      <tr>
+        <td style="color:#d4dde8;font-weight:500;">my-company.md</td>
+        <td>Company overview, positioning, competitors, audience, metrics</td>
+        <td style="color:#96a4b2;">Client work, strategy, any external-facing output</td>
+      </tr>
+      <tr>
+        <td style="color:#d4dde8;font-weight:500;">writing-style.md</td>
+        <td>Tone, vocabulary, formatting rules, pet peeves, examples</td>
+        <td style="color:#96a4b2;">Any writing task — email, doc, proposal, social</td>
+      </tr>
+      <tr>
+        <td style="color:#d4dde8;font-weight:500;">anti-ai.md</td>
+        <td>What you don't want Claude to do — clichés, overused phrases, bad patterns</td>
+        <td style="color:#96a4b2;">Review tasks, before generating final output</td>
+      </tr>
+      <tr>
+        <td style="color:#d4dde8;font-weight:500;">decision-rules.md</td>
+        <td>Trade-off preferences, priorities, principles for judgment calls</td>
+        <td style="color:#96a4b2;">Architecture, strategy, any decision with options</td>
+      </tr>
+    </table>
+
+    <div class="focus-box" style="margin-top:auto;">
+      <p style="font-size:11pt;color:#96a4b2;margin:0;"><strong>Pattern:</strong> Claude doesn't read context files automatically — you reference them in prompts: <em>"Read my writing-style.md before drafting this email."</em></p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

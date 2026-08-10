@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>Trust but Verify</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" href="../shared/slide.css">
+</head>
+<body>
+<div class="slide section-theme-1">
+  <div class="accent-strip left" style="background:rgba(154,170,188,0.06);"></div>
+  <div class="accent-band top" style="--sec-accent:#9aaabc;"></div>
+  <div class="corner-accent tr"></div>
+  <div class="corner-accent bl"></div>
+
+  <div class="slide-inner" style="position:relative;z-index:2;">
+    <div class="section-indicator"><p>10 / 10 · Safety &amp; Final Test</p></div>
+
+    <div style="display:flex;gap:24pt;flex:1;">
+      <div style="flex:1;display:flex;flex-direction:column;">
+        <h1>Trust, but Always Verify</h1>
+        <div class="sec-divider"></div>
+        <p style="font-size:12pt;color:#96a4b2;margin-bottom:8pt;">Claude is fluent, confident, and <strong>sometimes wrong</strong>. Verification isn't optional — it's part of the workflow.</p>
+
+        <div class="code-block" style="border-left:3pt solid #9aaabc;background:#0d0d0f;">
+          <p style="color:#7a8796;">✕ "Write a script to migrate our database."</p>
+          <p style="color:#5a6067;margin-top:2pt;">→ Runs without review. Drops a table. Disaster.</p>
+        </div>
+
+        <div class="code-block" style="border-left:3pt solid #d4dde8;margin-top:8pt;">
+          <p style="color:#b8c4d0;">✓ "Write a migration script. <strong>Before you finish, check:</strong> Does it handle rollbacks? Does it preserve existing data? Are there any destructive operations? Flag them."</p>
+          <p style="color:#96a4b2;margin-top:2pt;">→ Reviewed. Safe. Caught a destructive operation before running.</p>
+        </div>
+
+        <div class="focus-box" style="margin-top:auto;">
+          <p style="font-size:11pt;color:#d4dde8;margin:0;"><strong>Golden rule:</strong> Claude's output is a first draft from a brilliant but imperfect teammate. Always review before shipping, deploying, or sending.</p>
+        </div>
+      </div>
+
+      <div style="flex:0.7;">
+        <h2 style="font-size:24pt;font-family:'Cormorant Garamond',Georgia,serif;">What to verify</h2>
+        <div class="sec-divider"></div>
+        <ul style="list-style:none;padding:0;">
+          <li style="padding:6pt 0 6pt 14pt;border-left:2pt solid #9aaabc;font-size:12pt;color:#b8c4d0;margin-bottom:6pt;">
+            <strong>Facts &amp; numbers</strong><br>
+            <span style="font-size:10pt;color:#7a8796;">Claude can hallucinate statistics</span>
+          </li>
+          <li style="padding:6pt 0 6pt 14pt;border-left:2pt solid #9aaabc;font-size:12pt;color:#b8c4d0;margin-bottom:6pt;">
+            <strong>Code correctness</strong><br>
+            <span style="font-size:10pt;color:#7a8796;">Syntax may be right, logic may be wrong</span>
+          </li>
+          <li style="padding:6pt 0 6pt 14pt;border-left:2pt solid #9aaabc;font-size:12pt;color:#b8c4d0;margin-bottom:6pt;">
+            <strong>Security issues</strong><br>
+            <span style="font-size:10pt;color:#7a8796;">Never trust generated code with sensitive data</span>
+          </li>
+          <li style="padding:6pt 0 6pt 14pt;border-left:2pt solid #9aaabc;font-size:12pt;color:#b8c4d0;margin-bottom:6pt;">
+            <strong>Appropriateness</strong><br>
+            <span style="font-size:10pt;color:#7a8796;">Does the tone match the audience?</span>
+          </li>
+          <li style="padding:6pt 0 6pt 14pt;border-left:2pt solid #9aaabc;font-size:12pt;color:#b8c4d0;">
+            <strong>Assumptions</strong><br>
+            <span style="font-size:10pt;color:#7a8796;">Did Claude assume something incorrect?</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

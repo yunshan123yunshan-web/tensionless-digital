@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=960, height=540">
+<title>How AI Has Evolved</title>
+<link rel="stylesheet" href="../shared/fonts.css">
+<link rel="stylesheet" href="../shared/slide.css">
+<style>
+.era { border-left: 2pt solid #1e1e1e; padding: 8pt 0 8pt 16pt; margin-bottom: 10pt; }
+.era:last-child { margin-bottom: 0; }
+.era .num { font-size: 10pt; font-weight: 600; color: #5a6067; letter-spacing: 0.1em; }
+.era h3 { font-size: 15pt; margin: 2pt 0 4pt 0; }
+.era p { font-size: 11.5pt; color: #7a8796; margin: 0; }
+.era.active { border-left-color: #96a4b2; }
+.era.active h3 { color: #d4dde8; }
+.era.active p { color: #b8c4d0; }
+</style>
+</head>
+<body>
+<div class="slide section-theme-2">
+  <!-- Subtle bg -->
+  <svg class="bg-photo" viewBox="0 0 960 540" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <rect width="960" height="540" fill="#090909"/>
+    <rect x="0" y="0" width="960" height="540" fill="url(#era-bg)" opacity="0.3"/>
+    <defs>
+      <linearGradient id="era-bg" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#96a4b2" stop-opacity="0.03"/>
+        <stop offset="50%" stop-color="#96a4b2" stop-opacity="0"/>
+        <stop offset="100%" stop-color="#96a4b2" stop-opacity="0.02"/>
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <div class="accent-band top" style="--sec-accent:#96a4b2;"></div>
+  <div class="corner-accent tr"></div>
+
+  <div class="slide-inner" style="position:relative;z-index:2;">
+    <div class="section-indicator"><p>01 / 10 · AI Has Changed</p></div>
+
+    <div style="display:flex;gap:32pt;flex:1;max-width:95%;">
+      <div style="flex:1.1;">
+        <h1>How AI Has Evolved</h1>
+        <div class="sec-divider"></div>
+        <p style="font-size:12pt;color:#7a8796;max-width:90%;">Each era changed what was possible — and what was expected of the human in the loop.</p>
+      </div>
+      <div style="flex:1.4;">
+        <div class="era active">
+          <p class="num">ERA 1 · 2018–2020</p>
+          <h3>Pattern Matching</h3>
+          <p>LLMs as autocomplete — good for classification, extraction, simple generation. You had to know exactly what to ask.</p>
+        </div>
+        <div class="era active">
+          <p class="num">ERA 2 · 2020–2023</p>
+          <h3>Language Understanding</h3>
+          <p>ChatGPT-level fluency. AI could hold conversation, follow instructions, and generate coherent content at scale.</p>
+        </div>
+        <div class="era active">
+          <p class="num">ERA 3 · 2023–2024</p>
+          <h3>Reasoning &amp; Delegation</h3>
+          <p>Models can reason through problems, use tools, follow complex instructions, and handle multi-step tasks.</p>
+        </div>
+        <div class="era active">
+          <p class="num">ERA 4 · 2024–2025+</p>
+          <h3>Agentic Workflows</h3>
+          <p>AI agents that plan, execute, verify, and iterate. The human role shifts from operator to director.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
