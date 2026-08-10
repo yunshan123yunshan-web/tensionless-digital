@@ -63,10 +63,14 @@
   }
 
   function entranceTimeline(trigger, add) {
+    // 'top bottom' (not 'top 90%'): these triggers sit right after another
+    // pinned section, whose pin-spacer pushes this section's real arrival
+    // later than a plain 90%-of-viewport threshold assumes. Starting at
+    // 'top bottom' guarantees the previous pin has released first.
     var tl = gsap.timeline({
       scrollTrigger: {
         trigger: trigger,
-        start: 'top 90%',
+        start: 'top bottom',
         toggleActions: 'play none none none'
       }
     });
@@ -197,8 +201,9 @@
         if (u >= CENTER[idx] + 0.3) countOnce(slides[idx]);
       }
 
-      // Last slide fades out before the next section enters.
-      tl.to(slides[slides.length - 1], { autoAlpha: 0, duration: 0.8, ease: 'power1.inOut' }, DUR - 0.8);
+      // Last slide fades out well before the pin releases, so the crossfade
+      // finishes with real scroll margin instead of racing the next section in.
+      tl.to(slides[slides.length - 1], { autoAlpha: 0, duration: 2, ease: 'power1.inOut' }, DUR - 2.5);
 
       return function () {
         clearScenes(slides, innerSel);
@@ -230,15 +235,20 @@
 
       var dots = buildProgressDots(testiWrap.querySelector('.testi-dot-bar'), 4);
 
-      entranceTimeline(testiWrap, function (tl) {
-        tl.to(s1.querySelectorAll('.testi-glyph, .testi-quote, .testi-author'),
-          { autoAlpha: 1, duration: 0.7, stagger: 0.15 }, 0)
-          .call(scrambleKicker(testiWrap), null, 0.2);
-      });
-
+      // Scene 1's reveal lives inside the pinned timeline itself (not a
+      // separate ScrollTrigger) because this section follows another pinned
+      // section: an independent 'top bottom'/'top 90%' trigger fires based
+      // on document position, which the previous section's pin-spacer can
+      // satisfy well before that pin actually releases — producing a
+      // double-exposure of both sections' content. Gating on the pinned
+      // timeline's own start guarantees this only plays once the case-study
+      // pin has released and this section is truly on screen.
       var DUR = 25;
       var tl = createPinnedTimeline(testiWrap, testiSticky);
-      tl.set(s1, { autoAlpha: 1, scale: 1 }, 0);
+      tl.set(s1, { autoAlpha: 1, scale: 1 }, 0)
+        .to(s1.querySelectorAll('.testi-glyph, .testi-quote, .testi-author'),
+          { autoAlpha: 1, duration: 0.7, stagger: 0.15 }, 0)
+        .call(scrambleKicker(testiWrap), null, 0);
 
       [[s1, s2, 5], [s2, s3, 10.5]].forEach(function (pair, idx) {
         var out = pair[0], inn = pair[1], at = pair[2];
@@ -253,9 +263,9 @@
         tl.to(s3, { autoAlpha: 0, scale: 0.98, duration: 0.8, ease: 'power1.inOut' }, 15.5)
           .fromTo(trustInner, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6, stagger: 0.15 }, 16.3)
           .call(setDot, [dots, 3], 16.4)
-          .to(trust, { autoAlpha: 0, duration: 0.8, ease: 'power1.inOut' }, DUR - 0.8);
+          .to(trust, { autoAlpha: 0, duration: 1.5, ease: 'power1.inOut' }, DUR - 2);
       } else {
-        tl.to(s3, { autoAlpha: 0, scale: 0.98, duration: 0.8, ease: 'power1.inOut' }, DUR - 0.8);
+        tl.to(s3, { autoAlpha: 0, scale: 0.98, duration: 1.5, ease: 'power1.inOut' }, DUR - 2);
       }
 
       return function () {
@@ -300,12 +310,10 @@
         }
       }
 
-      entranceTimeline(procWrap, function (tl) {
-        tl.to(steps[0].querySelectorAll(innerSel),
-          { autoAlpha: 1, duration: 0.6, stagger: 0.1 }, 0)
-          .call(scrambleKicker(procWrap), null, 0.2);
-      });
-
+      // Step 0's reveal lives inside the pinned timeline itself, not a
+      // separate ScrollTrigger — see the matching comment in the Testimonials
+      // block above. Process follows Testimonials (also pinned), so the same
+      // premature-reveal risk applies here.
       var DUR = 30;
       var SEG = [
         { at: 3, step: 0 },
@@ -316,7 +324,9 @@
       ];
 
       var tl = createPinnedTimeline(procWrap, procSticky);
-      tl.set(steps[0], { autoAlpha: 1 }, 0);
+      tl.set(steps[0], { autoAlpha: 1 }, 0)
+        .to(steps[0].querySelectorAll(innerSel), { autoAlpha: 1, duration: 0.6, stagger: 0.1 }, 0)
+        .call(scrambleKicker(procWrap), null, 0);
       setActiveStep(0);
 
       // Focus dot orbits to each node (per-segment, eases as it lands).
@@ -352,9 +362,10 @@
         }
       });
 
-      // Last step + numeral fade out before CTA.
-      tl.to(steps[steps.length - 1], { autoAlpha: 0, duration: 0.8, ease: 'power1.inOut' }, DUR - 0.8);
-      if (num) tl.to(num, { autoAlpha: 0, duration: 0.6, ease: 'power1.inOut' }, DUR - 0.6);
+      // Last step + numeral fade out well before the pin releases, so the CTA
+      // never enters while the step content is still mid-fade.
+      tl.to(steps[steps.length - 1], { autoAlpha: 0, duration: 2, ease: 'power1.inOut' }, DUR - 2.5);
+      if (num) tl.to(num, { autoAlpha: 0, duration: 1.5, ease: 'power1.inOut' }, DUR - 2.3);
 
       return function () {
         clearScenes(steps, innerSel);
