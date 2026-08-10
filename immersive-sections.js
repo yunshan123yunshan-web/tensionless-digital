@@ -1,22 +1,16 @@
 /**
- * Immersive Sections — Cinematic Scroll-Driven Scene Transitions
+ * Immersive Sections — Pinned Cinematic Scene Transitions
  *
- * Three pinned sections (Case Study, Testimonials, Process) that replace
- * vertical scrolling with viewport-contained scene transitions.
+ * Three pinned sections (Case Study, Testimonials, Process) driven by
+ * scroll-scrubbed timelines inside gsap.matchMedia — desktop only, no
+ * reduced-motion. Every scene change is a pure crossfade (autoAlpha +
+ * subtle scale). No y translation, per the site's hard rule.
  *
- * Constraints:
- *  - No y-axis movement for scene transitions (opacity/autoAlpha/scale only)
- *  - No spillover — each section's last scene fades before next section enters
- *  - GPU-friendly transforms only (opacity, scale, translateX, clip-path)
- *
- * Improvements applied (2026-05-01):
- *  - Count-up animations fire independently from scrubbed timeline
- *  - Compressed pin heights (300/250/300vh) to reduce scroll fatigue
- *  - Scene progress dot indicators on all three sections
- *  - Distinct per-scene background atmosphere (gradients/color temp)
- *  - Enlarged process visual with more dramatic per-step state changes
- *  - Floating testimonial cards show different people than main quotes
- *  - Tighter transition spacing, less dead-scroll between scenes
+ * Each section gets a short non-scrubbed "entrance" reveal (trigger
+ * 'top 90%') so its first scene is already composed as it approaches the
+ * pin; the pinned timeline then owns the crossfades. Scene inner content
+ * is pre-hidden and re-staged so reveals read as mask/fade staggers, not a
+ * flat fade of the whole frame.
  */
 
 (function () {
@@ -25,68 +19,30 @@
 
   gsap.registerPlugin(ScrollTrigger);
   var mm = gsap.matchMedia();
+  var DESKTOP = '(min-width: 769px) and (prefers-reduced-motion: no-preference)';
 
-  /* ──────────────────────────────────────────────────────────────
-     Shared Helpers
-     ────────────────────────────────────────────────────────────── */
+  /* ── shared helpers ─────────────────────────────────────────────── */
 
-  function initScenes(scenes, activeIndex) {
-    scenes.forEach(function (scene, i) {
-      gsap.set(scene, { autoAlpha: i === activeIndex ? 1 : 0 });
-    });
-  }
-
-  /**
-   * One-shot count-up — runs independently of any scrubbed timeline.
-   * Fires a self-contained tween that is NOT tied to scroll position.
-   */
-  function fireCountUp(selector) {
-    var els = document.querySelectorAll(selector);
-    els.forEach(function (el) {
-      var target = parseFloat(el.getAttribute('data-target') || '0');
-      var suffix = el.getAttribute('data-suffix') || '';
-      // Reset to 0
-      el.textContent = '0' + (suffix === 'x' ? 'x' : suffix);
-      var state = { value: 0 };
-      gsap.to(state, {
-        value: target,
-        duration: 1.2,
-        ease: 'expo.out',
-        onUpdate: function () {
-          if (suffix === 'x') {
-            el.textContent = state.value.toFixed(1) + 'x';
-          } else {
-            el.textContent = Math.round(state.value) + suffix;
-          }
-        }
-      });
-    });
-  }
-
-  /**
-   * Build scene progress dots inside a container.
-   * Returns the dot elements array for timeline animation.
-   */
   function buildProgressDots(container, count) {
-    var frag = document.createDocumentFragment();
+    if (!container) return [];
     var dots = [];
-    for (var i = 0; i < count; i++) {
+    var i;
+    for (i = 0; i < count; i += 1) {
       var dot = document.createElement('span');
       dot.className = 'imm-dot';
       if (i === 0) dot.classList.add('active');
-      dot.setAttribute('aria-hidden', 'true');
-      frag.appendChild(dot);
+      container.appendChild(dot);
       dots.push(dot);
     }
-    container.appendChild(frag);
     return dots;
   }
 
-  /**
-   * Create a pinned-scroll GSAP timeline with standard config.
-   * trigger — element that controls scroll distance
-   * pin — element to pin during scroll
-   */
+  function setDot(dots, index) {
+    dots.forEach(function (dot, i) {
+      dot.classList.toggle('active', i === index);
+    });
+  }
+
   function createPinnedTimeline(trigger, pin) {
     return gsap.timeline({
       scrollTrigger: {
@@ -101,260 +57,259 @@
     });
   }
 
-  /* ═══════════════════════════════════════════════════════════════
-     CASE STUDY — 4 scenes, 300vh pin
-     ═══════════════════════════════════════════════════════════════ */
-  mm.add('(min-width: 769px) and (prefers-reduced-motion: no-preference)', function () {
-    var csWrap = document.querySelector('#case-study');
-    var csSticky = document.querySelector('.cs-sticky');
-    var csScenes = gsap.utils.toArray('.cs-scene');
-    var csPanels = document.querySelectorAll('.cs-panel');
-    var csDotBar = document.querySelector('.cs-dot-bar');
-    var csCountFired = false;
-
-    if (!csWrap || !csScenes.length) return;
-
-    // Build progress dots
-    var csDots = csDotBar ? buildProgressDots(csDotBar, 4) : [];
-
-    // Set initial states
-    initScenes(csScenes, 0);
-    gsap.set(csScenes.slice(1), { scale: 0.93 });
-    gsap.set(csPanels, { autoAlpha: 0, scale: 0.92 });
-    gsap.set('.cs-scene-bg', { opacity: 1 });
-    gsap.set('.cs-orb', { autoAlpha: 0.7 });
-
-    var csTl = createPinnedTimeline(csWrap, csSticky);
-
-    var DUR = 30;
-
-    // ── Abstract orbs — shift position & color temp per scene ──
-    // S1→S2: orb1 drifts right + dims, orb2 drifts down
-    csTl.to('.cs-orb-1', { x: 60, scale: 1.1, autoAlpha: 0.45, duration: 8, ease: 'power2.inOut' }, 3);
-    csTl.to('.cs-orb-2', { y: 40, scale: 1.05, autoAlpha: 0.55, duration: 8, ease: 'power2.inOut' }, 3);
-    // S2→S3: orb1 shifts blue-ish (done via bg), orb2 expands
-    csTl.to('.cs-orb-1', { x: 100, scale: 1.3, duration: 8, ease: 'power2.inOut' }, 11);
-    csTl.to('.cs-orb-2', { x: -30, y: 60, scale: 1.2, autoAlpha: 0.65, duration: 8, ease: 'power2.inOut' }, 11);
-    // S3→S4: both orbs brighten and converge
-    csTl.to('.cs-orb-1', { x: 40, scale: 1.15, autoAlpha: 0.7, duration: 8, ease: 'power2.inOut' }, 18);
-    csTl.to('.cs-orb-2', { x: 0, y: 20, scale: 1.1, autoAlpha: 0.75, duration: 8, ease: 'power2.inOut' }, 18);
-
-    // ── Background atmosphere shifts ──
-    csTl.to('.cs-s1 .cs-scene-bg', { opacity: 0.4, duration: 3, ease: 'power2.inOut' }, 4);
-
-    // ── Scene 01 → 02 (positions 5–6.5) ──
-    csTl.to('.cs-s1', { autoAlpha: 0, duration: 0.8, ease: 'power2.inOut' }, 5)
-       .to('.cs-s2', { autoAlpha: 1, scale: 1, duration: 1.2, ease: 'power3.out' }, 5.15);
-
-    // ── S2 stat badge reveal ──
-    csTl.fromTo('.cs-stat-badge', { autoAlpha: 0, scale: 0.9 }, { autoAlpha: 1, scale: 1, duration: 0.6, ease: 'power3.out' }, 5.8);
-
-    // ── Scene 02 → 03 (positions 12–13.5) ──
-    csTl.to('.cs-s2', { autoAlpha: 0, duration: 0.8, ease: 'power2.inOut' }, 12)
-       .to('.cs-s3', { autoAlpha: 1, scale: 1, duration: 1.2, ease: 'power3.out' }, 12.15);
-
-    // ── S3 panels slide in from sides ──
-    csTl.fromTo('.cs-panel-l', { autoAlpha: 0, x: -40, scale: 0.93 }, { autoAlpha: 1, x: 0, scale: 1, duration: 1, stagger: 0.12, ease: 'power3.out' }, 12.8);
-    csTl.fromTo('.cs-panel-r', { autoAlpha: 0, x: 40, scale: 0.93 },  { autoAlpha: 1, x: 0, scale: 1, duration: 1, stagger: 0.12, ease: 'power3.out' }, 12.8);
-
-    // ── Scene 03 → 04 (positions 19–20.5) ──
-    csTl.to('.cs-s3', { autoAlpha: 0, duration: 0.8, ease: 'power2.inOut' }, 19)
-       .to('.cs-s4', { autoAlpha: 1, scale: 1, duration: 1.2, ease: 'power3.out' }, 19.15);
-
-    // ── S4 count-up — fires independently (not scrubbed) ──
-    csTl.call(function () {
-      if (!csCountFired) {
-        csCountFired = true;
-        fireCountUp('.count-imm');
-      }
-    }, null, 19.5);
-    // Reset flag when scrolling back before S4
-    csTl.call(function () { csCountFired = false; }, null, 12);
-
-    // ── Scene progress dots ──
-    if (csDots.length) {
-      var setActiveDot = function (idx) {
-        csDots.forEach(function (d) { d.classList.remove('active'); });
-        csDots[idx] && csDots[idx].classList.add('active');
-      };
-      csTl.call(function () { setActiveDot(1); }, null, 5.5);
-      csTl.call(function () { setActiveDot(2); }, null, 12.5);
-      csTl.call(function () { setActiveDot(3); }, null, 19.5);
-    }
-
-    // ── Final fade-out (positions 27–28) ──
-    csTl.to('.cs-s4', { autoAlpha: 0, duration: 1, ease: 'expo.out' }, 27)
-       .to('.cs-scene-bg', { opacity: 0, duration: 1, ease: 'expo.out' }, 27);
-
-    // Extend
-    csTl.to({}, { duration: 0.01 }, DUR);
-
-    return function () {
-      csTl.scrollTrigger && csTl.scrollTrigger.kill(true, true, true);
-      csTl.kill();
-      gsap.set(csScenes, { clearProps: 'opacity,visibility' });
-      gsap.set(csPanels, { clearProps: 'opacity,transform,visibility' });
-      gsap.set('.cs-scene-bg', { clearProps: 'opacity' });
-      gsap.set('.cs-stat-badge', { clearProps: 'opacity,transform' });
-      gsap.set('.cs-orb', { clearProps: 'opacity,transform' });
-      if (csDots.length) {
-        csDots.forEach(function (d) { d.className = 'imm-dot'; });
-        csDots[0] && csDots[0].classList.add('active');
-      }
-    };
-  });
-
-  /* ═══════════════════════════════════════════════════════════════
-     TESTIMONIALS — 3 quotes + 8 drifting background cards, 250vh pin
-     ═══════════════════════════════════════════════════════════════ */
-  mm.add('(min-width: 769px) and (prefers-reduced-motion: no-preference)', function () {
-    var testiWrap = document.querySelector('#testimonials-imm');
-    var testiSticky = document.querySelector('.testi-sticky');
-    var testiMs = gsap.utils.toArray('.testi-ms');
-    var testiTrust = document.querySelector('.testi-trust');
-    var testiDotBar = document.querySelector('.testi-dot-bar');
-
-    if (!testiWrap || !testiMs.length) return;
-
-    var testiDots = testiDotBar ? buildProgressDots(testiDotBar, 4) : [];
-
-    // ── Main testimonial scene transitions ──
-    initScenes(testiMs, 0);
-    gsap.set(testiMs.slice(1), { scale: 0.94 });
-    gsap.set(testiTrust, { autoAlpha: 0 });
-
-    var testiTl = createPinnedTimeline(testiWrap, testiSticky);
-
-    var TDUR = 25;
-
-    // ── Quote 0 → 1 (positions 5.5–7) ──
-    testiTl.to('.testi-ms-0', { autoAlpha: 0, duration: 0.8, ease: 'power2.inOut' }, 5.5)
-            .to('.testi-ms-1', { autoAlpha: 1, scale: 1, duration: 1.2, ease: 'power3.out' }, 5.7);
-
-    // ── Quote 1 → 2 (positions 13–14.5) ──
-    testiTl.to('.testi-ms-1', { autoAlpha: 0, duration: 0.8, ease: 'power2.inOut' }, 13)
-            .to('.testi-ms-2', { autoAlpha: 1, scale: 1, duration: 1.2, ease: 'power3.out' }, 13.2);
-
-    // ── Progress dots ──
-    if (testiDots.length) {
-      var setTestiDot = function (idx) {
-        testiDots.forEach(function (d) { d.classList.remove('active'); });
-        testiDots[idx] && testiDots[idx].classList.add('active');
-      };
-      testiTl.call(function () { setTestiDot(1); }, null, 6);
-      testiTl.call(function () { setTestiDot(2); }, null, 13.5);
-    }
-
-    // ── Trust statement fades in (position 18) ──
-    testiTl.to(testiTrust, { autoAlpha: 1, duration: 1.2, ease: 'power2.out' }, 18);
-    if (testiDots.length) {
-      testiTl.call(function () {
-        testiDots.forEach(function (d) { d.classList.remove('active'); });
-        testiDots[3] && testiDots[3].classList.add('active');
-      }, null, 18);
-    }
-
-    // ── Final fade-out (positions 22.5–23.5) ──
-    testiTl.to('.testi-ms-2', { autoAlpha: 0, duration: 0.8, ease: 'expo.out' }, TDUR - 0.8)
-            .to(testiTrust, { autoAlpha: 0, duration: 0.5, ease: 'power2.inOut' }, TDUR - 0.6);
-
-    testiTl.to({}, { duration: 0.01 }, TDUR);
-
-    return function () {
-      testiTl.scrollTrigger && testiTl.scrollTrigger.kill(true, true, true);
-      testiTl.kill();
-      gsap.set(testiMs, { clearProps: 'opacity,visibility' });
-      gsap.set(testiTrust, { clearProps: 'opacity,visibility' });
-      if (testiDots.length) {
-        testiDots.forEach(function (d) { d.className = 'imm-dot'; });
-        testiDots[0] && testiDots[0].classList.add('active');
-      }
-    };
-  });
-
-  /* ═══════════════════════════════════════════════════════════════
-     PROCESS — 5 steps + progress rail + enlarged visual, 300vh pin
-     ═══════════════════════════════════════════════════════════════ */
-  mm.add('(min-width: 769px) and (prefers-reduced-motion: no-preference)', function () {
-    var procWrap = document.querySelector('#process-imm');
-    var procSticky = document.querySelector('.proc-sticky');
-    var procSteps = gsap.utils.toArray('.proc-step');
-    var procNum = document.querySelector('.proc-num');
-    var procRailFill = document.querySelector('.proc-rail-fill');
-    var procDotBar = document.querySelector('.proc-dot-bar');
-
-    if (!procWrap || !procSteps.length) return;
-
-    var procDots = procDotBar ? buildProgressDots(procDotBar, 5) : [];
-
-    // Set initial states
-    initScenes(procSteps, 0);
-    gsap.set(procSteps.slice(1), { scale: 0.95 });
-
-    var procTl = createPinnedTimeline(procWrap, procSticky);
-
-    var PDUR = 35;
-
-    // Step definitions: { num, fadeIn, fadeOut, railPct }
-    var steps = [
-      { num: '01', fadeIn: 0,    fadeOut: 6.5 },
-      { num: '02', fadeIn: 6.7,  fadeOut: 13 },
-      { num: '03', fadeIn: 13.2, fadeOut: 19.5 },
-      { num: '04', fadeIn: 19.7, fadeOut: 26 },
-      { num: '05', fadeIn: 26.2, fadeOut: 32 }
-    ];
-
-    // ── Build step transitions ──
-    steps.forEach(function (step, i) {
-      var sel = '.proc-step[data-step="' + (i + 1) + '"]';
-
-      // Fade in this step (scale 0.95→1 for dynamic entry)
-      procTl.to(sel, { autoAlpha: 1, scale: 1, duration: 0.9, ease: 'power3.out' }, step.fadeIn);
-
-      // Update step number
-      procTl.call(function () {
-        if (procNum) procNum.textContent = step.num;
-      }, null, step.fadeIn);
-
-      // Fade out (except last step)
-      if (i < steps.length - 1) {
-        procTl.to(sel, { autoAlpha: 0, duration: 0.7, ease: 'power2.inOut' }, step.fadeOut);
+  function entranceTimeline(trigger, add) {
+    var tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: trigger,
+        start: 'top 90%',
+        toggleActions: 'play none none none'
       }
     });
+    add(tl);
+    return tl;
+  }
 
-    // ── Rail fill progression ──
-    procTl.to(procRailFill, { height: '20%', duration: 0.8, ease: 'power2.inOut' }, 0)
-           .to(procRailFill, { height: '40%', duration: 0.8, ease: 'power2.inOut' }, 6.5)
-           .to(procRailFill, { height: '60%', duration: 0.8, ease: 'power2.inOut' }, 13)
-           .to(procRailFill, { height: '80%', duration: 0.8, ease: 'power2.inOut' }, 19.5)
-           .to(procRailFill, { height: '100%', duration: 0.8, ease: 'power2.inOut' }, 26);
-
-    // ── Progress dots ──
-    if (procDots.length) {
-      var setProcDot = function (idx) {
-        procDots.forEach(function (d) { d.classList.remove('active'); });
-        procDots[idx] && procDots[idx].classList.add('active');
-      };
-      steps.forEach(function (step, i) {
-        procTl.call(function () { setProcDot(i); }, null, step.fadeIn);
+  function fireCountUps(scene) {
+    Array.prototype.forEach.call(scene.querySelectorAll('.count-imm'), function (el) {
+      var target = parseFloat(el.getAttribute('data-target'));
+      if (isNaN(target)) return;
+      var prefix = el.getAttribute('data-prefix') || '';
+      var suffix = el.getAttribute('data-suffix') || '';
+      var dec = parseInt(el.getAttribute('data-dec') || '0', 10);
+      el.textContent = prefix + '0' + suffix;
+      var state = { v: 0 };
+      gsap.to(state, {
+        v: target,
+        duration: 1.6,
+        ease: 'expo.out',
+        onUpdate: function () {
+          el.textContent = prefix + state.v.toFixed(dec) + suffix;
+        }
       });
-    }
+    });
+  }
 
-    // ── Final fade-out of step 5 (position 32–33) ──
-    procTl.to('.proc-step[data-step="5"]', { autoAlpha: 0, duration: 0.8, ease: 'expo.out' }, 32);
+  // tl.call fires on both scroll directions — only ever count once per scene.
+  function countOnce(scene) {
+    if (scene.__counted) return;
+    scene.__counted = true;
+    fireCountUps(scene);
+  }
 
-    procTl.to({}, { duration: 0.01 }, PDUR);
+  function clearScenes(scenes, innerSel) {
+    scenes.forEach(function (scene) {
+      gsap.set(scene, { clearProps: 'opacity,visibility,transform' });
+      Array.prototype.forEach.call(scene.querySelectorAll(innerSel), function (el) {
+        el.style.opacity = '';
+        el.style.visibility = '';
+      });
+    });
+  }
 
-    return function () {
-      procTl.scrollTrigger && procTl.scrollTrigger.kill(true, true, true);
-      procTl.kill();
-      gsap.set(procSteps, { clearProps: 'opacity,visibility' });
-      if (procRailFill) gsap.set(procRailFill, { clearProps: 'height' });
-      if (procDots.length) {
-        procDots.forEach(function (d) { d.className = 'imm-dot'; });
-        procDots[0] && procDots[0].classList.add('active');
+  function resetDots(dots) {
+    dots.forEach(function (d) { d.classList.remove('active'); });
+    if (dots[0]) dots[0].classList.add('active');
+  }
+
+  /* ── CASE STUDY — 4 scenes ──────────────────────────────────────── */
+
+  var csWrap = document.getElementById('case-study');
+  var csSticky = csWrap && csWrap.querySelector('.imm-sticky');
+  if (csWrap && csSticky) {
+    mm.add(DESKTOP, function () {
+      var scenes = Array.prototype.slice.call(csWrap.querySelectorAll('.cs-scene'));
+      if (scenes.length < 4) return;
+      var s1 = scenes[0];
+
+      // Pre-stage: hide inner content; back scenes 2-4 down slightly so the
+      // crossfade-in reads as an approach.
+      scenes.forEach(function (scene) {
+        gsap.set(scene.querySelectorAll('.cs-label, .cs-head, .cs-body, .cs-stat, .cs-panel'), { autoAlpha: 0 });
+      });
+      gsap.set(scenes.slice(1), { scale: 1.04 });
+
+      var dots = buildProgressDots(csWrap.querySelector('.cs-dot-bar'), scenes.length);
+
+      entranceTimeline(csWrap, function (tl) {
+        tl.to(s1.querySelectorAll('.cs-label, .cs-head, .cs-body'), { autoAlpha: 1, duration: 0.7, stagger: 0.12 }, 0)
+          .to(s1.querySelectorAll('.cs-stat'), { autoAlpha: 1, duration: 0.5, stagger: 0.1 }, 0.35)
+          .to(s1.querySelectorAll('.cs-panel'), { autoAlpha: 1, duration: 0.5, stagger: 0.1 }, 0.6)
+          .call(function () { countOnce(s1); }, null, 0.5);
+      });
+
+      var DUR = 28;
+      var tl = createPinnedTimeline(csWrap, csSticky);
+      tl.set(s1, { autoAlpha: 1, scale: 1 }, 0);
+
+      [4.5, 10.5, 16.5].forEach(function (at, idx) {
+        var out = scenes[idx];
+        var inn = scenes[idx + 1];
+        tl.to(out, { autoAlpha: 0, scale: 0.98, duration: 0.8, ease: 'power1.inOut' }, at)
+          .to(inn, { autoAlpha: 1, scale: 1, duration: 0.8, ease: 'power1.inOut' }, at + 0.8)
+          .fromTo(inn.querySelectorAll('.cs-label, .cs-head, .cs-body'),
+            { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6, stagger: 0.12 }, at + 1.0)
+          .fromTo(inn.querySelectorAll('.cs-stat'),
+            { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, stagger: 0.1 }, at + 1.3)
+          .fromTo(inn.querySelectorAll('.cs-panel'),
+            { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, stagger: 0.12 }, at + 1.55)
+          .call(setDot, [dots, idx + 1], at + 0.9)
+          .call(countOnce, [inn], at + 1.4);
+      });
+
+      // Last scene fades out before the next section enters.
+      tl.to(scenes[3], { autoAlpha: 0, scale: 0.98, duration: 0.8, ease: 'power1.inOut' }, DUR - 0.8);
+
+      return function () {
+        clearScenes(scenes, '.cs-label, .cs-head, .cs-body, .cs-stat, .cs-panel');
+        resetDots(dots);
+      };
+    });
+  }
+
+  /* ── TESTIMONIALS — 3 quotes + trust row ────────────────────────── */
+
+  var testiWrap = document.getElementById('testimonials-imm');
+  var testiSticky = testiWrap && testiWrap.querySelector('.imm-sticky');
+  if (testiWrap && testiSticky) {
+    mm.add(DESKTOP, function () {
+      var scenes = Array.prototype.slice.call(testiWrap.querySelectorAll('.testi-scene'));
+      if (scenes.length < 3) return;
+      var s1 = scenes[0], s2 = scenes[1], s3 = scenes[2];
+      var trust = testiWrap.querySelector('.testi-trust');
+      var trustInner = trust && trust.querySelectorAll('.testi-trust-inner > *');
+
+      scenes.forEach(function (scene) {
+        gsap.set(scene.querySelectorAll('.testi-glyph, .testi-quote, .testi-author'), { autoAlpha: 0 });
+      });
+      gsap.set([s2, s3], { scale: 1.04 });
+      if (trust && trustInner.length) {
+        gsap.set(trustInner, { autoAlpha: 0 });
       }
-    };
-  });
 
+      var dots = buildProgressDots(testiWrap.querySelector('.testi-dot-bar'), 4);
+
+      entranceTimeline(testiWrap, function (tl) {
+        tl.to(s1.querySelectorAll('.testi-glyph, .testi-quote, .testi-author'),
+          { autoAlpha: 1, duration: 0.7, stagger: 0.15 }, 0);
+      });
+
+      var DUR = 25;
+      var tl = createPinnedTimeline(testiWrap, testiSticky);
+      tl.set(s1, { autoAlpha: 1, scale: 1 }, 0);
+
+      [[s1, s2, 5], [s2, s3, 10.5]].forEach(function (pair, idx) {
+        var out = pair[0], inn = pair[1], at = pair[2];
+        tl.to(out, { autoAlpha: 0, scale: 0.98, duration: 0.8, ease: 'power1.inOut' }, at)
+          .to(inn, { autoAlpha: 1, scale: 1, duration: 0.8, ease: 'power1.inOut' }, at + 0.8)
+          .fromTo(inn.querySelectorAll('.testi-glyph, .testi-quote, .testi-author'),
+            { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6, stagger: 0.14 }, at + 1.0)
+          .call(setDot, [dots, idx + 1], at + 0.9);
+      });
+
+      if (trust && trustInner.length) {
+        tl.to(s3, { autoAlpha: 0, scale: 0.98, duration: 0.8, ease: 'power1.inOut' }, 15.5)
+          .fromTo(trustInner, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6, stagger: 0.15 }, 16.3)
+          .call(setDot, [dots, 3], 16.4)
+          .to(trust, { autoAlpha: 0, duration: 0.8, ease: 'power1.inOut' }, DUR - 0.8);
+      } else {
+        tl.to(s3, { autoAlpha: 0, scale: 0.98, duration: 0.8, ease: 'power1.inOut' }, DUR - 0.8);
+      }
+
+      return function () {
+        clearScenes(scenes, '.testi-glyph, .testi-quote, .testi-author');
+        if (trust && trustInner.length) {
+          gsap.set(trust, { clearProps: 'opacity,visibility' });
+          gsap.set(trustInner, { clearProps: 'opacity,visibility' });
+        }
+        resetDots(dots);
+      };
+    });
+  }
+
+  /* ── PROCESS — 5 steps + scroll-filled rail ─────────────────────── */
+
+  var procWrap = document.getElementById('process-imm');
+  var procSticky = procWrap && procWrap.querySelector('.imm-sticky');
+  if (procWrap && procSticky) {
+    mm.add(DESKTOP, function () {
+      var steps = Array.prototype.slice.call(procWrap.querySelectorAll('.proc-step'));
+      var railFill = procWrap.querySelector('.proc-rail-fill');
+      var nodes = Array.prototype.slice.call(procWrap.querySelectorAll('.proc-node'));
+      var num = procWrap.querySelector('.proc-num');
+      if (!steps.length || !railFill) return;
+
+      steps.forEach(function (step) {
+        gsap.set(step.querySelectorAll('.proc-step-name, .proc-step-desc'), { autoAlpha: 0 });
+      });
+      gsap.set(steps.slice(1), { autoAlpha: 0 });
+
+      var dots = buildProgressDots(procWrap.querySelector('.proc-dot-bar'), steps.length);
+
+      function setActiveStep(index) {
+        nodes.forEach(function (node, i) { node.classList.toggle('lit', i === index); });
+        setDot(dots, index);
+        if (num) {
+          num.textContent = '0' + (index + 1);
+          gsap.fromTo(num, { autoAlpha: 0.2, scale: 0.96 },
+            { autoAlpha: 1, scale: 1, duration: 0.5, ease: 'power2.out' });
+        }
+      }
+
+      entranceTimeline(procWrap, function (tl) {
+        tl.to(steps[0].querySelectorAll('.proc-step-name, .proc-step-desc'),
+          { autoAlpha: 1, duration: 0.6, stagger: 0.12 }, 0);
+      });
+
+      var DUR = 30;
+      var SEG = [
+        { at: 3, rail: 20 },
+        { at: 8.5, rail: 40 },
+        { at: 14, rail: 60 },
+        { at: 19.5, rail: 80 },
+        { at: 25, rail: 100 }
+      ];
+
+      var tl = createPinnedTimeline(procWrap, procSticky);
+      tl.set(steps[0], { autoAlpha: 1 }, 0);
+      setActiveStep(0);
+      tl.call(setActiveStep, [0], 0);
+
+      // Rail fills continuously across the whole pin.
+      var prev = 0;
+      SEG.forEach(function (seg) {
+        tl.to(railFill, { height: seg.rail + '%', duration: seg.at - prev, ease: 'none' }, prev);
+        prev = seg.at;
+      });
+
+      // Step crossfades + node/number sync.
+      SEG.forEach(function (seg, idx) {
+        tl.call(setActiveStep, [idx], seg.at);
+        if (idx > 0) {
+          var prevStep = steps[idx - 1];
+          var curr = steps[idx];
+          tl.to(prevStep, { autoAlpha: 0, duration: 0.7, ease: 'power1.inOut' }, seg.at)
+            .to(curr, { autoAlpha: 1, duration: 0.7, ease: 'power1.inOut' }, seg.at + 0.7)
+            .fromTo(curr.querySelectorAll('.proc-step-name, .proc-step-desc'),
+              { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, stagger: 0.1 }, seg.at + 0.9);
+        }
+      });
+
+      // Last step + numeral fade out before CTA.
+      tl.to(steps[steps.length - 1], { autoAlpha: 0, duration: 0.8, ease: 'power1.inOut' }, DUR - 0.8);
+      if (num) tl.to(num, { autoAlpha: 0, duration: 0.6, ease: 'power1.inOut' }, DUR - 0.6);
+
+      return function () {
+        clearScenes(steps, '.proc-step-name, .proc-step-desc');
+        if (railFill) railFill.style.height = '';
+        nodes.forEach(function (n) { n.classList.remove('lit'); });
+        if (num) {
+          num.textContent = '01';
+          num.style.opacity = '';
+          num.style.visibility = '';
+          num.style.transform = '';
+        }
+        resetDots(dots);
+      };
+    });
+  }
 })();

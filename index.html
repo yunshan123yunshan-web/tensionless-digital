@@ -3,35 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tensionless Digital — Results-Driven Digital Marketing</title>
+<title>Tensionless Digital | Full-Funnel Digital Marketing</title>
 <meta name="description" content="Full-funnel digital marketing agency. Landing pages, Google Ads, Facebook Ads, and SEO that compound. 120+ campaigns delivered. Book a strategy call.">
-<meta property="og:title" content="Tensionless Digital — Results-Driven Digital Marketing">
+<meta property="og:title" content="Tensionless Digital | Full-Funnel Digital Marketing">
 <meta property="og:description" content="Full-funnel digital marketing agency. Landing pages, Google Ads, Facebook Ads, and SEO that compound. 120+ campaigns delivered.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://tensionlessdigital.com">
-<meta property="og:image" content="https://tensionlessdigital.com/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://tensionlessdigital.com">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@1,300;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
-<style>
-  html.gsap-active .cta-h .word {
-    opacity: 0;
-    transform: translateY(20px) rotateX(25deg);
-    transform-origin: bottom center;
-  }
-  html.gsap-active .marquee-track {
-    opacity: 0;
-    visibility: hidden;
-  }
-</style>
 <script>
-// Level-of-Detail: device performance classification
+// Level-of-Detail + reduced-motion classifier
 (function() {
   var html = document.documentElement;
   var isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
   var hasMemory = !navigator.deviceMemory || navigator.deviceMemory >= 4;
-  var hasLowBattery = navigator.getBattery ? false : false; // async, skip for now
   var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var prefersDataSaver = window.matchMedia('(prefers-reduced-data: reduce)').matches;
 
@@ -45,244 +35,270 @@
     html.className += ' lod-high';
     html.setAttribute('data-lod', 'high');
   }
+  if (prefersReduced) html.className += ' rm';
 })();
 </script>
+</head>
 <body>
 
-<!-- NAV -->
 <a href="#main-content" class="skip-link">Skip to main content</a>
-<nav id="nav" aria-label="Primary">
-  <img src="logo.svg" alt="Tensionless Digital" class="nav-logo">
-  <ul class="nav-links">
-    <li><a href="#services">Services</a></li>
-  </ul>
-  <a href="#contact" class="nav-cta" data-magnetic>Book a Free Call</a>
-  <button class="nav-toggle" aria-label="Menu" aria-expanded="false">
-    <span class="nav-toggle-bar"></span>
-    <span class="nav-toggle-bar"></span>
-    <span class="nav-toggle-bar"></span>
-  </button>
-</nav>
 
-<!-- SCROLL-PINNED HERO -->
-<div class="hero-pin-wrap" id="hero-pin">
-  <div class="hero-sticky">
-    <canvas id="hero-canvas" aria-hidden="true"></canvas>
-    <div class="hero-text">
-      <p class="hero-eyebrow" id="ey">Digital Marketing Agency &middot; 120+ Campaigns Delivered</p>
-      <h1 class="hero-h1">
-        <span class="hero-line" id="l1">We turn</span>
-        <span class="hero-line italic-line" id="l2">attention</span>
-        <span class="hero-line" id="l3">into revenue.</span>
-      </h1>
-      <div class="hero-foot" id="hf" aria-hidden="true">
-        <p class="hero-desc">Landing pages that convert. Ads that perform. SEO that compounds. We build the full-funnel growth engine for businesses ready to scale without the guesswork.</p>
-        <div class="hero-btns">
-          <a href="#contact" class="btn-primary" tabindex="-1" data-magnetic>Start a Project</a>
-        </div>
-      </div>
-    </div>
-    <div class="scroll-hint" id="scroll-hint">
-      <div class="scroll-line"></div>
-      <span>Scroll</span>
-    </div>
+<!-- BOOT — cinematic opening veil -->
+<div id="boot" aria-hidden="true">
+  <div class="boot-card">
+    <div class="boot-hairline"></div>
+    <p class="boot-title">Attention, engineered.</p>
+    <p class="boot-title">Revenue, on demand.</p>
+    <p class="boot-title">120+ campaigns delivered.</p>
+    <p class="boot-mono">Tensionless Digital &middot; Full-funnel digital marketing</p>
   </div>
 </div>
 
-<!-- Remnant particles overlay -->
-<canvas id="remnant-canvas" aria-hidden="true"></canvas>
+<!-- Liquid chrome atmosphere -->
+<canvas id="liquid" aria-hidden="true"></canvas>
 
-<!-- REST OF PAGE -->
+<!-- NAV -->
+<nav id="nav" aria-label="Primary">
+  <div class="nav-pill">
+    <a class="wordmark" href="#top">Tensionless<span class="d">.</span></a>
+    <div class="nav-links">
+      <a href="#services">Services</a>
+      <a href="#case-study">Case Studies</a>
+      <a href="#process-imm">Process</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <a href="#contact" class="nav-cta btn btn-primary" data-magnetic>Book a Free Call</a>
+    <span class="nav-signal"><i aria-hidden="true"></i>Accepting 1 client</span>
+    <button class="nav-toggle" aria-label="Menu" aria-expanded="false">
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
 <main id="main-content">
 
-<!-- SERVICES -->
-<section id="services">
-  <div class="shard shard-spin" style="width:400px;height:400px;top:-120px;right:-80px;opacity:0.02" aria-hidden="true"></div>
-  <div class="svc-intro">
-    <div>
-      <div class="s-chrome" aria-hidden="true"></div>
-      <p class="s-label reveal">What We Do</p>
-      <h2 class="s-head reveal d1">Every channel.<br><em>One team.</em></h2>
+<!-- HERO -->
+<div class="hero-pin-wrap" id="hero-pin">
+  <div class="hero-sticky">
+    <div class="hero-vignette" aria-hidden="true"></div>
+    <div class="hud hud-tl"><span class="hl">Campaigns</span><span class="vals" id="hud-camp">120</span></div>
+    <div class="hud hud-tr"><span class="vals" id="hud-roas">58.2x</span><span class="hl">Avg ROAS</span></div>
+    <div class="hud hud-bl"><span class="hl">CTR</span><span class="vals" id="hud-ctr">4.7%</span></div>
+    <div class="hud hud-br"><span class="vals" id="hud-coord">x 0 &mdash; y 0</span><span class="hl">Signal</span></div>
+    <div class="hud-cross" id="hud-cross" aria-hidden="true"></div>
+    <div class="hero-inner">
+      <p class="hero-eyebrow">Digital Marketing Agency &middot; 120+ Campaigns Delivered</p>
+      <h1 class="hero-h1" id="hero-h1">We turn <em class="serif">attention</em> into revenue.</h1>
+      <p class="hero-sub">Landing pages that convert. Ads that perform. SEO that compounds. We build the full-funnel growth engine for businesses ready to scale without the guesswork.</p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn btn-primary" data-magnetic>Book a Free Call<span class="sheen" aria-hidden="true"></span></a>
+        <a href="#case-study" class="btn btn-ghost" data-magnetic>See the Work</a>
+      </div>
     </div>
-    <p class="s-body reveal d1">We don&rsquo;t offer fragments of a strategy. We architect the entire growth system &mdash; from the first ad impression to the landing page to the closed lead &mdash; so nothing leaks.</p>
+    <div class="hero-scrollhint" aria-hidden="true">Scroll</div>
   </div>
-  <div class="svc-grid">
-    <div class="svc-card reveal"><svg class="svc-icon" viewBox="0 0 28 28" fill="none" aria-hidden="true"><rect x="3" y="5" width="22" height="18" rx="2" stroke="currentColor" stroke-width="1.1"/><line x1="3" y1="10" x2="25" y2="10" stroke="currentColor" stroke-width="1.1"/><line x1="10" y1="10" x2="10" y2="23" stroke="currentColor" stroke-width="1.1"/></svg><div class="svc-num"><span class="svc-diamond" aria-hidden="true"></span>01</div><div class="svc-name">Landing<br>Pages</div><div class="svc-desc">High-converting pages built for a single purpose: turning visitors into customers.</div><span class="svc-arrow">&#8599;</span></div>
-    <div class="svc-card reveal d1"><svg class="svc-icon" viewBox="0 0 28 28" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="7" stroke="currentColor" stroke-width="1.1"/><line x1="17" y1="17" x2="23" y2="23" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg><div class="svc-num"><span class="svc-diamond" aria-hidden="true"></span>02</div><div class="svc-name">Google<br>Ads</div><div class="svc-desc">Intent-driven paid search campaigns with obsessive keyword and bid management.</div><span class="svc-arrow">&#8599;</span></div>
-    <div class="svc-card reveal d2"><svg class="svc-icon" viewBox="0 0 28 28" fill="none" aria-hidden="true"><circle cx="14" cy="6" r="2.5" stroke="currentColor" stroke-width="1"/><circle cx="7" cy="20" r="2.5" stroke="currentColor" stroke-width="1"/><circle cx="21" cy="20" r="2.5" stroke="currentColor" stroke-width="1"/><line x1="12" y1="8" x2="9" y2="18" stroke="currentColor" stroke-width="1"/><line x1="16" y1="8" x2="19" y2="18" stroke="currentColor" stroke-width="1"/></svg><div class="svc-num"><span class="svc-diamond" aria-hidden="true"></span>03</div><div class="svc-name">Facebook<br>Ads</div><div class="svc-desc">Scroll-stopping creative paired with precise audience targeting across Meta platforms.</div><span class="svc-arrow">&#8599;</span></div>
-    <div class="svc-card reveal d3"><svg class="svc-icon" viewBox="0 0 28 28" fill="none" aria-hidden="true"><polyline points="4,20 10,13 15,17 24,6" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/><line x1="19" y1="6" x2="24" y2="6" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/><line x1="24" y1="6" x2="24" y2="11" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg><div class="svc-num"><span class="svc-diamond" aria-hidden="true"></span>04</div><div class="svc-name">SEO &amp;<br>SEM</div><div class="svc-desc">Organic authority built to compound. Paid search to accelerate. Both working in sync.</div><span class="svc-arrow">&#8599;</span></div>
-    <div class="svc-card reveal d4"><svg class="svc-icon" viewBox="0 0 28 28" fill="none" aria-hidden="true"><circle cx="12" cy="9" r="4" stroke="currentColor" stroke-width="1.1"/><path d="M4 24c0-4.418 3.582-8 8-8s8 3.582 8 8" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/><line x1="22" y1="12" x2="22" y2="20" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/><line x1="18" y1="16" x2="26" y2="16" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg><div class="svc-num"><span class="svc-diamond" aria-hidden="true"></span>05</div><div class="svc-name">Lead<br>Generation</div><div class="svc-desc">Full-funnel lead systems: capture, qualify, nurture, and deliver pipeline-ready prospects.</div><span class="svc-arrow">&#8599;</span></div>
+</div>
+
+<!-- SERVICES -->
+<section id="services" class="sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="sec-kicker reveal">What We Do</p>
+      <h2 class="s-head reveal">Every channel.<br><em>One team.</em></h2>
+      <p class="s-body reveal">We don&rsquo;t offer fragments of a strategy. We architect the entire growth system, from the first ad impression to the landing page to the closed lead, so nothing leaks.</p>
+    </div>
+    <div class="svc-grid">
+      <div class="svc-card holo reveal"><svg class="svc-icon" viewBox="0 0 28 28" fill="none" aria-hidden="true"><rect x="3" y="5" width="22" height="18" rx="2" stroke="currentColor" stroke-width="1.1"/><line x1="3" y1="10" x2="25" y2="10" stroke="currentColor" stroke-width="1.1"/><line x1="10" y1="10" x2="10" y2="23" stroke="currentColor" stroke-width="1.1"/></svg><div class="svc-num"><span class="svc-diamond" aria-hidden="true"></span>01</div><div class="svc-name">Landing<br>Pages</div><div class="svc-desc">High-converting pages built for a single purpose: turning visitors into customers.</div><span class="svc-arrow">&#8599;</span></div>
+      <div class="svc-card holo reveal d1"><svg class="svc-icon" viewBox="0 0 28 28" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="7" stroke="currentColor" stroke-width="1.1"/><line x1="17" y1="17" x2="23" y2="23" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg><div class="svc-num"><span class="svc-diamond" aria-hidden="true"></span>02</div><div class="svc-name">Google<br>Ads</div><div class="svc-desc">Intent-driven paid search campaigns with obsessive keyword and bid management.</div><span class="svc-arrow">&#8599;</span></div>
+      <div class="svc-card holo reveal d2"><svg class="svc-icon" viewBox="0 0 28 28" fill="none" aria-hidden="true"><circle cx="14" cy="6" r="2.5" stroke="currentColor" stroke-width="1"/><circle cx="7" cy="20" r="2.5" stroke="currentColor" stroke-width="1"/><circle cx="21" cy="20" r="2.5" stroke="currentColor" stroke-width="1"/><line x1="12" y1="8" x2="9" y2="18" stroke="currentColor" stroke-width="1"/><line x1="16" y1="8" x2="19" y2="18" stroke="currentColor" stroke-width="1"/></svg><div class="svc-num"><span class="svc-diamond" aria-hidden="true"></span>03</div><div class="svc-name">Facebook<br>Ads</div><div class="svc-desc">Scroll-stopping creative paired with precise audience targeting across Meta platforms.</div><span class="svc-arrow">&#8599;</span></div>
+      <div class="svc-card holo reveal d3"><svg class="svc-icon" viewBox="0 0 28 28" fill="none" aria-hidden="true"><polyline points="4,20 10,13 15,17 24,6" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/><line x1="19" y1="6" x2="24" y2="6" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/><line x1="24" y1="6" x2="24" y2="11" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg><div class="svc-num"><span class="svc-diamond" aria-hidden="true"></span>04</div><div class="svc-name">SEO &amp;<br>SEM</div><div class="svc-desc">Organic authority built to compound. Paid search to accelerate. Both working in sync.</div><span class="svc-arrow">&#8599;</span></div>
+      <div class="svc-card holo reveal d4"><svg class="svc-icon" viewBox="0 0 28 28" fill="none" aria-hidden="true"><circle cx="12" cy="9" r="4" stroke="currentColor" stroke-width="1.1"/><path d="M4 24c0-4.418 3.582-8 8-8s8 3.582 8 8" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/><line x1="22" y1="12" x2="22" y2="20" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/><line x1="18" y1="16" x2="26" y2="16" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg><div class="svc-num"><span class="svc-diamond" aria-hidden="true"></span>05</div><div class="svc-name">Lead<br>Generation</div><div class="svc-desc">Full-funnel lead systems: capture, qualify, nurture, and deliver pipeline-ready prospects.</div><span class="svc-arrow">&#8599;</span></div>
+    </div>
   </div>
 </section>
 
 <!-- DATA BREAK -->
-<section id="data-break" class="data-break">
-  <div class="db-inner">
-    <div class="db-stat">
-      <span class="db-num serif count" data-n="120">0</span>
-      <span class="db-lbl">Campaigns<br>Delivered</span>
-    </div>
-    <div class="db-dot"></div>
-    <div class="db-stat">
-      <span class="db-num serif count" data-n="58">0</span>
-      <span class="db-lbl">&times; Highest<br>ROAS</span>
-    </div>
-    <div class="db-dot"></div>
-    <div class="db-stat">
-      <span class="db-num serif count" data-n="6">0</span>
-      <span class="db-lbl">Years<br>Operating</span>
-    </div>
-    <div class="db-dot"></div>
-    <div class="db-stat">
-      <span class="db-num serif count" data-n="100">0</span>
-      <span class="db-lbl">% Client<br>Retention</span>
+<section id="data-break" class="sec">
+  <div class="db-beam" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="db-grid">
+      <div class="stat-tile holo reveal"><b class="stat-num chrome count" data-target="120">0</b><span class="stat-lbl">Campaigns<br>Delivered</span></div>
+      <div class="stat-tile holo reveal d1"><b class="stat-num chrome count" data-target="58" data-suffix="&times;">0</b><span class="stat-lbl">Highest<br>ROAS</span></div>
+      <div class="stat-tile holo reveal d2"><b class="stat-num chrome count" data-target="6">0</b><span class="stat-lbl">Years<br>Operating</span></div>
+      <div class="stat-tile holo reveal d3"><b class="stat-num chrome count" data-target="100" data-suffix="%">0</b><span class="stat-lbl">Client<br>Retention</span></div>
     </div>
   </div>
 </section>
 
-<!-- MARQUEE — Logo Track -->
-<section id="clients" class="marquee-section">
-  <div class="marquee-fade" aria-hidden="true"></div>
-  <div class="marquee-inner">
-    <div class="marquee-track">
-      <div class="marquee-row">
-        <span>Automotive</span><span class="marquee-dot" aria-hidden="true"></span>
-        <span>Financial Services</span><span class="marquee-dot" aria-hidden="true"></span>
-        <span>Immigration Law</span><span class="marquee-dot" aria-hidden="true"></span>
-        <span>Real Estate</span><span class="marquee-dot" aria-hidden="true"></span>
-        <span>E-Commerce</span><span class="marquee-dot" aria-hidden="true"></span>
-        <span>Enterprise SaaS</span><span class="marquee-dot" aria-hidden="true"></span>
-        <span>Home Services</span><span class="marquee-dot" aria-hidden="true"></span>
-        <span>Healthcare</span><span class="marquee-dot" aria-hidden="true"></span>
-      </div>
-      <div class="marquee-row" aria-hidden="true">
-        <span>Automotive</span><span class="marquee-dot" aria-hidden="true"></span>
-        <span>Financial Services</span><span class="marquee-dot" aria-hidden="true"></span>
-        <span>Immigration Law</span><span class="marquee-dot" aria-hidden="true"></span>
-        <span>Real Estate</span><span class="marquee-dot" aria-hidden="true"></span>
-        <span>E-Commerce</span><span class="marquee-dot" aria-hidden="true"></span>
-        <span>Enterprise SaaS</span><span class="marquee-dot" aria-hidden="true"></span>
-        <span>Home Services</span><span class="marquee-dot" aria-hidden="true"></span>
-        <span>Healthcare</span><span class="marquee-dot" aria-hidden="true"></span>
-      </div>
-    </div>
+<!-- MARQUEE — industries -->
+<section id="clients" class="marq" aria-label="Industries we work in">
+  <div class="marq-fade" aria-hidden="true"></div>
+  <div class="marq-track">
+    <span>Automotive</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+    <span>Financial Services</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+    <span>Immigration Law</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+    <span>Real Estate</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+    <span>E-Commerce</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+    <span>Enterprise SaaS</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+    <span>Home Services</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+    <span>Healthcare</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+    <span>Automotive</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+    <span>Financial Services</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+    <span>Immigration Law</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+    <span>Real Estate</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+    <span>E-Commerce</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+    <span>Enterprise SaaS</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+    <span>Home Services</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
+    <span>Healthcare</span><span class="marq-sep" aria-hidden="true">&#9670;</span>
   </div>
 </section>
-
-
 
 <!-- ══════════════════════════════════════════════════════════════════════
      CASE STUDY — Pinned Cinematic Scene Transitions
      ════════════════════════════════════════════════════════════════════ -->
-<section id="case-study" class="imm-pin-wrap" data-pin-height="250" aria-label="Featured case study">
+<section id="case-study" class="imm-pin-wrap" data-pin-height="250" aria-label="Featured case studies">
   <div class="imm-sticky cs-sticky">
-    <div class="shard shard-diamond" style="width:320px;height:500px;top:5%;left:-80px" aria-hidden="true" data-parallax="0.06"></div>
-    <div class="shard shard-tri" style="width:240px;height:280px;bottom:10%;right:-40px" aria-hidden="true" data-parallax="0.04"></div>
-    <!-- Scene 01 — Project Intro -->
-    <div class="cs-scene cs-s1" data-scene="1">
-      <div class="cs-scene-bg" aria-hidden="true"></div>
-      <div class="cs-orb cs-orb-1" aria-hidden="true" data-parallax="0.03"></div>
-      <div class="cs-orb cs-orb-2" aria-hidden="true" data-parallax="0.04"></div>
-      <div class="cs-scene-inner">
-        <p class="cs-eyebrow">Featured Case Study</p>
-        <h2 class="cs-title">Building a digital experience that converts attention into action.</h2>
-        <p class="cs-subtitle">A cinematic brand and web experience designed to create clarity, trust, and momentum.</p>
-        <div class="cs-tags">
-          <span>Strategy</span><span>Design</span><span>Development</span><span>2026</span>
+    <div class="cs-orb cs-orb-1" aria-hidden="true" data-parallax="0.03"></div>
+    <div class="cs-orb cs-orb-2" aria-hidden="true" data-parallax="0.04"></div>
+
+    <!-- Scene 01 — Automotive -->
+    <div class="cs-scene cs-s1 scene-active" data-scene="1">
+      <div class="cs-inner">
+        <p class="cs-label">Case Study 01</p>
+        <h3 class="cs-head"><em>$350K Profit</em> on $6K Spend</h3>
+        <p class="cs-body">Full-funnel Google Ads campaign paired with SEO. Precision keyword targeting and dedicated landing pages drove revenue within the first week, while organic held top-3 positions across two competitive verticals.</p>
+        <div class="cs-stats">
+          <span class="cs-stat"><b class="chrome count-imm" data-target="58" data-suffix="&times;">0&times;</b>ROAS</span>
+          <span class="cs-stat"><b>Google</b>Ads</span>
+          <span class="cs-stat"><b>Top 3</b>SEO</span>
         </div>
-      </div>
-    </div>
-    <!-- Scene 02 — Problem -->
-    <div class="cs-scene cs-s2" data-scene="2">
-      <div class="cs-scene-bg cs-bg-dim" aria-hidden="true"></div>
-      <div class="cs-scene-inner">
-        <p class="cs-label">The Problem</p>
-        <h3 class="cs-heading">The brand had the quality, but the website did not communicate trust quickly enough.</h3>
-        <p class="cs-body">Visitors were landing, scanning, and leaving before understanding why the offer mattered. The first impression was not matching the standard of the work.</p>
-        <div class="cs-stat-badge" aria-hidden="true">
-          <span class="cs-badge-num">62%</span>
-          <span class="cs-badge-lbl">bounce rate before redesign</span>
-        </div>
-      </div>
-    </div>
-    <!-- Scene 03 — Solution -->
-    <div class="cs-scene cs-s3" data-scene="3">
-      <div class="cs-scene-bg cs-bg-cool" aria-hidden="true"></div>
-      <div class="cs-scene-inner">
-        <p class="cs-label">The Solution</p>
-        <h3 class="cs-heading">We rebuilt the journey around clarity, hierarchy, and interaction.</h3>
-        <p class="cs-body">Motion became a tool for guiding attention instead of decorating the page. Every scroll step was designed to build confidence and reduce friction.</p>
         <div class="cs-panels" aria-hidden="true">
-          <div class="cs-panel cs-panel-l">Research &amp; Strategy</div>
-          <div class="cs-panel cs-panel-r">Visual Design System</div>
-          <div class="cs-panel cs-panel-l">Interactive Development</div>
+          <div class="cs-panel">Precision Targeting</div>
+          <div class="cs-panel">Dedicated Landing Pages</div>
+          <div class="cs-panel">Organic Authority</div>
         </div>
       </div>
     </div>
-    <!-- Scene 04 — Results -->
+
+    <!-- Scene 02 — Financial Services -->
+    <div class="cs-scene cs-s2" data-scene="2">
+      <div class="cs-inner">
+        <p class="cs-label">Case Study 02</p>
+        <h3 class="cs-head"><em>$2M Production</em> in One Month</h3>
+        <p class="cs-body">Facebook Ads for high-ticket financial services. Prospect-audience targeting with direct-response creative delivered $2M in total production — yielding $150K in commissions — within a single calendar month.</p>
+        <div class="cs-stats">
+          <span class="cs-stat"><b class="chrome count-imm" data-target="150" data-prefix="$" data-suffix="K">$0</b>Commissions</span>
+          <span class="cs-stat"><b>Facebook</b>Ads</span>
+          <span class="cs-stat"><b class="count-imm" data-target="30">0</b>Days</span>
+        </div>
+        <div class="cs-panels" aria-hidden="true">
+          <div class="cs-panel">High-Ticket Funnel</div>
+          <div class="cs-panel">Direct-Response Creative</div>
+          <div class="cs-panel">Prospect Audiences</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene 03 — Immigration Law -->
+    <div class="cs-scene cs-s3" data-scene="3">
+      <div class="cs-inner">
+        <p class="cs-label">Case Study 03</p>
+        <h3 class="cs-head"><em>$100K Revenue</em> at $4K Ad Spend</h3>
+        <p class="cs-body">Multi-channel campaign for an immigration firm. Funnel restructure and audience refinement dropped cost-per-lead 70% below industry standard while delivering a consistent flow of high-intent, case-ready prospects.</p>
+        <div class="cs-stats">
+          <span class="cs-stat"><b class="chrome count-imm" data-target="25" data-suffix="&times;">0&times;</b>ROAS</span>
+          <span class="cs-stat"><b>FB +</b>Lead Gen</span>
+          <span class="cs-stat"><b class="chrome count-imm" data-target="70" data-suffix="%">0%</b>Lower CPL</span>
+        </div>
+        <div class="cs-panels" aria-hidden="true">
+          <div class="cs-panel">Funnel Restructure</div>
+          <div class="cs-panel">Audience Refinement</div>
+          <div class="cs-panel">Case-Ready Leads</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene 04 — Real Estate -->
     <div class="cs-scene cs-s4" data-scene="4">
-      <div class="cs-scene-bg cs-bg-warm" aria-hidden="true"></div>
-      <div class="cs-scene-inner">
-        <p class="cs-label">The Result</p>
-        <h3 class="cs-heading">More clarity, stronger engagement, and a sharper digital presence.</h3>
-        <div class="cs-metrics">
-          <div class="cs-metric">
-            <span class="cs-metric-num serif count-imm" data-target="42" data-suffix="%">0%</span>
-            <span class="cs-metric-lbl">conversion lift</span>
-          </div>
-          <div class="cs-metric">
-            <span class="cs-metric-num serif count-imm" data-target="3.1" data-suffix="x">0x</span>
-            <span class="cs-metric-lbl">longer sessions</span>
-          </div>
-          <div class="cs-metric">
-            <span class="cs-metric-num serif count-imm" data-target="28" data-suffix="%">0%</span>
-            <span class="cs-metric-lbl">lower bounce rate</span>
-          </div>
+      <div class="cs-inner">
+        <p class="cs-label">Case Study 04</p>
+        <h3 class="cs-head"><em>8 Closures</em> at $3K Ad Spend</h3>
+        <p class="cs-body">Facebook Ads targeting new-development buyers. Hyperlocal strategy and purchase-intent creative delivered 8 closed sales from a minimal budget — proving precise targeting beats high spend every time.</p>
+        <div class="cs-stats">
+          <span class="cs-stat"><b class="chrome count-imm" data-target="8">0</b>Closures</span>
+          <span class="cs-stat"><b>Facebook</b>Ads</span>
+          <span class="cs-stat"><b class="chrome count-imm" data-prefix="$" data-target="375">$0</b>/ Closure</span>
+        </div>
+        <div class="cs-panels" aria-hidden="true">
+          <div class="cs-panel">Hyperlocal Strategy</div>
+          <div class="cs-panel">Purchase-Intent Creative</div>
+          <div class="cs-panel">Minimal Budget</div>
         </div>
       </div>
     </div>
-    <!-- Scene progress dots -->
+
     <div class="imm-dot-bar cs-dot-bar" aria-hidden="true"></div>
   </div>
 </section>
 
 <!-- ══════════════════════════════════════════════════════════════════════
-     TESTIMONIALS — Floating Layered Quote Transitions
+     TESTIMONIALS — Pinned Quote Scene Transitions
      ════════════════════════════════════════════════════════════════════ -->
 <section id="testimonials-imm" class="imm-pin-wrap" data-pin-height="250" aria-label="Client testimonials">
   <div class="imm-sticky testi-sticky">
-    <div class="testi-bg-glow" aria-hidden="true" data-parallax="0.05"></div>
-    <!-- Main testimonial scenes -->
-    <div class="testi-main-stage">
-      <div class="testi-ms testi-ms-0" data-testi="0">
-        <span class="testi-deco-quote" aria-hidden="true">"</span>
-        <p class="testi-quote">They turned a vague idea into a sharp, premium digital experience that finally made our offer easy to understand.</p>
+    <div class="testi-orb testi-orb-neutral" aria-hidden="true" data-parallax="0.03"></div>
+    <div class="testi-orb testi-orb-warm" aria-hidden="true" data-parallax="0.04"></div>
+
+    <!-- Scene 01 — A. Chen -->
+    <div class="testi-scene testi-s1 scene-active" data-testi="1">
+      <div>
+        <span class="testi-glyph" aria-hidden="true">&ldquo;</span>
+        <p class="testi-quote">They didn&rsquo;t just run our ads — they rebuilt how we think about customer acquisition entirely. Within three months we had more qualified leads than our sales team could handle.</p>
         <div class="testi-author">
-          <span class="testi-author-name">Amara Chen</span>
-          <span class="testi-author-role">Founder, Studio North</span>
-        </div>
-      </div>
-      <div class="testi-ms testi-ms-1" data-testi="1">
-        <span class="testi-deco-quote" aria-hidden="true">"</span>
-        <p class="testi-quote">The site feels alive without getting in the way. Every interaction supports the message. Every detail feels intentional.</p>
-        <div class="testi-author">
-          <span class="testi-author-name">Daniel Reyes</span>
-          <span class="testi-author-role">Creative Director, Atlas Group</span>
-        </div>
-      </div>
-      <div class="testi-ms testi-ms-2" data-testi="2">
-        <span class="testi-deco-quote" aria-hidden="true">"</span>
-        <p class="testi-quote">We saw an immediate improvement in how clients responded to the brand. It finally feels as strong online as it does in person.</p>
-        <div class="testi-author">
-          <span class="testi-author-name">Maya Thompson</span>
-          <span class="testi-author-role">CEO, Form House</span>
+          <span class="testi-name">A. Chen</span>
+          <span class="testi-role">Founder, DTC Beauty Brand &mdash; E-Commerce</span>
         </div>
       </div>
     </div>
-    <!-- Trust statement (appears at end) -->
+
+    <!-- Scene 02 — M. Torres -->
+    <div class="testi-scene testi-s2" data-testi="2">
+      <div>
+        <span class="testi-glyph" aria-hidden="true">&ldquo;</span>
+        <p class="testi-quote">Our Google Ads were burning cash for two years. Tensionless Digital fixed our account structure in the first week and we saw the difference within days.</p>
+        <div class="testi-author">
+          <span class="testi-name">M. Torres</span>
+          <span class="testi-role">VP Marketing, Enterprise SaaS &mdash; B2B Services</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene 03 — J. Patel -->
+    <div class="testi-scene testi-s3" data-testi="3">
+      <div>
+        <span class="testi-glyph" aria-hidden="true">&ldquo;</span>
+        <p class="testi-quote">The landing page they built converted at nearly triple the rate of our old one. Not a redesign — a completely different understanding of our customer.</p>
+        <div class="testi-author">
+          <span class="testi-name">J. Patel</span>
+          <span class="testi-role">Director of Growth, Series B SaaS</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trust row -->
     <div class="testi-trust" aria-hidden="true">
-      <p>Trusted by founders, studios, and product teams who care about how their brand feels.</p>
+      <div class="testi-trust-inner">
+        <p>Straight from the <em class="serif">people we work with.</em></p>
+        <div class="testi-stats-row">
+          <span class="testi-stat-chip"><b>6.2&times;</b> Avg ROAS</span>
+          <span class="testi-stat-chip"><b>90 Days</b> Avg Ramp</span>
+          <span class="testi-stat-chip"><b>100%</b> Retention</span>
+        </div>
+      </div>
     </div>
+
     <div class="imm-dot-bar testi-dot-bar" aria-hidden="true"></div>
   </div>
 </section>
@@ -292,38 +308,42 @@
      ════════════════════════════════════════════════════════════════════ -->
 <section id="process-imm" class="imm-pin-wrap" data-pin-height="400" aria-label="Our process">
   <div class="imm-sticky proc-sticky">
+    <div class="proc-orb proc-orb-neutral" aria-hidden="true" data-parallax="0.03"></div>
+    <div class="proc-orb proc-orb-cool" aria-hidden="true" data-parallax="0.04"></div>
     <div class="proc-layout">
-      <!-- Left: Step number + progress rail -->
-      <div class="proc-left" aria-hidden="true">
-        <div class="proc-rail">
-          <div class="proc-rail-track"></div>
-          <div class="proc-rail-fill"></div>
-        </div>
+      <div class="proc-beam" aria-hidden="true">
+        <div class="proc-rail"><div class="proc-rail-fill"></div></div>
+        <div class="proc-node"></div>
+        <div class="proc-node"></div>
+        <div class="proc-node"></div>
+        <div class="proc-node"></div>
+        <div class="proc-node"></div>
+      </div>
+      <div>
         <div class="proc-num-stage">
           <span class="proc-num">01</span>
         </div>
-      </div>
-      <!-- Center: Step content -->
-      <div class="proc-center">
-        <div class="proc-step" data-step="1">
-          <h3 class="proc-step-title">Discover</h3>
-          <p class="proc-step-desc">We understand your business, audience, positioning, and goals before touching visuals. No assumptions, no templates.</p>
-        </div>
-        <div class="proc-step" data-step="2">
-          <h3 class="proc-step-title">Strategy</h3>
-          <p class="proc-step-desc">We define the structure, message, user journey, and creative direction that will guide every decision in the experience.</p>
-        </div>
-        <div class="proc-step" data-step="3">
-          <h3 class="proc-step-title">Design</h3>
-          <p class="proc-step-desc">We craft a visual system that makes the brand feel clear, premium, and memorable at every touchpoint.</p>
-        </div>
-        <div class="proc-step" data-step="4">
-          <h3 class="proc-step-title">Build</h3>
-          <p class="proc-step-desc">We develop the experience with performance, responsiveness, and interaction quality as first principles.</p>
-        </div>
-        <div class="proc-step" data-step="5">
-          <h3 class="proc-step-title">Launch</h3>
-          <p class="proc-step-desc">We test, refine, and ship with confidence, making sure the final experience works across real devices and real conditions.</p>
+        <div class="proc-steps">
+          <div class="proc-step scene-active" data-step="1">
+            <h3 class="proc-step-name">Discover</h3>
+            <p class="proc-step-desc">We understand your business, audience, positioning, and goals before touching visuals. No assumptions, no templates.</p>
+          </div>
+          <div class="proc-step" data-step="2">
+            <h3 class="proc-step-name">Strategy</h3>
+            <p class="proc-step-desc">We define the structure, message, user journey, and creative direction that will guide every decision in the experience.</p>
+          </div>
+          <div class="proc-step" data-step="3">
+            <h3 class="proc-step-name">Design</h3>
+            <p class="proc-step-desc">We craft a visual system that makes the brand feel clear, premium, and memorable at every touchpoint.</p>
+          </div>
+          <div class="proc-step" data-step="4">
+            <h3 class="proc-step-name">Build</h3>
+            <p class="proc-step-desc">We develop the experience with performance, responsiveness, and interaction quality as first principles.</p>
+          </div>
+          <div class="proc-step" data-step="5">
+            <h3 class="proc-step-name">Launch</h3>
+            <p class="proc-step-desc">We test, refine, and ship with confidence, making sure the final experience works across real devices and real conditions.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -331,115 +351,63 @@
   </div>
 </section>
 
-<!-- CTA — Dark Spotlight -->
-<section id="contact" class="cta-spotlight">
-  <div class="cta-spot-inner">
+<!-- CTA -->
+<section id="contact" class="cta-sec">
+  <div class="cta-box holo" id="cta-box">
     <h2 class="cta-h">Ready to stop <em>guessing</em> and start growing?</h2>
-    <p class="cta-availability">Accepting 1 new client this quarter.</p>
+    <p class="cta-availability"><i aria-hidden="true"></i>Accepting 1 new client this quarter.</p>
     <form class="cta-form" onsubmit="return composeMail(this)">
-      <input type="text" name="name" placeholder="Your Name" required aria-label="Your name">
-      <input type="email" name="email" placeholder="Your Email" required aria-label="Your email address">
-      <textarea name="message" placeholder="Tell us about your project..." rows="3" required aria-label="Project details"></textarea>
-      <button type="submit" class="btn-base btn-spot" data-magnetic>Send Message</button>
+      <div class="form-row">
+        <input type="text" name="name" placeholder="Your Name" required aria-label="Your name">
+        <input type="email" name="email" placeholder="Your Email" required aria-label="Your email address">
+      </div>
+      <textarea name="message" placeholder="Tell us about your project..." rows="4" required aria-label="Project details"></textarea>
+      <button type="submit" class="btn btn-primary btn-base" data-magnetic>Send Message</button>
     </form>
-    <p class="cta-risk">Not sure if we&rsquo;re a fit? The call is obligation-free. If we can&rsquo;t help, we&rsquo;ll tell you.</p>
-    <p class="cta-trust">Trusted by 20+ brands across 5 industries.</p>
-    <p class="cta-notice">We respond within 24 hours.</p>
+    <p class="cta-note">We respond within 24 hours. Every strategy call is obligation-free.</p>
   </div>
 </section>
+
 </main>
 
 <!-- FOOTER -->
 <footer>
-  <img src="logo.svg" alt="Tensionless Digital" class="footer-logo">
-  <ul class="footer-links">
-    <li><a href="#services">Services</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-  <p class="footer-copy">&copy; 2026 Tensionless Digital.<br>All rights reserved.</p>
+  <div class="foot-inner">
+    <a class="wordmark" href="#top">Tensionless<span class="d">.</span></a>
+    <div class="foot-links">
+      <a href="#services">Services</a>
+      <a href="#case-study">Case Studies</a>
+      <a href="#process-imm">Process</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <p class="foot-copy">&copy; 2026 Tensionless Digital.<br>All rights reserved.</p>
+  </div>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" fetchpriority="high"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="animations.js"></script>
+<script src="liquid.js"></script>
 <script src="hero.js"></script>
-<script src="threejs-scene.js"></script>
 <script src="immersive-sections.js"></script>
 <script src="interactive.js"></script>
 <script>
 (function() {
-  // ── 1. Kill conflicting ScrollTriggers for pinned sections + CTA ──
-  var killIds = ['contact'];
-  ScrollTrigger.getAll().forEach(function(st) {
-    if (st.trigger && killIds.indexOf(st.trigger.id) !== -1) {
-      st.kill(true, true, true);
-    }
-  });
+  // Start the liquid atmosphere + HUD telemetry
+  if (window.tdLiquid && typeof window.tdLiquid.initLiquid === 'function') window.tdLiquid.initLiquid();
+  if (window.tdLiquid && typeof window.tdLiquid.initHud === 'function') window.tdLiquid.initHud();
 
-  // ── Marquee reveal ──
-  ScrollTrigger.create({
-    trigger: '#clients',
-    start: 'top 85%',
-    once: true,
-    onEnter: function() {
-      gsap.to('.marquee-track', { autoAlpha: 1, duration: 0.6, ease: 'power2.out' });
-    }
-  });
-
-
-  // ── 4. CTA reveal ──
-  gsap.set('.cta-h, .cta-availability, .cta-form, .cta-risk, .cta-trust, .cta-notice', { clearProps: 'all' });
-  gsap.set('.cta-availability, .cta-form, .cta-risk, .cta-trust, .cta-notice', { autoAlpha: 0 });
-
-  // Split cta-h words preserving <br>/<em>
-  var ctaH = document.querySelector('.cta-h');
-  if (ctaH) {
-    (function wrapWords(node) {
-      if (node.nodeType === 3) {
-        var text = node.textContent;
-        if (!text.trim()) return;
-        var frag = document.createDocumentFragment();
-        var parts = text.split(/(\s+)/);
-        for (var i = 0; i < parts.length; i++) {
-          var part = parts[i];
-          if (!part.trim()) { frag.appendChild(document.createTextNode(part)); }
-          else { var span = document.createElement('span'); span.className = 'word'; span.textContent = part; frag.appendChild(span); }
-        }
-        node.parentNode.replaceChild(frag, node);
-      } else if (node.nodeType === 1 && node.tagName !== 'BR') {
-        var children = Array.from(node.childNodes);
-        for (var j = 0; j < children.length; j++) { wrapWords(children[j]); }
-      }
-    })(ctaH);
-    gsap.set(ctaH.querySelectorAll('.word'), { opacity: 0 });
-  }
-
-  var ctaTl = gsap.timeline({
-    scrollTrigger: { trigger: '#contact', start: 'top 90%', once: true }
-  });
-  ctaTl.to('.cta-h .word', {
-    opacity: 1,
-    duration: 0.7, stagger: 0.06, ease: 'power3.out'
-  }, 0)
-  .to('.cta-availability, .cta-form, .cta-risk, .cta-trust, .cta-notice', {
-    autoAlpha: 1,
-    duration: 0.5, stagger: 0.1, ease: 'power2.out'
-  }, '-=0.2');
-})();
-
-// Mouse-driven spotlight on pinned sections
-(function() {
-  var sections = document.querySelectorAll('.cs-sticky, .proc-sticky');
-  sections.forEach(function(s) {
-    s.addEventListener('mousemove', function(e) {
-      var rect = s.getBoundingClientRect();
+  // Mouse spotlight on the CTA box
+  var box = document.getElementById('cta-box');
+  if (box) {
+    box.addEventListener('mousemove', function(e) {
+      var rect = box.getBoundingClientRect();
       var x = ((e.clientX - rect.left) / rect.width * 100).toFixed(1);
       var y = ((e.clientY - rect.top) / rect.height * 100).toFixed(1);
-      s.style.setProperty('--spot-x', x + '%');
-      s.style.setProperty('--spot-y', y + '%');
+      box.style.setProperty('--spot-x', x + '%');
+      box.style.setProperty('--spot-y', y + '%');
     });
-  });
+  }
 })();
 </script>
 </body>

@@ -1,262 +1,215 @@
+/* globals gsap, ScrollTrigger */
 
+// Contact form — opens mailto with the submitted data.
+// Bound in index.html as onsubmit="return composeMail(this)", so it receives
+// the FORM element, not an event. Returning false cancels the native submit.
+window.composeMail = function (form) {
+  var name = (form.querySelector('[name="name"]') || {}).value || '';
+  var email = (form.querySelector('[name="email"]') || {}).value || '';
+  var message = (form.querySelector('[name="message"]') || {}).value || '';
+  var body = 'Name: ' + encodeURIComponent(name) +
+    '%0D%0AEmail: ' + encodeURIComponent(email) +
+    '%0D%0A%0D%0A' + encodeURIComponent(message) +
+    '%0D%0A%0D%0A---%0D%0ASent from tensionlessdigital.com';
+  window.location.href = 'mailto:hello@tensionlessdigital.com' +
+    '?subject=Project%20Inquiry%20-%20' + encodeURIComponent(name) +
+    '&body=' + body;
+  form.reset();
+  return false;
+};
 
-  // ─── Word-split headline animation ────────────────────────────
-  function splitHeadlines() {
-    function wrapWords(node) {
-      if (node.nodeType === 3) {
-        var text = node.textContent;
-        if (!text.trim()) return;
-        var frag = document.createDocumentFragment();
-        var parts = text.split(/(\s+)/);
-        for (var i = 0; i < parts.length; i++) {
-          var part = parts[i];
-          if (!part.trim()) {
-            frag.appendChild(document.createTextNode(part));
-          } else {
-            var span = document.createElement('span');
-            span.className = 'word';
-            span.textContent = part;
-            frag.appendChild(span);
-          }
-        }
-        node.parentNode.replaceChild(frag, node);
-      } else if (node.nodeType === 1 && node.tagName !== 'BR') {
-        var children = Array.from(node.childNodes);
-        for (var j = 0; j < children.length; j++) {
-          wrapWords(children[j]);
-        }
-      }
-    }
-    document.querySelectorAll('.s-head').forEach(function(headline) {
-      var children = Array.from(headline.childNodes);
-      for (var k = 0; k < children.length; k++) {
-        wrapWords(children[k]);
-      }
-    });
-  }
+(function () {
+  'use strict';
 
-  // Contact form — opens mailto with form data
-  window.composeMail = function(e) {
-    e.preventDefault();
-    const name = e.target.querySelector('[name=name]').value;
-    const email = e.target.querySelector('[name=email]').value;
-    const message = (e.target.querySelector('[name=message]') || {}).value || '';
-    const body = 'Name: ' + name + '%0D%0AEmail: ' + email + '%0D%0A%0D%0A' + encodeURIComponent(message) + '%0D%0A%0D%0A---%0D%0ASent from tensionlessdigital.com';
-    window.location.href = 'mailto:hello@tensionlessdigital.com?subject=Project%20Inquiry%20-%20' + encodeURIComponent(name) + '&body=' + body;
-    e.target.reset();
-    return false;
-  };
+  /* ── Nav (no GSAP dependency) ───────────────────────────────────── */
 
-(() => {
-  // Hamburger menu toggle
-  const navToggle = document.querySelector('.nav-toggle');
-  const navLinks = document.querySelector('.nav-links');
+  var navToggle = document.querySelector('.nav-toggle');
+  var navLinks = document.querySelector('.nav-links');
   if (navToggle && navLinks) {
-    navToggle.addEventListener('click', () => {
-      const open = navToggle.getAttribute('aria-expanded') === 'true' ? false : true;
-      navToggle.setAttribute('aria-expanded', open);
-      navLinks.classList.toggle('open', open);
+    navToggle.addEventListener('click', function () {
+      var open = navToggle.getAttribute('aria-expanded') === 'true';
+      navToggle.setAttribute('aria-expanded', String(!open));
+      navLinks.classList.toggle('open', !open);
     });
-    // Close menu on link click
-    navLinks.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
+    Array.prototype.forEach.call(navLinks.querySelectorAll('a'), function (link) {
+      link.addEventListener('click', function () {
         navToggle.setAttribute('aria-expanded', 'false');
         navLinks.classList.remove('open');
       });
     });
   }
 
-  const siteNav = document.getElementById('nav');
-  siteNav && window.addEventListener('scroll', () => {
-    siteNav.classList.toggle('scrolled', window.scrollY > 60);
-  }, { passive: true });
-
-  const pageReduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const revealEls = Array.from(document.querySelectorAll('.reveal'));
-  const countEls = Array.from(document.querySelectorAll('.count'));
-
-  function setCountsFinal() {
-    countEls.forEach(el => { el.textContent = el.dataset.n || el.textContent; });
+  var siteNav = document.getElementById('nav');
+  if (siteNav) {
+    window.addEventListener('scroll', function () {
+      siteNav.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
   }
 
-  if (pageReduceMotion || !window.gsap || !window.ScrollTrigger) {
-    revealEls.forEach(el => el.classList.add('in'));
+  /* ── Guards ────────────────────────────────────────────────────── */
+
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var hasGsap = !!(window.gsap && window.ScrollTrigger);
+
+  // Fallback: no GSAP or reduced motion — show final values statically.
+  // gsap-active must NOT be added here; CSS already forces visibility.
+  function setCountFinal(el) {
+    var target = parseFloat(el.getAttribute('data-target'));
+    if (isNaN(target)) return;
+    var prefix = el.getAttribute('data-prefix') || '';
+    var suffix = el.getAttribute('data-suffix') || '';
+    var dec = parseInt(el.getAttribute('data-dec') || '0', 10);
+    el.textContent = prefix + target.toFixed(dec) + suffix;
+  }
+
+  function setCountsFinal() {
+    Array.prototype.forEach.call(document.querySelectorAll('.count, .count-imm'), setCountFinal);
+  }
+
+  if (!hasGsap || reduceMotion) {
     setCountsFinal();
     return;
   }
 
   gsap.registerPlugin(ScrollTrigger);
-
   document.documentElement.classList.add('gsap-active');
   gsap.defaults({ ease: 'power3.out' });
-  countEls.forEach(el => { el.textContent = '0'; });
 
-  // Split headlines into word spans for staggered reveal
-  splitHeadlines();
+  // Mobile: pinned scenes render as a static stack with no scrub timeline to
+  // animate them, so immutable counters show final values from the start.
+  if (!window.matchMedia('(min-width: 769px)').matches) {
+    Array.prototype.forEach.call(document.querySelectorAll('.count-imm'), setCountFinal);
+  }
 
-  const groups = [
-    { root: '#services', items: '.s-label, .s-head, .s-body, .svc-card', variant: 'services' },
-    { root: '#data-break', items: '.db-inner', variant: 'data-break' },
-    { root: '#contact', items: '.cta-availability, .cta-sub, .btn-dark, .btn-ink', variant: 'cta' },
-    { root: 'footer', items: '.footer-logo, .footer-links li, .footer-copy', variant: 'footer' }
-  ];
+  /* ── Word-split for masked headline reveals ─────────────────────── */
 
-  const animatedItems = new Set(revealEls);
-  groups.forEach(config => {
-    const root = document.querySelector(config.root);
-    if (!root) return;
-    root.querySelectorAll(config.items).forEach(el => animatedItems.add(el));
+  function wrapWords(node) {
+    if (node.nodeType === 3) {
+      var text = node.textContent;
+      if (!text.trim()) return;
+      var frag = document.createDocumentFragment();
+      var parts = text.split(/(\s+)/);
+      for (var i = 0; i < parts.length; i++) {
+        var part = parts[i];
+        if (!part.trim()) {
+          frag.appendChild(document.createTextNode(part));
+        } else {
+          var span = document.createElement('span');
+          span.className = 'word';
+          span.textContent = part;
+          frag.appendChild(span);
+        }
+      }
+      node.parentNode.replaceChild(frag, node);
+    } else if (node.nodeType === 1 && node.tagName !== 'BR') {
+      var children = Array.prototype.slice.call(node.childNodes);
+      for (var j = 0; j < children.length; j++) {
+        wrapWords(children[j]);
+      }
+    }
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll('.s-head, .cta-h'), function (head) {
+    Array.prototype.slice.call(head.childNodes).forEach(function (child) {
+      wrapWords(child);
+    });
   });
-  // Replace .s-head containers with their word children for animation
-  animatedItems.forEach(function(el) {
-    if (el.classList.contains('s-head')) {
-      animatedItems.delete(el);
-      el.querySelectorAll('.word').forEach(function(w) { animatedItems.add(w); });
-    }
-  });
-  gsap.set(Array.from(animatedItems), { autoAlpha: 0, y: 28 });
 
-  groups.forEach(config => {
-    const root = document.querySelector(config.root);
-    if (!root) return;
-
-    if (config.variant === 'services') {
-      gsap.set(root.querySelectorAll('.svc-card'), { x: 60, y: 40, rotation: -3, scale: 0.8 });
-    }
-    if (config.variant === 'results') {
-      gsap.set(root.querySelectorAll('.res-card'), { y: 64, rotation: -2 });
-      gsap.set(root.querySelectorAll('.cs-headline'), { y: 24, scale: 0.88 });
-      gsap.set(root.querySelectorAll('.cs-stats'), { y: 18, x: -14 });
-    }
-    if (config.variant === 'testimonials') {
-      gsap.set(root.querySelectorAll('.testi-stat'), { y: 24, scale: 0.9 });
-      gsap.set(root.querySelectorAll('.testi-card'), { y: 56, rotation: -2, scale: 0.95 });
-      gsap.set(root.querySelectorAll('.testi-featured'), { scale: 0.95, y: 20 });
-    }
-    if (config.variant === 'process') {
-      gsap.set(root.querySelectorAll('.proc-step'), { y: 56, rotation: -1.5 });
-    }
-  });
+  /* ── Count-up ───────────────────────────────────────────────────── */
 
   function countUp(el) {
-    const target = Number(el.dataset.n || 0);
-    const state = { value: 0 };
+    var target = parseFloat(el.getAttribute('data-target'));
+    if (isNaN(target)) return;
+    var prefix = el.getAttribute('data-prefix') || '';
+    var suffix = el.getAttribute('data-suffix') || '';
+    var dec = parseInt(el.getAttribute('data-dec') || '0', 10);
+    var state = { v: 0 };
+    el.textContent = prefix + '0' + suffix;
     gsap.to(state, {
-      value: target,
-      duration: 0.8,
+      v: target,
+      duration: 1.6,
       ease: 'expo.out',
-      onUpdate: () => { el.textContent = Math.round(state.value); }
-    });
-  }
-
-  function revealGroup(config, root) {
-    const q = selector => Array.from(root.querySelectorAll(selector));
-    const tl = gsap.timeline({
-      defaults: { ease: 'power3.out', overwrite: 'auto' },
-      onStart: () => root.classList.add('in-view'),
-      onComplete: () => {
-        gsap.set(q(config.items), { clearProps: 'transform,willChange,visibility' });
+      onUpdate: function () {
+        el.textContent = prefix + state.v.toFixed(dec) + suffix;
       }
     });
-
-    if (config.variant === 'services') {
-      tl.to(q('.s-label'), { autoAlpha: 1, y: 0, duration: 0.45, ease: 'power2.out' })
-        .to(q('.s-head .word'), { autoAlpha: 1, y: 0, duration: 0.35, stagger: 0.035, ease: 'power2.out' }, '-=0.15')
-        .to(q('.s-body'), { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power2.out' }, '-=0.1')
-        .to(q('.svc-card'), {
-          autoAlpha: 1, x: 0, y: 0, rotation: 0, scale: 1,
-          duration: 1, stagger: { each: 0.1, from: 'center' }, ease: 'power3.out'
-        }, '-=0.4');
-      return tl;
-    }
-
-    if (config.variant === 'results') {
-      tl.to(q('.s-label'), { autoAlpha: 1, y: 0, duration: 0.45, ease: 'power2.out' })
-        .to(q('.s-head .word'), { autoAlpha: 1, y: 0, duration: 0.35, stagger: 0.035, ease: 'power2.out' }, '-=0.15')
-        .to(q('.s-body'), { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power2.out' }, '-=0.1')
-        .to(q('.res-card'), { autoAlpha: 1, y: 0, rotation: 0, duration: 0.8, stagger: 0.1, ease: 'power3.out' }, '-=0.5')
-        .to(q('.cs-headline'), { autoAlpha: 1, y: 0, scale: 1.06, duration: 0.5, stagger: 0.08, ease: 'expo.out' }, '-=0.35')
-        .to(q('.cs-headline'), { scale: 1, duration: 0.3, stagger: 0.08, ease: 'power2.out' })
-        .to(q('.cs-stats'), { autoAlpha: 1, y: 0, x: 0, duration: 0.4, stagger: 0.04, ease: 'power2.out' }, '-=0.1');
-      return tl;
-    }
-
-    if (config.variant === 'testimonials') {
-      tl.to(q('.s-label'), { autoAlpha: 1, y: 0, duration: 0.45, ease: 'power2.out' })
-        .to(q('.s-head .word'), { autoAlpha: 1, y: 0, duration: 0.35, stagger: 0.04, ease: 'power2.out' }, '-=0.1')
-        .to(q('.testi-featured'), { autoAlpha: 1, y: 0, scale: 1, duration: 0.7, ease: 'power3.out' }, '-=0.2')
-        .to(q('.testi-stat'), { autoAlpha: 1, y: 0, scale: 1, duration: 0.55, stagger: 0.08, ease: 'power3.out' }, '-=0.25')
-        .to(q('.testi-card'), { autoAlpha: 1, y: 0, rotation: 0, scale: 1, duration: 0.75, stagger: 0.1, ease: 'power3.out' }, '-=0.25');
-      return tl;
-    }
-
-    if (config.variant === 'process') {
-      tl.to(q('.s-label'), { autoAlpha: 1, y: 0, duration: 0.35, ease: 'power2.out' })
-        .to(q('.s-head .word'), { autoAlpha: 1, y: 0, duration: 0.3, stagger: 0.035, ease: 'power2.out' }, '-=0.1')
-        .to(q('.s-body'), { autoAlpha: 1, y: 0, duration: 0.45, ease: 'power2.out' }, '-=0.1')
-        .to(q('.proc-step'), { autoAlpha: 1, y: 0, rotation: 0, duration: 0.8, stagger: 0.1, ease: 'power3.out' }, '-=0.2');
-      return tl;
-    }
-
-    if (config.variant === 'data-break') {
-      root.querySelectorAll('.count').forEach(function(el) { countUp(el); });
-      tl.to(q('.db-inner'), { autoAlpha: 1, y: 0, duration: 0.6, ease: 'power3.out' });
-      return tl;
-    }
-
-    if (config.variant === 'cta') {
-      tl.to(q('.cta-availability, .cta-sub, .btn-dark, .btn-ink'), { autoAlpha: 1, duration: 0.5, stagger: 0.08, ease: 'power2.out' });
-      return tl;
-    }
-
-    tl.to(q(config.items), {
-      autoAlpha: 1,
-      y: 0,
-      duration: 0.6,
-      stagger: 0.07,
-      ease: 'power3.out'
-    });
-    return tl;
   }
 
-  const mm = gsap.matchMedia();
-  mm.add('(prefers-reduced-motion: no-preference)', () => {
-    groups.forEach(config => {
-      const root = document.querySelector(config.root);
-      if (!root) return;
-      ScrollTrigger.create({
-        trigger: root,
-        start: 'top 92%',
-        once: true,
-        onEnter: () => {
-          revealGroup(config, root);
-          // Success ripple for results section
-          if (config.variant === 'results' && typeof window.addRemnantBurst === 'function') {
-            window.addRemnantBurst(window.innerWidth / 2, window.innerHeight * 0.5);
-          }
-          // Final shard burst for CTA section
-          if (config.variant === 'cta' && typeof window.addRemnantBurst === 'function') {
-            window.addRemnantBurst(window.innerWidth * 0.5, window.innerHeight * 0.4);
-            // Second burst after a brief delay
-            setTimeout(function() {
-              if (typeof window.addRemnantBurst === 'function') {
-                window.addRemnantBurst(window.innerWidth * 0.3, window.innerHeight * 0.6);
-                window.addRemnantBurst(window.innerWidth * 0.7, window.innerHeight * 0.3);
-              }
-            }, 300);
-            // Auto-cleanup: fade out after bursts finish
-            setTimeout(function() {
-              var rc = document.getElementById('remnant-canvas');
-              if (rc) {
-                gsap.to(rc, { opacity: 0, duration: 0.45, ease: 'power2.out' });
-              }
-            }, 2500);
-          }
-        }
-      });
+  /* ── Helpers ────────────────────────────────────────────────────── */
+
+  function once(trigger, start) {
+    return gsap.timeline({
+      scrollTrigger: { trigger: trigger, start: start, once: true }
     });
-    return () => ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-  });
+  }
 
+  // After a reveal completes, hand the element back to CSS: add `.in`
+  // (which the :not(.in) gating no longer matches) and drop the inline
+  // opacity so hover states like .svc-grid:hover .svc-card work again.
+  function settle(root) {
+    Array.prototype.forEach.call(root.querySelectorAll('.reveal'), function (el) {
+      el.classList.add('in');
+      gsap.set(el, { clearProps: 'opacity,visibility' });
+    });
+  }
 
+  /* ── Services ───────────────────────────────────────────────────── */
+
+  var services = document.getElementById('services');
+  if (services) {
+    once(services, 'top 72%')
+      .to(services.querySelectorAll('.sec-kicker'), { autoAlpha: 1, duration: 0.5 }, 0)
+      .to(services.querySelectorAll('.s-head'), { autoAlpha: 1, duration: 0.6 }, 0.1)
+      .to(services.querySelectorAll('.s-head .word'), {
+        clipPath: 'inset(0 0% 0 0)', duration: 0.7, stagger: 0.035, ease: 'power4.out'
+      }, 0.15)
+      .to(services.querySelectorAll('.s-body'), { autoAlpha: 1, duration: 0.6 }, 0.4)
+      .to(services.querySelectorAll('.svc-card'), { autoAlpha: 1, duration: 0.8, stagger: 0.08 }, 0.5)
+      .eventCallback('onComplete', function () { settle(services); });
+  }
+
+  /* ── Data break ─────────────────────────────────────────────────── */
+
+  var dataBreak = document.getElementById('data-break');
+  if (dataBreak) {
+    once(dataBreak, 'top 78%')
+      .to(dataBreak.querySelectorAll('.stat-tile'), { autoAlpha: 1, duration: 0.7, stagger: 0.1 }, 0)
+      .call(function () {
+        Array.prototype.forEach.call(dataBreak.querySelectorAll('.count'), countUp);
+      }, null, 0.3)
+      .eventCallback('onComplete', function () { settle(dataBreak); });
+  }
+
+  /* ── Marquee ────────────────────────────────────────────────────── */
+
+  var clients = document.getElementById('clients');
+  if (clients) {
+    once(clients, 'top 85%')
+      .to(clients.querySelector('.marq-track'), { autoAlpha: 1, duration: 0.7 });
+  }
+
+  /* ── CTA ────────────────────────────────────────────────────────── */
+
+  var contact = document.getElementById('contact');
+  if (contact) {
+    once(contact, 'top 72%')
+      .to(contact.querySelectorAll('.cta-h .word'), {
+        clipPath: 'inset(0 0% 0 0)', duration: 0.7, stagger: 0.035, ease: 'power4.out'
+      }, 0)
+      .fromTo(contact.querySelectorAll('.cta-availability'),
+        { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5 }, 0.35)
+      .fromTo(contact.querySelectorAll('.cta-form'),
+        { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6 }, 0.5)
+      .fromTo(contact.querySelectorAll('.cta-note'),
+        { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5 }, 0.7);
+  }
+
+  /* ── Footer ─────────────────────────────────────────────────────── */
+
+  var footer = document.querySelector('footer');
+  if (footer) {
+    once(footer, 'top bottom')
+      .fromTo(footer.querySelectorAll('.foot-links a, .foot-copy, .wordmark'),
+        { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6, stagger: 0.08 });
+  }
 })();
