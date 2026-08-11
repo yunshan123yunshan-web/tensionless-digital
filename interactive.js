@@ -198,8 +198,9 @@
       { name: 'Manifest', num: '01' },
       { name: 'Arsenal', num: '02' },
       { name: 'Proof', num: '03' },
-      { name: 'Craft', num: '04' },
-      { name: 'Connect', num: '05' }
+      { name: 'Verdict', num: '04' },
+      { name: 'Craft', num: '05' },
+      { name: 'Connect', num: '06' }
     ];
     var starts = [];
     var maxScroll = 1;

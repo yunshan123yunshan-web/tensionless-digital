@@ -145,15 +145,21 @@
       if (slides.length < 4 || !track) return;
 
       var innerSel = '.cs-label, .cs-head, .cs-body, .cs-stat, .cs-panel';
+      var kicker = csWrap.querySelector('.cs-gallery-kicker');
       slides.forEach(function (slide) {
         gsap.set(slide.querySelectorAll(innerSel), { autoAlpha: 0 });
       });
       gsap.set(track, { xPercent: 0 });
+      if (kicker) gsap.set(kicker, { autoAlpha: 0 });
 
       var dots = buildProgressDots(csWrap.querySelector('.cs-dot-bar'), slides.length);
       var indexNum = csWrap.querySelector('.cs-index-num');
 
+      // Kicker fades with scene 1, same as the slide content — it must not
+      // be visible before the entrance timeline actually plays, since that
+      // would double-expose it against the previous section's exit fade.
       entranceTimeline(csWrap, function (tl) {
+        if (kicker) tl.to(kicker, { autoAlpha: 1, duration: 0.5 }, 0);
         tl.to(slides[0].querySelectorAll(innerSel), { autoAlpha: 1, duration: 0.7, stagger: 0.1 }, 0)
           .call(scrambleKicker(csWrap), null, 0.2)
           .call(function () { countOnce(slides[0]); }, null, 0.6);
@@ -204,10 +210,12 @@
       // Last slide fades out well before the pin releases, so the crossfade
       // finishes with real scroll margin instead of racing the next section in.
       tl.to(slides[slides.length - 1], { autoAlpha: 0, duration: 2, ease: 'power1.inOut' }, DUR - 2.5);
+      if (kicker) tl.to(kicker, { autoAlpha: 0, duration: 1.5, ease: 'power1.inOut' }, DUR - 2.3);
 
       return function () {
         clearScenes(slides, innerSel);
         gsap.set(track, { clearProps: 'xPercent' });
+        if (kicker) gsap.set(kicker, { clearProps: 'opacity,visibility' });
         resetDots(dots);
       };
     });
@@ -224,6 +232,7 @@
       var s1 = scenes[0], s2 = scenes[1], s3 = scenes[2];
       var trust = testiWrap.querySelector('.testi-trust');
       var trustInner = trust && trust.querySelectorAll('.testi-trust-inner > *');
+      var kicker = testiWrap.querySelector('.testi-theater-kicker');
 
       scenes.forEach(function (scene) {
         gsap.set(scene.querySelectorAll('.testi-glyph, .testi-quote, .testi-author'), { autoAlpha: 0 });
@@ -232,6 +241,7 @@
       if (trust && trustInner.length) {
         gsap.set(trustInner, { autoAlpha: 0 });
       }
+      if (kicker) gsap.set(kicker, { autoAlpha: 0 });
 
       var dots = buildProgressDots(testiWrap.querySelector('.testi-dot-bar'), 4);
 
@@ -242,13 +252,46 @@
       // satisfy well before that pin actually releases — producing a
       // double-exposure of both sections' content. Gating on the pinned
       // timeline's own start guarantees this only plays once the case-study
-      // pin has released and this section is truly on screen.
+      // pin has released and this section is truly on screen. The kicker
+      // label is markup-level always-on, so it needs the same gating —
+      // otherwise it renders as soon as .testi-sticky enters the viewport,
+      // well before the pin (and the previous section's exit fade) resolve.
       var DUR = 25;
       var tl = createPinnedTimeline(testiWrap, testiSticky);
-      tl.set(s1, { autoAlpha: 1, scale: 1 }, 0)
+      // s1's own opacity is NOT set on tl at position 0: a scrub timeline's
+      // .set() at position 0 renders eagerly the instant it's added — and
+      // keeps re-rendering that eager frame on every ScrollTrigger.refresh()
+      // (which fires automatically once after setup and on window resize),
+      // regardless of any gsap.set() called afterward to counter it. That
+      // eager autoAlpha:1 left s1's empty panel visible from page load,
+      // double-exposed against Case Study. A separate ScrollTrigger.create()
+      // below (start: 'top top', matching the pin exactly) only fires once
+      // the pin genuinely engages, so it isn't subject to the eager-render
+      // problem. tl above still owns scale/content once s1 IS visible.
+      tl.set(s1, { scale: 1 }, 0)
         .to(s1.querySelectorAll('.testi-glyph, .testi-quote, .testi-author'),
           { autoAlpha: 1, duration: 0.7, stagger: 0.15 }, 0)
         .call(scrambleKicker(testiWrap), null, 0);
+      if (kicker) tl.to(kicker, { autoAlpha: 1, duration: 0.5 }, 0);
+      // Scene 1's own opacity reveal: onEnter/onLeaveBack callbacks instead of a
+      // play/reverse timeline, because a deep scroll-jump (scroll restoration,
+      // End key, hash-URL load) re-fires onEnter while the scrub is already
+      // mid-timeline — a plain play resurrected s1 at opacity 1 and left it
+      // double-exposed over s2/s3 when scrolling back up through the pin. The
+      // u-guard only reveals s1 while the scrub is still inside scene 1's own
+      // window (fade-out at position 5 of DUR 25); a hard hide on upward exit
+      // keeps the pin-start boundary clean.
+      ScrollTrigger.create({
+        trigger: testiWrap,
+        start: 'top top',
+        onEnter: function (self) {
+          var u = (self.scroll() - self.start) / (self.end - self.start) * DUR;
+          gsap.set(s1, { autoAlpha: u < 5 ? 1 : 0 });
+        },
+        onLeaveBack: function (self) {
+          gsap.set(s1, { autoAlpha: 0 });
+        }
+      });
 
       [[s1, s2, 5], [s2, s3, 10.5]].forEach(function (pair, idx) {
         var out = pair[0], inn = pair[1], at = pair[2];
@@ -259,14 +302,21 @@
           .call(setDot, [dots, idx + 1], at + 0.9);
       });
 
+      // Trust row and kicker fade out at DUR - 5 (not DUR - 2): this timeline
+      // has scrub: 1 (one second of lag smoothing), so rendered progress
+      // trails real scroll — a DUR - 2 margin left `trust` still mid-fade
+      // (opacity ~0.07-0.89) at the exact scroll position where Process's
+      // pin engages and its own entrance starts, producing a visible
+      // double-exposure of "Straight from..." under the Process ring.
       if (trust && trustInner.length) {
         tl.to(s3, { autoAlpha: 0, scale: 0.98, duration: 0.8, ease: 'power1.inOut' }, 15.5)
           .fromTo(trustInner, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6, stagger: 0.15 }, 16.3)
           .call(setDot, [dots, 3], 16.4)
-          .to(trust, { autoAlpha: 0, duration: 1.5, ease: 'power1.inOut' }, DUR - 2);
+          .to(trust, { autoAlpha: 0, duration: 2, ease: 'power1.inOut' }, DUR - 5);
       } else {
-        tl.to(s3, { autoAlpha: 0, scale: 0.98, duration: 1.5, ease: 'power1.inOut' }, DUR - 2);
+        tl.to(s3, { autoAlpha: 0, scale: 0.98, duration: 1.5, ease: 'power1.inOut' }, DUR - 5);
       }
+      if (kicker) tl.to(kicker, { autoAlpha: 0, duration: 2, ease: 'power1.inOut' }, DUR - 5);
 
       return function () {
         clearScenes(scenes, '.testi-glyph, .testi-quote, .testi-author');
@@ -274,6 +324,7 @@
           gsap.set(trust, { clearProps: 'opacity,visibility' });
           gsap.set(trustInner, { clearProps: 'opacity,visibility' });
         }
+        if (kicker) gsap.set(kicker, { clearProps: 'opacity,visibility' });
         resetDots(dots);
       };
     });
@@ -289,6 +340,8 @@
       var nodes = Array.prototype.slice.call(procWrap.querySelectorAll('.proc-node-ring'));
       var focus = procWrap.querySelector('.proc-focus');
       var num = procWrap.querySelector('.proc-num');
+      var kicker = procWrap.querySelector('.proc-kicker');
+      var orbit = procWrap.querySelector('.proc-orbit');
       if (steps.length < 5) return;
 
       var innerSel = '.proc-step-label, .proc-step-name, .proc-step-desc';
@@ -297,6 +350,11 @@
       });
       gsap.set(steps.slice(1), { autoAlpha: 0 });
       if (focus) gsap.set(focus, { rotation: 0 });
+      if (kicker) gsap.set(kicker, { autoAlpha: 0 });
+      // The ring itself is markup-level always-on, same issue as the kicker —
+      // ungated it bleeds through the CTA card below once .proc-sticky enters
+      // the viewport ahead of this pin actually resolving.
+      if (orbit) gsap.set(orbit, { autoAlpha: 0 });
 
       var dots = buildProgressDots(procWrap.querySelector('.proc-dot-bar'), steps.length);
 
@@ -324,9 +382,48 @@
       ];
 
       var tl = createPinnedTimeline(procWrap, procSticky);
-      tl.set(steps[0], { autoAlpha: 1 }, 0)
-        .to(steps[0].querySelectorAll(innerSel), { autoAlpha: 1, duration: 0.6, stagger: 0.1 }, 0)
+      // steps[0]'s own opacity is NOT set on tl at position 0 — same reason
+      // as Testimonials' s1 above: a scrub timeline's .set() at position 0
+      // renders eagerly on creation and again on every ScrollTrigger.refresh(),
+      // regardless of any gsap.set() called afterward. A separate
+      // ScrollTrigger.create() below (start: 'top top', matching the pin)
+      // only fires once the pin genuinely engages.
+      tl.to(steps[0].querySelectorAll(innerSel), { autoAlpha: 1, duration: 0.6, stagger: 0.1 }, 0)
         .call(scrambleKicker(procWrap), null, 0);
+      // kicker/orbit reveal moved off the shared scrub timeline (tl) onto
+      // the same instant toggleActions timeline as steps[0]: a scrub:1
+      // fade-in here was still subject to lag at the exact pixel the
+      // previous section's pin releases, so kicker/orbit could render
+      // partway-faded-in (e.g. opacity 0.73) at the same instant Testimonials'
+      // trust row was still partway-faded-out — a residual double-exposure
+      // even after widening Testimonials' own fade-out margin.
+      // Same guard as Testimonials' scene-1 reveal above: onEnter/onLeaveBack
+      // instead of a play/reverse timeline, so a deep scroll-jump that re-fires
+      // onEnter cannot resurrect steps[0]/kicker/orbit at opacity 1 once the
+      // scrub has advanced past them. Each element hides once the scrub passes
+      // its own fade-out (step 0 at SEG[1].at, ring/kicker at DUR - 6).
+      ScrollTrigger.create({
+        trigger: procWrap,
+        start: 'top top',
+        onEnter: function (self) {
+          var u = (self.scroll() - self.start) / (self.end - self.start) * DUR;
+          gsap.set(steps[0], { autoAlpha: u < SEG[1].at ? 1 : 0 });
+          gsap.set([kicker, orbit].filter(Boolean), { autoAlpha: u < DUR - 6 ? 1 : 0 });
+        },
+        onLeaveBack: function (self) {
+          gsap.set(steps[0], { autoAlpha: 0 });
+          gsap.set([kicker, orbit].filter(Boolean), { autoAlpha: 0 });
+        },
+        // Process is the last pinned section — CTA sits immediately after
+        // with no further scroll distance to carry proc-sticky's leftover
+        // pin transform off-screen (unlike Case Study/Testimonials, which
+        // get pushed safely past the viewport by the sections that follow
+        // them). Without this, proc-sticky's own opaque background keeps
+        // painting over the CTA for the entire remaining scroll range once
+        // the pin technically ends.
+        onLeave: function () { gsap.set(procSticky, { autoAlpha: 0 }); },
+        onEnterBack: function () { gsap.set(procSticky, { autoAlpha: 1 }); }
+      });
       setActiveStep(0);
 
       // Focus dot orbits to each node (per-segment, eases as it lands).
@@ -344,10 +441,15 @@
       var active = 0;
       tl.to(drive, { u: 1, duration: DUR, ease: 'none', onUpdate: syncProcess }, 0);
 
+      // Offset by 0.7 (the fade-out duration below) so the ring/numeral
+      // switch when the incoming card starts fading in, not when the
+      // outgoing card starts fading out — otherwise there's a ~0.7-unit
+      // window where the numeral already reads the next step while its
+      // card is still visibly showing the previous one.
       function syncProcess() {
         var u = drive.u * DUR;
         var idx = 0;
-        for (var i = 0; i < SEG.length; i += 1) { if (u >= SEG[i].at) idx = i; }
+        for (var i = 0; i < SEG.length; i += 1) { if (u >= SEG[i].at + 0.7) idx = i; }
         if (idx !== active) { active = idx; setActiveStep(idx); }
       }
 
@@ -362,10 +464,19 @@
         }
       });
 
-      // Last step + numeral fade out well before the pin releases, so the CTA
-      // never enters while the step content is still mid-fade.
+      // Last step + numeral + ring fade out well before the pin releases, so
+      // the CTA never enters while any Process content is still mid-fade.
+      // The ring/kicker start fading much earlier than the step card
+      // (DUR - 6 vs DUR - 2.5): this timeline has scrub: 1 (one second of
+      // lag smoothing), so the rendered progress trails real scroll by a
+      // margin that ate most of a DUR - 3.5 head start in testing — the
+      // ring was still fully opaque past progress 0.91 on a 30-unit
+      // timeline. Starting the ring fade at DUR - 6 leaves enough real
+      // scroll distance for the scrub lag to catch up before the pin ends.
       tl.to(steps[steps.length - 1], { autoAlpha: 0, duration: 2, ease: 'power1.inOut' }, DUR - 2.5);
       if (num) tl.to(num, { autoAlpha: 0, duration: 1.5, ease: 'power1.inOut' }, DUR - 2.3);
+      if (kicker) tl.to(kicker, { autoAlpha: 0, duration: 2, ease: 'power1.inOut' }, DUR - 6);
+      if (orbit) tl.to(orbit, { autoAlpha: 0, duration: 2, ease: 'power1.inOut' }, DUR - 6);
 
       return function () {
         clearScenes(steps, innerSel);
@@ -377,6 +488,8 @@
           num.style.visibility = '';
           num.style.transform = '';
         }
+        if (kicker) gsap.set(kicker, { clearProps: 'opacity,visibility' });
+        if (orbit) gsap.set(orbit, { clearProps: 'opacity,visibility' });
         resetDots(dots);
       };
     });
