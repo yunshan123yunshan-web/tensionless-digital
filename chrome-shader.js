@@ -92,6 +92,7 @@
     'uniform vec2 u_mouse;',
     'uniform float u_fracture;',
     'uniform float u_intensity;',
+    'uniform float u_velocity;',
     '',
     'float hash(vec2 p) {',
     '  return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);',
@@ -124,10 +125,10 @@
     '  vec2 uv = gl_FragCoord.xy / u_res.xy;',
     '  float aspect = u_res.x / max(u_res.y, 1.0);',
     '  vec2 p = vec2(uv.x * aspect, uv.y);',
-    '  float t = u_time * 0.025;',
+    '  float t = u_time * 0.045;',
     '',
     '  // mouse parallax drift',
-    '  vec2 m = (u_mouse - 0.5) * 0.55;',
+    '  vec2 m = (u_mouse - 0.5) * 0.85;',
     '  p += m;',
     '',
     '  // domain-warped fbm — the liquid chrome core',
@@ -138,8 +139,9 @@
     '  );',
     '  float f = fbm(p * 3.1 + 3.6 * r + t * 0.4);',
     '',
-    '  // fracture: high-frequency detail, ramps with scroll',
-    '  f += u_fracture * (fbm(p * 7.0 + q * 3.5 + t * 1.4) - 0.5) * 1.1;',
+    '  // fracture: high-frequency detail, ramps with scroll and cursor speed',
+    '  float frac = u_fracture + u_velocity;',
+    '  f += frac * (fbm(p * 7.0 + q * 3.5 + t * 1.4) - 0.5) * 1.1;',
     '',
     '  // banding for the iridescent sweep',
     '  float band = f * 2.4 + sin(p.y * 5.0 + t * 1.6 + q * 2.0) * 0.35;',
@@ -219,10 +221,12 @@
       var uMouse = gl.getUniformLocation(prog, 'u_mouse');
       var uFrac = gl.getUniformLocation(prog, 'u_fracture');
       var uInt = gl.getUniformLocation(prog, 'u_intensity');
+      var uVel = gl.getUniformLocation(prog, 'u_velocity');
 
-      var mouse = { x: 0.5, y: 0.5, tx: 0.5, ty: 0.5 };
+      var mouse = { x: 0.5, y: 0.5, tx: 0.5, ty: 0.5, px: 0.5, py: 0.5 };
       var fracture = 0;
       var intensity = 0.15;
+      var velocity = 0;
       var running = false;
       var rafId = null;
 
@@ -246,11 +250,18 @@
         if (!running) return;
         mouse.x += (mouse.tx - mouse.x) * 0.05;
         mouse.y += (mouse.ty - mouse.y) * 0.05;
+        var dx = mouse.x - mouse.px;
+        var dy = mouse.y - mouse.py;
+        mouse.px = mouse.x;
+        mouse.py = mouse.y;
+        var speed = Math.min(Math.sqrt(dx * dx + dy * dy) * 14, 1);
+        velocity += (speed - velocity) * 0.15;
         gl.uniform2f(uRes, cv.width, cv.height);
         gl.uniform1f(uTime, now * 0.001);
         gl.uniform2f(uMouse, mouse.x, mouse.y);
         gl.uniform1f(uFrac, fracture);
         gl.uniform1f(uInt, intensity);
+        gl.uniform1f(uVel, velocity);
         gl.drawArrays(gl.TRIANGLES, 0, 3);
         rafId = requestAnimationFrame(frame);
       }
