@@ -6,8 +6,8 @@
  *     React Bits DecryptedText). Returns a controller with .start()/.stop() so a
  *     GSAP timeline can trigger it at exact positions.
  *   window.tdChrome.init() — raw-WebGL domain-warped fbm noise producing iridescent
- *     chrome bands. No-op (returns null) on reduced-motion, lod-low, or when WebGL
- *     is unavailable, leaving the CSS .chrome gradient as the fallback.
+ *     chrome bands. No-op (returns null) on reduced-motion, lod-low/lod-medium,
+ *     or when WebGL is unavailable, leaving the CSS .chrome gradient as the fallback.
  *
  * Loaded first, before hero.js, so both exports exist when the hero boots.
  */
@@ -188,6 +188,7 @@
       if (!cv) { window.tdChrome.status = 'disabled:no-canvas'; return null; }
       if (docEl.classList.contains('rm')) { window.tdChrome.status = 'disabled:reduced-motion'; return null; }
       if (docEl.classList.contains('lod-low')) { window.tdChrome.status = 'disabled:lod-low'; return null; }
+      if (docEl.classList.contains('lod-medium')) { window.tdChrome.status = 'disabled:lod-medium'; return null; }
 
       var gl = cv.getContext('webgl', { alpha: true, antialias: false, premultipliedAlpha: true })
         || cv.getContext('experimental-webgl');

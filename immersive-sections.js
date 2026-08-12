@@ -169,8 +169,16 @@
       // syncs dots/counters from its own progress — .call at exact tween
       // boundaries does not fire when the scrub rests there, so sync lives
       // in onUpdate instead (holds correctly in both scroll directions).
-      var DUR = 30;
-      var CENTER = [2, 9, 16, 23];
+      // DUR raised from 30 to 34 and slide 4's center pushed from 23 to 25
+      // (CENTER[0..2] unchanged): slides 1-3 each got ~7 units of dwell
+      // between their center and the next slide's center, but slide 4 only
+      // had until DUR - 5 = 25 before its own fade-out started — a ~2-unit
+      // window once its reveal (CENTER[3] - 2.2) finished, which real
+      // scroll (with scrub: 1 lag) blew through entirely, skipping straight
+      // from slide 3 to a blank frame without slide 4 ever reading clearly.
+      // The extra 4 units give slide 4 the same real dwell the others get.
+      var DUR = 34;
+      var CENTER = [2, 9, 16, 25];
       var X = [0, -25, -50, -75];
 
       var drive = { u: 0 };
@@ -207,10 +215,10 @@
         if (u >= CENTER[idx] + 0.3) countOnce(slides[idx]);
       }
 
-      // Last slide fades out well before the pin releases, so the crossfade
-      // finishes with real scroll margin instead of racing the next section in.
-      tl.to(slides[slides.length - 1], { autoAlpha: 0, duration: 2, ease: 'power1.inOut' }, DUR - 2.5);
-      if (kicker) tl.to(kicker, { autoAlpha: 0, duration: 1.5, ease: 'power1.inOut' }, DUR - 2.3);
+      // Keep slide 4 visible through the pin release. The Verdict section
+      // should not begin covering Proof while the fourth case is still being
+      // introduced; once the pin releases, the whole Proof sticky naturally
+      // scrolls away and Verdict enters from below.
 
       return function () {
         clearScenes(slides, innerSel);
@@ -281,16 +289,21 @@
       // u-guard only reveals s1 while the scrub is still inside scene 1's own
       // window (fade-out at position 5 of DUR 25); a hard hide on upward exit
       // keeps the pin-start boundary clean.
+      function syncFirstTestimonial() {
+        var pin = tl.scrollTrigger;
+        var y = pin.scroll();
+        var u = (y - pin.start) / (pin.end - pin.start) * DUR;
+        gsap.set(s1, { autoAlpha: (y < pin.start || u < 5) ? 1 : 0 });
+      }
+
       ScrollTrigger.create({
         trigger: testiWrap,
-        start: 'top top',
-        onEnter: function (self) {
-          var u = (self.scroll() - self.start) / (self.end - self.start) * DUR;
-          gsap.set(s1, { autoAlpha: u < 5 ? 1 : 0 });
-        },
-        onLeaveBack: function (self) {
-          gsap.set(s1, { autoAlpha: 0 });
-        }
+        start: 'top bottom',
+        end: 'bottom top',
+        onEnter: syncFirstTestimonial,
+        onEnterBack: syncFirstTestimonial,
+        onUpdate: syncFirstTestimonial,
+        onLeaveBack: function () { gsap.set(s1, { autoAlpha: 0 }); }
       });
 
       [[s1, s2, 5], [s2, s3, 10.5]].forEach(function (pair, idx) {
@@ -302,21 +315,17 @@
           .call(setDot, [dots, idx + 1], at + 0.9);
       });
 
-      // Trust row and kicker fade out at DUR - 5 (not DUR - 2): this timeline
-      // has scrub: 1 (one second of lag smoothing), so rendered progress
-      // trails real scroll — a DUR - 2 margin left `trust` still mid-fade
-      // (opacity ~0.07-0.89) at the exact scroll position where Process's
-      // pin engages and its own entrance starts, producing a visible
-      // double-exposure of "Straight from..." under the Process ring.
+      // Keep the trust row visible through the pin release. Craft should not
+      // start entering while Verdict's fourth state is still being introduced;
+      // once the pin releases, the whole Verdict sticky scrolls away normally
+      // and Craft enters from below.
       if (trust && trustInner.length) {
         tl.to(s3, { autoAlpha: 0, scale: 0.98, duration: 0.8, ease: 'power1.inOut' }, 15.5)
           .fromTo(trustInner, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6, stagger: 0.15 }, 16.3)
-          .call(setDot, [dots, 3], 16.4)
-          .to(trust, { autoAlpha: 0, duration: 2, ease: 'power1.inOut' }, DUR - 5);
+          .call(setDot, [dots, 3], 16.4);
       } else {
-        tl.to(s3, { autoAlpha: 0, scale: 0.98, duration: 1.5, ease: 'power1.inOut' }, DUR - 5);
+        tl.to(s3, { autoAlpha: 0, scale: 0.98, duration: 1.5, ease: 'power1.inOut' }, 15.5);
       }
-      if (kicker) tl.to(kicker, { autoAlpha: 0, duration: 2, ease: 'power1.inOut' }, DUR - 5);
 
       return function () {
         clearScenes(scenes, '.testi-glyph, .testi-quote, .testi-author');
@@ -372,7 +381,11 @@
       // separate ScrollTrigger — see the matching comment in the Testimonials
       // block above. Process follows Testimonials (also pinned), so the same
       // premature-reveal risk applies here.
-      var DUR = 30;
+      // DUR raised from 30 to 34 (SEG unchanged) so step 5's reveal at 25
+      // (finishes ~26.2) has real daylight before the fade-out margin below —
+      // widening that margin to DUR - 6 without also extending DUR would have
+      // started fading step 5 out at 24, before it had even finished revealing.
+      var DUR = 34;
       var SEG = [
         { at: 3, step: 0 },
         { at: 8.5, step: 1 },
@@ -402,27 +415,25 @@
       // onEnter cannot resurrect steps[0]/kicker/orbit at opacity 1 once the
       // scrub has advanced past them. Each element hides once the scrub passes
       // its own fade-out (step 0 at SEG[1].at, ring/kicker at DUR - 6).
+      function syncProcessEntrance() {
+        var pin = tl.scrollTrigger;
+        var y = pin.scroll();
+        var u = (y - pin.start) / (pin.end - pin.start) * DUR;
+        gsap.set(steps[0], { autoAlpha: (y < pin.start || u < SEG[1].at) ? 1 : 0 });
+        gsap.set([kicker, orbit].filter(Boolean), { autoAlpha: 1 });
+      }
+
       ScrollTrigger.create({
         trigger: procWrap,
-        start: 'top top',
-        onEnter: function (self) {
-          var u = (self.scroll() - self.start) / (self.end - self.start) * DUR;
-          gsap.set(steps[0], { autoAlpha: u < SEG[1].at ? 1 : 0 });
-          gsap.set([kicker, orbit].filter(Boolean), { autoAlpha: u < DUR - 6 ? 1 : 0 });
-        },
-        onLeaveBack: function (self) {
+        start: 'top bottom',
+        end: 'bottom top',
+        onEnter: syncProcessEntrance,
+        onEnterBack: syncProcessEntrance,
+        onUpdate: syncProcessEntrance,
+        onLeaveBack: function () {
           gsap.set(steps[0], { autoAlpha: 0 });
           gsap.set([kicker, orbit].filter(Boolean), { autoAlpha: 0 });
-        },
-        // Process is the last pinned section — CTA sits immediately after
-        // with no further scroll distance to carry proc-sticky's leftover
-        // pin transform off-screen (unlike Case Study/Testimonials, which
-        // get pushed safely past the viewport by the sections that follow
-        // them). Without this, proc-sticky's own opaque background keeps
-        // painting over the CTA for the entire remaining scroll range once
-        // the pin technically ends.
-        onLeave: function () { gsap.set(procSticky, { autoAlpha: 0 }); },
-        onEnterBack: function () { gsap.set(procSticky, { autoAlpha: 1 }); }
+        }
       });
       setActiveStep(0);
 
@@ -464,19 +475,25 @@
         }
       });
 
-      // Last step + numeral + ring fade out well before the pin releases, so
-      // the CTA never enters while any Process content is still mid-fade.
-      // The ring/kicker start fading much earlier than the step card
-      // (DUR - 6 vs DUR - 2.5): this timeline has scrub: 1 (one second of
-      // lag smoothing), so the rendered progress trails real scroll by a
-      // margin that ate most of a DUR - 3.5 head start in testing — the
-      // ring was still fully opaque past progress 0.91 on a 30-unit
-      // timeline. Starting the ring fade at DUR - 6 leaves enough real
-      // scroll distance for the scrub lag to catch up before the pin ends.
-      tl.to(steps[steps.length - 1], { autoAlpha: 0, duration: 2, ease: 'power1.inOut' }, DUR - 2.5);
-      if (num) tl.to(num, { autoAlpha: 0, duration: 1.5, ease: 'power1.inOut' }, DUR - 2.3);
-      if (kicker) tl.to(kicker, { autoAlpha: 0, duration: 2, ease: 'power1.inOut' }, DUR - 6);
-      if (orbit) tl.to(orbit, { autoAlpha: 0, duration: 2, ease: 'power1.inOut' }, DUR - 6);
+      // Keep the final Process state alive through the pin release. The CTA
+      // card does not enter the viewport until after the pin ends, so fading
+      // Process inside this scrubbed timeline creates a blank frame. Instead,
+      // the whole sticky layer crossfades out as the CTA scrolls in.
+      var contact = document.getElementById('contact');
+      if (contact) {
+        ScrollTrigger.create({
+          trigger: contact,
+          start: 'top bottom',
+          end: 'top 56%',
+          scrub: true,
+          onUpdate: function (self) {
+            gsap.set(procSticky, { autoAlpha: 1 - self.progress });
+          },
+          onLeave: function () { gsap.set(procSticky, { autoAlpha: 0 }); },
+          onEnterBack: function (self) { gsap.set(procSticky, { autoAlpha: 1 - self.progress }); },
+          onLeaveBack: function () { gsap.set(procSticky, { autoAlpha: 1 }); }
+        });
+      }
 
       return function () {
         clearScenes(steps, innerSel);

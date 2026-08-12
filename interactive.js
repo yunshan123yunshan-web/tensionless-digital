@@ -1,5 +1,67 @@
 (function () {
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Keep the chapter rail functional even when enhanced cursor/GSAP effects
+  // are disabled by reduced-motion, touch detection, or a slow CDN script.
+  function initChapterRailFallback() {
+    var rail = document.getElementById('chapters');
+    var fill = document.getElementById('chapters-fill');
+    if (!rail || !fill) return;
+
+    var links = Array.prototype.slice.call(rail.querySelectorAll('.chap'));
+    var sections = [];
+    var maxScroll = 1;
+    var active = -1;
+    var ticking = false;
+
+    function measure() {
+      sections = links.map(function (link, i) {
+        return {
+          el: document.querySelector(link.getAttribute('href')),
+          index: parseInt(link.getAttribute('data-chap') || i, 10)
+        };
+      });
+      maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    }
+
+    function indexForViewport() {
+      var idx = 0;
+      var threshold = Math.max(120, Math.min(window.innerHeight * 0.42, 340));
+      sections.forEach(function (item) {
+        if (item.el && item.el.getBoundingClientRect().top <= threshold) idx = item.index;
+      });
+      return idx;
+    }
+
+    function paint(idx) {
+      if (idx === active) return;
+      active = idx;
+      links.forEach(function (link, i) {
+        link.classList.toggle('active', i === idx);
+      });
+    }
+
+    function update() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        fill.style.height = (Math.min(1, window.scrollY / maxScroll) * 100).toFixed(2) + '%';
+        paint(indexForViewport());
+        ticking = false;
+      });
+    }
+
+    measure();
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', function () { measure(); update(); });
+    window.addEventListener('load', function () { measure(); update(); });
+    window.setTimeout(function () { measure(); update(); }, 250);
+    window.setTimeout(function () { measure(); update(); }, 1000);
+  }
+
+  initChapterRailFallback();
+
   if (reduceMotion) return;
   var isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
   if (isTouch) return;
@@ -203,23 +265,38 @@
       { name: 'Connect', num: '06' }
     ];
     var starts = [];
+    var chapterSections = [];
     var maxScroll = 1;
     var currentChap = -1;
     var ticking = false;
 
-    function measureChapters() {
-      starts = chapLinks.map(function (link) {
-        var el = document.querySelector(link.getAttribute('href'));
-        return el ? el.offsetTop : 0;
+    function chapterStarts() {
+      return chapterSections.map(function (item, i) {
+        var el = item.el;
+        if (!el) return starts[i] || 0;
+        return Math.round(el.getBoundingClientRect().top + window.scrollY);
       });
+    }
+
+    function measureChapters() {
+      chapterSections = chapLinks.map(function (link, i) {
+        return {
+          el: document.querySelector(link.getAttribute('href')),
+          index: parseInt(link.getAttribute('data-chap') || i, 10)
+        };
+      });
+      starts = chapterStarts();
       maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
     }
     measureChapters();
 
     function chapterIndex(y) {
       var idx = 0;
-      for (var i = 0; i < starts.length; i += 1) {
-        if (y >= starts[i]) idx = i;
+      var threshold = Math.max(120, Math.min(window.innerHeight * 0.42, 340));
+      for (var i = 0; i < chapterSections.length; i += 1) {
+        var item = chapterSections[i];
+        if (!item.el) continue;
+        if (item.el.getBoundingClientRect().top <= threshold) idx = item.index;
       }
       return idx;
     }
@@ -245,13 +322,35 @@
       if (actCard) flashActCard(idx);
     }
 
+    var chapterTriggers = [];
+    var hasChapterTriggers = false;
+    function setupChapterTriggers() {
+      if (!window.ScrollTrigger) return;
+      chapterTriggers.forEach(function (trigger) { trigger.kill(); });
+      chapterTriggers = [];
+      chapLinks.forEach(function (link, i) {
+        var el = document.querySelector(link.getAttribute('href'));
+        if (!el) return;
+        var idx = parseInt(link.getAttribute('data-chap') || i, 10);
+        chapterTriggers.push(window.ScrollTrigger.create({
+          trigger: el,
+          start: i === 0 ? 'top top' : 'top 42%',
+          end: 'bottom 42%',
+          onEnter: function () { paintChapter(idx); },
+          onEnterBack: function () { paintChapter(idx); }
+        }));
+      });
+      hasChapterTriggers = chapterTriggers.length > 0;
+    }
+    setupChapterTriggers();
+
     function onScroll() {
       if (ticking) return;
       ticking = true;
       requestAnimationFrame(function () {
         var y = window.scrollY;
         fill.style.height = (Math.min(1, y / maxScroll) * 100).toFixed(2) + '%';
-        paintChapter(chapterIndex(y));
+        if (!hasChapterTriggers) paintChapter(chapterIndex(y));
         ticking = false;
       });
     }
@@ -271,19 +370,27 @@
   // smooth-scroll drops a new scrollTo issued while the previous animation
   // is still settling — a real user clicking chapters in a row would hit it.
   var scrollTween = null;
+  function navOffset() {
+    if (!window.matchMedia('(max-width: 768px)').matches) return 0;
+    var nav = document.getElementById('nav');
+    var h = nav ? nav.getBoundingClientRect().height : 0;
+    return Math.ceil(h + 16);
+  }
+
   function smoothScrollTo(top) {
     var state = { y: window.scrollY };
     if (scrollTween) scrollTween.kill();
-    var dist = Math.abs(top - state.y);
+    var dest = Math.max(0, top - navOffset());
+    var dist = Math.abs(dest - state.y);
     var dur = Math.min(1.6, Math.max(0.7, 0.5 + dist / 2500));
     scrollTween = gsap.to(state, {
-      y: top,
+      y: dest,
       duration: dur,
       ease: 'power2.inOut',
       onUpdate: function () { window.scrollTo({ top: state.y, behavior: 'instant' }); },
       onComplete: function () {
         scrollTween = null;
-        window.scrollTo({ top: top, behavior: 'instant' });
+        window.scrollTo({ top: dest, behavior: 'instant' });
       }
     });
   }
@@ -315,7 +422,12 @@
       measureTick = false;
     });
   }
-  window.addEventListener('resize', reMeasure);
-  window.addEventListener('load', reMeasure);
+    window.addEventListener('resize', reMeasure);
+    window.addEventListener('load', reMeasure);
+    if (window.ScrollTrigger) {
+      window.ScrollTrigger.addEventListener('refresh', reMeasure);
+    }
+    window.setTimeout(reMeasure, 250);
+    window.setTimeout(reMeasure, 1000);
 
 })();

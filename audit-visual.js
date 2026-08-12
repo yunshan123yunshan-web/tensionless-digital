@@ -58,6 +58,45 @@ async function checkReelScenes(page, sectionId, scrollY) {
   return pass;
 }
 
+async function checkCaseStudyHandoff(page, pinEnd) {
+  const samples = [
+    { label: 'before pin end', y: pinEnd - 40 },
+    { label: 'pin end', y: pinEnd },
+  ];
+  const results = [];
+
+  for (const sample of samples) {
+    await scrollTo(page, sample.y);
+    const state = await page.evaluate(() => {
+      const slide = document.querySelector('.cs-slide[data-slide="4"]');
+      const slideRect = slide.getBoundingClientRect();
+      const contentOps = Array.from(slide.querySelectorAll('.cs-label, .cs-head, .cs-body, .cs-stat, .cs-panel'))
+        .map(el => parseFloat(getComputedStyle(el).opacity));
+      const verdictTop = Math.round(document.querySelector('#testimonials-imm').getBoundingClientRect().top);
+      const slideVisible = slideRect.left < window.innerWidth && slideRect.right > 0 &&
+        slideRect.top < window.innerHeight && slideRect.bottom > 0 && contentOps.some(o => o > 0.2);
+      return {
+        slideVisible,
+        verdictTop,
+        slideLeft: Math.round(slideRect.left),
+        slideRight: Math.round(slideRect.right),
+        contentOps,
+      };
+    });
+    const verdictHeld = state.verdictTop >= VIEWPORT.height - 4;
+    const pass = state.slideVisible && verdictHeld;
+    results.push(pass);
+    const data = state.contentOps.map((o, i) => `C${i}:${o.toFixed(2)}`).join(', ');
+    console.log(
+      `  ${pass ? 'PASS' : 'FAIL'}  Proof card 4 ${sample.label}: ` +
+      `slide=${state.slideVisible ? 'YES' : 'NO'} verdictTop=${state.verdictTop} ` +
+      `slideX=[${state.slideLeft},${state.slideRight}] ${data}`
+    );
+  }
+
+  return results.every(Boolean);
+}
+
 // Sample just before a pinned section releases (its own scenes must be fully
 // cleared so the next section enters over a clean background, never mid-content).
 async function checkSpillover(page, sectionId, sel, pinEnd) {
@@ -70,6 +109,96 @@ async function checkSpillover(page, sectionId, sel, pinEnd) {
   const pass = visible === 0;
   console.log(`  ${pass ? 'PASS' : 'FAIL'}  ${sectionId} release: ${data} ${pass ? '' : '(content still visible at pin end)'}`);
   return pass;
+}
+
+async function checkVerdictHandoff(page, pinEnd) {
+  const samples = [
+    { label: 'before pin end', y: pinEnd - 40 },
+    { label: 'pin end', y: pinEnd },
+  ];
+  const results = [];
+
+  for (const sample of samples) {
+    await scrollTo(page, sample.y);
+    const state = await page.evaluate(() => {
+      const sceneOps = Array.from(document.querySelectorAll('.testi-scene'))
+        .map(el => parseFloat(getComputedStyle(el).opacity));
+      const trust = document.querySelector('.testi-trust');
+      const trustRect = trust.getBoundingClientRect();
+      const trustOps = Array.from(document.querySelectorAll('.testi-trust-inner > *'))
+        .map(el => parseFloat(getComputedStyle(el).opacity));
+      const processTop = Math.round(document.querySelector('#process-imm').getBoundingClientRect().top);
+      const trustVisible = trustRect.top < window.innerHeight && trustRect.bottom > 0 &&
+        trustOps.some(o => o > 0.2);
+      return {
+        sceneOps,
+        trustOps,
+        trustVisible,
+        processTop,
+        trustTop: Math.round(trustRect.top),
+        trustBottom: Math.round(trustRect.bottom),
+      };
+    });
+    const craftHeld = state.processTop >= VIEWPORT.height - 4;
+    const scenesCleared = state.sceneOps.every(o => o <= 0.05);
+    const pass = state.trustVisible && craftHeld && scenesCleared;
+    results.push(pass);
+    const scenes = state.sceneOps.map((o, i) => `S${i}:${o.toFixed(2)}`).join(', ');
+    const trust = state.trustOps.map((o, i) => `T${i}:${o.toFixed(2)}`).join(', ');
+    console.log(
+      `  ${pass ? 'PASS' : 'FAIL'}  Verdict trust ${sample.label}: ` +
+      `trust=${state.trustVisible ? 'YES' : 'NO'} craftTop=${state.processTop} ` +
+      `trustY=[${state.trustTop},${state.trustBottom}] ${scenes} ${trust}`
+    );
+  }
+
+  return results.every(Boolean);
+}
+
+// Process is the last pinned scene. Its final step should stay visible until the
+// CTA card enters, then the whole Process sticky layer should crossfade away.
+async function checkProcessHandoff(page, pinEnd) {
+  const samples = [
+    { label: 'before pin end', y: pinEnd - 40 },
+    { label: 'pin end', y: pinEnd },
+    { label: 'CTA entrance', y: pinEnd + 180 },
+    { label: 'CTA settled', y: pinEnd + 520 },
+  ];
+  const results = [];
+
+  for (const sample of samples) {
+    await scrollTo(page, sample.y);
+    const state = await page.evaluate(() => {
+      const stepOps = Array.from(document.querySelectorAll('.proc-step'))
+        .map(el => parseFloat(getComputedStyle(el).opacity));
+      const procSticky = parseFloat(getComputedStyle(document.querySelector('.proc-sticky')).opacity);
+      const cta = document.querySelector('#cta-box');
+      const ctaRect = cta.getBoundingClientRect();
+      const ctaOpacity = parseFloat(getComputedStyle(cta).opacity);
+      const ctaVisible = ctaOpacity > 0.05 && ctaRect.top < window.innerHeight && ctaRect.bottom > 0;
+      const processVisible = procSticky > 0.05 && stepOps.some(o => o > 0.05);
+      return {
+        processVisible,
+        ctaVisible,
+        procSticky,
+        ctaTop: Math.round(ctaRect.top),
+        stepOps,
+      };
+    });
+
+    const hasContent = state.processVisible || state.ctaVisible;
+    const settledCleanly = sample.label !== 'CTA settled' || (state.ctaVisible && state.procSticky < 0.08);
+    const pass = hasContent && settledCleanly;
+    results.push(pass);
+    const data = state.stepOps.map((o, i) => `S${i}:${o.toFixed(2)}`).join(', ');
+    console.log(
+      `  ${pass ? 'PASS' : 'FAIL'}  Process→CTA ${sample.label}: ` +
+      `process=${state.processVisible ? 'YES' : 'NO'} cta=${state.ctaVisible ? 'YES' : 'NO'} ` +
+      `sticky=${state.procSticky.toFixed(2)} ctaTop=${state.ctaTop} ${data}`
+    );
+  }
+
+  return results.every(Boolean);
 }
 
 // Live pin ends from ScrollTrigger (geometry-independent).
@@ -163,13 +292,13 @@ async function pinEnds(page) {
   overlaps.push(await checkOpacityScenes(page, 'Process', '.proc-step', 0.86));
   overlaps.push(await checkOpacityScenes(page, 'Process', '.proc-step', 0.90));
 
-  // --- 6. Spillover (last scene clears before the pin releases) ---
-  console.log('\n--- 6. Section Spillover ---');
+  // --- 6. Section handoff ---
+  console.log('\n--- 6. Section Handoff ---');
   const pins = await pinEnds(page);
   const spill = [];
-  spill.push(await checkReelScenes(page, 'Case Study release', pins['case-study']));
-  spill.push(await checkSpillover(page, 'Testimonials release', '.testi-scene', pins['testimonials-imm']));
-  spill.push(await checkSpillover(page, 'Process release', '.proc-step', pins['process-imm']));
+  spill.push(await checkCaseStudyHandoff(page, pins['case-study']));
+  spill.push(await checkVerdictHandoff(page, pins['testimonials-imm']));
+  spill.push(await checkProcessHandoff(page, pins['process-imm']));
 
   // --- 7. Services reveal ---
   console.log('\n--- 7. Services Reveal ---');

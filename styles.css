@@ -335,8 +335,8 @@ em.serif, .serif em { font-style: italic; }
   color: var(--dim);
   pointer-events: none;
 }
-.hud-tl { top: 96px; left: max(22px, 3vw); }
-.hud-tr { top: 96px; right: max(22px, 3vw); text-align: right; }
+.hud-tl { top: 112px; left: max(22px, 3vw); }
+.hud-tr { top: 112px; right: max(22px, 3vw); text-align: right; }
 .hud-bl { bottom: 34px; left: max(22px, 3vw); }
 .hud-br { bottom: 34px; right: max(22px, 3vw); text-align: right; }
 .hud .hl { color: var(--glint-a); }
@@ -384,6 +384,16 @@ em.serif, .serif em { font-style: italic; }
 /* ── sections ────────────────────────────────────────────────────── */
 main { position: relative; z-index: 2; }
 section.sec { position: relative; padding: clamp(70px, 9vw, 110px) 0; }
+#hero-pin,
+#services,
+#data-break,
+#clients,
+#case-study,
+#testimonials-imm,
+#process-imm,
+#contact {
+  scroll-margin-top: 96px;
+}
 .sec { background: var(--bg-sec); }
 .sec-head { max-width: 820px; margin-bottom: clamp(30px, 5vw, 56px); }
 .sec-head.center { margin: 0 auto 56px; text-align: center; }
@@ -616,13 +626,29 @@ section.sec { position: relative; padding: clamp(70px, 9vw, 110px) 0; }
 .imm-pin-wrap[data-pin-height="130"] { height: 130vh; }
 .imm-pin-wrap[data-pin-height="140"] { height: 140vh; }
 .imm-pin-wrap[data-pin-height="150"] { height: 150vh; }
+.imm-pin-wrap[data-pin-height="180"] { height: 180vh; }
 .imm-pin-wrap[data-pin-height="220"] { height: 220vh; }
 .imm-pin-wrap[data-pin-height="240"] { height: 240vh; }
 .imm-pin-wrap[data-pin-height="250"] { height: 250vh; }
 .imm-pin-wrap[data-pin-height="260"] { height: 260vh; }
 .imm-pin-wrap[data-pin-height="300"] { height: 300vh; }
 .imm-pin-wrap[data-pin-height="320"] { height: 320vh; }
+.imm-pin-wrap[data-pin-height="360"] { height: 360vh; }
 .imm-pin-wrap[data-pin-height="400"] { height: 400vh; }
+/* Once GSAP pins a section, it inserts a .pin-spacer child sized to
+   (scroll distance + one viewport height) — taller than the section's own
+   pre-JS data-pin-height value, which only exists to reserve layout space
+   before ScrollTrigger initializes. With the fixed vh height still applied,
+   the spacer overflows its own parent by exactly one viewport height (no
+   overflow:hidden here to clip it), and the *next* section — a normal
+   sibling — lays out flush against the parent's declared height, not the
+   overflowing spacer's actual bottom edge. That put every following
+   section's un-pinned content (e.g. Testimonials' opaque .testi-sticky)
+   physically inside the still-visually-pinned section above it, painting
+   over its content a full viewport-height before the pin actually released.
+   height: auto once .pin-spacer exists lets the spacer (which GSAP sizes
+   correctly) determine the parent's real box height instead. */
+.imm-pin-wrap:has(> .pin-spacer) { height: auto; }
 .imm-sticky {
   position: relative;
   top: 0;
@@ -631,6 +657,7 @@ section.sec { position: relative; padding: clamp(70px, 9vw, 110px) 0; }
   overflow: hidden;
   display: flex;
   align-items: center;
+  z-index: 10;
 }
 html.gsap-active .testi-scene,
 html.gsap-active .proc-step { opacity: 0; visibility: hidden; }
@@ -655,7 +682,7 @@ html.gsap-active .proc-step { opacity: 0; visibility: hidden; }
 .cs-sticky { background: radial-gradient(90% 70% at 50% 30%, rgba(143, 176, 255, .05), transparent 60%), var(--bg); }
 .cs-gallery-kicker {
   position: absolute;
-  top: 96px;
+  top: 112px;
   left: max(22px, 5vw);
   z-index: 5;
   display: flex;
@@ -797,7 +824,7 @@ html.gsap-active .proc-step { opacity: 0; visibility: hidden; }
 .testi-sticky { background: radial-gradient(80% 70% at 50% 20%, rgba(110, 231, 214, .05), transparent 60%), var(--bg); }
 .testi-theater-kicker {
   position: absolute;
-  top: 96px;
+  top: 112px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 5;
@@ -871,7 +898,7 @@ html.gsap-active .proc-step { opacity: 0; visibility: hidden; }
 .proc-sticky { background: radial-gradient(90% 80% at 50% 20%, rgba(143, 176, 255, .04), transparent 60%), var(--bg); }
 .proc-kicker {
   position: absolute;
-  top: 96px;
+  top: 180px;
   left: max(22px, 5vw);
   z-index: 5;
   display: flex;
@@ -890,6 +917,9 @@ html.gsap-active .proc-step { opacity: 0; visibility: hidden; }
   gap: clamp(24px, 5vw, 64px);
   align-items: center;
   padding: 0 clamp(20px, 4vw, 60px);
+}
+@media (min-width: 769px) {
+  .proc-layout { transform: translateY(clamp(78px, 9vh, 112px)); }
 }
 .proc-orbit { position: relative; display: flex; flex-direction: column; align-items: center; gap: 26px; }
 .proc-ring {
@@ -1179,12 +1209,14 @@ p, .s-head, .cta-h, .hero-h1 { text-wrap: pretty; }
   .imm-pin-wrap[data-pin-height="130"],
   .imm-pin-wrap[data-pin-height="140"],
   .imm-pin-wrap[data-pin-height="150"],
+  .imm-pin-wrap[data-pin-height="180"],
   .imm-pin-wrap[data-pin-height="220"],
   .imm-pin-wrap[data-pin-height="240"],
   .imm-pin-wrap[data-pin-height="250"],
   .imm-pin-wrap[data-pin-height="260"],
   .imm-pin-wrap[data-pin-height="300"],
   .imm-pin-wrap[data-pin-height="320"],
+  .imm-pin-wrap[data-pin-height="360"],
   .imm-pin-wrap[data-pin-height="400"] { height: auto !important; }
   .imm-sticky { position: relative; height: auto; display: block; overflow: visible; padding: clamp(64px, 12vw, 96px) 0; }
 
@@ -1239,12 +1271,14 @@ p, .s-head, .cta-h, .hero-h1 { text-wrap: pretty; }
   .imm-pin-wrap[data-pin-height="130"],
   .imm-pin-wrap[data-pin-height="140"],
   .imm-pin-wrap[data-pin-height="150"],
+  .imm-pin-wrap[data-pin-height="180"],
   .imm-pin-wrap[data-pin-height="220"],
   .imm-pin-wrap[data-pin-height="240"],
   .imm-pin-wrap[data-pin-height="250"],
   .imm-pin-wrap[data-pin-height="260"],
   .imm-pin-wrap[data-pin-height="300"],
   .imm-pin-wrap[data-pin-height="320"],
+  .imm-pin-wrap[data-pin-height="360"],
   .imm-pin-wrap[data-pin-height="400"] { height: auto !important; }
   .imm-sticky { position: relative; height: auto; display: block; overflow: visible; padding: 80px 0; }
   .cs-track { position: relative; width: auto; height: auto; display: block; }

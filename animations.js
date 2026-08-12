@@ -203,16 +203,27 @@ window.composeMail = function (form) {
 
   var contact = document.getElementById('contact');
   if (contact) {
-    once(contact, 'top 72%')
+    // Start after the Process overlay has mostly faded. If this runs at
+    // 'top bottom', the form resolves underneath Process and then appears to
+    // pop in once the overlay clears.
+    var ctaFields = contact.querySelectorAll('.cta-form input, .cta-form textarea, .cta-form button');
+
+    once(contact, 'top 62%')
       .to(contact.querySelectorAll('.cta-h .word'), {
         clipPath: 'inset(0 0% 0 0)', duration: 0.7, stagger: 0.035, ease: 'power4.out'
       }, 0)
       .fromTo(contact.querySelectorAll('.cta-availability'),
-        { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5 }, 0.35)
+        { autoAlpha: 0, filter: 'blur(6px)' },
+        { autoAlpha: 1, filter: 'blur(0px)', duration: 0.5, ease: 'power2.out' }, 0.3)
       .fromTo(contact.querySelectorAll('.cta-form'),
-        { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6 }, 0.5)
+        { autoAlpha: 1, clipPath: 'inset(0 0 100% 0)' },
+        { clipPath: 'inset(0 0 0% 0)', duration: 0.85, ease: 'power3.inOut' }, 0.48)
+      .fromTo(ctaFields,
+        { autoAlpha: 0, filter: 'blur(5px)' },
+        { autoAlpha: 1, filter: 'blur(0px)', duration: 0.48, stagger: 0.075, ease: 'power2.out' }, 0.58)
       .fromTo(contact.querySelectorAll('.cta-note'),
-        { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5 }, 0.7);
+        { autoAlpha: 0, filter: 'blur(4px)' },
+        { autoAlpha: 1, filter: 'blur(0px)', duration: 0.45, ease: 'power2.out' }, 1.05);
   }
 
   /* ── Footer ─────────────────────────────────────────────────────── */
