@@ -2,27 +2,23 @@
 
 ## Current Project State
 
-Last handoff: 2026-04-30 - Phase 11 visual consolidation, after reverting a failed animation-restoration attempt. Current code keeps the Phase 11 background/overlap fixes: removed section overlap gradients and the Process-to-CTA gradient segment, made section backgrounds explicit, sequenced pinned-scene fades so text does not stack at paused scroll positions, restored Services/Data reveal triggers, and recorded the audit in `UI-REVIEW.md`. index.html: 1696 lines.
+Last handoff: 2026-08-13 - Full architecture rewrite from the Phase-11-era "Results/Testimonials/Process" pinned-scene page to a 6-chapter cinematic single-page site ("Manifest → Arsenal → Proof → Verdict → Craft → Connect"), plus an SEO/accessibility/legal-pages pass. index.html: 482 lines (down from ~1696 — the old giant inline-script architecture described further below in "What Was Recently Changed" no longer exists; that section is kept as history only). Uncommitted changes as of this handoff: `animations.js`, `index.html`, `styles.css` modified; `404.html`, `privacy.html`, `terms.html`, `robots.txt`, `sitemap.xml` new/untracked.
 
 ## Immediate Handoff For Claude Code
 
-The latest user request was: "revert, animations broke the website again." That revert has been applied.
+Current intended state — verified working via static checks (`node --check` on all JS, tag-balance check, `git diff --check`) and a live Playwright audit (27/27 checks passed, zero console/page errors, full scroll + reverse scroll, all 6 sections present, new pages return 200):
 
-Current intended state:
-- Keep the Phase 11 visual consolidation.
-- Do not reapply the reverted Phase 12 animation restoration approach.
-- Results pin-wrap is `300vh`; Testimonials and Process pin-wraps are `250vh`.
-- Pinned ScrollTriggers use `end: 'bottom top'`, not `bottom bottom`.
-- No added `splitTextWords`, `addTestimonialContent`, or `revealProcessStep` helpers should exist in `index.html`.
+- Site structure is now **chapter-based**, not the old Results/Testimonials/Process section-ID scheme. See Architecture Overview below for the current section IDs and files — do not assume old IDs like `#results` or `#testimonials` still exist.
+- Legal pages (`privacy.html`, `terms.html`) are explicitly marked as drafts pending owner review — do not present them as final/reviewed.
+- The CTA form is mailto-only (`composeMail()` in `animations.js`), with a `visibilitychange`-based success/fallback UX and an `aria-live="polite"` status region (`.cta-form-status`).
+- **No vertical movement, no spillover, cinematic crossfade cuts** — these hard rules (below) still apply to the new chapter/pinned sections exactly as they did to the old ones.
 - Segment animation work is still sensitive. Any future animation changes should be tiny, section-scoped, and browser-verified immediately.
 
-Verification after revert:
-- `node --check animations.js`
-- `node --check hero.js`
-- `node --check threejs-scene.js`
-- Extracted inline `index.html` script passed `node --check`
+Verification commands used at last handoff:
+- `node --check animations.js && node --check hero.js && node --check threejs-scene.js`
+- Tag-balance check on `index.html` (div/section/form/footer/nav/main/a all matched)
 - `git diff --check`
-- Playwright smoke test loaded `http://127.0.0.1:5173/index.html` with GSAP and ScrollTrigger present, all six sections found, and no runtime errors. Only Chrome/WebGL `ReadPixels` warnings appeared during screenshot capture.
+- Live Playwright audit against `http://127.0.0.1:5173/index.html`: GSAP + ScrollTrigger present, all current section IDs found (`services`, `data-break`, `case-study`, `testimonials-imm`, `process-imm`, `contact`), full scroll + reverse scroll with zero console/page errors, footer legal links present and correct, `404.html`/`privacy.html`/`terms.html`/`robots.txt`/`sitemap.xml` all return 200, a genuinely missing path 404s correctly.
 
 This is a static single-page site in `index.html` with the brand asset in `logo.svg`.
 
@@ -65,56 +61,55 @@ Do NOT use any other tool for visual checks or web searches.
 
 ## Important Files
 
-- `index.html` (~1696 lines): main page. Large single-file HTML/CSS/JS document. Three pinned sections (Results/Testimonials/Process) handled by inline GSAP ScrollTrigger timelines.
-- `logo.svg`: brand logo. Background/white rects were removed; current usage applies `filter: invert(1)` in nav/footer.
+- `index.html` (482 lines): main page. Six `data-chapter` acts (0-5) — boot sequence, chapter rail, WebGL hero, then five `<section>`/pinned-scene acts. See Architecture Overview below for the current section IDs.
+- `logo.svg` / `tensionless digital logo.svg`: brand logo assets. `favicon.svg` is the actual favicon referenced in `<head>`.
 - `hero-scroll.html`: older/small reference file, not the active page.
 - `fonts/`: local font assets.
-- `animations.js`: GSAP ScrollTrigger definitions for non-hero sections (mostly replaced by inline JS upgrades). Still provides `splitHeadlines()`, contact form, mobile nav, section dividers, and process progress line.
-- `hero.js`: Hero canvas/animation logic (shards, logo reveal, constellation dissolve). Now includes `TEXT_FADE` and `DISSIPATE` acts to prevent dead scroll at hero end.
+- `chrome-shader.js`: raw-WebGL domain-warped fbm noise shader for the hero's liquid-chrome background (`window.tdChrome.init()`), plus a shared text-scramble utility (`window.tdScramble()`) used by the boot sequence and section kickers. No-ops on reduced-motion, lod-low/lod-medium, or missing WebGL — falls back to the CSS `.chrome` gradient. Has a `u_velocity` uniform wired to mouse speed for fracture-intensity response. Loaded first, before `hero.js`.
+- `hero.js`: Hero canvas/animation logic (shards, logo reveal, constellation dissolve, word-rotor headline). Includes `TEXT_FADE` and `DISSIPATE` acts to prevent dead scroll at hero end.
+- `animations.js`: GSAP ScrollTrigger definitions for non-hero, non-pinned content — reveals, count-ups, marquee, mobile nav, footer, and `composeMail()` (the mailto contact-form handler with visibility-based success detection).
+- `immersive-sections.js`: The three pinned cinematic sections — Case Study (horizontal reel), Testimonials (theater crossfade), Process (orbital ring) — driven by `gsap.matchMedia()` scroll-scrubbed timelines, desktop only. See Architecture Overview below.
+- `interactive.js`: Chapter rail scroll-progress tracking (with a no-GSAP fallback), cursor/magnetic-button effects, and other cross-cutting interaction wiring. Loaded with a cache-busting `?v=` query string — bump it when editing this file if changes don't appear to take.
 - `threejs-scene.js`: Three.js ambient particle scene. 200 drifting particles behind content sections, camera responds to mouse and scroll. Fades in after hero, out before CTA.
-- `styles.css`: Global styles, variables, utility classes, responsive rules, footer/CTA/etc.
+- `styles.css` (1451 lines): Global styles, variables, utility classes, responsive rules, chapter rail, footer/CTA/etc.
+- `404.html`, `privacy.html`, `terms.html`: standalone on-brand pages, self-contained inline CSS. Privacy/terms are explicitly marked as drafts pending owner review.
+- `robots.txt`, `sitemap.xml`: SEO crawlability files.
+- `audit-visual.js`, `dense-scroll-capture.js`, `verify-audit-regressions.js`, `verify-scene0-gating.js`: ad hoc Playwright audit/verification scripts from prior sessions, not part of the shipped site — safe to ignore unless resuming that specific audit work.
 
 ## Architecture Overview
 
-### Inline JS Pattern (lines 1184-1664)
+### Chapter structure
 
-Three post-hero sections (Results, Testimonials, Process) are implemented as **full-viewport pinned scene transitions** using `gsap.matchMedia()`:
+The page is organized into 6 acts, tracked via `data-chapter="0"`-`"5"` on top-level elements and mirrored in the chapter rail (`#chapters` in `index.html`, right-edge nav dots):
 
-```
-mm.add('(min-width: 769px)', function() {
-  // Desktop: pinned scrub timeline
-  ...
-  return function() {
-    // Cleanup on match change
-    gsap.set(elements, { clearProps: 'opacity,transform' });
-  };
-});
+| Chapter | Rail label | Section ID | Element |
+|---|---|---|---|
+| 0 | Manifest | `#hero-pin` | `.hero-pin-wrap` — WebGL chrome-shader hero |
+| 1 | Arsenal | `#services`, `#data-break` | services grid + telemetry stat strip + logo marquee |
+| 2 | Proof | `#case-study` | `.imm-pin-wrap.cs-gallery` — horizontal case-study reel |
+| 3 | Verdict | `#testimonials-imm` | `.imm-pin-wrap` — testimonial theater |
+| 4 | Craft | `#process-imm` | `.imm-pin-wrap` — process orbital ring |
+| 5 | Connect | `#contact` | CTA + footer |
 
-mm.add('(max-width: 768px)', function() {
-  // Mobile: simple stagger fade-in (no pin)
-  gsap.from('.selector', { opacity: 0, duration: 0.6, stagger: 0.15, ... });
-});
-```
+The old Results/Testimonials/Process section IDs and the ~1696-line inline-script architecture described in "What Was Recently Changed" below **no longer exist** — that log is kept as historical record of the pre-rewrite page, not a description of current code.
 
-### Common Transition Pattern
+### Pinned cinematic sections (`immersive-sections.js`)
 
-Each of the three sections follows this structure:
+Three sections use `.imm-pin-wrap` + `.imm-sticky` (GSAP ScrollTrigger `pin`, desktop-only via `gsap.matchMedia()`, no reduced-motion):
 
-1. **Pin-wrap** (Results 300vh; Testimonials/Process 250vh) - provides scroll distance for the animation
-2. **Sticky child** (100vh) — pinned to viewport during scroll
-3. **Scenes** — absolutely positioned inside sticky, stacked via z-index/order
-4. **GSAP timeline** with `scrub: true` — drives all animations mapped to scroll progress
-5. **Initial state**: `tl.set(scenes[0], { autoAlpha: 1 }, 0)` + `tl.set(scenes[1-3], { autoAlpha: 0 }, 0)`
-6. **Scene changes**: outgoing scene fades to `autoAlpha: 0` before the incoming scene fades to `1`, preventing readable text overlap at paused scroll positions
-7. **Content reveals**: clip-path word reveals on headlines, stagger fade-ins on stats/narrative/author
+- **Case Study** (`#case-study`, `data-pin-height="360"`): a `400vw`-wide `.cs-track` of 4 `.cs-slide` panels pans sideways (`xPercent`) so each slide centers in the viewport in turn. Centered slide's counters count up once; dot bar and `.cs-index` numeral sync to position.
+- **Testimonials** (`#testimonials-imm`, `data-pin-height="180"`): crossfade theater — `.testi-s1` → `.testi-s2` → `.testi-s3` → `.testi-trust` row, via `autoAlpha` and a subtle scale for depth. Active scene carries `.scene-active`.
+- **Process** (`#process-imm`, `data-pin-height="250"`): an orbital ring (`#proc-ring`) with a focus dot that rotates between 5 nodes; the active node lights, `#proc-num` updates, and the matching `.proc-step` crossfades in `.proc-stage`. Active step carries `.scene-active`.
 
-**Timeline spacing**: Results/Testimonials scene changes use fade-outs at `7/17/27`, fade-ins at `7.55/17.55/27.55`, and final fade at `37`. Process transitions use fade-outs at `4/9/14`, fade-ins at `5/10/15`, final step fade at `18`, frame fade at `19.2`, and a dummy marker at `37`.
+All three obey the site's hard rule: **no vertical translation** — only `autoAlpha`/opacity crossfades, horizontal `xPercent` (case-study reel only), rotation (process ring only), and scale.
 
 ### Key: Scroll-to fix in Playwright tests
 
-For reliable ScrollTrigger screenshot tests, set the scroll position, wait for animation frames, and call `ScrollTrigger.update()`/`ScrollTrigger.refresh()` when sampling computed styles. Direct screenshots after `window.scrollTo()` worked in the latest audit when followed by a short wait.
+For reliable ScrollTrigger screenshot tests, set the scroll position, wait for animation frames, and call `ScrollTrigger.update()`/`ScrollTrigger.refresh()` when sampling computed styles. Direct screenshots after `window.scrollTo()` worked in the latest audit when followed by a short wait. When Playwright isn't installed in this project's own `node_modules`, it's available system-wide via `/Users/tiffanychoo/projects/anchora-instagram-clone/node_modules/playwright` — run scripts from that directory (or copy the script there) so `require('playwright')` resolves; if the default chromium executable path errors with "doesn't exist," check `~/Library/Caches/ms-playwright/` for whichever chromium revision is actually installed and pass it as `executablePath`.
 
 ## What Was Recently Changed
+
+> **Historical record only (through the "Scroll Profile" section below).** Everything from here through "Scroll Profile (normalized)" describes the pre-rewrite Results/Testimonials/Process architecture (April 30, 2026 and earlier), which was superseded by the August 2026 chapter-based rewrite described in Architecture Overview above. Section IDs, line numbers, and file names below (e.g. `#results`, `#testimonials`, `#process`) no longer exist in the codebase. Kept for institutional memory of past bugs and their fixes, not as a guide to current code.
 
 ### Phase 11 - Section Background Consolidation & Visual Audit (2026-04-30)
 
@@ -365,11 +360,21 @@ No 'cta' in kill loop:       index.html ✓ (was present before Phase 10)
 ## Useful Commands
 
 ```bash
-# JS syntax check (hero + threejs)
-node --check hero.js && node --check threejs-scene.js
+# JS syntax check (all files)
+node --check animations.js && node --check hero.js && node --check chrome-shader.js && \
+  node --check immersive-sections.js && node --check interactive.js && node --check threejs-scene.js
 
-# Check for any remaining y-values
-grep -n 'y:' index.html | grep -v 'font-\|display:\|flex-\|align-\|justify-\|transform:\|scroll-\|letter-\|clip-\|border\|opacity\|var(--\|line-height\|background\|keyframes\|@media\|stagger\|delay\|strokeDash'
+# Extract and check inline <script> blocks in index.html
+python3 -c "
+import re
+html = open('index.html').read()
+for i, s in enumerate(re.findall(r'<script>(.*?)</script>', html, re.DOTALL)):
+    open(f'/tmp/inline_{i}.js', 'w').write(s)
+"
+for f in /tmp/inline_*.js; do node --check "$f"; done
+
+# Check for any remaining y-values (hard rule: no vertical movement in scene transitions)
+grep -n 'y:' index.html immersive-sections.js | grep -v 'font-\|display:\|flex-\|align-\|justify-\|transform:\|scroll-\|letter-\|clip-\|border\|opacity\|var(--\|line-height\|background\|keyframes\|@media\|stagger\|delay\|strokeDash'
 
 # Check Three.js CDN loaded (r128)
 curl -sI https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js | head -1
@@ -377,13 +382,10 @@ curl -sI https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js | hea
 # Check server
 lsof -nP -iTCP:5173 -sTCP:LISTEN
 
-# Count dead-frame fade fixes
-grep -c 'duration: 0.4, ease:' index.html
-
-# Verify no green left (should return nothing)
-grep -n 'ink-verdant\|282c20\|d2ff00' styles.css index.html
-
-# Full-page Playwright screenshot
+# Full-page Playwright screenshot (playwright may not be installed in this project —
+# run from a sibling project that has it, e.g. anchora-instagram-clone/node_modules,
+# and pass an explicit executablePath if the default chromium revision is missing;
+# see ~/Library/Caches/ms-playwright/ for what's actually installed)
 node -e "
 const { chromium } = require('playwright');
 (async () => {
@@ -399,26 +401,31 @@ const { chromium } = require('playwright');
 
 ## Known Open Items
 
-- Testimonials still contain `[ Client Name ]` placeholders by user request.
-- CTAs still use `mailto:` links. A calendar embed/link was recommended but not implemented because it needs user choice/provider.
-- The page is still a large single-file `index.html` (~1696 lines). Future cleanup could split CSS/JS once visuals stabilize.
+- Testimonials use real placeholder-style attribution (`A. Chen`, `M. Torres`, `J. Patel` — initials + role, not full names) rather than bracketed `[ Client Name ]` placeholders. Confirm with the user whether these should become real client names/logos before launch.
+- CTAs still use `mailto:` links (`composeMail()` in `animations.js`). A calendar embed/link was recommended but not implemented because it needs user choice/provider.
+- `privacy.html` and `terms.html` are explicitly marked as drafts pending legal review — do not treat as final/publishable without the user confirming.
+- No analytics/tracking is wired up (`privacy.html` accurately states this). Revisit if the user wants conversion tracking.
+- No `<img>` tags exist anywhere in the site — all visuals are CSS/canvas/SVG/WebGL, so image alt-text and compression audits are not applicable.
 - `threejs-scene.js` loads Three.js r128 from CDN. If the CDN URL changes or the API breaks, the scene silently degrades (no-op). Update the URL in index.html if needed.
-- The Three.js scene only fades to 0.2 opacity (subtle). If more presence is desired, increase the PointsMaterial opacity or the target in ScrollTrigger's onEnter callback.
+- `chrome-shader.js` is raw WebGL with no fallback library — if it fails to init, the hero background falls back to the CSS `.chrome` gradient only (no particle motion).
 
 ## Aesthetic Direction
 
-Keep the current direction restrained, dark, editorial, and high-end:
+Keep the current direction restrained, dark, editorial, and high-end. Current design tokens (`styles.css` `:root`, as of the August 2026 chapter rewrite):
 
-- Black/chrome/steel palette:
-  - `--ink` (#0a0a0c): primary background (hero, services, results)
-  - `--ink-soft` (#0c0d0f): secondary background (process, data-break)
-  - `--ink-mid` (#1e1e1e): testimonials (darker than --ink-soft)
-  - `--chrome-hi` (#c8ccd2): accent color (highlights, emphasis)
-  - `--steel` (#848b91): secondary text, borders
+- `--bg` (#050507) / `--bg-deep` (#040406): primary backgrounds
+- `--bg-sec` (rgba(5,5,7,.88)): secondary/overlay background
+- `--glass` / `--glass-hi`: translucent panel fills (glassmorphism-style `.panel.holo` cards)
+- `--text` (#e9edf2) / `--dim` (#7d8794) / `--faint` (#4c545e): text hierarchy
+- `--glint-a` (#8fb0ff) / `--glint-b` (#6ee7d6): accent highlights (cool blue / teal)
+- `--chrome`: animated linear-gradient used by the `.chrome` text-clip effect
+- `--display` (Archivo), `--mono` (JetBrains Mono), `--serif` (Cormorant Garamond, italic)
+
+Note: the older `--ink`/`--ink-soft`/`--ink-mid`/`--chrome-hi`/`--steel` variables from the pre-rewrite palette no longer exist in `:root` — a few CSS rules still reference them only as fallback values inside `var(--x, fallback)`, which resolve to the literal fallback since the variable itself is undefined.
+
 - Large serif display typography (headlines) with sans-serif for labels/body.
-- Angular particles/shards as the signature visual motif.
+- Angular particles/shards as the signature visual motif; WebGL liquid-chrome shader drives the hero background.
 - Minimal UI chrome.
 - No generic SaaS cards, gradient blobs, decorative marketing fluff, or over-rounded components.
-- Scene transitions should feel like cinematic cuts — crossfade only, no sliding.
-- SVG charts: stroke-dashoffset path drawing for data visualization.
+- Scene transitions should feel like cinematic cuts — crossfade, rotation (process ring), or horizontal reel motion (case study) only, never vertical sliding.
 - Clip-path reveals on headlines: `inset(0 100% 0 0)` → `inset(0 0% 0 0)`.
