@@ -4,6 +4,13 @@
 // Bound in index.html as onsubmit="return composeMail(this)", so it receives
 // the FORM element, not an event. Returning false cancels the native submit.
 window.composeMail = function (form) {
+  var status = form.querySelector('.cta-form-status');
+  var setStatus = function (text, kind) {
+    if (!status) return;
+    status.textContent = text;
+    status.className = 'cta-form-status is-visible' + (kind ? ' is-' + kind : '');
+  };
+
   var name = (form.querySelector('[name="name"]') || {}).value || '';
   var email = (form.querySelector('[name="email"]') || {}).value || '';
   var message = (form.querySelector('[name="message"]') || {}).value || '';
@@ -11,9 +18,30 @@ window.composeMail = function (form) {
     '%0D%0AEmail: ' + encodeURIComponent(email) +
     '%0D%0A%0D%0A' + encodeURIComponent(message) +
     '%0D%0A%0D%0A---%0D%0ASent from tensionlessdigital.com';
+
+  // No reliable success signal for mailto: — a mail client suspends the tab
+  // (page loses visibility) on success; if the page is still visible after
+  // a beat, no client handled it, so surface a fallback instead of silence.
+  var handled = false;
+  var onVisibilityChange = function () {
+    if (document.hidden) {
+      handled = true;
+      setStatus('Opening your email client — almost done.', 'success');
+    }
+  };
+  document.addEventListener('visibilitychange', onVisibilityChange);
+
   window.location.href = 'mailto:hello@tensionlessdigital.com' +
     '?subject=Project%20Inquiry%20-%20' + encodeURIComponent(name) +
     '&body=' + body;
+
+  setTimeout(function () {
+    document.removeEventListener('visibilitychange', onVisibilityChange);
+    if (!handled) {
+      setStatus('No email client detected. Email us directly at hello@tensionlessdigital.com.', 'error');
+    }
+  }, 1200);
+
   form.reset();
   return false;
 };

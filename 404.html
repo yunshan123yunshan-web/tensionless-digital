@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page Not Found | Tensionless Digital</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050507;
+    --text: #e9edf2;
+    --dim: #7d8794;
+    --faint: #4c545e;
+    --line: rgba(233, 238, 244, .12);
+    --display: 'Archivo', system-ui, -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--display);
+  }
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 24px;
+    gap: 22px;
+  }
+  .code {
+    font-family: var(--mono);
+    font-size: 13px;
+    letter-spacing: .14em;
+    color: var(--dim);
+    text-transform: uppercase;
+  }
+  h1 {
+    font-size: clamp(2.2rem, 6vw, 4rem);
+    font-weight: 700;
+    letter-spacing: -.01em;
+  }
+  p {
+    color: var(--dim);
+    font-size: 15px;
+    max-width: 420px;
+    line-height: 1.6;
+  }
+  a.home {
+    margin-top: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 13px 26px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    color: var(--text);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: border-color .2s, transform .2s;
+  }
+  a.home:hover { border-color: rgba(233, 238, 244, .35); transform: translateY(-2px); }
+</style>
+</head>
+<body>
+  <span class="code">404 // Signal Lost</span>
+  <h1>This page doesn't exist.</h1>
+  <p>The page you're looking for was moved, renamed, or never existed. Let's get you back on track.</p>
+  <a class="home" href="/">&larr; Back to Tensionless Digital</a>
+</body>
+</html>
