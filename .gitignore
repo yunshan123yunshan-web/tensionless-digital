@@ -20,3 +20,6 @@ temp/
 *.swp
 *.swo
 *~
+
+# Netlify CLI local state
+.netlify/

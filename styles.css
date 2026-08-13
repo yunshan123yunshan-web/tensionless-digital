@@ -354,6 +354,8 @@ html.rm .rotor-track { animation: none; transform: translate3d(0, 0, 0); }
 .btn:hover .sheen { left: 130%; }
 .btn-primary { background: linear-gradient(115deg, #dfe7ef, #aebccb); color: #050507; border: 0; font-weight: 700; }
 .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 16px 40px rgba(143, 176, 255, .25); }
+
+.mobile-sticky-cta { display: none; }
 .btn-ghost { background: transparent; }
 
 /* ── HUD ─────────────────────────────────────────────────────────── */
@@ -478,6 +480,32 @@ section.sec { position: relative; padding: clamp(70px, 9vw, 110px) 0; }
   border-radius: 24px;
   padding: clamp(30px, 4vw, 50px);
 }
+
+/* ── FAQ ──────────────────────────────────────────────────────────── */
+.faq-list { display: flex; flex-direction: column; gap: 14px; max-width: 780px; }
+.faq-item { padding: 0; }
+.faq-item .faq-q {
+  cursor: pointer;
+  list-style: none;
+  padding: 22px 26px;
+  font-weight: 600;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.faq-item .faq-q::-webkit-details-marker { display: none; }
+.faq-item .faq-q::after {
+  content: '+';
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--dim);
+  flex-shrink: 0;
+  transition: transform .25s ease;
+}
+.faq-item[open] .faq-q::after { transform: rotate(45deg); }
+.faq-item .faq-a { color: var(--dim); font-size: 15px; line-height: 1.6; padding: 0 26px 24px; }
 
 /* ── services (tilt + spotlight) ─────────────────────────────────── */
 .svc-grid {
@@ -1396,6 +1424,27 @@ p, .s-head, .cta-h, .hero-h1 { text-wrap: pretty; }
 
   .imm-dot-bar { display: none; }
   .cs-orb, .testi-orb, .proc-orb { opacity: .5; }
+
+  .mobile-sticky-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    left: 4vw;
+    right: 4vw;
+    bottom: max(16px, env(safe-area-inset-bottom));
+    z-index: 60;
+    padding: 15px 20px;
+    border-radius: 999px;
+    background: linear-gradient(115deg, #dfe7ef, #aebccb);
+    color: #050507;
+    font-weight: 700;
+    font-size: 14.5px;
+    text-decoration: none;
+    text-align: center;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, .45);
+  }
+  body.cta-in-view .mobile-sticky-cta { display: none; }
 }
 @media (max-width: 640px) {
   .svc-grid { grid-template-columns: 1fr; }

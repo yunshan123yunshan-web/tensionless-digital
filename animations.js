@@ -27,6 +27,9 @@ window.composeMail = function (form) {
     if (document.hidden) {
       handled = true;
       setStatus('Opening your email client — almost done.', 'success');
+      setTimeout(function () {
+        window.location.href = '/thank-you.html';
+      }, 900);
     }
   };
   document.addEventListener('visibilitychange', onVisibilityChange);
