@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Motion Prototype — Tensionless</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800&family=Cormorant+Garamond:ital,wght@1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/lenis@1.1.13/dist/lenis.css">
+<style>
+  /* Prototype only — tests Lenis + one signature transition + a work index.
+     Does not touch the live site (index.html / styles.css). */
+  :root {
+    --light: #e9edf2;
+    --bg: #050507;
+    --text: #e9edf2;
+    --dim: #7d8794;
+    --faint: #2a2f36;
+    --accent: #8fb0ff;          /* the ONE accent colour */
+    --display: 'Archivo', sans-serif;
+    --serif: 'Cormorant Garamond', serif;
+    --mono: 'JetBrains Mono', monospace;
+    --gutter: clamp(16px, 3vw, 40px);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); color: var(--text); font-family: var(--display); }
+  body { overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  .mono { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; }
+
+  .proto-tag { position: fixed; top: 12px; right: 12px; z-index: 50; padding: 6px 10px;
+    background: var(--accent); color: var(--bg); border-radius: 2px; }
+
+  /* ── 1. HERO + RELEASE TRANSITION ─────────────────────────────── */
+  .hero { position: relative; height: 100vh; height: 100svh; background: var(--light); color: var(--bg); overflow: hidden; }
+  .hero-nav { position: absolute; top: var(--gutter); left: var(--gutter); right: var(--gutter);
+    display: flex; justify-content: space-between; align-items: center; z-index: 3; }
+  .hero-nav .brand { font-weight: 800; font-size: 15px; letter-spacing: .02em; }
+  .hero-copy { position: absolute; left: var(--gutter); right: var(--gutter); bottom: calc(var(--gutter) + 28px); z-index: 2; }
+  .hero-eyebrow { margin-bottom: 18px; color: #4c545e; }
+  .hero h1 { font-weight: 800; font-size: clamp(44px, 10.4vw, 190px); line-height: .86; letter-spacing: -.035em; text-transform: uppercase; }
+  .hero h1 em { font-family: var(--serif); font-style: italic; font-weight: 400; text-transform: none; letter-spacing: -.01em; }
+  .hero-sub { display: flex; justify-content: space-between; gap: 24px; margin-top: 22px; align-items: end; }
+  .hero-sub p { max-width: 420px; font-size: 15px; line-height: 1.5; color: #3a414a; }
+  .btn { display: inline-block; padding: 14px 22px; background: var(--bg); color: var(--light);
+    text-decoration: none; font-family: var(--mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase;
+    transition: background .15s ease, color .15s ease; white-space: nowrap; }
+  .btn:hover, .btn:focus-visible { background: var(--accent); color: var(--bg); }
+
+  /* the tension line: an SVG path spanning the viewport at the hero's mid-height */
+  .wire { position: absolute; left: 0; top: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+  .wire path { fill: none; stroke: var(--bg); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+
+  /* the flood: dark layer revealed outward from the line via clip-path */
+  .flood { position: absolute; inset: 0; z-index: 4; background: var(--bg); clip-path: inset(30% 0 70% 0); }
+  .flood-edge { position: absolute; left: 0; right: 0; height: 2px; z-index: 5; background: var(--accent);
+    box-shadow: 0 0 24px 6px rgba(143,176,255,.55), 0 0 80px 20px rgba(143,176,255,.18); opacity: 0; top: 30%; }
+  .flood-line { position: absolute; inset: 0; z-index: 6; display: grid; place-items: center; text-align: center; opacity: 0; color: var(--text); }
+  .flood-line p { font-size: clamp(28px, 5vw, 72px); font-weight: 700; letter-spacing: -.03em; line-height: 1; }
+  .flood-line em { font-family: var(--serif); font-weight: 400; color: var(--accent); }
+
+  /* ── 2. INTRO — layered sticky placeholder ─────────────────────── */
+  .intro { position: relative; padding: 6vh var(--gutter) 14vh; display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+  .intro-media { position: sticky; top: 10vh; height: 80vh; grid-column: 2; grid-row: 1 / span 2;
+    background: radial-gradient(120% 90% at 70% 30%, #1b2333 0%, #0d1018 55%, var(--bg) 100%); overflow: hidden; }
+  .intro-media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 55%, var(--bg)); }
+  .ph-label { position: absolute; left: 16px; top: 16px; color: var(--dim); z-index: 1; }
+  .intro-text { grid-column: 1 / span 2; grid-row: 1; align-self: start; position: relative; z-index: 2; padding-top: 8vh; }
+  .intro-text h2 { font-size: clamp(30px, 4.4vw, 68px); font-weight: 500; line-height: 1.04; letter-spacing: -.03em; max-width: 15ch; }
+  .intro-text h2 em { font-family: var(--serif); color: var(--accent); }
+  .intro-side { grid-column: 1; grid-row: 2; align-self: end; max-width: 380px; color: var(--dim); font-size: 15px; line-height: 1.6; margin-top: 30vh; }
+  .intro-side p + p { margin-top: 1em; }
+
+  /* ── 3. SERVICES — deliberately quiet ──────────────────────────── */
+  .services { padding: 14vh var(--gutter); }
+  .sec-head { display: flex; justify-content: space-between; color: var(--dim); padding-bottom: 14px; border-bottom: 1px solid var(--faint); }
+  .svc { display: grid; grid-template-columns: 90px 1fr 1.3fr; gap: 24px; padding: 28px 0; border-bottom: 1px solid var(--faint); align-items: baseline; }
+  .svc h3 { font-size: clamp(22px, 2.4vw, 34px); font-weight: 500; letter-spacing: -.02em; }
+  .svc p { color: var(--dim); font-size: 15px; line-height: 1.55; max-width: 460px; }
+  .svc .mono { color: var(--dim); }
+
+  /* ── 4. WORK INDEX — hover/tap swaps backdrop + metrics ─────────── */
+  .work { position: relative; min-height: 100vh; padding: 12vh var(--gutter) 8vh; display: flex; flex-direction: column; overflow: hidden; }
+  .work-bg { position: absolute; inset: 0; z-index: 0; }
+  .work-bg div { position: absolute; inset: 0; opacity: 0; transition: opacity .35s ease; }
+  .work-bg div.on { opacity: 1; }
+  .work-bg span { position: absolute; right: var(--gutter); bottom: 16px; color: rgba(233,237,242,.35); }
+  .work-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(5,5,7,.85), rgba(5,5,7,.35) 45%, rgba(5,5,7,.9)); }
+  .work > *:not(.work-bg) { position: relative; z-index: 1; }
+  .rows { list-style: none; margin-top: 6px; }
+  .row { width: 100%; display: grid; grid-template-columns: 1.1fr 2fr 1fr 60px; gap: 16px; align-items: center;
+    padding: 12px 10px; background: transparent; border: 0; border-bottom: 1px solid rgba(233,237,242,.1);
+    color: rgba(233,237,242,.5); font: inherit; font-size: 14px; text-align: left; cursor: pointer;
+    transition: background .15s ease, color .15s ease; }
+  .row .mono { font-size: 11px; }
+  .row[aria-pressed="true"] { background: var(--accent); color: var(--bg); border-color: transparent; }
+  .row:focus-visible { outline: 1px solid var(--accent); outline-offset: 2px; }
+  .metrics { margin-top: auto; padding-top: 10vh; display: grid; grid-template-columns: repeat(3, minmax(0, 220px)); gap: 0; }
+  .metric { padding: 0 24px; border-left: 1px solid rgba(233,237,242,.25); transition: opacity .3s ease; }
+  .metric:first-child { padding-left: 0; border-left: 0; }
+  .metric b { display: block; font-size: clamp(34px, 4vw, 56px); font-weight: 500; letter-spacing: -.03em; }
+  .metric span { color: var(--dim); }
+  .metrics.swap .metric { opacity: 0; }
+  .case-line { margin-top: 22px; max-width: 560px; color: var(--dim); font-size: 15px; line-height: 1.55; transition: opacity .3s ease; }
+  .metrics.swap + .case-line { opacity: 0; }
+
+  /* ── 5. CONTACT — back to light: the bookend ───────────────────── */
+  .contact { background: var(--light); color: var(--bg); padding: 16vh var(--gutter) 6vh; min-height: 100vh; display: flex; flex-direction: column; }
+  .contact h2 { font-size: clamp(44px, 8vw, 140px); font-weight: 800; letter-spacing: -.04em; line-height: .9; text-transform: uppercase; }
+  .contact h2 em { font-family: var(--serif); font-weight: 400; text-transform: none; }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 8vh; align-items: end; }
+  .contact-grid p { max-width: 440px; font-size: 16px; line-height: 1.6; color: #3a414a; }
+  .contact-foot { margin-top: auto; padding-top: 10vh; display: flex; justify-content: space-between; color: #4c545e; }
+
+  @media (max-width: 760px) {
+    .hero-sub { flex-direction: column; align-items: start; }
+    .intro { grid-template-columns: 1fr; }
+    .intro-media { grid-column: 1; height: 60vh; top: 20vh; }
+    .intro-text { grid-column: 1; }
+    .intro-side { grid-column: 1; margin-top: 50vh; }
+    .svc { grid-template-columns: 1fr; gap: 8px; }
+    .row { grid-template-columns: 1fr auto; }
+    .row .r-head, .row .r-year { display: none; }
+    .metrics { grid-template-columns: 1fr; gap: 18px; }
+    .metric { padding: 0; border-left: 0; }
+    .contact-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<span class="proto-tag mono">Motion prototype</span>
+
+<!-- 1 ─ HERO -->
+<section class="hero" id="hero">
+  <nav class="hero-nav">
+    <span class="brand">TENSIONLESS<span style="color:var(--accent)">.</span></span>
+    <span class="mono">Work · Services · Contact</span>
+  </nav>
+  <svg class="wire" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+    <path id="wire-path" d="M0,30 Q50,30 100,30"/>
+  </svg>
+  <div class="hero-copy">
+    <p class="hero-eyebrow mono">Digital marketing agency · Singapore · 120+ campaigns</p>
+    <h1>We turn attention<br><em>into</em> revenue.</h1>
+    <div class="hero-sub">
+      <p>Landing pages that convert. Ads that perform. SEO that compounds. One team building the full funnel.</p>
+      <a class="btn" href="#contact">Book a free call →</a>
+    </div>
+  </div>
+  <div class="flood" aria-hidden="true"></div>
+  <div class="flood-edge" id="edge-top" aria-hidden="true"></div>
+  <div class="flood-edge" id="edge-bot" aria-hidden="true"></div>
+  <div class="flood-line" aria-hidden="true"><p>Marketing, <em>without the tension.</em></p></div>
+</section>
+
+<!-- 2 ─ INTRO -->
+<section class="intro">
+  <div class="intro-media"><span class="ph-label mono">[ team photo placeholder ]</span></div>
+  <div class="intro-text">
+    <h2>Every channel. <em>One team.</em> Nothing leaks between them.</h2>
+  </div>
+  <div class="intro-side">
+    <p>We don’t sell fragments of a strategy. We build the whole growth system — first impression, landing page, closed lead.</p>
+    <p>Fewer handoffs means fewer places for revenue to slip.</p>
+  </div>
+</section>
+
+<!-- 3 ─ SERVICES -->
+<section class="services">
+  <div class="sec-head mono"><span>What we do</span><span>[ 02 ]</span></div>
+  <div class="svc"><span class="mono">SYS.01</span><h3>Landing Pages</h3><p>High-converting pages built for a single purpose: turning visitors into customers.</p></div>
+  <div class="svc"><span class="mono">SYS.02</span><h3>Google Ads</h3><p>Intent-driven paid search with obsessive keyword and bid management.</p></div>
+  <div class="svc"><span class="mono">SYS.03</span><h3>Facebook Ads</h3><p>Scroll-stopping creative paired with precise audience targeting across Meta.</p></div>
+  <div class="svc"><span class="mono">SYS.04</span><h3>SEO &amp; SEM</h3><p>Organic authority built to compound. Paid search to accelerate. Both in sync.</p></div>
+</section>
+
+<!-- 4 ─ WORK INDEX -->
+<section class="work" id="work">
+  <div class="work-bg" aria-hidden="true">
+    <div style="background:radial-gradient(90% 80% at 75% 60%,#2b3550,#0b0e16 70%)"><span class="mono">[ automotive shoot ]</span></div>
+    <div style="background:radial-gradient(90% 80% at 30% 40%,#26332f,#0a0f0d 70%)"><span class="mono">[ financial shoot ]</span></div>
+    <div style="background:radial-gradient(90% 80% at 60% 30%,#3a2e2a,#110c0b 70%)"><span class="mono">[ immigration law shoot ]</span></div>
+    <div style="background:radial-gradient(90% 80% at 40% 70%,#33303d,#0d0c12 70%)"><span class="mono">[ real estate shoot ]</span></div>
+  </div>
+  <div class="sec-head mono"><span>Proof — pick a client</span><span>[ 03 ]</span></div>
+  <ul class="rows" role="list">
+    <li><button class="row" data-i="0"><span>Automotive</span><span class="r-head">$350K profit on $6K spend</span><span class="mono r-ch">Google Ads · SEO</span><span class="mono r-year">→</span></button></li>
+    <li><button class="row" data-i="1"><span>Financial Services</span><span class="r-head">$2M production in one month</span><span class="mono r-ch">Facebook Ads</span><span class="mono r-year">→</span></button></li>
+    <li><button class="row" data-i="2"><span>Immigration Law</span><span class="r-head">$100K revenue at $4K ad spend</span><span class="mono r-ch">FB · Lead Gen</span><span class="mono r-year">→</span></button></li>
+    <li><button class="row" data-i="3"><span>Real Estate</span><span class="r-head">8 closures at $3K ad spend</span><span class="mono r-ch">Facebook Ads</span><span class="mono r-year">→</span></button></li>
+  </ul>
+  <div class="metrics" id="metrics" aria-live="polite"></div>
+  <p class="case-line" id="case-line"></p>
+</section>
+
+<!-- 5 ─ CONTACT -->
+<section class="contact" id="contact">
+  <p class="mono" style="color:#4c545e;margin-bottom:24px">[ 04 ] Contact</p>
+  <h2>Let’s take the<br><em>tension</em> out.</h2>
+  <div class="contact-grid">
+    <p>A 30-minute call. We look at your current funnel, tell you where it leaks, and you decide if we’re worth hiring. No deck, no commitment.</p>
+    <div><a class="btn" href="mailto:hello@tensionlessdigital.com">Book a free call →</a></div>
+  </div>
+  <div class="contact-foot mono"><span>Tensionless Digital · Singapore</span><span>Prototype — not the live site</span></div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  /* ── Work index data: final values from the existing case-study reel ── */
+  var CASES = [
+    { m: [['58×', 'ROAS'], ['Top 3', 'SEO positions'], ['$6K', 'Ad spend']],
+      t: 'Full-funnel Google Ads paired with SEO. Revenue inside the first week; organic held top-3 across two verticals.' },
+    { m: [['$2M', 'Production'], ['$150K', 'Commissions'], ['30', 'Days']],
+      t: 'Facebook Ads for high-ticket financial services. Prospect audiences and direct-response creative, one calendar month.' },
+    { m: [['25×', 'ROAS'], ['70%', 'Lower CPL'], ['$4K', 'Ad spend']],
+      t: 'Funnel restructure and audience refinement for an immigration firm — a steady flow of case-ready prospects.' },
+    { m: [['8', 'Closures'], ['$375', 'Cost per closure'], ['$3K', 'Ad spend']],
+      t: 'Hyperlocal targeting and purchase-intent creative for new-development buyers.' }
+  ];
+
+  var rows = Array.prototype.slice.call(document.querySelectorAll('.row'));
+  var bgs = Array.prototype.slice.call(document.querySelectorAll('.work-bg div'));
+  var metricsEl = document.getElementById('metrics');
+  var lineEl = document.getElementById('case-line');
+  var active = -1, swapTimer = null;
+
+  function renderCase(i) {
+    metricsEl.innerHTML = CASES[i].m.map(function (m) {
+      return '<div class="metric"><b>' + m[0] + '</b><span class="mono">' + m[1] + '</span></div>';
+    }).join('');
+    lineEl.textContent = CASES[i].t;
+  }
+
+  // Selection feedback is instant (row fill, 150ms CSS); the backdrop and
+  // metrics settle slower (350/300ms). Numbers are final values — no count-up.
+  // Selection persists when the pointer leaves, so the reader can keep reading.
+  function select(i) {
+    if (i === active) return;
+    active = i;
+    rows.forEach(function (r, k) { r.setAttribute('aria-pressed', String(k === i)); });
+    bgs.forEach(function (b, k) { b.classList.toggle('on', k === i); });
+    clearTimeout(swapTimer);
+    metricsEl.classList.add('swap');
+    swapTimer = setTimeout(function () { renderCase(i); metricsEl.classList.remove('swap'); }, 160);
+  }
+  rows.forEach(function (r, i) {
+    r.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') select(i); });
+    r.addEventListener('focus', function () { select(i); });
+    r.addEventListener('click', function () { select(i); });
+  });
+  renderCase(0); active = -1; select(0);
+
+  if (!window.gsap || !window.ScrollTrigger) return;   // content is fully usable without motion
+  gsap.registerPlugin(ScrollTrigger);
+
+  var mm = gsap.matchMedia();
+  mm.add('(prefers-reduced-motion: no-preference)', function () {
+    /* Lenis drives scroll; ScrollTrigger reads it. scrub:true (not 1) so
+       Lenis is the ONLY smoothing layer — stacking both makes scroll lag. */
+    var lenis = window.Lenis ? new Lenis({ lerp: 0.09, wheelMultiplier: 1 }) : null;
+    var tick = function (t) { lenis.raf(t * 1000); };
+    if (lenis) {
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add(tick);
+      gsap.ticker.lagSmoothing(0);
+      document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+        a.addEventListener('click', function (e) { e.preventDefault(); lenis.scrollTo(a.getAttribute('href')); });
+      });
+    }
+
+    /* Signature: the wire takes the strain, snaps, and the dark floods out from it. */
+    // The wire sits at 30% height, in the empty space above the headline.
+    var LINE = 30;
+    var wire = { y: LINE };
+    var path = document.getElementById('wire-path');
+    var drawWire = function () { path.setAttribute('d', 'M0,' + LINE + ' Q50,' + wire.y.toFixed(2) + ' 100,' + LINE); };
+    var flood = { t: 0 };   // 0 = closed on the wire, 1 = full screen
+    var floodEl = document.querySelector('.flood');
+    var top = document.getElementById('edge-top'), bot = document.getElementById('edge-bot');
+    var drawFlood = function () {
+      var up = LINE * (1 - flood.t), down = (100 - LINE) * (1 - flood.t);
+      floodEl.style.clipPath = 'inset(' + up + '% 0 ' + down + '% 0)';
+      top.style.top = up + '%';
+      bot.style.top = (100 - down) + '%';
+    };
+
+    var tl = gsap.timeline({
+      defaults: { ease: 'none' },
+      scrollTrigger: { trigger: '#hero', start: 'top top', end: '+=110%', pin: true, scrub: true }
+    });
+    tl.to(wire, { y: 62, duration: 0.35, ease: 'power2.in', onUpdate: drawWire })            // strain builds
+      .to('.hero-copy', { scale: 0.97, transformOrigin: '50% 100%', duration: 0.35, ease: 'power2.in' }, 0)
+      .to(wire, { y: LINE, duration: 0.08, ease: 'expo.out', onUpdate: drawWire })            // snap
+      .set([top, bot], { opacity: 1 })
+      .to(flood, { t: 1, duration: 0.42, ease: 'power3.inOut', onUpdate: drawFlood })      // release
+      .to([top, bot], { opacity: 0, duration: 0.1 }, '-=0.12')
+      .to('.flood-line', { opacity: 1, duration: 0.1 }, '-=0.18')
+      .to('.flood-line', { opacity: 0, duration: 0.08 }, '+=0.06');
+
+    gsap.utils.toArray('.svc, .intro-side p, .sec-head').forEach(function (el) {
+      gsap.from(el, { opacity: 0, duration: 0.6, ease: 'power2.out',
+        scrollTrigger: { trigger: el, start: 'top 88%', once: true } });
+    });
+
+    return function () {
+      if (lenis) { gsap.ticker.remove(tick); lenis.destroy(); }
+    };
+  });
+})();
+</script>
+</body>
+</html>

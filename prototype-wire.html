@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Wire Prototype — Tensionless</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Archivo as a VARIABLE font: width axis 62–125% drives the stretchy type -->
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Cormorant+Garamond:ital,wght@1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/lenis@1.1.13/dist/lenis.css">
+<style>
+  /* Prototype v2 — "the wire is the brand". One elastic wire lives on screen
+     for the whole visit: pull it in the hero (slingshot), pluck it anywhere,
+     it sags with scroll speed. Headlines squash/stretch on Archivo's wdth axis.
+     Does not touch the live site. */
+  :root {
+    --light: #e9edf2; --bg: #050507; --text: #e9edf2; --dim: #7d8794; --faint: #2a2f36;
+    --accent: #8fb0ff;
+    --display: 'Archivo', sans-serif; --serif: 'Cormorant Garamond', serif; --mono: 'JetBrains Mono', monospace;
+    --gutter: clamp(16px, 3vw, 40px);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); color: var(--text); font-family: var(--display); }
+  body { overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  .mono { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; }
+  .flex { font-stretch: 100%; }   /* elements whose width axis reacts to scroll speed */
+
+  #wire { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 20; pointer-events: none; }
+  .proto-tag { position: fixed; top: 12px; right: 12px; z-index: 50; padding: 6px 10px; background: var(--accent); color: var(--bg); }
+  .sound-btn { position: fixed; left: 12px; bottom: 12px; z-index: 50; padding: 8px 12px; cursor: pointer;
+    background: rgba(5,5,7,.7); color: var(--text); border: 1px solid rgba(233,237,242,.2); backdrop-filter: blur(6px); }
+  .sound-btn[aria-pressed="true"] { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+
+  /* ── HERO ── */
+  .hero { position: relative; height: 100vh; height: 100svh; background: var(--light); color: var(--bg); overflow: hidden; }
+  .hero-nav { position: absolute; top: var(--gutter); left: var(--gutter); right: var(--gutter); display: flex; justify-content: space-between; z-index: 3; }
+  .hero-nav .brand { font-weight: 800; font-size: 15px; }
+  .hint { position: absolute; left: var(--gutter); top: calc(30% - 34px); z-index: 3; color: #4c545e; transition: opacity .4s ease; }
+  .hint b { color: var(--bg); font-weight: 500; }
+  .hero-copy { position: absolute; left: var(--gutter); right: var(--gutter); bottom: calc(var(--gutter) + 28px); z-index: 2; }
+  .hero-eyebrow { margin-bottom: 18px; color: #4c545e; }
+  .hero h1 { font-weight: 800; font-size: clamp(42px, 9.6vw, 176px); line-height: .86; letter-spacing: -.035em; text-transform: uppercase; white-space: nowrap; }
+  .hero h1 em { font-family: var(--serif); font-style: italic; font-weight: 400; text-transform: none; }
+  .hero-sub { display: flex; justify-content: space-between; gap: 24px; margin-top: 22px; align-items: end; }
+  .hero-sub p { max-width: 420px; font-size: 15px; line-height: 1.5; color: #3a414a; }
+  .btn { display: inline-block; padding: 14px 22px; background: var(--bg); color: var(--light); text-decoration: none;
+    font-family: var(--mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; transition: background .15s, color .15s; white-space: nowrap; }
+  .btn:hover, .btn:focus-visible { background: var(--accent); color: var(--bg); }
+  .flood { position: absolute; inset: 0; z-index: 4; background: var(--bg); clip-path: inset(30% 0 70% 0); }
+  .flood-edge { position: absolute; left: 0; right: 0; height: 2px; z-index: 5; background: var(--accent); top: 30%; opacity: 0;
+    box-shadow: 0 0 24px 6px rgba(143,176,255,.55), 0 0 80px 20px rgba(143,176,255,.18); }
+  .flood-line { position: absolute; inset: 0; z-index: 6; display: grid; place-items: center; text-align: center; opacity: 0; color: var(--text); }
+  .flood-line p { font-size: clamp(28px, 5vw, 72px); font-weight: 700; letter-spacing: -.03em; }
+  .flood-line em { font-family: var(--serif); font-weight: 400; color: var(--accent); }
+
+  /* ── INTRO ── */
+  .intro { position: relative; padding: 6vh var(--gutter) 14vh; display: grid; grid-template-columns: 1fr 1fr; }
+  .intro-media { position: sticky; top: 10vh; height: 80vh; grid-column: 2; grid-row: 1 / span 2;
+    background: radial-gradient(120% 90% at 70% 30%, #1b2333 0%, #0d1018 55%, var(--bg) 100%); }
+  .intro-media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 55%, var(--bg)); }
+  .ph-label { position: absolute; left: 16px; top: 16px; color: var(--dim); z-index: 1; }
+  .intro-text { grid-column: 1 / span 2; grid-row: 1; position: relative; z-index: 2; padding-top: 8vh; }
+  .intro-text h2 { font-size: clamp(30px, 4.4vw, 68px); font-weight: 500; line-height: 1.04; letter-spacing: -.03em; max-width: 15ch; }
+  .intro-text h2 em, .svc h3 em { font-family: var(--serif); color: var(--accent); }
+  .intro-side { grid-column: 1; grid-row: 2; align-self: end; max-width: 380px; color: var(--dim); font-size: 15px; line-height: 1.6; margin-top: 30vh; }
+  .intro-side p + p { margin-top: 1em; }
+
+  /* ── SERVICES ── */
+  .services { padding: 14vh var(--gutter); }
+  .sec-head { display: flex; justify-content: space-between; color: var(--dim); padding-bottom: 14px; border-bottom: 1px solid var(--faint); }
+  .svc { display: grid; grid-template-columns: 90px 1fr 1.3fr; gap: 24px; padding: 28px 0; border-bottom: 1px solid var(--faint); align-items: baseline; }
+  .svc h3 { font-size: clamp(26px, 3.4vw, 52px); font-weight: 600; letter-spacing: -.025em; text-transform: uppercase; }
+  .svc p { color: var(--dim); font-size: 15px; line-height: 1.55; max-width: 460px; }
+  .svc .mono { color: var(--dim); }
+
+  /* ── WORK INDEX ── */
+  .work { position: relative; min-height: 100vh; padding: 12vh var(--gutter) 14vh; display: flex; flex-direction: column; overflow: hidden; }
+  .work-bg { position: absolute; inset: 0; z-index: 0; }
+  .work-bg div { position: absolute; inset: 0; opacity: 0; transition: opacity .35s ease; }
+  .work-bg div.on { opacity: 1; }
+  .work-bg span { position: absolute; right: var(--gutter); top: 12vh; color: rgba(233,237,242,.35); }
+  .work-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(5,5,7,.85), rgba(5,5,7,.35) 45%, rgba(5,5,7,.9)); }
+  .work > *:not(.work-bg) { position: relative; z-index: 1; }
+  .rows { list-style: none; margin-top: 6px; }
+  .row { width: 100%; display: grid; grid-template-columns: 1.1fr 2fr 1fr 60px; gap: 16px; align-items: center; padding: 12px 10px;
+    background: transparent; border: 0; border-bottom: 1px solid rgba(233,237,242,.1); color: rgba(233,237,242,.5);
+    font: inherit; font-size: 14px; text-align: left; cursor: pointer; transition: background .15s, color .15s; }
+  .row[aria-pressed="true"] { background: var(--accent); color: var(--bg); border-color: transparent; }
+  .row:focus-visible { outline: 1px solid var(--accent); outline-offset: 2px; }
+  .metrics { margin-top: auto; padding-top: 10vh; display: grid; grid-template-columns: repeat(3, minmax(0, 220px)); }
+  .metric { padding: 0 24px; border-left: 1px solid rgba(233,237,242,.25); transition: opacity .3s ease; }
+  .metric:first-child { padding-left: 0; border-left: 0; }
+  .metric b { display: block; font-size: clamp(34px, 4vw, 56px); font-weight: 500; letter-spacing: -.03em; }
+  .metric span { color: var(--dim); }
+  .metrics.swap .metric { opacity: 0; }
+  .case-line { margin-top: 22px; max-width: 560px; color: var(--dim); font-size: 15px; line-height: 1.55; transition: opacity .3s; }
+  .metrics.swap + .case-line { opacity: 0; }
+
+  /* ── CONTACT ── */
+  .contact { background: var(--light); color: var(--bg); padding: 16vh var(--gutter) 6vh; min-height: 100vh; display: flex; flex-direction: column; }
+  .contact h2 { font-size: clamp(44px, 8vw, 140px); font-weight: 800; letter-spacing: -.04em; line-height: .9; text-transform: uppercase; }
+  .contact h2 em { font-family: var(--serif); font-weight: 400; text-transform: none; }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 8vh; align-items: end; }
+  .contact-grid p { max-width: 440px; font-size: 16px; line-height: 1.6; color: #3a414a; }
+  .contact-foot { margin-top: auto; padding-top: 10vh; display: flex; justify-content: space-between; color: #4c545e; }
+
+  @media (max-width: 760px) {
+    .hero-sub { flex-direction: column; align-items: start; }
+    .intro { grid-template-columns: 1fr; }
+    .intro-media { grid-column: 1; height: 60vh; top: 20vh; }
+    .intro-text, .intro-side { grid-column: 1; }
+    .intro-side { margin-top: 50vh; }
+    .svc { grid-template-columns: 1fr; gap: 8px; }
+    .row { grid-template-columns: 1fr auto; }
+    .row .r-head, .row .r-year { display: none; }
+    .metrics { grid-template-columns: 1fr; gap: 18px; }
+    .metric { padding: 0; border-left: 0; }
+    .contact-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<canvas id="wire" aria-hidden="true"></canvas>
+<span class="proto-tag mono">Wire prototype</span>
+<button class="sound-btn mono" id="sound" aria-pressed="false">Sound: off</button>
+
+<section class="hero" id="hero">
+  <nav class="hero-nav"><span class="brand">TENSIONLESS<span style="color:var(--accent)">.</span></span><span class="mono">Work · Services · Contact</span></nav>
+  <p class="hint mono" id="hint"><b>Grab the wire ↓</b> pull &amp; let go — or just scroll</p>
+  <div class="hero-copy">
+    <p class="hero-eyebrow mono">Digital marketing agency · Singapore · 120+ campaigns</p>
+    <h1 id="hero-h1">We turn<br>attention<br><em>into</em> revenue.</h1>
+    <div class="hero-sub">
+      <p>Landing pages that convert. Ads that perform. SEO that compounds. One team building the full funnel.</p>
+      <a class="btn" href="#contact">Book a free call →</a>
+    </div>
+  </div>
+  <div class="flood" aria-hidden="true"></div>
+  <div class="flood-edge" id="edge-top" aria-hidden="true"></div>
+  <div class="flood-edge" id="edge-bot" aria-hidden="true"></div>
+  <div class="flood-line" aria-hidden="true"><p>Marketing, <em>without the tension.</em></p></div>
+</section>
+
+<section class="intro">
+  <div class="intro-media"><span class="ph-label mono">[ team photo placeholder ]</span></div>
+  <div class="intro-text"><h2 class="flex">Every channel. <em>One team.</em> Nothing leaks between them.</h2></div>
+  <div class="intro-side">
+    <p>We don’t sell fragments of a strategy. We build the whole growth system — first impression, landing page, closed lead.</p>
+    <p>Fewer handoffs means fewer places for revenue to slip.</p>
+  </div>
+</section>
+
+<section class="services">
+  <div class="sec-head mono"><span>What we do — scroll fast, watch the type</span><span>[ 02 ]</span></div>
+  <div class="svc"><span class="mono">SYS.01</span><h3 class="flex">Landing Pages</h3><p>High-converting pages built for a single purpose: turning visitors into customers.</p></div>
+  <div class="svc"><span class="mono">SYS.02</span><h3 class="flex">Google Ads</h3><p>Intent-driven paid search with obsessive keyword and bid management.</p></div>
+  <div class="svc"><span class="mono">SYS.03</span><h3 class="flex">Facebook Ads</h3><p>Scroll-stopping creative paired with precise audience targeting across Meta.</p></div>
+  <div class="svc"><span class="mono">SYS.04</span><h3 class="flex">SEO &amp; SEM</h3><p>Organic authority built to compound. Paid search to accelerate. Both in sync.</p></div>
+</section>
+
+<section class="work" id="work">
+  <div class="work-bg" aria-hidden="true">
+    <div style="background:radial-gradient(90% 80% at 75% 60%,#2b3550,#0b0e16 70%)"><span class="mono">[ automotive shoot ]</span></div>
+    <div style="background:radial-gradient(90% 80% at 30% 40%,#26332f,#0a0f0d 70%)"><span class="mono">[ financial shoot ]</span></div>
+    <div style="background:radial-gradient(90% 80% at 60% 30%,#3a2e2a,#110c0b 70%)"><span class="mono">[ immigration law shoot ]</span></div>
+    <div style="background:radial-gradient(90% 80% at 40% 70%,#33303d,#0d0c12 70%)"><span class="mono">[ real estate shoot ]</span></div>
+  </div>
+  <div class="sec-head mono"><span>Proof — pick a client</span><span>[ 03 ]</span></div>
+  <ul class="rows" role="list">
+    <li><button class="row" data-i="0"><span>Automotive</span><span class="r-head">$350K profit on $6K spend</span><span class="mono">Google Ads · SEO</span><span class="mono r-year">→</span></button></li>
+    <li><button class="row" data-i="1"><span>Financial Services</span><span class="r-head">$2M production in one month</span><span class="mono">Facebook Ads</span><span class="mono r-year">→</span></button></li>
+    <li><button class="row" data-i="2"><span>Immigration Law</span><span class="r-head">$100K revenue at $4K ad spend</span><span class="mono">FB · Lead Gen</span><span class="mono r-year">→</span></button></li>
+    <li><button class="row" data-i="3"><span>Real Estate</span><span class="r-head">8 closures at $3K ad spend</span><span class="mono">Facebook Ads</span><span class="mono r-year">→</span></button></li>
+  </ul>
+  <div class="metrics" id="metrics" aria-live="polite"></div>
+  <p class="case-line" id="case-line"></p>
+</section>
+
+<section class="contact" id="contact">
+  <p class="mono" style="color:#4c545e;margin-bottom:24px">[ 04 ] Contact</p>
+  <h2 class="flex">Let’s take the<br><em>tension</em> out.</h2>
+  <div class="contact-grid">
+    <p>A 30-minute call. We look at your current funnel, tell you where it leaks, and you decide if we’re worth hiring. No deck, no commitment.</p>
+    <div><a class="btn" href="mailto:hello@tensionlessdigital.com">Book a free call →</a></div>
+  </div>
+  <div class="contact-foot mono"><span>Tensionless Digital · Singapore</span><span>Prototype — not the live site</span></div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  /* ── Work index (unchanged from prototype v1) ───────────────────────── */
+  var CASES = [
+    { m: [['58×', 'ROAS'], ['Top 3', 'SEO positions'], ['$6K', 'Ad spend']], t: 'Full-funnel Google Ads paired with SEO. Revenue inside the first week; organic held top-3 across two verticals.' },
+    { m: [['$2M', 'Production'], ['$150K', 'Commissions'], ['30', 'Days']], t: 'Facebook Ads for high-ticket financial services. Prospect audiences and direct-response creative, one calendar month.' },
+    { m: [['25×', 'ROAS'], ['70%', 'Lower CPL'], ['$4K', 'Ad spend']], t: 'Funnel restructure and audience refinement for an immigration firm — a steady flow of case-ready prospects.' },
+    { m: [['8', 'Closures'], ['$375', 'Cost per closure'], ['$3K', 'Ad spend']], t: 'Hyperlocal targeting and purchase-intent creative for new-development buyers.' }
+  ];
+  var rows = [].slice.call(document.querySelectorAll('.row'));
+  var bgs = [].slice.call(document.querySelectorAll('.work-bg div'));
+  var metricsEl = document.getElementById('metrics'), lineEl = document.getElementById('case-line');
+  var active = -1, swapTimer = null;
+  function renderCase(i) {
+    metricsEl.innerHTML = CASES[i].m.map(function (m) { return '<div class="metric"><b>' + m[0] + '</b><span class="mono">' + m[1] + '</span></div>'; }).join('');
+    lineEl.textContent = CASES[i].t;
+  }
+  function select(i) {
+    if (i === active) return;
+    active = i;
+    rows.forEach(function (r, k) { r.setAttribute('aria-pressed', String(k === i)); });
+    bgs.forEach(function (b, k) { b.classList.toggle('on', k === i); });
+    clearTimeout(swapTimer); metricsEl.classList.add('swap');
+    swapTimer = setTimeout(function () { renderCase(i); metricsEl.classList.remove('swap'); }, 160);
+  }
+  rows.forEach(function (r, i) {
+    r.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') select(i); });
+    r.addEventListener('focus', function () { select(i); });
+    r.addEventListener('click', function () { select(i); });
+  });
+  renderCase(0); select(0);
+
+  /* ── Sound: tiny WebAudio pluck, off by default ─────────────────────── */
+  var audio = null, soundOn = false, lastPluck = 0;
+  var soundBtn = document.getElementById('sound');
+  soundBtn.addEventListener('click', function () {
+    soundOn = !soundOn;
+    if (soundOn && !audio) { try { audio = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { soundOn = false; } }
+    soundBtn.setAttribute('aria-pressed', String(soundOn));
+    soundBtn.textContent = 'Sound: ' + (soundOn ? 'on' : 'off');
+  });
+  function pluckSound(strength, pitch) {
+    var now = performance.now();
+    if (!soundOn || !audio || now - lastPluck < 60) return;
+    lastPluck = now;
+    var t = audio.currentTime, o = audio.createOscillator(), g = audio.createGain(), f = audio.createBiquadFilter();
+    o.type = 'triangle'; o.frequency.setValueAtTime(pitch, t); o.frequency.exponentialRampToValueAtTime(pitch * 0.985, t + 0.8);
+    f.type = 'lowpass'; f.frequency.value = 1800;
+    g.gain.setValueAtTime(Math.min(0.25, 0.04 + strength * 0.2), t); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.9);
+    o.connect(f); f.connect(g); g.connect(audio.destination); o.start(t); o.stop(t + 0.95);
+  }
+
+  /* ── The wire: a 1-D mass-spring string ──────────────────────────────── */
+  var canvas = document.getElementById('wire'), ctx = canvas.getContext('2d');
+  var N = 96, SUB = 10, TENSION = 0.45, DAMP = 0.996;
+  var d = new Float32Array(N), v = new Float32Array(N), shape = new Float32Array(N);
+  for (var i = 0; i < N; i++) shape[i] = Math.sin(Math.PI * i / (N - 1));
+  var W = 0, H = 0, DPR = 1;
+  var Wire = { base: 0.30, bias: 0 };   // base: fraction of viewport height; bias: scroll-driven bow (px)
+  var lenis = null, reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function resize() {
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    W = innerWidth; H = innerHeight;
+    canvas.width = W * DPR; canvas.height = H * DPR;
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  }
+  resize(); addEventListener('resize', resize);
+
+  function wireY(k) { return Wire.base * H + Wire.bias * shape[k] + d[k]; }
+  function idxAt(x) { return Math.max(1, Math.min(N - 2, Math.round(x / W * (N - 1)))); }
+  function wireYAt(x) {
+    var f = Math.max(0, Math.min(N - 1, x / W * (N - 1))), k = Math.floor(f), t = f - k;
+    return k >= N - 1 ? wireY(N - 1) : wireY(k) * (1 - t) + wireY(k + 1) * t;
+  }
+  function impulse(k, amount, spread) {
+    for (var j = 1; j < N - 1; j++) { var z = (j - k) / spread; v[j] += amount * Math.exp(-z * z); }
+  }
+
+  function step(load) {
+    for (var s = 0; s < SUB; s++) {
+      for (var j = 1; j < N - 1; j++) v[j] = (v[j] + TENSION * (d[j - 1] + d[j + 1] - 2 * d[j]) + load * shape[j]) * DAMP;
+      for (j = 1; j < N - 1; j++) d[j] += v[j];
+    }
+  }
+
+  // Which colour should the wire be? Dark on the light hero (before the flood) and over the light contact section.
+  var hero = document.getElementById('hero'), contact = document.getElementById('contact');
+  var Flood = { t: 0 };
+  function wireIsDark() {
+    var y = Wire.base * H;
+    if (hero.getBoundingClientRect().bottom > y && Flood.t < 0.5) return true;
+    return contact.getBoundingClientRect().top < y;
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    var energy = 0;
+    for (var j = 0; j < N; j++) energy += Math.abs(v[j]);
+    var dark = wireIsDark();
+    ctx.lineWidth = 1.5;
+    ctx.strokeStyle = dark ? '#050507' : 'rgba(233,237,242,.8)';
+    ctx.shadowColor = 'rgba(143,176,255,.9)';
+    ctx.shadowBlur = Math.min(26, energy * 0.35);
+    ctx.beginPath();
+    var step = W / (N - 1);
+    ctx.moveTo(0, wireY(0));
+    for (j = 1; j < N - 1; j++) {
+      var xm = (j + 0.5) * step, ym = (wireY(j) + wireY(j + 1)) / 2;
+      ctx.quadraticCurveTo(j * step, wireY(j), xm, ym);
+    }
+    ctx.lineTo(W, wireY(N - 1));
+    ctx.stroke();
+  }
+
+  if (reduced || !window.gsap) { draw(); addEventListener('resize', draw); return; }
+
+  /* ── Stretchy type: hero follows the pull, .flex headlines follow scroll speed ── */
+  var h1 = document.getElementById('hero-h1');
+  var Stretch = { v: 0 };                       // 0 = rest; 1 = fully stretched; elastic overshoot goes negative
+  function maxStretch() { return W < 760 ? 10 : 25; }
+  var flexEls = [].slice.call(document.querySelectorAll('.flex')), flexW = 100;
+
+  /* ── Pointer: pluck by crossing the wire; grab + pull in the hero ─────── */
+  var grab = null, px = -1, py = -1, released = false, hint = document.getElementById('hint');
+  function inHeroPlay() { return !released && (window.scrollY || 0) < 4; }
+
+  function startGrab(x, y) {
+    if (!inHeroPlay() || Math.abs(y - wireYAt(x)) > 40) return false;
+    grab = { k: idxAt(x), x: x, y: y };
+    hint.style.opacity = 0;
+    gsap.killTweensOf(Stretch);
+    return true;
+  }
+  function moveGrab(x, y) {
+    grab.x = x; grab.y = y; grab.k = idxAt(x);
+    var maxPull = H * 0.42, pull = Math.max(-maxPull * 0.5, Math.min(maxPull, y - Wire.base * H));
+    for (var j = 0; j < N; j++) {   // string pulled at one point = a tent shape
+      d[j] = pull * (j <= grab.k ? j / grab.k : (N - 1 - j) / (N - 1 - grab.k)); v[j] = 0;
+    }
+    d[0] = d[N - 1] = 0;
+    Stretch.v = Math.abs(pull) / maxPull;
+  }
+  function endGrab() {
+    var strength = Stretch.v;
+    grab = null;
+    pluckSound(strength, 196 - strength * 60);
+    gsap.to(Stretch, { v: 0, duration: 1.2, ease: 'elastic.out(1.2, 0.28)' });
+    // A big enough pull launches you into the site: Lenis glides through the flood.
+    if (strength > 0.35 && lenis) setTimeout(function () { lenis.scrollTo(H * 1.12, { duration: 1.8, easing: function (t) { return 1 - Math.pow(1 - t, 3); } }); }, 180);
+  }
+
+  addEventListener('pointerdown', function (e) {
+    if (startGrab(e.clientX, e.clientY)) { document.body.style.cursor = 'grabbing'; e.preventDefault(); }
+  });
+  addEventListener('touchstart', function (e) {   // stop the page scrolling only when the touch lands on the wire
+    var t = e.touches[0];
+    if (inHeroPlay() && Math.abs(t.clientY - wireYAt(t.clientX)) <= 40) e.preventDefault();
+  }, { passive: false });
+  addEventListener('pointermove', function (e) {
+    var x = e.clientX, y = e.clientY;
+    if (grab) { moveGrab(x, y); }
+    else {
+      if (px >= 0) {                              // crossing the wire plucks it
+        var wy = wireYAt(x);
+        if ((py - wy) * (y - wy) < 0) {
+          var vy = Math.max(-50, Math.min(50, y - py));
+          impulse(idxAt(x), vy * 0.15, 3.5);
+          pluckSound(Math.abs(vy) / 50, 220 + (x / W) * 110);
+        }
+      }
+      document.body.style.cursor = inHeroPlay() && Math.abs(y - wireYAt(x)) < 40 ? 'grab' : '';
+    }
+    px = x; py = y;
+  });
+  addEventListener('pointerup', function () { if (grab) { endGrab(); document.body.style.cursor = ''; } });
+  addEventListener('pointercancel', function () { if (grab) endGrab(); });
+
+  /* ── Lenis + the hero scroll sequence ─────────────────────────────────── */
+  gsap.registerPlugin(ScrollTrigger);
+  if (window.Lenis) {
+    lenis = new Lenis({ lerp: 0.09 });
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add(function (t) { lenis.raf(t * 1000); });
+    gsap.ticker.lagSmoothing(0);
+    document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+      a.addEventListener('click', function (e) { e.preventDefault(); lenis.scrollTo(a.getAttribute('href')); });
+    });
+  }
+
+  var floodEl = document.querySelector('.flood'), eTop = document.getElementById('edge-top'), eBot = document.getElementById('edge-bot');
+  function drawFlood() {
+    var up = 30 * (1 - Flood.t), down = 70 * (1 - Flood.t);
+    floodEl.style.clipPath = 'inset(' + up + '% 0 ' + down + '% 0)';
+    eTop.style.top = up + '%'; eBot.style.top = (100 - down) + '%';
+  }
+
+  var SNAP = 0.36;   // scroll progress where the scroll-driven bow snaps
+  var tl = gsap.timeline({
+    defaults: { ease: 'none' },
+    scrollTrigger: {
+      trigger: '#hero', start: 'top top', end: '+=120%', pin: true, scrub: true,
+      onUpdate: function (self) {
+        var p = self.progress;
+        if (p < SNAP) {
+          if (grab) return;
+          released = false;
+          var q = p / SNAP;
+          Wire.bias = H * 0.3 * q * q;
+          if (!gsap.isTweening(Stretch)) Stretch.v = q;
+          hint.style.opacity = p > 0.01 ? 0 : 1;
+        } else if (!released) {
+          released = true;                         // hand the bow to the physics: it twangs
+          for (var j = 0; j < N; j++) d[j] += Wire.bias * shape[j];
+          Wire.bias = 0;
+          pluckSound(0.9, 147);
+          gsap.to(Stretch, { v: 0, duration: 1.2, ease: 'elastic.out(1.2, 0.28)' });
+        }
+      }
+    }
+  });
+  tl.to('.hero-copy', { scale: 0.97, transformOrigin: '50% 100%', duration: SNAP, ease: 'power2.in' }, 0)
+    .set([eTop, eBot], { opacity: 1 }, SNAP + 0.02)
+    .to(Flood, { t: 1, duration: 0.4, ease: 'power3.inOut', onUpdate: drawFlood }, SNAP + 0.02)
+    .to([eTop, eBot], { opacity: 0, duration: 0.08 }, SNAP + 0.34)
+    .to('.flood-line', { opacity: 1, duration: 0.08 }, SNAP + 0.3)
+    .to('.flood-line', { opacity: 0, duration: 0.08 }, 0.9)
+    .to(Wire, { base: 0.88, duration: 0.25, ease: 'power2.inOut' }, 0.75);   // the wire drops to become the horizon
+
+  /* ── Per-frame: physics, scroll sag, stretchy type, render ───────────── */
+  gsap.ticker.add(function () {
+    var vel = lenis ? Math.max(-80, Math.min(80, lenis.velocity || 0)) : 0;
+    if (grab) moveGrab(grab.x, grab.y);            // held: the wire stays pinned to the hand
+    else step(released ? vel * 0.00035 : 0);       // after the hero, scroll speed loads the wire like inertia
+    var ms = maxStretch(), w = 100 + Stretch.v * ms;
+    h1.style.fontStretch = w + '%';
+    h1.style.letterSpacing = (-0.035 + Stretch.v * 0.02) + 'em';
+    var target = 100 - Math.min(Math.abs(vel) * 0.9, 34);   // fast scroll squeezes the type narrow
+    flexW += (target - flexW) * 0.12;
+    for (var j = 0; j < flexEls.length; j++) flexEls[j].style.fontStretch = flexW.toFixed(1) + '%';
+    draw();
+  });
+
+  gsap.utils.toArray('.svc, .intro-side p, .sec-head').forEach(function (el) {
+    gsap.from(el, { opacity: 0, duration: 0.6, ease: 'power2.out', scrollTrigger: { trigger: el, start: 'top 88%', once: true } });
+  });
+})();
+</script>
+</body>
+</html>
