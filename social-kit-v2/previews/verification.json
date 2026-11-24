@@ -1,0 +1,532 @@
+{
+  "renderedAt": "2026-11-24T09:45:58.332Z",
+  "renderSeconds": 4.1,
+  "chrome": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+  "pageErrors": [],
+  "checks": [
+    {
+      "id": "profile-dark",
+      "file": "01-profile-ig-facebook.png",
+      "preview": "01-profile-ig-facebook-preview.jpg",
+      "expected": {
+        "width": 1080,
+        "height": 1080
+      },
+      "actual": {
+        "width": 1080,
+        "height": 1080
+      },
+      "dimensionsOkay": true,
+      "fontsLoaded": true,
+      "images": [
+        {
+          "source": "logo-mark-light.png",
+          "naturalWidth": 247,
+          "naturalHeight": 326,
+          "complete": true
+        }
+      ],
+      "imagesOkay": true,
+      "criticalText": [],
+      "clippedText": [],
+      "collisions": [],
+      "safeZoneFailures": [],
+      "profileLogoSafety": {
+        "safe": true,
+        "safeRadius": 464.4,
+        "logoRect": {
+          "x": 293.76,
+          "y": 215,
+          "width": 492.48,
+          "height": 650,
+          "right": 786.24,
+          "bottom": 865
+        },
+        "corners": [
+          {
+            "x": 293.7578125,
+            "y": 215,
+            "distance": 407.75
+          },
+          {
+            "x": 786.2421875,
+            "y": 215,
+            "distance": 407.75
+          },
+          {
+            "x": 293.7578125,
+            "y": 865,
+            "distance": 407.75
+          },
+          {
+            "x": 786.2421875,
+            "y": 865,
+            "distance": 407.75
+          }
+        ]
+      }
+    },
+    {
+      "id": "profile-light",
+      "file": "01-profile-light-alternative.png",
+      "preview": "01-profile-light-alternative-preview.jpg",
+      "expected": {
+        "width": 1080,
+        "height": 1080
+      },
+      "actual": {
+        "width": 1080,
+        "height": 1080
+      },
+      "dimensionsOkay": true,
+      "fontsLoaded": true,
+      "images": [
+        {
+          "source": "logo-mark-dark.png",
+          "naturalWidth": 247,
+          "naturalHeight": 326,
+          "complete": true
+        }
+      ],
+      "imagesOkay": true,
+      "criticalText": [],
+      "clippedText": [],
+      "collisions": [],
+      "safeZoneFailures": [],
+      "profileLogoSafety": {
+        "safe": true,
+        "safeRadius": 464.4,
+        "logoRect": {
+          "x": 293.76,
+          "y": 215,
+          "width": 492.48,
+          "height": 650,
+          "right": 786.24,
+          "bottom": 865
+        },
+        "corners": [
+          {
+            "x": 293.7578125,
+            "y": 215,
+            "distance": 407.75
+          },
+          {
+            "x": 786.2421875,
+            "y": 215,
+            "distance": 407.75
+          },
+          {
+            "x": 293.7578125,
+            "y": 865,
+            "distance": 407.75
+          },
+          {
+            "x": 786.2421875,
+            "y": 865,
+            "distance": 407.75
+          }
+        ]
+      }
+    },
+    {
+      "id": "facebook-cover",
+      "file": "02-facebook-cover.png",
+      "preview": "02-facebook-cover-preview.jpg",
+      "expected": {
+        "width": 1640,
+        "height": 720
+      },
+      "actual": {
+        "width": 1640,
+        "height": 720
+      },
+      "dimensionsOkay": true,
+      "fontsLoaded": true,
+      "images": [
+        {
+          "source": "generated/hero-wide.png",
+          "naturalWidth": 2172,
+          "naturalHeight": 724,
+          "complete": true
+        },
+        {
+          "source": "logo-mark-light.png",
+          "naturalWidth": 247,
+          "naturalHeight": 326,
+          "complete": true
+        }
+      ],
+      "imagesOkay": true,
+      "criticalText": [
+        {
+          "text": "Marketing,without the tension.",
+          "x": 220,
+          "y": 201,
+          "width": 760,
+          "height": 167.73,
+          "right": 980,
+          "bottom": 368.73,
+          "lines": [
+            {
+              "x": 220,
+              "y": 188,
+              "width": 352.83,
+              "height": 106,
+              "right": 572.83,
+              "bottom": 294
+            },
+            {
+              "x": 220,
+              "y": 279.83,
+              "width": 599.41,
+              "height": 102,
+              "right": 819.41,
+              "bottom": 381.83
+            }
+          ],
+          "clipped": false
+        },
+        {
+          "text": "Landing pagesPaid adsSEO",
+          "x": 220,
+          "y": 548,
+          "width": 380.66,
+          "height": 26.39,
+          "right": 600.66,
+          "bottom": 574.39,
+          "lines": [
+            {
+              "x": 220,
+              "y": 548,
+              "width": 154.55,
+              "height": 26,
+              "right": 374.55,
+              "bottom": 574
+            },
+            {
+              "x": 420.55,
+              "y": 548,
+              "width": 89.64,
+              "height": 26,
+              "right": 510.19,
+              "bottom": 574
+            },
+            {
+              "x": 556.19,
+              "y": 548,
+              "width": 44.47,
+              "height": 26,
+              "right": 600.66,
+              "bottom": 574
+            }
+          ],
+          "clipped": false
+        }
+      ],
+      "clippedText": [],
+      "collisions": [],
+      "safeZoneFailures": [],
+      "profileLogoSafety": null
+    },
+    {
+      "id": "post-intro",
+      "file": "03-post-introduction.png",
+      "preview": "03-post-introduction-preview.jpg",
+      "expected": {
+        "width": 1080,
+        "height": 1350
+      },
+      "actual": {
+        "width": 1080,
+        "height": 1350
+      },
+      "dimensionsOkay": true,
+      "fontsLoaded": true,
+      "images": [
+        {
+          "source": "generated/intro.png",
+          "naturalWidth": 1086,
+          "naturalHeight": 1448,
+          "complete": true
+        },
+        {
+          "source": "logo-mark-light.png",
+          "naturalWidth": 247,
+          "naturalHeight": 326,
+          "complete": true
+        }
+      ],
+      "imagesOkay": true,
+      "criticalText": [
+        {
+          "text": "Connected digital marketing",
+          "x": 74,
+          "y": 172,
+          "width": 399.33,
+          "height": 21.59,
+          "right": 473.33,
+          "bottom": 193.59,
+          "lines": [
+            {
+              "x": 74,
+              "y": 172,
+              "width": 399.33,
+              "height": 21,
+              "right": 473.33,
+              "bottom": 193
+            }
+          ],
+          "clipped": false
+        },
+        {
+          "text": "Your ads.Your website.One direction.",
+          "x": 70,
+          "y": 215,
+          "width": 870,
+          "height": 259.41,
+          "right": 940,
+          "bottom": 474.41,
+          "lines": [
+            {
+              "x": 70,
+              "y": 201,
+              "width": 340.45,
+              "height": 114,
+              "right": 410.45,
+              "bottom": 315
+            },
+            {
+              "x": 70,
+              "y": 287.47,
+              "width": 484.42,
+              "height": 114,
+              "right": 554.42,
+              "bottom": 401.47
+            },
+            {
+              "x": 70,
+              "y": 373.94,
+              "width": 502.95,
+              "height": 114,
+              "right": 572.95,
+              "bottom": 487.94
+            }
+          ],
+          "clipped": false
+        }
+      ],
+      "clippedText": [],
+      "collisions": [],
+      "safeZoneFailures": [],
+      "profileLogoSafety": null
+    },
+    {
+      "id": "post-services",
+      "file": "04-post-services.png",
+      "preview": "04-post-services-preview.jpg",
+      "expected": {
+        "width": 1080,
+        "height": 1350
+      },
+      "actual": {
+        "width": 1080,
+        "height": 1350
+      },
+      "dimensionsOkay": true,
+      "fontsLoaded": true,
+      "images": [
+        {
+          "source": "generated/services.png",
+          "naturalWidth": 1024,
+          "naturalHeight": 1536,
+          "complete": true
+        },
+        {
+          "source": "logo-mark-light.png",
+          "naturalWidth": 247,
+          "naturalHeight": 326,
+          "complete": true
+        }
+      ],
+      "imagesOkay": true,
+      "criticalText": [
+        {
+          "text": "One connected system",
+          "x": 74,
+          "y": 172,
+          "width": 308.63,
+          "height": 21.59,
+          "right": 382.63,
+          "bottom": 193.59,
+          "lines": [
+            {
+              "x": 74,
+              "y": 172,
+              "width": 308.63,
+              "height": 21,
+              "right": 382.63,
+              "bottom": 193
+            }
+          ],
+          "clipped": false
+        },
+        {
+          "text": "From attentionto action.",
+          "x": 70,
+          "y": 215,
+          "width": 830,
+          "height": 200.23,
+          "right": 900,
+          "bottom": 415.23,
+          "lines": [
+            {
+              "x": 70,
+              "y": 197,
+              "width": 601.02,
+              "height": 129,
+              "right": 671.02,
+              "bottom": 326
+            },
+            {
+              "x": 70,
+              "y": 289.33,
+              "width": 397.58,
+              "height": 144,
+              "right": 467.58,
+              "bottom": 433.33
+            }
+          ],
+          "clipped": false
+        },
+        {
+          "text": "Landing pages / Paid ads / SEO",
+          "x": 74,
+          "y": 566,
+          "width": 524.17,
+          "height": 39.14,
+          "right": 598.17,
+          "bottom": 605.14,
+          "lines": [
+            {
+              "x": 74,
+              "y": 568,
+              "width": 524.17,
+              "height": 35,
+              "right": 598.17,
+              "bottom": 603
+            }
+          ],
+          "clipped": false
+        }
+      ],
+      "clippedText": [],
+      "collisions": [],
+      "safeZoneFailures": [],
+      "profileLogoSafety": null
+    },
+    {
+      "id": "post-checklist",
+      "file": "05-post-landing-page-check.png",
+      "preview": "05-post-landing-page-check-preview.jpg",
+      "expected": {
+        "width": 1080,
+        "height": 1350
+      },
+      "actual": {
+        "width": 1080,
+        "height": 1350
+      },
+      "dimensionsOkay": true,
+      "fontsLoaded": true,
+      "images": [
+        {
+          "source": "generated/checklist.png",
+          "naturalWidth": 1086,
+          "naturalHeight": 1448,
+          "complete": true
+        },
+        {
+          "source": "logo-mark-dark.png",
+          "naturalWidth": 247,
+          "naturalHeight": 326,
+          "complete": true
+        }
+      ],
+      "imagesOkay": true,
+      "criticalText": [
+        {
+          "text": "Landing page check",
+          "x": 74,
+          "y": 172,
+          "width": 268.95,
+          "height": 21.59,
+          "right": 342.95,
+          "bottom": 193.59,
+          "lines": [
+            {
+              "x": 74,
+              "y": 172,
+              "width": 268.95,
+              "height": 21,
+              "right": 342.95,
+              "bottom": 193
+            }
+          ],
+          "clipped": false
+        },
+        {
+          "text": "Before you boost,check the page.",
+          "x": 70,
+          "y": 215,
+          "width": 900,
+          "height": 172.94,
+          "right": 970,
+          "bottom": 387.94,
+          "lines": [
+            {
+              "x": 70,
+              "y": 201,
+              "width": 636.08,
+              "height": 114,
+              "right": 706.08,
+              "bottom": 315
+            },
+            {
+              "x": 70,
+              "y": 287.47,
+              "width": 574.56,
+              "height": 114,
+              "right": 644.56,
+              "bottom": 401.47
+            }
+          ],
+          "clipped": false
+        },
+        {
+          "text": "Same offer. Clear next step. Working form.",
+          "x": 74,
+          "y": 558,
+          "width": 547.06,
+          "height": 40.59,
+          "right": 621.06,
+          "bottom": 598.59,
+          "lines": [
+            {
+              "x": 74,
+              "y": 560,
+              "width": 547.06,
+              "height": 35,
+              "right": 621.06,
+              "bottom": 595
+            }
+          ],
+          "clipped": false
+        }
+      ],
+      "clippedText": [],
+      "collisions": [],
+      "safeZoneFailures": [],
+      "profileLogoSafety": null
+    }
+  ]
+}

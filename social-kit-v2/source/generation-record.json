@@ -1,0 +1,54 @@
+[
+  {
+    "file": "generated/hero-wide.png",
+    "provider": "chr1",
+    "requestedModel": "gpt-image-2",
+    "requestedQuality": "high",
+    "requestedSize": "2048x896",
+    "actualSize": [
+      2172,
+      724
+    ],
+    "promptFile": "prompts.jsonl",
+    "reportedApiSeconds": 21.7
+  },
+  {
+    "file": "generated/intro.png",
+    "provider": "chr1",
+    "requestedModel": "gpt-image-2",
+    "requestedQuality": "high",
+    "requestedSize": "1024x1280",
+    "actualSize": [
+      1086,
+      1448
+    ],
+    "promptFile": "prompts.jsonl",
+    "reportedApiSeconds": 17.5
+  },
+  {
+    "file": "generated/services.png",
+    "provider": "chr1",
+    "requestedModel": "gpt-image-2",
+    "requestedQuality": "high",
+    "requestedSize": "1024x1280",
+    "actualSize": [
+      1024,
+      1536
+    ],
+    "promptFile": "prompts.jsonl",
+    "reportedApiSeconds": 19.8
+  },
+  {
+    "file": "generated/checklist.png",
+    "provider": "chr1",
+    "requestedModel": "gpt-image-2",
+    "requestedQuality": "high",
+    "requestedSize": "1024x1280",
+    "actualSize": [
+      1086,
+      1448
+    ],
+    "promptFile": "prompts.jsonl",
+    "reportedApiSeconds": 24.0
+  }
+]

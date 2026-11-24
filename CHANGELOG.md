@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-11-24 — Prototype v11 clarity pass
+
+- Services lead with the offer and a shorter deliverables panel; the existing campaign illustration is a separate demonstration. Mobile shows services before the illustration.
+- Renamed SEO & SEM to SEO to distinguish it from Google Ads. Preserved draft deliverables and claim qualifications.
+- Client work has a clear introductory heading, consistent mock-up positioning, and facts before imagery on mobile.
+- Verified desktop layout and 390px mobile service selection, case switching, no horizontal page overflow at 390px, JavaScript syntax and no captured console errors.
+- Local pre-edit rollback: `.prototype-checkpoints/20261124-164401-v10/`. Draft briefs, deliverables, missing quotes and team photo still need content confirmation.
+
 ## 2026-05-02 — Aesthetic Polish
 
 - **Services**: Increased card corner bracket opacity (.08 → .18) and column divider visibility (.07 → .14) so resting-state details read without hover.

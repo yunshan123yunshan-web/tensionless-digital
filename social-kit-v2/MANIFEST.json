@@ -1,0 +1,59 @@
+{
+  "assetCount": 6,
+  "assets": [
+    {
+      "file": "upload/01-profile-ig-facebook.png",
+      "dimensions": [
+        1080,
+        1080
+      ],
+      "bytes": 325330,
+      "sha256": "b0fd3b2bce306013380ee3d16dd13cd649372994a2811663680f51471eb670a9"
+    },
+    {
+      "file": "upload/01-profile-light-alternative.png",
+      "dimensions": [
+        1080,
+        1080
+      ],
+      "bytes": 331157,
+      "sha256": "81c5f5726ac0a447beab5a85efa68b3a2ff8efea5925b044457f0c7c041146c1"
+    },
+    {
+      "file": "upload/02-facebook-cover.png",
+      "dimensions": [
+        1640,
+        720
+      ],
+      "bytes": 543322,
+      "sha256": "d82647c91deaf61fbda35085c16b0a25d09885250f1db0493ac5daefbd7cc031"
+    },
+    {
+      "file": "upload/03-post-introduction.png",
+      "dimensions": [
+        1080,
+        1350
+      ],
+      "bytes": 826171,
+      "sha256": "e766a1c3e9cf5c57b9669a6529f4c4b3dc659e00d7b666be3e5255e822d2929a"
+    },
+    {
+      "file": "upload/04-post-services.png",
+      "dimensions": [
+        1080,
+        1350
+      ],
+      "bytes": 839121,
+      "sha256": "4a424f8199ee035f7503a5bde302ee46938c269b9d298e901a9646b6c518c215"
+    },
+    {
+      "file": "upload/05-post-landing-page-check.png",
+      "dimensions": [
+        1080,
+        1350
+      ],
+      "bytes": 962688,
+      "sha256": "392c47873519596f571ce869bd838d926d1dc68b5cd1c4c3d19088c0fe079a3e"
+    }
+  ]
+}

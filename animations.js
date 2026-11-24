@@ -221,6 +221,21 @@ window.composeMail = function (form) {
       .eventCallback('onComplete', function () { settle(dataBreak); });
   }
 
+  /* ── FAQ ────────────────────────────────────────────────────────── */
+
+  var faq = document.getElementById('faq');
+  if (faq) {
+    once(faq, 'top 78%')
+      .to(faq.querySelectorAll('.sec-kicker'), { autoAlpha: 1, duration: 0.5 }, 0)
+      .call(scrambleKicker(faq), [], 0.1)
+      .to(faq.querySelectorAll('.s-head'), { autoAlpha: 1, duration: 0.6 }, 0.1)
+      .to(faq.querySelectorAll('.s-head .word'), {
+        clipPath: 'inset(0 0% 0 0)', duration: 0.7, stagger: 0.035, ease: 'power4.out'
+      }, 0.15)
+      .to(faq.querySelectorAll('.faq-item'), { autoAlpha: 1, duration: 0.6, stagger: 0.1 }, 0.3)
+      .eventCallback('onComplete', function () { settle(faq); });
+  }
+
   /* ── Marquee (dual counter-scrolling rows) ──────────────────────── */
 
   var clients = document.getElementById('clients');

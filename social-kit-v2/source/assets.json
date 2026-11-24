@@ -1,0 +1,50 @@
+[
+  {
+    "id": "profile-dark",
+    "file": "01-profile-ig-facebook.png",
+    "width": 1080,
+    "height": 1080,
+    "label": "Profile photo \u00b7 recommended",
+    "use": "Use this same image for Instagram and Facebook. Centre it in the circular crop."
+  },
+  {
+    "id": "profile-light",
+    "file": "01-profile-light-alternative.png",
+    "width": 1080,
+    "height": 1080,
+    "label": "Profile photo \u00b7 light alternative",
+    "use": "Optional light-background version. Pick one profile image and use it consistently on both pages."
+  },
+  {
+    "id": "facebook-cover",
+    "file": "02-facebook-cover.png",
+    "width": 1640,
+    "height": 720,
+    "label": "Facebook Page cover",
+    "use": "Upload as the Facebook Page cover. Keep the image centred and check both desktop and mobile previews before saving."
+  },
+  {
+    "id": "post-intro",
+    "file": "03-post-introduction.png",
+    "width": 1080,
+    "height": 1350,
+    "label": "Post 1 \u00b7 introduction",
+    "use": "Publish on both pages first; pin it if that option is available."
+  },
+  {
+    "id": "post-services",
+    "file": "04-post-services.png",
+    "width": 1080,
+    "height": 1350,
+    "label": "Post 2 \u00b7 services",
+    "use": "Publish next with the services caption."
+  },
+  {
+    "id": "post-checklist",
+    "file": "05-post-landing-page-check.png",
+    "width": 1080,
+    "height": 1350,
+    "label": "Post 3 \u00b7 useful advice",
+    "use": "Publish with the three-point landing-page checklist caption."
+  }
+]

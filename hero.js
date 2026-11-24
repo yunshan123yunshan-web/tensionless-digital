@@ -35,6 +35,12 @@
   var chrome = null;
   if (window.tdChrome) chrome = window.tdChrome.init();
 
+  // Shared eyebrow scrambler — reused by both the boot-in reveal and the
+  // scroll-exit dissolve so they never run two competing RAF loops on the
+  // same element at once (that caused the text to garble mid-scramble).
+  var eyebrowEl = document.querySelector('.hero-eyebrow');
+  var eyebrowScr = eyebrowEl && window.tdScramble ? window.tdScramble(eyebrowEl, { duration: 700 }) : null;
+
   // Hero scroll fade-out — opacity only, works in every mode.
   var exitScrambled = false;
   ScrollTrigger.create({
@@ -45,16 +51,55 @@
     onUpdate: function (self) {
       gsap.set(FADE_TARGETS, { autoAlpha: 1 - self.progress });
       if (chrome) chrome.setFracture(self.progress * 1.15);
-      if (!exitScrambled && self.progress > 0.22 && !rm) {
+      if (!exitScrambled && self.progress > 0.22 && !rm && eyebrowScr) {
         exitScrambled = true;
-        var eyb = document.querySelector('.hero-eyebrow');
-        if (eyb && window.tdScramble) window.tdScramble(eyb, { duration: 900 }).start();
+        eyebrowScr.start();
       }
     }
   });
 
   // HUD telemetry — crosshair tracking + jittering readouts (moved from liquid.js).
   initHud();
+
+  // Headline word rotor — explicit crossfade between words, not a shared
+  // CSS transform animation (see the comment on .rotor-word in styles.css
+  // for why). GSAP owns the crossfade so there's never more than one word
+  // above opacity 0 at a time, and the interval is cleared on reduced
+  // motion so the first word just stays put.
+  var rotorTrack = document.querySelector('[data-rotor-track]');
+  if (rotorTrack && !rm) {
+    var rotorWords = [].slice.call(rotorTrack.querySelectorAll('.rotor-word'));
+    var rotorIndex = 0;
+    // .rotor-word is position:absolute so it no longer contributes to
+    // .rotor-slot's shrink-to-fit width the way an in-flow span would —
+    // left unset, the slot collapsed to 0 width and clipped every word via
+    // its own overflow:hidden, even though each word rendered correctly
+    // internally. Measure the widest word's own layout width (still
+    // computable while absolutely positioned) and size the slot to match.
+    var rotorSlot = rotorTrack.closest('.rotor-slot');
+    if (rotorSlot) {
+      var maxWidth = 0;
+      rotorWords.forEach(function (w) {
+        maxWidth = Math.max(maxWidth, w.getBoundingClientRect().width);
+      });
+      if (maxWidth > 0) {
+        rotorSlot.style.width = maxWidth + 'px';
+        rotorTrack.style.width = maxWidth + 'px';
+      }
+    }
+    if (rotorWords.length > 1) {
+      setInterval(function () {
+        var next = (rotorIndex + 1) % rotorWords.length;
+        var outgoing = rotorWords[rotorIndex];
+        var incoming = rotorWords[next];
+        gsap.to(outgoing, { autoAlpha: 0, duration: 0.5, ease: 'power2.inOut' });
+        gsap.fromTo(incoming, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, ease: 'power2.inOut' });
+        outgoing.classList.remove('is-active');
+        incoming.classList.add('is-active');
+        rotorIndex = next;
+      }, 2200);
+    }
+  }
 
   if (rm) {
     if (boot) boot.style.display = 'none';
@@ -78,8 +123,6 @@
   var lineScr = lineEls.map(function (el) {
     return window.tdScramble ? window.tdScramble(el, { duration: 700 }) : null;
   });
-  var eyebrowEl = document.querySelector('.hero-eyebrow');
-  var eyebrowScr = eyebrowEl && window.tdScramble ? window.tdScramble(eyebrowEl, { duration: 700 }) : null;
 
   var tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 

@@ -1,0 +1,455 @@
+{
+  "renderedAt": "2026-11-24T09:24:05.092Z",
+  "renderSeconds": 2.3,
+  "errors": [],
+  "checks": [
+    {
+      "asset": "01-profile-ig-facebook.png",
+      "fontsLoaded": true,
+      "width": 1080,
+      "height": 1080,
+      "imagesOkay": true,
+      "text": [],
+      "overlaps": []
+    },
+    {
+      "asset": "01-profile-light-alternative.png",
+      "fontsLoaded": true,
+      "width": 1080,
+      "height": 1080,
+      "imagesOkay": true,
+      "text": [],
+      "overlaps": []
+    },
+    {
+      "asset": "02-facebook-cover.png",
+      "fontsLoaded": true,
+      "width": 1640,
+      "height": 720,
+      "imagesOkay": true,
+      "text": [
+        {
+          "text": "Marketing,without the tension.",
+          "x": 250,
+          "y": 223,
+          "width": 1140,
+          "height": 217,
+          "lines": [
+            {
+              "left": 632.578125,
+              "top": 213,
+              "right": 1007.421875,
+              "bottom": 323
+            },
+            {
+              "left": 376.84375,
+              "top": 309,
+              "right": 1263.15625,
+              "bottom": 452
+            }
+          ],
+          "clipped": false
+        },
+        {
+          "text": "Landing pages/Google & Facebook Ads/SEO",
+          "x": 290,
+          "y": 493,
+          "width": 1060,
+          "height": 55,
+          "lines": [
+            {
+              "left": 526.671875,
+              "top": 522,
+              "right": 682.515625,
+              "bottom": 548
+            },
+            {
+              "left": 711.515625,
+              "top": 522,
+              "right": 719.65625,
+              "bottom": 548
+            },
+            {
+              "left": 748.65625,
+              "top": 522,
+              "right": 1002.421875,
+              "bottom": 548
+            },
+            {
+              "left": 1031.421875,
+              "top": 522,
+              "right": 1039.5625,
+              "bottom": 548
+            },
+            {
+              "left": 1068.5625,
+              "top": 522,
+              "right": 1113.328125,
+              "bottom": 548
+            }
+          ],
+          "clipped": false
+        }
+      ],
+      "overlaps": []
+    },
+    {
+      "asset": "03-post-introduction.png",
+      "fontsLoaded": true,
+      "width": 1080,
+      "height": 1350,
+      "imagesOkay": true,
+      "text": [
+        {
+          "text": "Your ads,website & SEO.Workingtogether.",
+          "x": 78,
+          "y": 301,
+          "width": 924,
+          "height": 452.9375,
+          "lines": [
+            {
+              "left": 78,
+              "top": 291,
+              "right": 459.078125,
+              "bottom": 415
+            },
+            {
+              "left": 78,
+              "top": 395.03125,
+              "right": 719.984375,
+              "bottom": 519.03125
+            },
+            {
+              "left": 78,
+              "top": 507.0625,
+              "right": 468.296875,
+              "bottom": 654.0625
+            },
+            {
+              "left": 78,
+              "top": 622,
+              "right": 459.484375,
+              "bottom": 769
+            }
+          ],
+          "clipped": false
+        },
+        {
+          "text": "One connected strategy.From first click to enquiry.",
+          "x": 78,
+          "y": 805.9375,
+          "width": 710,
+          "height": 87,
+          "lines": [
+            {
+              "left": 78,
+              "top": 809.9375,
+              "right": 415.375,
+              "bottom": 844.9375
+            },
+            {
+              "left": 78,
+              "top": 853.4375,
+              "right": 434.015625,
+              "bottom": 888.4375
+            }
+          ],
+          "clipped": false
+        },
+        {
+          "text": "The ad→The page→The enquiry",
+          "x": 78,
+          "y": 970.9375,
+          "width": 924,
+          "height": 63,
+          "lines": [
+            {
+              "left": 78,
+              "top": 1004.9375,
+              "right": 153.328125,
+              "bottom": 1032.9375
+            },
+            {
+              "left": 294.59375,
+              "top": 1003.9375,
+              "right": 319.59375,
+              "bottom": 1033.9375
+            },
+            {
+              "left": 460.875,
+              "top": 1004.9375,
+              "right": 563.9375,
+              "bottom": 1032.9375
+            },
+            {
+              "left": 705.203125,
+              "top": 1003.9375,
+              "right": 730.203125,
+              "bottom": 1033.9375
+            },
+            {
+              "left": 871.46875,
+              "top": 1004.9375,
+              "right": 1002,
+              "bottom": 1032.9375
+            }
+          ],
+          "clipped": false
+        },
+        {
+          "text": "Let’s talk about your business.↗",
+          "x": 78,
+          "y": 1219,
+          "width": 924,
+          "height": 61,
+          "lines": [
+            {
+              "left": 78,
+              "top": 1249.796875,
+              "right": 378.09375,
+              "bottom": 1274.796875
+            },
+            {
+              "left": 967,
+              "top": 1241,
+              "right": 1002,
+              "bottom": 1283
+            }
+          ],
+          "clipped": false
+        }
+      ],
+      "overlaps": []
+    },
+    {
+      "asset": "04-post-services.png",
+      "fontsLoaded": true,
+      "width": 1080,
+      "height": 1350,
+      "imagesOkay": true,
+      "text": [
+        {
+          "text": "From firstclick toenquiry.",
+          "x": 78,
+          "y": 281,
+          "width": 924,
+          "height": 359.40625,
+          "lines": [
+            {
+              "left": 78,
+              "top": 269,
+              "right": 485.359375,
+              "bottom": 404
+            },
+            {
+              "left": 78,
+              "top": 380,
+              "right": 367.984375,
+              "bottom": 515
+            },
+            {
+              "left": 78,
+              "top": 480,
+              "right": 516.21875,
+              "bottom": 663
+            }
+          ],
+          "clipped": false
+        },
+        {
+          "text": "01Landing page design & development\n  02Google & Facebook Ads\n  03SEO & lead generation\n  04Ongoing campaign optimisation",
+          "x": 78,
+          "y": 701.40625,
+          "width": 924,
+          "height": 350.1875,
+          "lines": [
+            {
+              "left": 78,
+              "top": 735.5,
+              "right": 95.640625,
+              "bottom": 755.5
+            },
+            {
+              "left": 135,
+              "top": 726.40625,
+              "right": 669.046875,
+              "bottom": 763.40625
+            },
+            {
+              "left": 78,
+              "top": 822.796875,
+              "right": 99.09375,
+              "bottom": 842.796875
+            },
+            {
+              "left": 135,
+              "top": 813.703125,
+              "right": 486.65625,
+              "bottom": 850.703125
+            },
+            {
+              "left": 78,
+              "top": 910.09375,
+              "right": 99.234375,
+              "bottom": 930.09375
+            },
+            {
+              "left": 135,
+              "top": 901,
+              "right": 462.734375,
+              "bottom": 938
+            },
+            {
+              "left": 78,
+              "top": 997.390625,
+              "right": 99.71875,
+              "bottom": 1017.390625
+            },
+            {
+              "left": 135,
+              "top": 988.296875,
+              "right": 599.203125,
+              "bottom": 1025.296875
+            }
+          ],
+          "clipped": false
+        },
+        {
+          "text": "Tell us what you want to improve.↗",
+          "x": 78,
+          "y": 1219,
+          "width": 924,
+          "height": 61,
+          "lines": [
+            {
+              "left": 78,
+              "top": 1249.796875,
+              "right": 409.21875,
+              "bottom": 1274.796875
+            },
+            {
+              "left": 967,
+              "top": 1241,
+              "right": 1002,
+              "bottom": 1283
+            }
+          ],
+          "clipped": false
+        }
+      ],
+      "overlaps": []
+    },
+    {
+      "asset": "05-post-landing-page-check.png",
+      "fontsLoaded": true,
+      "width": 1080,
+      "height": 1350,
+      "imagesOkay": true,
+      "text": [
+        {
+          "text": "Does yourlanding pagematchyour ad?",
+          "x": 78,
+          "y": 285,
+          "width": 924,
+          "height": 415.3125,
+          "lines": [
+            {
+              "left": 78,
+              "top": 275,
+              "right": 462.15625,
+              "bottom": 389
+            },
+            {
+              "left": 78,
+              "top": 369.9375,
+              "right": 557.734375,
+              "bottom": 483.9375
+            },
+            {
+              "left": 78,
+              "top": 464.875,
+              "right": 309.984375,
+              "bottom": 578.875
+            },
+            {
+              "left": 78,
+              "top": 559.8125,
+              "right": 477.421875,
+              "bottom": 716.8125
+            }
+          ],
+          "clipped": false
+        },
+        {
+          "text": "01The same offer, from ad to page.\n  02A clear next step for the visitor.\n  03An enquiry form that works on mobile.",
+          "x": 78,
+          "y": 753.3125,
+          "width": 924,
+          "height": 259.28125,
+          "lines": [
+            {
+              "left": 78,
+              "top": 786.390625,
+              "right": 95.640625,
+              "bottom": 806.390625
+            },
+            {
+              "left": 135,
+              "top": 781.3125,
+              "right": 537.390625,
+              "bottom": 812.3125
+            },
+            {
+              "left": 78,
+              "top": 872.484375,
+              "right": 99.09375,
+              "bottom": 892.484375
+            },
+            {
+              "left": 135,
+              "top": 867.40625,
+              "right": 517.671875,
+              "bottom": 898.40625
+            },
+            {
+              "left": 78,
+              "top": 958.578125,
+              "right": 99.234375,
+              "bottom": 978.578125
+            },
+            {
+              "left": 135,
+              "top": 953.5,
+              "right": 604.5625,
+              "bottom": 984.5
+            }
+          ],
+          "clipped": false
+        },
+        {
+          "text": "Save this for your next campaign.↗",
+          "x": 78,
+          "y": 1219,
+          "width": 924,
+          "height": 61,
+          "lines": [
+            {
+              "left": 78,
+              "top": 1249.796875,
+              "right": 410.140625,
+              "bottom": 1274.796875
+            },
+            {
+              "left": 967,
+              "top": 1241,
+              "right": 1002,
+              "bottom": 1283
+            }
+          ],
+          "clipped": false
+        }
+      ],
+      "overlaps": []
+    }
+  ]
+}

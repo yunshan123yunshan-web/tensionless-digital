@@ -1,0 +1,196 @@
+/* ── CHAOS → CHOREOGRAPHY: the blue services scene ─────────────────────
+   One art-directed composition of a fictional campaign (Moss & Mortar is
+   made up). Positions/rotations come from proto-scene.js; everything inside a
+   card is sized in container units so it scales with the card. */
+.scene { --blue: #8fb0ff; --ink: #050507; --moss: #2f4a3a; --cream: #f4efe6; --terra: #c8643b; --brass: #b8914a;
+  position: relative; background: var(--blue); color: var(--ink); padding: 4vh var(--gutter) 9vh; overflow: hidden; }
+.scene-top { display: flex; justify-content: space-between; gap: 16px; padding-bottom: 14px; border-bottom: 1.5px solid var(--ink); }
+.scene-head { display: grid; grid-template-columns: minmax(0, 1fr) 380px; column-gap: 48px; align-items: end; margin-top: 4vh; }
+.scene-lede { font-size: 17px; line-height: 1.5; color: rgba(5,5,7,.86); }
+.scene-lede b { font-weight: 700; color: var(--ink); }
+.scene-body { display: grid; grid-template-columns: minmax(0, 1fr) 380px; grid-template-areas: "stage controls" "note controls"; column-gap: 48px; margin-top: 4vh; align-items: start; }
+.stage-note { grid-area: note; margin-top: 10px; opacity: .7; font-size: 10px; }
+.scene-title { font-weight: 800; font-size: clamp(44px, 5.4vw, 92px); line-height: .88; letter-spacing: -.045em; text-transform: uppercase; }
+.scene-title .swap { display: inline-grid; text-transform: none; }
+.scene-title .swap em { grid-area: 1 / 1; font-family: var(--serif); font-weight: 400; letter-spacing: -.02em; white-space: nowrap; }
+.scene-title .s-order { clip-path: inset(0 100% 0 0); }
+.scene[data-state="order"] .scene-title .s-chaos { clip-path: inset(0 0 0 100%); }
+.scene[data-state="order"] .scene-title .s-order { clip-path: inset(0 0 0 0); }
+
+/* controls: stable, never covered by the composition */
+.scene-controls { grid-area: controls; position: relative; z-index: 30; display: flex; flex-direction: column; gap: 14px; }
+.make { display: flex; justify-content: space-between; align-items: center; gap: 12px; width: 100%; padding: 20px 22px; border: 0; cursor: pointer;
+  background: var(--ink); color: var(--blue); font: 700 19px/1.1 var(--display); letter-spacing: -.01em; text-align: left; transition: background .15s, color .15s; }
+.make:hover, .make:focus-visible { background: var(--cream); color: var(--ink); }
+.make[aria-disabled="true"] { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--ink); cursor: default; }
+.make .arr { display: inline-block; }
+.replay { align-self: flex-start; background: none; border: 0; padding: 4px 0; color: var(--ink); font: inherit; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.replay[hidden] { display: none; }
+.ctl-label { margin-top: 10px; }
+.svc-picks { display: flex; flex-direction: column; }
+.pick { display: flex; gap: 14px; align-items: baseline; padding: 12px 4px; background: none; border: 0; border-top: 1.5px solid var(--ink); color: var(--ink);
+  font: 600 19px/1.1 var(--display); letter-spacing: -.01em; text-align: left; cursor: pointer; transition: background .15s, color .15s, padding .2s; }
+.svc-picks { border-bottom: 1.5px solid var(--ink); }
+.pick .mono { font-size: 10px; }
+.pick-txt { display: flex; flex-direction: column; gap: 4px; }
+.pick-line { font: 400 14px/1.35 var(--display); letter-spacing: 0; opacity: .78; }
+.pick:hover { padding-left: 10px; }
+.pick[aria-pressed="true"] { background: var(--ink); color: var(--blue); padding-left: 12px; }
+.make:focus-visible, .pick:focus-visible, .replay:focus-visible, .ex-cta:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+.make:focus-visible { outline-color: var(--cream); }
+
+.svc-explain { padding: 14px 4px 18px 40px; }
+.svc-explain p { font-size: 14.5px; line-height: 1.5; color: rgba(5,5,7,.86); }
+.ex-get { display: grid; grid-template-columns: 64px 1fr; gap: 8px; margin-top: 10px; }
+.ex-get .mono { font-size: 10px; padding-top: 3px; }
+.ex-cta { display: inline-block; margin-top: 14px; color: var(--ink); font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
+
+/* ── the stage ── */
+.stage { grid-area: stage; position: relative; z-index: 2; aspect-ratio: 1.6; perspective: 1600px; perspective-origin: 50% 45%; }
+/* one shared 3D space: pieces sit at different depths; the camera move rotates this */
+/* the world box sits at depth 0 and would swallow clicks meant for pieces behind it (negative z),
+   so it ignores the pointer and only the pieces themselves receive it */
+.world { position: absolute; inset: 0; transform-style: preserve-3d; pointer-events: none; }
+.world > .art { pointer-events: auto; }
+.art { --lift: .25; position: absolute; left: 0; top: 0; width: 20%; will-change: transform; }
+/* the container is the .float, so a card's own padding/radius in cqi resolve against the card's width */
+.float { position: relative; width: 100%; container-type: inline-size; }
+.card { position: relative; width: 100%; transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s, opacity .35s; }
+.scene[data-state="order"] .art-enq, .scene[data-state="moving"] .art-enq { z-index: 25 !important; }
+.art-cursor { z-index: 30 !important; }
+.art img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.badge { position: absolute; left: -2px; top: -14px; z-index: 3; padding: 6px 9px; background: var(--ink); color: var(--blue);
+  font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap;
+  opacity: 0; transform: translateY(4px); transition: opacity .3s, transform .3s; }
+.scene[data-state="order"] .badge { opacity: 1; transform: none; }
+.art.is-focus { z-index: 20 !important; }
+.art.is-focus .card:not(.bare) { box-shadow: 0 0 0 3px var(--ink), 0 40px 70px -20px rgba(5,5,7,.55); }
+.links { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 4; }
+.links path { fill: none; stroke: var(--ink); stroke-width: 2.5; stroke-linecap: round; }
+.links line.guide { stroke: rgba(5,5,7,.38); stroke-width: 1; stroke-dasharray: 4 5; }
+
+/* disconnected state: every main card trails an unplugged connector pointing nowhere */
+.stub { position: absolute; z-index: 4; left: var(--sx); top: var(--sy); width: clamp(34px, 18cqi, 70px); height: 0; border-top: 2px dashed var(--ink);
+  rotate: var(--sr); transform-origin: 0 50%; pointer-events: none; transition: opacity .25s; }
+.stub::after { content: ''; position: absolute; right: -8px; top: -7px; width: 10px; height: 10px; border: 2px solid var(--ink); border-radius: 50%; background: var(--blue); }
+.scene[data-state="order"] .stub, .scene[data-state="moving"] .stub { opacity: 0; }
+
+.scene:not([data-state="order"]):not([data-state="moving"]) .links { visibility: hidden; }
+
+/* shared card surface */
+/* shadow grows with --lift (how far the piece floats toward you), so nearer pieces cast onto farther ones */
+.paper { background: #fff; border-radius: 2.6cqi; overflow: hidden;
+  box-shadow: 0 calc(14px + var(--lift) * 48px) calc(30px + var(--lift) * 60px) -22px rgba(5,5,7,calc(.36 + var(--lift) * .24)), 0 2px 0 rgba(5,5,7,.08); }
+
+/* ad creative */
+.art-ad .card { aspect-ratio: 1 / 1.42; display: flex; flex-direction: column; font-family: var(--display); color: #1b1d20; }
+.ad-head { display: flex; align-items: center; gap: 3cqi; padding: 4cqi 5cqi; }
+.ad-avatar { flex: none; width: 11cqi; height: 11cqi; border-radius: 50%; background: var(--moss); color: var(--cream); display: grid; place-items: center; font: italic 400 5cqi/1 var(--serif); }
+.ad-head b { display: block; font-size: 4.6cqi; }
+.ad-head i { display: block; font-style: normal; font-size: 3.6cqi; color: #6b7178; }
+.ad-dots { margin-left: auto; font-size: 5cqi; color: #6b7178; }
+.ad-copy { padding: 0 5cqi 3.5cqi; font-size: 4.4cqi; line-height: 1.35; }
+.ad-img { flex: 1; min-height: 0; position: relative; }
+.ad-img::after { content: 'A 4-room that finally fits.'; position: absolute; left: 5cqi; right: 5cqi; bottom: 5cqi; color: #fff;
+  font: italic 400 10cqi/0.95 var(--serif); text-shadow: 0 2px 18px rgba(0,0,0,.35); }
+.ad-foot { display: flex; align-items: center; justify-content: space-between; gap: 3cqi; padding: 4cqi 5cqi; background: #f3f4f6; }
+.ad-foot small { display: block; font-size: 3.2cqi; color: #6b7178; letter-spacing: .04em; }
+.ad-foot b { display: block; font-size: 4.4cqi; }
+.ad-btn { flex: none; padding: 2.6cqi 4cqi; background: var(--terra); color: #fff; border-radius: 1.6cqi; font-size: 4cqi; font-weight: 600; }
+
+/* landing page */
+.art-lp .card { aspect-ratio: 1 / .78; display: flex; flex-direction: column; background: var(--cream); color: #1d2a22; font-family: var(--display); }
+.lp-bar { display: flex; align-items: center; gap: 1.1cqi; padding: 1.6cqi 2.2cqi; background: #e4ddd1; }
+.lp-bar i { width: 1.4cqi; height: 1.4cqi; border-radius: 50%; background: #b9b1a4; }
+.lp-url { margin-left: 2cqi; padding: .6cqi 2.4cqi; border-radius: 2cqi; background: #f4efe6; font-size: 1.7cqi; color: #6d675d; font-family: var(--mono); }
+.lp-hero { flex: 1; min-height: 0; display: grid; grid-template-columns: 1.05fr 1fr; }
+.lp-copy { padding: 3.4cqi 3.6cqi 2cqi; display: flex; flex-direction: column; gap: 1.6cqi; }
+.lp-logo { font: italic 400 3.2cqi/1 var(--serif); color: var(--moss); }
+.lp-eyebrow { margin-top: 1.4cqi; font-family: var(--mono); font-size: 1.6cqi; letter-spacing: .14em; text-transform: uppercase; color: #6d675d; }
+.lp-h { font-size: 5.6cqi; font-weight: 800; line-height: .95; letter-spacing: -.04em; text-transform: uppercase; color: var(--moss); }
+.lp-h em { font: italic 400 6.4cqi/0.9 var(--serif); text-transform: none; color: var(--terra); letter-spacing: -.02em; }
+.lp-sub { font-size: 2.05cqi; line-height: 1.45; color: #4b524c; }
+.lp-cta { align-self: flex-start; margin-top: .6cqi; padding: 1.8cqi 2.8cqi; background: var(--moss); color: var(--cream); font-size: 2.1cqi; font-weight: 600; border-radius: 1cqi; transition: background .1s; }
+.lp-cta.pressed { background: var(--terra); }
+.lp-trust { font-size: 1.7cqi; color: #6d675d; letter-spacing: .02em; }
+.lp-img { position: relative; }
+.lp-strip { display: flex; gap: 1.6cqi; padding: 1.8cqi 3.6cqi; background: var(--moss); color: var(--cream); }
+.lp-strip span { font-family: var(--mono); font-size: 1.55cqi; letter-spacing: .12em; text-transform: uppercase; }
+.lp-strip span + span::before { content: '·'; margin-right: 1.6cqi; opacity: .6; }
+
+/* search result */
+.art-search .card { aspect-ratio: 1 / .62; padding: 4cqi 5cqi; font-family: Arial, Helvetica, sans-serif; color: #202124; display: flex; flex-direction: column; gap: 2.6cqi; }
+.sr-q { display: flex; align-items: center; gap: 2.4cqi; padding: 2.2cqi 3.6cqi; border-radius: 6cqi; box-shadow: 0 0 0 1px #dfe1e5; font-size: 3.6cqi; }
+.sr-q svg { width: 3.6cqi; height: 3.6cqi; flex: none; }
+.sr-row { position: relative; padding: 1.2cqi 2cqi; margin: 0 -2cqi; border-radius: 1.6cqi; transition: background .25s, box-shadow .25s; }
+.sr-src { display: flex; align-items: center; gap: 1.6cqi; font-size: 2.9cqi; }
+.sr-src small { color: #4d5156; font-size: 2.6cqi; }
+.sr-fav { width: 3.6cqi; height: 3.6cqi; border-radius: 50%; background: var(--moss); flex: none; }
+.sr-tag { font-size: 2.7cqi; font-weight: 700; }
+.sr-t { margin-top: .6cqi; font-size: 4.4cqi; color: #1a0dab; line-height: 1.2; }
+.sr-d { font-size: 2.9cqi; color: #4d5156; line-height: 1.4; }
+.art-search[data-row="paid"] .sr-paid, .art-search[data-row="org"] .sr-org { background: #eef2ff; box-shadow: inset 1cqi 0 0 var(--ink); }
+
+/* organic ranking (SEO) */
+.art-seo .card { aspect-ratio: 1 / .62; padding: 4cqi 5cqi; font-family: Arial, Helvetica, sans-serif; color: #202124; display: flex; flex-direction: column; gap: 2cqi; }
+.seo-head { display: flex; align-items: center; gap: 2cqi; font-size: 3.2cqi; font-weight: 700; }
+.seo-head small { display: block; font-weight: 400; color: #4d5156; font-size: 2.6cqi; }
+.seo-q { font-size: 4.4cqi; color: #1a0dab; }
+.seo-q::before { content: '“'; } .seo-q::after { content: '”'; }
+.seo-body { flex: 1; min-height: 0; display: flex; align-items: flex-end; gap: 4cqi; }
+.seo-pos { display: flex; flex-direction: column; }
+.seo-pos b { font: 800 15cqi/.85 var(--display); color: var(--moss); letter-spacing: -.04em; }
+.seo-pos small { font-family: var(--mono); font-size: 2.4cqi; letter-spacing: .12em; text-transform: uppercase; color: #6b7178; margin-top: 1cqi; }
+.seo-line { flex: 1; height: 100%; overflow: visible; }
+.seo-line polyline { fill: none; stroke: var(--terra); stroke-width: 2.5; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+.seo-foot { padding-top: 2cqi; border-top: 1px solid #e6e8eb; font-family: var(--mono); font-size: 2.4cqi; letter-spacing: .08em; text-transform: uppercase; color: #6b7178; }
+
+/* enquiry confirmation */
+.art-enq .card { aspect-ratio: 1 / .5; padding: 5cqi 6cqi; background: var(--ink); color: #e9edf2; border-radius: 4cqi; font-family: var(--display);
+  display: flex; flex-direction: column; justify-content: center; gap: 2.4cqi;
+  box-shadow: 0 calc(14px + var(--lift) * 48px) calc(30px + var(--lift) * 60px) -18px rgba(5,5,7,calc(.42 + var(--lift) * .22)); }
+.enq-top { display: flex; align-items: center; gap: 3cqi; font-family: var(--mono); font-size: 3.8cqi; letter-spacing: .12em; text-transform: uppercase; color: var(--blue); }
+.enq-check { width: 8cqi; height: 8cqi; border-radius: 50%; background: #3ccf8e; color: var(--ink); display: grid; place-items: center; font-size: 5cqi; font-weight: 800; }
+.enq-top em { margin-left: auto; font-style: normal; color: #7d8794; }
+.enq-name { font-size: 7cqi; font-weight: 700; letter-spacing: -.02em; }
+.enq-line { font-size: 5cqi; color: #c7ced6; }
+.enq-src { font-family: var(--mono); font-size: 3.4cqi; letter-spacing: .1em; text-transform: uppercase; color: #7d8794; }
+
+/* decorative pieces */
+/* deeper than the section blue, with a tight contact shadow + a soft ambient one, so the silhouette reads.
+   --press (0–1, set by proto-squish.js) pulls the shadow in tighter, like the object meeting the surface. */
+.art-infl .card { --press: 0; aspect-ratio: 1; cursor: pointer; touch-action: none;
+  filter: drop-shadow(0 calc(10px - var(--press) * 6px) calc(8px - var(--press) * 4px) rgba(18,26,80,calc(.38 + var(--press) * .25)))
+          drop-shadow(0 calc(34px - var(--press) * 14px) 44px rgba(18,26,80,.42)); }
+.art-infl .card.pressing { cursor: grabbing; }
+.art-infl img, .art-infl canvas { filter: saturate(1.35) brightness(.86) contrast(1.06); }
+.art-infl canvas.squish { position: absolute; inset: 0; width: 100%; height: 100%; }
+.art-infl .card.squishy img { visibility: hidden; }
+.infl-hint { position: absolute; left: 50%; bottom: 6%; translate: -50% 0; padding: 5px 8px; background: var(--ink); color: var(--blue);
+  white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity .4s .3s; }
+.scene[data-state="order"] .infl-hint { opacity: 1; }
+.scene.squeezed .infl-hint { opacity: 0; transition-delay: 0s; }
+.art-cursor .card { aspect-ratio: 20 / 28; filter: drop-shadow(0 6px 8px rgba(5,5,7,.35)); }
+.art-cursor svg { width: 100%; height: 100%; display: block; }
+
+/* ── mobile: its own composition, controls → stage → explanation kept together ── */
+@media (max-width: 899px) {
+  .scene { padding-top: 6vh; padding-bottom: 7vh; }
+  .scene-top { flex-direction: column; gap: 4px; }
+  .scene-head { grid-template-columns: 1fr; row-gap: 16px; }
+  .scene-lede { font-size: 15.5px; }
+  /* the button sits right above the picture it animates; the service list follows */
+  .scene-body { grid-template-columns: minmax(0, 1fr); grid-template-areas: "make" "replay" "stage" "note" "label" "picks"; margin-top: 3vh; }
+  .scene-controls { display: contents; }
+  .make { grid-area: make; } .replay { grid-area: replay; margin-top: 10px; } .ctl-label { grid-area: label; margin-top: 34px !important; margin-bottom: 12px; }
+  .svc-picks { grid-area: picks; }
+  .scene-title { font-size: clamp(40px, 12vw, 80px); }
+  .scene-controls { gap: 10px; }
+  .make { padding: 16px 18px; font-size: 17px; }
+  .pick { font-size: 17px; }
+  .ctl-label { margin-top: 4px; }
+  .svc-explain { padding-left: 4px; }
+  .stage { aspect-ratio: .73; margin: 26px 0 0; }
+  .stage-note { margin-top: 6px; }
+  .badge { font-size: 9px; padding: 4px 6px; top: -11px; }
+}

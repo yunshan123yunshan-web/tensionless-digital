@@ -1,0 +1,138 @@
+<!doctype html>
+<!--
+  Tensionless Digital social campaign artwork.
+  All imagery, fonts and marks are local project assets. The supplied logo mark
+  files are rendered directly so their geometry is never recreated or altered.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tensionless Digital — social campaign v2</title>
+  <style>
+    @font-face{font-family:Inter;src:url('fonts/inter-400.woff2') format('woff2');font-weight:400;font-style:normal;font-display:block}
+    @font-face{font-family:Inter;src:url('fonts/inter-500.woff2') format('woff2');font-weight:500;font-style:normal;font-display:block}
+    @font-face{font-family:Inter;src:url('fonts/inter-600.woff2') format('woff2');font-weight:600;font-style:normal;font-display:block}
+    @font-face{font-family:Cormorant;src:url('fonts/cg-300i.woff2') format('woff2');font-weight:300;font-style:italic;font-display:block}
+
+    :root{--ink:#050507;--paper:#f0f2f4;--text:#e9edf2;--steel:#b8c4d0;--muted:#7d8794;--rule:#4c545e;--blue:#8fb0ff}
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{overflow:hidden;background:var(--ink)}
+    body{font-family:Inter,Arial,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:geometricPrecision}
+    .artboard{display:none;position:relative;overflow:hidden;isolation:isolate;background:var(--ink);color:var(--text)}
+    .artboard.active{display:block}
+    .campaign-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-3}
+    .brand{display:flex;align-items:center;gap:18px;position:relative;z-index:3}
+    .brand img{width:42px;height:56px;object-fit:contain;flex:none}
+    .brand-type{font-size:19px;font-weight:600;line-height:1.05;letter-spacing:2.8px;color:inherit}
+    .brand-type span{display:block;margin-top:7px;font-size:12px;font-weight:400;letter-spacing:4.5px;color:var(--steel)}
+    .kicker{font-size:18px;font-weight:500;line-height:1.2;letter-spacing:3.6px;text-transform:uppercase}
+    .display{font-weight:500;letter-spacing:-5.8px}
+    .serif{font-family:Cormorant,Georgia,serif;font-weight:300;font-style:italic}
+
+    /* Profile marks stay intentionally simple for clarity at small circular sizes. */
+    .profile{width:1080px;height:1080px}
+    .profile::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 44%,#171b21 0,#0b0d10 31%,var(--ink) 68%)}
+    .profile::after{content:"";position:absolute;inset:92px;border:1px solid rgba(184,196,208,.11);border-radius:50%}
+    .profile>img{position:absolute;left:50%;top:50%;width:auto;height:650px;object-fit:contain;transform:translate(-50%,-50%);filter:drop-shadow(0 22px 42px rgba(0,0,0,.28))}
+    .profile-light{background:var(--paper);color:var(--ink)}
+    .profile-light::before{background:radial-gradient(circle at 50% 42%,#fff 0,#f6f7f8 34%,var(--paper) 72%)}
+    .profile-light::after{border-color:rgba(5,5,7,.09)}
+    .profile-light>img{filter:drop-shadow(0 20px 36px rgba(5,5,7,.10))}
+
+    /* Cover content remains inside x220..1420 and y80..590. */
+    .cover{width:1640px;height:720px}
+    .cover .campaign-image{object-fit:contain;object-position:right center;background:var(--ink)}
+    .cover::before{content:"";position:absolute;inset:0;z-index:-2;background:linear-gradient(90deg,rgba(5,5,7,.99) 0%,rgba(5,5,7,.96) 27%,rgba(5,5,7,.73) 48%,rgba(5,5,7,.14) 72%,rgba(5,5,7,.03) 100%)}
+    .cover::after{content:"";position:absolute;left:220px;right:220px;bottom:112px;height:1px;background:linear-gradient(90deg,var(--steel),rgba(184,196,208,.14) 72%,transparent);z-index:1}
+    .cover .brand{position:absolute;left:220px;top:82px}
+    .cover .brand img{width:38px;height:50px}
+    .cover .brand-type{font-size:17px;letter-spacing:2.5px}
+    .cover .brand-type span{font-size:11px;letter-spacing:4px;margin-top:5px}
+    .cover h1{position:absolute;left:220px;top:201px;width:760px;font-size:88px;line-height:.93}
+    .cover h1 .serif{display:block;margin-top:12px;font-size:84px;line-height:.88;letter-spacing:-3px;color:var(--steel);white-space:nowrap}
+    .cover .services{position:absolute;left:220px;top:548px;display:flex;align-items:center;gap:21px;font-size:22px;line-height:1.2;letter-spacing:.1px;white-space:nowrap}
+    .cover .services i{width:4px;height:4px;border-radius:50%;background:var(--blue);box-shadow:0 0 14px rgba(143,176,255,.72)}
+
+    /* Feed copy occupies the negative-space field above each sculpture. */
+    .post{width:1080px;height:1350px}
+    .post::before{content:"";position:absolute;inset:0;z-index:-2;pointer-events:none}
+    .post .brand{position:absolute;left:74px;top:66px}
+    .post .kicker{position:absolute;left:74px;top:172px}
+    .post h1{position:absolute;left:70px;right:60px;top:215px;font-size:94px;line-height:.92}
+    .post .accent-rule{position:absolute;left:74px;top:536px;width:142px;height:3px;background:var(--blue);box-shadow:0 0 20px rgba(143,176,255,.6)}
+    .post .micro-label{position:absolute;left:74px;top:566px;font-size:18px;line-height:1.35;letter-spacing:.7px;color:var(--steel)}
+    .post .index{position:absolute;right:67px;top:76px;font-size:15px;line-height:1;letter-spacing:2px;color:var(--muted)}
+
+    .intro::before{background:linear-gradient(180deg,rgba(5,5,7,.99) 0%,rgba(5,5,7,.96) 28%,rgba(5,5,7,.58) 44%,rgba(5,5,7,.04) 65%,rgba(5,5,7,.06) 84%,rgba(5,5,7,.84) 100%)}
+    .intro .kicker{color:var(--steel)}
+    .intro h1{max-width:870px}
+    .intro h1 .line-three{color:var(--steel)}
+
+    .services-post::before{background:linear-gradient(180deg,rgba(5,5,7,.99) 0%,rgba(5,5,7,.96) 29%,rgba(5,5,7,.54) 44%,rgba(5,5,7,.02) 65%,rgba(5,5,7,.05) 84%,rgba(5,5,7,.82) 100%)}
+    .services-post .kicker{color:var(--steel)}
+    .services-post h1{font-size:106px;line-height:.89;max-width:830px}
+    .services-post h1 .serif{font-size:119px;letter-spacing:-4px;color:var(--steel)}
+    .services-post .micro-label{font-size:29px;letter-spacing:.45px;text-transform:uppercase}
+
+    .checklist{background:var(--paper);color:var(--ink)}
+    .checklist::before{background:linear-gradient(180deg,rgba(240,242,244,.99) 0%,rgba(240,242,244,.96) 29%,rgba(240,242,244,.62) 44%,rgba(240,242,244,.02) 65%,rgba(240,242,244,.03) 85%,rgba(5,5,7,.66) 100%)}
+    .checklist .brand-type span{color:var(--rule)}
+    .checklist .kicker{color:var(--rule)}
+    .checklist h1{font-size:94px;line-height:.92;max-width:900px}
+    .checklist .accent-rule{background:#3564d8;box-shadow:0 0 16px rgba(53,100,216,.36)}
+    .checklist .micro-label{top:558px;max-width:860px;font-size:29px;font-weight:500;line-height:1.4;letter-spacing:.05px;color:#30353b}
+    .checklist .index{color:var(--rule)}
+  </style>
+</head>
+<body>
+  <section class="artboard profile" id="profile-dark" aria-label="Dark profile image">
+    <img src="logo-mark-light.png" alt="Tensionless Digital brand mark" data-profile-logo>
+  </section>
+  <section class="artboard profile profile-light" id="profile-light" aria-label="Light profile image">
+    <img src="logo-mark-dark.png" alt="Tensionless Digital brand mark" data-profile-logo>
+  </section>
+  <section class="artboard cover" id="facebook-cover" aria-label="Facebook cover artwork">
+    <img class="campaign-image" src="generated/hero-wide.png" alt="Polished chrome ribbons emerging from black space">
+    <div class="brand" data-collision data-safe><img src="logo-mark-light.png" alt=""><div class="brand-type">TENSIONLESS<span>DIGITAL</span></div></div>
+    <h1 class="display" data-critical data-collision data-safe>Marketing,<span class="serif">without the tension.</span></h1>
+    <div class="services" data-critical data-collision data-safe><span>Landing pages</span><i aria-hidden="true"></i><span>Paid ads</span><i aria-hidden="true"></i><span>SEO</span></div>
+  </section>
+  <section class="artboard post intro" id="post-intro" aria-label="Connected digital marketing introduction post">
+    <img class="campaign-image" src="generated/intro.png" alt="Chrome tension-to-order sculpture">
+    <div class="brand" data-collision><img src="logo-mark-light.png" alt=""><div class="brand-type">TENSIONLESS<span>DIGITAL</span></div></div>
+    <div class="index" data-collision>01 / 03</div>
+    <div class="kicker" data-critical data-collision>Connected digital marketing</div>
+    <h1 class="display" data-critical data-collision>Your ads.<br>Your website.<br><span class="line-three">One direction.</span></h1>
+    <div class="accent-rule" aria-hidden="true"></div>
+  </section>
+  <section class="artboard post services-post" id="post-services" aria-label="Services post">
+    <img class="campaign-image" src="generated/services.png" alt="Three chrome optical frames joined by a blue light path">
+    <div class="brand" data-collision><img src="logo-mark-light.png" alt=""><div class="brand-type">TENSIONLESS<span>DIGITAL</span></div></div>
+    <div class="index" data-collision>02 / 03</div>
+    <div class="kicker" data-critical data-collision>One connected system</div>
+    <h1 class="display" data-critical data-collision>From attention<br><span class="serif">to action.</span></h1>
+    <div class="accent-rule" aria-hidden="true"></div>
+    <div class="micro-label" data-critical data-collision>Landing pages&nbsp; / &nbsp;Paid ads&nbsp; / &nbsp;SEO</div>
+  </section>
+  <section class="artboard post checklist" id="post-checklist" aria-label="Landing page checklist post">
+    <img class="campaign-image" src="generated/checklist.png" alt="Clear glass lens aligning polished chrome paths">
+    <div class="brand" data-collision><img src="logo-mark-dark.png" alt=""><div class="brand-type">TENSIONLESS<span>DIGITAL</span></div></div>
+    <div class="index" data-collision>03 / 03</div>
+    <div class="kicker" data-critical data-collision>Landing page check</div>
+    <h1 class="display" data-critical data-collision>Before you boost,<br>check the page.</h1>
+    <div class="accent-rule" aria-hidden="true"></div>
+    <div class="micro-label" data-critical data-collision>Same offer. Clear next step. Working form.</div>
+  </section>
+  <script>
+    const requestedId = new URLSearchParams(location.search).get('asset') || 'post-intro';
+    const selected = document.getElementById(requestedId);
+    if (!selected) throw new Error(`Unknown artboard: ${requestedId}`);
+    selected.classList.add('active');
+    document.documentElement.style.width = `${selected.offsetWidth}px`;
+    document.documentElement.style.height = `${selected.offsetHeight}px`;
+    document.body.style.width = `${selected.offsetWidth}px`;
+    document.body.style.height = `${selected.offsetHeight}px`;
+  </script>
+</body>
+</html>

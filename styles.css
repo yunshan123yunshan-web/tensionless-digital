@@ -40,7 +40,8 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 ::selection { background: var(--glint-a); color: #050507; }
 
 /* ── chrome / serif / mono text helpers ─────────────────────────── */
-.chrome {
+.chrome,
+.chrome .word {
   background: var(--chrome);
   background-size: 220% 100%;
   -webkit-background-clip: text;
@@ -250,6 +251,7 @@ em.serif, .serif em { font-style: italic; }
   height: 100vh;
   display: flex;
   align-items: center;
+  padding-top: 74px;
   overflow: hidden;
 }
 .hero-vignette {
@@ -264,15 +266,15 @@ em.serif, .serif em { font-style: italic; }
   z-index: 3;
   width: min(1240px, 94vw);
   margin: 0 auto;
-  padding: 120px 0 100px;
+  padding: 100px 0 40px;
 }
 .hero-eyebrow {
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: 11px;
   letter-spacing: .22em;
   text-transform: uppercase;
   color: var(--dim);
-  margin-bottom: 26px;
+  margin-bottom: 18px;
   display: flex;
   align-items: center;
   gap: 14px;
@@ -287,26 +289,34 @@ em.serif, .serif em { font-style: italic; }
   font-weight: 700;
   letter-spacing: -.035em;
   line-height: .98;
-  font-size: clamp(46px, 9.5vw, 124px);
-  margin-bottom: 30px;
+  font-size: clamp(34px, 6vw, 78px);
+  margin-bottom: 20px;
 }
 .hero-h1 .row { display: block; overflow: hidden; padding: .1em 0; margin: -.1em 0; }
 .hero-h1 .row .in { display: inline-block; will-change: transform, opacity; }
 .rotor-slot {
   display: inline-block;
+  position: relative;
   height: .98em;
   overflow: hidden;
   vertical-align: -.06em;
 }
 .rotor-track {
-  display: flex;
-  flex-direction: column;
+  position: relative;
   line-height: .98;
   white-space: nowrap;
-  animation: hero-rotor 7.2s cubic-bezier(.65, 0, .35, 1) infinite;
-  will-change: transform;
 }
-.rotor-track > span {
+/* Each word is independently, explicitly shown/hidden by JS (see hero.js) —
+   no shared transform or clip-path animation drives this. A prior version
+   animated a single track's translateY through CSS keyframes; that let the
+   outgoing word stay visibly painted (not fully clipped out) in some
+   Chromium builds, reading as the word "lingering" on screen instead of
+   cleanly leaving. Explicit per-word autoAlpha removes that shared state
+   entirely — only one word can ever be non-zero opacity at a time. */
+.rotor-word {
+  position: absolute;
+  top: 0;
+  left: 0;
   display: block;
   height: .98em;
   background: var(--chrome);
@@ -315,16 +325,14 @@ em.serif, .serif em { font-style: italic; }
   background-clip: text;
   color: transparent;
   animation: chshift 7s linear infinite;
+  opacity: 0;
+  visibility: hidden;
 }
-@keyframes hero-rotor {
-  0%, 18% { transform: translate3d(0, 0, 0); }
-  28%, 43% { transform: translate3d(0, -.98em, 0); }
-  53%, 68% { transform: translate3d(0, -1.96em, 0); }
-  78%, 100% { transform: translate3d(0, -2.94em, 0); }
-}
-html.rm .rotor-track { animation: none; transform: translate3d(0, 0, 0); }
-.hero-sub { color: var(--dim); max-width: 52ch; font-size: 16.5px; }
-.hero-actions { display: flex; gap: 16px; margin-top: 40px; flex-wrap: wrap; }
+.rotor-word.is-active { opacity: 1; visibility: visible; }
+html.rm .rotor-word { opacity: 0; visibility: hidden; }
+html.rm .rotor-word.is-active { opacity: 1; visibility: visible; }
+.hero-sub { color: var(--dim); max-width: 52ch; font-size: 15px; }
+.hero-actions { display: flex; gap: 16px; margin-top: 28px; flex-wrap: wrap; }
 
 /* ── buttons ─────────────────────────────────────────────────────── */
 .btn {
@@ -1070,11 +1078,11 @@ html.gsap-active .proc-step { opacity: 0; visibility: hidden; }
   padding: 0 clamp(20px, 4vw, 60px);
 }
 @media (min-width: 769px) {
-  .proc-layout { transform: translateY(clamp(78px, 9vh, 112px)); }
+  .proc-layout { transform: translateY(clamp(40px, 5vh, 64px)); }
 }
 .proc-orbit { position: relative; display: flex; flex-direction: column; align-items: center; gap: 26px; }
 .proc-ring {
-  --ring: clamp(300px, 36vw, 480px);
+  --ring: clamp(280px, 32vw, 420px);
   position: relative;
   width: var(--ring);
   height: var(--ring);

@@ -212,7 +212,15 @@
           setDot(dots, idx);
           if (indexNum) indexNum.textContent = '0' + (idx + 1);
         }
-        if (u >= CENTER[idx] + 0.3) countOnce(slides[idx]);
+        // idx flips to the incoming slide as soon as the pan crosses its
+        // halfway point (Math.round above), well before u reaches that
+        // slide's own CENTER — but the slide's text is already revealed by
+        // then (see the tl.fromTo reveal at CENTER[j] - 2.2 above). Gating
+        // the counter on u >= CENTER[idx] left a window where idx had
+        // already flipped but u hadn't caught up, so the stat cards sat at
+        // "0" while the rest of the slide was fully visible. Use the same
+        // reveal threshold so the counter starts as soon as the content does.
+        if (u >= CENTER[idx] - 2.2) countOnce(slides[idx]);
       }
 
       // Keep slide 4 visible through the pin release. The Verdict section
@@ -276,11 +284,7 @@
       // below (start: 'top top', matching the pin exactly) only fires once
       // the pin genuinely engages, so it isn't subject to the eager-render
       // problem. tl above still owns scale/content once s1 IS visible.
-      tl.set(s1, { scale: 1 }, 0)
-        .to(s1.querySelectorAll('.testi-glyph, .testi-quote, .testi-author'),
-          { autoAlpha: 1, duration: 0.7, stagger: 0.15 }, 0)
-        .call(scrambleKicker(testiWrap), null, 0);
-      if (kicker) tl.to(kicker, { autoAlpha: 1, duration: 0.5 }, 0);
+      tl.set(s1, { scale: 1 }, 0);
       // Scene 1's own opacity reveal: onEnter/onLeaveBack callbacks instead of a
       // play/reverse timeline, because a deep scroll-jump (scroll restoration,
       // End key, hash-URL load) re-fires onEnter while the scrub is already
@@ -289,11 +293,27 @@
       // u-guard only reveals s1 while the scrub is still inside scene 1's own
       // window (fade-out at position 5 of DUR 25); a hard hide on upward exit
       // keeps the pin-start boundary clean.
+      // Inner glyph/quote/author + kicker are set here too (not on tl at
+      // position 0): tl is scrub:1, which lags real scroll by up to a
+      // second, so the container could show (via this same instant sync)
+      // while the scrub was still catching up to position 0 — a fully
+      // empty panel for that window. Setting them instantly alongside the
+      // container closes that gap.
+      var s1Scrambled = false;
       function syncFirstTestimonial() {
         var pin = tl.scrollTrigger;
         var y = pin.scroll();
         var u = (y - pin.start) / (pin.end - pin.start) * DUR;
-        gsap.set(s1, { autoAlpha: (y < pin.start || u < 5) ? 1 : 0 });
+        var show = y < pin.start || u < 5;
+        gsap.set(s1, { autoAlpha: show ? 1 : 0 });
+        if (show) {
+          gsap.set(s1.querySelectorAll('.testi-glyph, .testi-quote, .testi-author'), { autoAlpha: 1 });
+          if (kicker) gsap.set(kicker, { autoAlpha: 1 });
+          if (!s1Scrambled) {
+            s1Scrambled = true;
+            scrambleKicker(testiWrap)();
+          }
+        }
       }
 
       ScrollTrigger.create({
@@ -401,8 +421,17 @@
       // regardless of any gsap.set() called afterward. A separate
       // ScrollTrigger.create() below (start: 'top top', matching the pin)
       // only fires once the pin genuinely engages.
+      // Scramble fires once per entrance, guarded — tl is a scrub timeline that
+      // re-renders position 0 on every refresh/reversal, and re-invoking
+      // tdScramble() there spins up a second RAF loop on the same element,
+      // garbling the text (same failure mode as the hero eyebrow scramble).
+      var kickerScrambled = false;
       tl.to(steps[0].querySelectorAll(innerSel), { autoAlpha: 1, duration: 0.6, stagger: 0.1 }, 0)
-        .call(scrambleKicker(procWrap), null, 0);
+        .call(function () {
+          if (kickerScrambled) return;
+          kickerScrambled = true;
+          scrambleKicker(procWrap)();
+        }, null, 0);
       // kicker/orbit reveal moved off the shared scrub timeline (tl) onto
       // the same instant toggleActions timeline as steps[0]: a scrub:1
       // fade-in here was still subject to lag at the exact pixel the
@@ -438,12 +467,16 @@
       setActiveStep(0);
 
       // Focus dot orbits to each node (per-segment, eases as it lands).
-      var prev = 0;
+      // Offset by the same +0.7 as syncProcess below, so the dot arrives on
+      // its node exactly when that node lights up / the numeral flips —
+      // without the offset the dot led the active-state switch by 0.7 units,
+      // sitting lit on the wrong (about-to-be-previous) node in between.
+      var prev = 0.7;
       SEG.forEach(function (seg) {
         if (focus) {
-          tl.to(focus, { rotation: seg.step * 72, duration: seg.at - prev, ease: 'power1.inOut' }, prev);
+          tl.to(focus, { rotation: seg.step * 72, duration: seg.at + 0.7 - prev, ease: 'power1.inOut' }, prev);
         }
-        prev = seg.at;
+        prev = seg.at + 0.7;
       });
 
       // Node light / numeral / dots sync from timeline progress so they hold
