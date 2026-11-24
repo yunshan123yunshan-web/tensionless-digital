@@ -1,0 +1,129 @@
+/* ── Variant B: case moments — one system, three compositions ──────────────
+   wide: cinematic full-bleed image, statement bottom-left; opens to a detail panel on the right
+   crop: a large crop with the lead result already on it; opens to the whole picture
+   type: the photo lives inside a giant numeral, then grows out of it to fill the frame
+   Shared: mono kicker (number · client · service), a big statement, then
+   "What we did" + one lead result + smaller supporting figures.
+   Desktop: each moment is one screen (pinned while it opens). Phones: natural
+   height, opening as it scrolls past — no squeezing to fit a screen. */
+.cases { background: var(--bg); color: var(--text); }
+.moment { position: relative; height: 100vh; height: 100svh; min-height: 600px; overflow: hidden; background: var(--bg); }
+.m-media { position: absolute; margin: 0; overflow: hidden; will-change: clip-path; }
+.m-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.m-head { position: absolute; z-index: 3; }
+.m-k { color: var(--accent); margin-bottom: 18px; }
+.m-statement { font-weight: 800; font-size: clamp(40px, 5.6vw, 96px); line-height: .9; letter-spacing: -.045em; text-transform: uppercase; text-wrap: balance; }
+.m-statement em { font-family: var(--serif); font-weight: 400; text-transform: none; letter-spacing: -.02em; }
+.m-detail { position: absolute; z-index: 3; display: flex; flex-direction: column; gap: 14px; }
+.m-label { color: var(--dim); }
+.m-copy { font-size: 16px; line-height: 1.55; color: #c7ced6; max-width: 40ch; }
+.m-lead { margin-top: 10px; }
+.m-lead b { display: block; font-weight: 600; font-size: clamp(64px, 7vw, 120px); line-height: .85; letter-spacing: -.05em; color: var(--light); }
+.m-lead span { display: block; margin-top: 10px; color: var(--dim); }
+.m-sub { display: flex; flex-wrap: wrap; gap: 6px 28px; color: var(--dim); font-size: 14px; }
+.m-sub b { color: var(--light); font-weight: 600; font-size: 20px; letter-spacing: -.02em; margin-right: 6px; }
+.m-flag { color: var(--dim); font-size: 11px; line-height: 1.6; text-transform: none; letter-spacing: .02em; max-width: 46ch; }
+.m-tag { position: absolute; z-index: 4; padding: 5px 8px; background: rgba(5,5,7,.72); color: var(--light); font-size: 10px; }
+
+/* wide */
+.moment[data-comp="wide"] .m-media { inset: 0; }
+.moment[data-comp="wide"] .m-media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(5,5,7,0) 35%, rgba(5,5,7,.78) 100%); }
+.moment[data-comp="wide"] .m-head { left: var(--gutter); bottom: 8vh; width: 54%; color: var(--light); }
+.moment[data-comp="wide"] .m-statement { max-width: 15ch; }
+.moment[data-comp="wide"] .m-detail { right: var(--gutter); top: 50%; translate: 0 -50%; width: calc(42% - 2 * var(--gutter)); }
+.moment[data-comp="wide"] .m-tag { left: var(--gutter); top: 4vh; }
+
+/* crop: the picture dominates from the start, with the lead result on it */
+.moment[data-comp="crop"] .m-media { top: 6vh; bottom: 6vh; right: var(--gutter); width: 58%; }
+.moment[data-comp="crop"] .m-head { left: var(--gutter); top: 10vh; width: 34%; }
+.moment[data-comp="crop"] .m-detail { left: var(--gutter); bottom: 8vh; width: 33%; }
+.moment[data-comp="crop"] .m-tag { right: calc(var(--gutter) + 12px); top: calc(6vh + 12px); }
+.m-figure { position: absolute; z-index: 2; left: 16%; bottom: 13%; margin: 0; color: var(--light); text-shadow: 0 6px 40px rgba(0,0,0,.45); }
+.m-figure b { display: block; font-weight: 700; font-size: clamp(84px, 10vw, 176px); line-height: .8; letter-spacing: -.06em; }
+.m-figure span { display: block; margin-top: 12px; font-size: 11px; }
+.moment[data-comp="crop"] .m-media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(5,5,7,0) 45%, rgba(5,5,7,.55) 100%); }
+
+/* type: the photo fills the 8 (aligned to the full frame by proto-cases.js), then spills out of it */
+.moment[data-comp="type"] .m-numeral { position: absolute; z-index: 2; left: var(--gutter); top: 50%; translate: 0 -50%; margin: 0; pointer-events: none;
+  font-weight: 800; font-size: min(88vh, 48vw); line-height: .76; letter-spacing: -.08em;
+  color: transparent; background-color: var(--light); background-repeat: no-repeat; -webkit-background-clip: text; background-clip: text; }
+.moment[data-comp="type"] .m-media { inset: 0; }
+.moment[data-comp="type"] .m-media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(5,5,7,0) 30%, rgba(5,5,7,.82) 58%); }
+.moment[data-comp="type"] .m-head { left: 54%; top: 12vh; width: 40%; }
+.moment[data-comp="type"] .m-statement { font-size: clamp(36px, 4.4vw, 76px); }
+.moment[data-comp="type"] .m-detail { left: 54%; bottom: 10vh; width: 36%; }
+.moment[data-comp="type"] .m-tag { right: calc(var(--gutter) + 12px); bottom: 3vh; }
+
+.moment.open .m-detail { opacity: 1; visibility: visible; }
+
+/* ── the reel: all three moments stacked in one pinned scene (proto-cases.js adds .is-reel) ── */
+.reel-hud { display: none; }
+.cases.is-reel { position: relative; height: 100vh; height: 100svh; overflow: hidden; }
+.cases.is-reel .moment { position: absolute; inset: 0; height: auto; min-height: 0; will-change: clip-path, transform; }
+.cases.is-reel .reel-hud { display: flex; align-items: center; gap: 14px; position: absolute; z-index: 10; left: 50%; top: 22px; translate: -50% 0;
+  padding: 6px 10px; background: rgba(5,5,7,.72); color: var(--light); font-size: 11px; pointer-events: none; }
+.reel-n b { font-weight: 600; }
+.reel-bars { display: flex; gap: 4px; }
+.reel-bars i { display: block; width: 28px; height: 2px; background: rgba(233,237,242,.25); overflow: hidden; }
+.reel-bars i b { display: block; height: 100%; background: var(--accent); transform: scaleX(0); transform-origin: left; }
+
+/* ── working with us: one line, three stages — natural height, close to its heading ── */
+.process { position: relative; background: var(--light); color: var(--bg); padding: 6vh var(--gutter) 12vh; overflow: hidden; }
+.proc-top { display: flex; justify-content: space-between; gap: 16px; padding-bottom: 14px; border-bottom: 1.5px solid var(--bg); color: #4c545e; }
+.proc-h { margin-top: 7vh; font-weight: 800; font-size: clamp(44px, 6.4vw, 112px); line-height: .88; letter-spacing: -.045em; text-transform: uppercase; }
+.proc-h em { font-family: var(--serif); font-weight: 400; text-transform: none; color: #4a6bd8; }
+.proc-line { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 1; }
+.proc-line path { fill: none; stroke: var(--bg); stroke-width: 2; stroke-linejoin: round; }
+.proc-stages { list-style: none; margin-top: 15vh; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 48px; position: relative; z-index: 2; }
+.proc-stages li { opacity: .35; transition: opacity .4s ease; }
+.proc-stages li.on { opacity: 1; }
+.proc-dot { display: block; width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--bg); background: var(--light); margin-bottom: 26px; transition: background .3s; }
+.proc-stages li.on .proc-dot { background: var(--accent); }
+.proc-stages h3 { margin: 8px 0 10px; font-size: clamp(24px, 2.4vw, 36px); font-weight: 700; letter-spacing: -.03em; line-height: 1; }
+.proc-stages li > p:last-child { max-width: 34ch; font-size: 16px; line-height: 1.5; color: #3a414a; }
+.proc-stages .mono { color: #4c545e; }
+/* the stages step up, so the finished line reads as growth */
+.proc-stages li:nth-child(2) { translate: 0 -32px; }
+.proc-stages li:nth-child(3) { translate: 0 -64px; }
+
+/* ── phones: natural height; image on top, then statement, then details ── */
+@media (max-width: 899px) {
+  .moment { height: auto; min-height: 0; display: flex; flex-direction: column; padding-bottom: 9vh; }
+  .moment .m-media { position: relative; inset: auto !important; width: auto !important; height: 52svh; flex: none; }
+  .moment .m-head, .moment .m-detail { position: static; translate: none !important; width: auto !important; max-width: none !important; margin: 0 var(--gutter); color: var(--text) !important; }
+  .moment .m-head { margin-top: 3.5vh; }
+  .moment .m-detail { margin-top: 3vh; }
+  .moment .m-tag { left: 10px !important; right: auto !important; top: 10px !important; bottom: auto !important; }
+  .m-statement { font-size: clamp(32px, 9.4vw, 48px); max-width: none !important; }
+  .m-k { margin-bottom: 12px; }
+  .m-lead b { font-size: clamp(56px, 16vw, 76px); }
+  .m-copy { font-size: 16px; }
+  .m-sub { font-size: 14px; }
+  .moment[data-comp="wide"] .m-media::after { display: none; }
+  .moment[data-comp="type"] .m-media::after { background: linear-gradient(180deg, rgba(5,5,7,0) 60%, rgba(5,5,7,.4) 100%); }
+  .moment[data-comp="type"] .m-numeral { left: 50%; top: 26svh; translate: -50% -50%; font-size: 60svh; }
+  .moment[data-comp="type"] .m-statement { font-size: clamp(32px, 9.4vw, 48px); }
+  .m-figure { left: 9%; bottom: 9%; }
+  .m-figure b { font-size: clamp(72px, 22vw, 110px); }
+  .process { padding-top: 5vh; padding-bottom: 9vh; }
+  .proc-top { flex-direction: column; gap: 4px; }
+  .proc-h { margin-top: 4vh; font-size: clamp(40px, 11vw, 64px); }
+  .proc-stages li { translate: none !important; }
+  .proc-stages { margin-top: 6vh; grid-template-columns: 1fr; gap: 26px; }
+  .proc-stages li { display: grid; grid-template-columns: 16px 1fr; column-gap: 16px; }
+  .proc-dot { grid-row: 1 / span 3; margin: 4px 0 0; }
+  .proc-stages h3 { margin: 2px 0 6px; font-size: 24px; }
+  .proc-stages li > p:last-child { font-size: 15px; }
+  /* phone reel: image on top, kicker, then the statement and the details share one place */
+  .cases.is-reel .moment { display: grid; grid-template-rows: 44svh auto 1fr; grid-template-columns: 100%; padding: 0; }
+  .cases.is-reel .moment .m-media { height: auto; grid-row: 1; }
+  .cases.is-reel .moment .m-head { display: contents; }
+  .cases.is-reel .moment .m-k { grid-row: 2; margin: 3vh var(--gutter) 10px; }
+  .cases.is-reel .moment .m-statement, .cases.is-reel .moment .m-detail { grid-row: 3; grid-column: 1; align-self: start; margin: 0 var(--gutter); }
+  .cases.is-reel .moment .m-detail { gap: 10px; }
+  .cases.is-reel .m-lead { margin-top: 2px; }
+  .cases.is-reel .m-lead b { font-size: clamp(48px, 13vw, 64px); }
+  .cases.is-reel .m-copy { font-size: 15px; line-height: 1.5; }
+  .cases.is-reel .moment[data-comp="type"] .m-numeral { top: 22svh; font-size: 50svh; }
+  .cases.is-reel .reel-hud { left: auto; right: 10px; top: 10px; translate: none; }
+}
