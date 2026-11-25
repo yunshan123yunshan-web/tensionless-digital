@@ -4,21 +4,21 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>Wire Prototype — Tensionless</title>
+<title>Wire Prototype | Tensionless Digital</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Cormorant+Garamond:ital,wght@1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/lenis@1.1.13/dist/lenis.css">
-<link rel="stylesheet" href="proto-scene.css?v=20">
-<link rel="stylesheet" href="proto-cases.css?v=20">
+<link rel="stylesheet" href="proto-scene.css?v=28">
+<link rel="stylesheet" href="proto-cases.css?v=28">
 <style>
   /* Prototype v5 (tags: proto-wire-v1, proto-wire-v4). Blind hero → blue
      "chaos → choreography" scene → image-led proof → calm contact.
      Prototype only: does not touch the live site. */
   :root {
     --light: #e9edf2; --bg: #050507; --text: #e9edf2; --dim: #98a2ae; --faint: #2a2f36;
-    --accent: #8fb0ff;
+    --accent: #8fb0ff; --thread: #4a6bd8;
     --display: 'Archivo', sans-serif; --serif: 'Cormorant Garamond', serif; --mono: 'JetBrains Mono', monospace;
     --gutter: clamp(16px, 3vw, 40px);
     --rest-gap: 20%;
@@ -27,7 +27,7 @@
   html, body { background: var(--bg); color: var(--text); font-family: var(--display); }
   body { overflow-x: hidden; -webkit-font-smoothing: antialiased; }
   a { color: inherit; }
-  .mono { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; }
+  .mono { font-family: var(--mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; }
   .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
   #wire { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 40; pointer-events: none; }
@@ -53,7 +53,10 @@
   .hero.open .under { opacity: 1; }
   .blind { position: absolute; inset: 0; z-index: 2; background: var(--light); color: var(--bg); clip-path: inset(0 0 var(--rest-gap) 0); }
   .hero-nav { position: absolute; top: var(--gutter); left: var(--gutter); right: var(--gutter); display: flex; justify-content: space-between; align-items: center; gap: 16px; }
-  .hero-nav .brand { font-weight: 800; font-size: 15px; }
+  .hero-nav .brand { display: block; line-height: 0; }
+  .hero-nav .brand img, .foot-logo { display: block; width: auto; height: 76px; }   /* stacked logo: big enough to read the wordmark */
+  .foot-logo { height: 56px; }
+  .foot-brand { display: flex; align-items: center; gap: 14px; }
   .nav-links { display: flex; align-items: center; gap: 22px; }
   .nav-links a { text-decoration: none; }
   .nav-links a:hover, .nav-links a:focus-visible { text-decoration: underline; }
@@ -79,29 +82,52 @@
   .contact h2 { font-size: clamp(48px, 9vw, 160px); font-weight: 800; letter-spacing: -.045em; line-height: .88; text-transform: uppercase; }
   .contact h2 em { font-family: var(--serif); font-weight: 400; text-transform: none; }
   .contact h2 em.tense { display: inline-block; }
-  .taut { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 2; }
-  .taut path { fill: none; stroke: var(--accent); stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; }
-  .contact-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; margin-top: 7vh; align-items: start; }
+  .contact-grid { display: grid; grid-template-columns: minmax(0, 520px); gap: 30px; margin-top: 6vh; align-items: start; }   /* invitation, then the button right beneath it */
   .contact-grid > p { max-width: 460px; font-size: 17px; line-height: 1.55; color: #3a414a; }
-  .contact-mail { margin-top: 14px; font-size: 14px; color: #3a414a; }
+  .contact-mail { font-size: 14px; color: #3a414a; }
+  /* the call form: underlined fields in the page's own type, one clear button */
+  .call-form { display: grid; gap: 20px; }
+  .cf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .cf-field { display: grid; gap: 6px; }
+  .cf-field > span { color: #4c545e; }
+  .cf-field i { font-style: normal; text-transform: none; letter-spacing: 0; opacity: .8; }
+  .cf-field input, .cf-field textarea { width: 100%; font: 17px/1.4 var(--display); color: var(--bg); background: transparent; border: 0; border-bottom: 1.5px solid rgba(5,5,7,.35); border-radius: 0; padding: 8px 0; resize: vertical; }
+  .cf-field input::placeholder, .cf-field textarea::placeholder { color: #8a929c; }
+  .cf-field input:focus, .cf-field textarea:focus { outline: none; border-bottom-color: var(--thread); box-shadow: 0 1.5px 0 var(--thread); }
+  .cf-field [aria-invalid="true"] { border-bottom-color: #b3261e; }
+  .call-form .btn { justify-self: start; margin-top: 4px; }
+  .cf-status { font-size: 15px; line-height: 1.5; color: #3a414a; }
+  .cf-status:empty { display: none; }
+  .cf-status.err { color: #b3261e; }
   .contact-mail a { font-weight: 600; }
-  .contact-topic { margin-top: 8px; color: #4c545e; font-size: 10px; line-height: 1.6; }
+  .contact-topic { margin-top: 8px; color: #3f464f; font-size: 11px; line-height: 1.6; }
   .contact .btn { padding: 18px 28px; font-size: 13px; }
-  .contact-foot { margin-top: 20vh; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; color: #4c545e; }
+  .contact-foot { margin-top: 16vh; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; color: #4c545e; }
   .roll-back { background: none; border: 0; padding: 0; color: inherit; font: inherit; letter-spacing: inherit; text-transform: inherit; cursor: pointer; }
   .roll-back:hover, .roll-back:focus-visible { text-decoration: underline; color: var(--bg); }
 
   @media (max-width: 760px) {
-    .hero-nav { flex-direction: column; align-items: flex-start; gap: 10px; }
-    .nav-links { gap: 14px; flex-wrap: wrap; }
+    /* one compact row: logo left, links right; the message gets the first screen */
+    .hero-nav { flex-direction: row; align-items: center; gap: 10px; }
+    .hero-nav .brand img { height: 46px; }
+    .nav-links { gap: 12px; flex-wrap: nowrap; }
+    .nav-links .proto { display: none; }
+    .sound-btn { padding: 4px 0; border: 0; opacity: .7; }
+    .hero h1 { font-size: 12.4vw; }
+    .nav-links { font-size: 11px; letter-spacing: .06em; white-space: nowrap; }
+    /* the message sits a third of the way into the space above the blind's edge, not pinned to the bottom */
+    .hero-copy { top: calc(var(--gutter) + 56px); bottom: calc(var(--rest-gap) + 28px); display: flex; flex-direction: column; }
+    .hero-copy::before { content: ''; flex: 1 1 0; }
+    .hero-copy::after { content: ''; flex: 2 1 0; }
     .hero-sub { flex-direction: column; align-items: start; }
     .under { grid-template-columns: 1fr; gap: 24px; align-content: center; padding: 10vh var(--gutter) 6vh; }
     .under-side { margin-top: 16px; }
-    .contact { padding-top: 12vh; }
+    .contact { padding-top: 7vh; }
     .contact h2 { font-size: 10vw; }
     .contact-grid > p { font-size: 15px; }
     .contact-foot { margin-top: 12vh; flex-direction: column; gap: 6px; }
     .contact-grid { grid-template-columns: 1fr; gap: 22px; }
+    .cf-row { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -113,23 +139,23 @@
     <div>
       <p class="kicker">Marketing, <em>without the tension.</em></p>
       <h2>Every channel. <em>One team.</em> Nothing leaks between them.</h2>
-      <p class="under-side">We don’t sell fragments of a strategy. We build the whole growth system — first impression, landing page, closed lead. Fewer handoffs means fewer places for revenue to slip.</p>
+      <p class="under-side">We don’t sell fragments of a strategy. We build the whole growth system: first impression, landing page, closed lead. Fewer handoffs means fewer places for revenue to slip.</p>
     </div>
   </div>
   <div class="blind" id="blind">
     <nav class="hero-nav" aria-label="Main">
-      <span class="brand">TENSIONLESS<span style="color:var(--accent)">.</span></span>
+      <a class="brand" href="#hero"><img src="logo.svg" alt="Tensionless Digital" width="444" height="395"></a>
       <div class="nav-links mono">
         <a href="#services">Services</a><a href="#work">Work</a><a href="#contact">Contact</a>
         <button class="sound-btn mono" id="sound" aria-pressed="false">Sound: off</button>
-        <span class="proto">Prototype v20</span>
+        <span class="proto">Prototype v28</span>
       </div>
     </nav>
     <div class="hero-copy" id="hero-copy">
       <p class="hero-eyebrow mono">Singapore digital marketing agency · Landing pages, paid ads &amp; SEO as one funnel</p>
       <h1 id="hero-h1">We turn<br>attention<br><em>into</em> revenue.</h1>
       <div class="hero-sub">
-        <p>One team building the whole funnel — the ad, the page, the tracking — so nothing pulls against anything else.</p>
+        <p>One team building the whole funnel (the ad, the page, the tracking), so nothing pulls against anything else.</p>
         <div class="hero-ctas"><a class="btn" href="#contact">Request a free call →</a><a class="btn ghost" href="#work">See the work</a></div>
       </div>
     </div>
@@ -142,7 +168,7 @@
   <div class="scene-top mono"><span>[ 02 ] What we do</span><span>Four services · one team</span></div>
   <div class="scene-head">
     <h2 class="scene-title" id="scene-title">Four channels,<br><span class="swap"><em class="s-chaos">pulling apart.</em><em class="s-order" aria-hidden="true">one campaign.</em></span></h2>
-    <p class="scene-lede">We plan, build and run your <b>Google Ads, Facebook Ads, SEO and landing pages</b> as one campaign — so every click lands on a page that keeps the ad’s promise, and every enquiry is tracked back to where it came from.</p>
+    <p class="scene-lede">We plan, build and run your <b>Google Ads, Facebook Ads, SEO and landing pages</b> as one campaign, so every click lands on a page that keeps the ad’s promise, and every enquiry is tracked back to where it came from.</p>
   </div>
   <div class="scene-body">
     <div class="scene-controls">
@@ -170,7 +196,7 @@
       <div class="art art-search" data-k="search" aria-hidden="true"><div class="float"><i class="stub" style="--sx:4%;--sy:100%;--sr:118deg"></i><div class="card paper">
         <div class="sr-q"><svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.5" fill="none" stroke="#4d5156" stroke-width="2"/><path d="M15 15l6 6" stroke="#4d5156" stroke-width="2"/></svg>renovation quote 4-room hdb</div>
         <div class="sr-row sr-paid"><span class="sr-src"><i class="sr-fav"></i>Moss &amp; Mortar <small>mossandmortar.sg › layout</small></span>
-          <b class="sr-tag">Sponsored</b><p class="sr-t">HDB Renovation Quote in 48h — Free 3D Layout</p><p class="sr-d">Fixed-price quotes for 3- to 5-room flats. Book a free layout call.</p></div>
+          <b class="sr-tag">Sponsored</b><p class="sr-t">HDB Renovation Quote in 48h | Free 3D Layout</p><p class="sr-d">Fixed-price quotes for 3- to 5-room flats. Book a free layout call.</p></div>
         <div class="sr-row sr-org"><span class="sr-src"><i class="sr-fav"></i>Moss &amp; Mortar <small>mossandmortar.sg › guides</small></span>
           <p class="sr-t">What a 4-room renovation really costs</p><p class="sr-d">A line-by-line guide to quotes, timelines and permits.</p></div></div><span class="badge">Found</span></div></div>
 
@@ -193,7 +219,7 @@
             <span class="lp-logo">Moss &amp; Mortar</span>
             <p class="lp-eyebrow">HDB · Condo · Landed</p>
             <p class="lp-h">Renovate once. <em>Love it</em> for years.</p>
-            <p class="lp-sub">A 3D layout of your home in 48 hours — free, with a fixed-price quote.</p>
+            <p class="lp-sub">A free 3D layout of your home in 48 hours, with a fixed-price quote.</p>
             <span class="lp-cta" id="lp-cta">Book my free layout →</span>
             <span class="lp-trust">★★★★★ Homeowner rated</span>
           </div>
@@ -204,7 +230,7 @@
       <div class="art art-enq" data-k="enq" aria-hidden="true"><div class="float"><i class="stub" style="--sx:0%;--sy:50%;--sr:150deg"></i><div class="card">
         <div class="enq-top"><span class="enq-check">✓</span>New enquiry<em>now</em></div>
         <p class="enq-name">Mei T. · 4-room, Tampines</p>
-        <p class="enq-line">Free layout call — Thu, 10:00</p>
+        <p class="enq-line">Free layout call · Thu, 10:00</p>
         <p class="enq-src">Ad → landing page → you</p></div><span class="badge">Enquired</span></div></div>
 
       <div class="art art-infl" data-k="infl" aria-hidden="true"><div class="float"><div class="card bare"><img src="proto-assets/inflatable.webp" alt=""></div><span class="infl-hint mono">Press it</span></div></div>
@@ -215,14 +241,15 @@
       </div></div></div>
       </div>
     </div>
-    <p class="mono stage-note"><span>Example campaign for a made-up brand (Moss &amp; Mortar) — not client work.</span><button class="replay mono" id="replay" type="button" hidden>Replay ↻</button></p>
+    <p class="mono stage-note"><span>Example campaign for a made-up brand (Moss &amp; Mortar), not client work.</span><button class="replay mono" id="replay" type="button" hidden>Replay ↻</button></p>
   </div>
 </section>
 
 <!-- ── 03 · PROOF ───────────────────────────────────────────────────── -->
 <!-- ── 03 · PROOF: three case moments ─────────────────────────────── -->
 <section class="cases" id="work" aria-label="Client work">
-  <div class="reel-hud mono" aria-hidden="true"><span class="reel-n"><b id="reel-i">01</b> / 03</span><span class="reel-bars"><i><b></b></i><i><b></b></i><i><b></b></i></span></div>
+  <div class="reel-hud mono"><span class="reel-n" aria-hidden="true"><b id="reel-i">01</b> / 04</span><span class="reel-bars" aria-hidden="true"><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i></span><a class="reel-skip" href="#contact">Skip to contact ↓</a></div>
+  <i class="reel-thread" id="reel-thread" aria-hidden="true"></i>
   <article class="moment" data-comp="wide" aria-labelledby="m1-h">
     <figure class="m-media" aria-hidden="true"><img src="proto-assets/case-auto.webp" alt=""></figure>
     <div class="m-head">
@@ -247,18 +274,32 @@
     </div>
     <div class="m-detail">
       <p class="mono m-label">What we did</p>
-      <p class="m-copy">Rebuilt the funnel and refined the audiences, so the firm heard from people with a real case — not just the curious.</p>
+      <p class="m-copy">Rebuilt the funnel and refined the audiences, so the firm heard from people with a real case, not just the curious.</p>
       <p class="sr-only">Lead result: 70% lower cost per lead, as reported.</p>
       <p class="m-sub"><span><b>$100K</b> revenue</span><span><b>$4K</b> total ad spend</span></p>
     </div>
     <p class="m-tag mono" aria-hidden="true">Illustrative imagery</p>
   </article>
-  <article class="moment" data-comp="type" aria-labelledby="m3-h">
-    <p class="m-numeral" aria-hidden="true" style="background-image:url(proto-assets/case-re.webp)">8</p>
+  <article class="moment" data-comp="wide" aria-labelledby="m3-h">
+    <figure class="m-media" aria-hidden="true"><img src="proto-assets/case-fin.webp" alt=""></figure>
+    <div class="m-head">
+      <p class="mono m-k">03 · Financial services · Facebook Ads</p>
+      <h3 class="m-statement" id="m3-h">$2M in production <em>in one month.</em></h3>
+    </div>
+    <div class="m-detail">
+      <p class="mono m-label">What we did</p>
+      <p class="m-copy">Prospect-audience targeting and direct-response creative for a high-ticket financial product, built to bring in qualified buyers fast.</p>
+      <p class="m-lead"><b>$2M</b><span class="mono">Total production, as reported</span></p>
+      <p class="m-sub"><span><b>$150K</b> in commissions</span><span><b>1</b> calendar month</span></p>
+    </div>
+    <p class="m-tag mono" aria-hidden="true">Illustrative imagery</p>
+  </article>
+  <article class="moment" data-comp="type" aria-labelledby="m4-h">
+    <p class="m-numeral" aria-hidden="true" style="background-image:url(proto-assets/case-re.webp)">8<i class="bl"></i></p>
     <figure class="m-media" aria-hidden="true"><img src="proto-assets/case-re.webp" alt=""></figure>
     <div class="m-head">
-      <p class="mono m-k">03 · Real estate · Facebook Ads</p>
-      <h3 class="m-statement" id="m3-h">Eight homes sold on a <em>$3K</em> ad budget.</h3>
+      <p class="mono m-k">04 · Real estate · Facebook Ads</p>
+      <h3 class="m-statement" id="m4-h">Eight homes sold on a <em>$3K</em> ad budget.</h3>
     </div>
     <div class="m-detail">
       <p class="mono m-label">What we did</p>
@@ -269,37 +310,49 @@
     <p class="m-tag mono" aria-hidden="true">Illustrative imagery</p>
   </article>
 </section>
+<svg class="clip-defs" width="0" height="0" aria-hidden="true"><clipPath id="eightclip" clipPathUnits="userSpaceOnUse"><text id="eight-text">8</text></clipPath></svg>
 
+<div class="finale" id="finale">
+<svg class="thread" id="thread" aria-hidden="true"><path id="thread-path"/></svg>
 <!-- ── 04 · WORKING WITH US: one line that straightens ─────────────── -->
 <section class="process" id="process" aria-labelledby="proc-h">
   <div class="proc-top mono"><span>[ 04 ] Working with us</span><span>What happens after you hire us</span></div>
   <h2 class="proc-h" id="proc-h">From friction <em>to flow.</em></h2>
-  <svg class="proc-line" id="proc-line" aria-hidden="true"><path id="proc-path"/></svg>
   <ol class="proc-stages">
-    <li><i class="proc-dot"></i><p class="mono">01</p><h3>Find the friction</h3><p>We go through your ads, pages and tracking, and show you where enquiries leak — before you commit to anything.</p></li>
-    <li><i class="proc-dot"></i><p class="mono">02</p><h3>Build the connections</h3><p>One team builds the ads, the landing pages and the tracking, so every click lands on a page that keeps the promise.</p></li>
-    <li><i class="proc-dot"></i><p class="mono">03</p><h3>Keep improving</h3><p>We test, report monthly in plain numbers, and move budget to what’s working.</p></li>
+    <li><i class="proc-dot"></i><p class="proc-n" aria-hidden="true">01</p><h3>Find the friction</h3><p>We go through your ads, pages and tracking, and show you where enquiries leak, before you commit to anything.</p></li>
+    <li><i class="proc-dot"></i><p class="proc-n" aria-hidden="true">02</p><h3>Build the connections</h3><p>One team builds the ads, the landing pages and the tracking, so every click lands on a page that keeps the promise.</p></li>
+    <li><i class="proc-dot"></i><p class="proc-n" aria-hidden="true">03</p><h3>Keep improving</h3><p>We test, report monthly in plain numbers, and move budget to what’s working.</p></li>
   </ol>
 </section>
 
 <section class="contact" id="contact" data-wire="dark">
-  <svg class="taut" id="taut" aria-hidden="true"><path id="taut-path"/></svg>
   <p class="mono contact-kicker" id="contact-kicker">[ 05 ] Contact</p>
   <h2>Let’s take the<br><em class="tense" id="tense">tension</em> out.</h2>
   <div class="contact-grid">
     <p>A 30-minute call. We look at your current funnel, tell you where it leaks, and you decide if we’re worth hiring. No deck, no commitment. We reply within one working day.</p>
-    <div><a class="btn" id="contact-btn" href="mailto:hello@tensionlessdigital.com?subject=Request%20a%20free%20call">Request a free call →</a>
-      <p class="contact-mail">Opens your email app. Or write to <a href="mailto:hello@tensionlessdigital.com">hello@tensionlessdigital.com</a>.</p>
-      <p class="contact-topic mono" id="contact-topic"></p></div>
+    <form class="call-form" id="call-form" novalidate>
+      <div class="cf-row">
+        <label class="cf-field"><span class="mono">Name</span><input name="name" autocomplete="name" maxlength="100" required></label>
+        <label class="cf-field"><span class="mono">Email</span><input name="email" type="email" autocomplete="email" maxlength="200" required></label>
+      </div>
+      <label class="cf-field"><span class="mono">Website <i>(optional)</i></span><input name="website" inputmode="url" autocomplete="url" maxlength="200" placeholder="yourcompany.com"></label>
+      <label class="cf-field"><span class="mono">Where do enquiries leak? <i>(optional)</i></span><textarea name="message" rows="3" maxlength="1000" placeholder="e.g. Plenty of clicks, very few calls"></textarea></label>
+      <input type="hidden" name="topic" id="cf-topic">
+      <button class="btn" type="submit">Request a free call →</button>
+      <p class="cf-status" id="cf-status" role="status" aria-live="polite"></p>
+      <p class="contact-mail" id="cf-note">Or write to <a href="mailto:hello@tensionlessdigital.com">hello@tensionlessdigital.com</a>.</p>
+      <p class="contact-topic mono" id="contact-topic"></p>
+    </form>
   </div>
-  <div class="contact-foot mono"><span>Tensionless Digital · Singapore</span><button class="roll-back" id="roll-back">Back to the top ↑</button><span>Prototype — not the live site · case briefs are draft copy</span></div>
+  <div class="contact-foot mono"><span class="foot-brand"><img class="foot-logo" src="logo.svg" alt="Tensionless Digital" width="444" height="395"><span>Singapore</span></span><button class="roll-back" id="roll-back">Back to the top ↑</button><span>Prototype, not the live site · case briefs are draft copy</span></div>
 </section>
+</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
-<script src="proto-core.js?v=20"></script>
-<script src="proto-scene.js?v=20"></script>
-<script src="proto-cases.js?v=20"></script>
-<script src="proto-squish.js?v=20"></script>
+<script src="proto-core.js?v=28"></script>
+<script src="proto-scene.js?v=28"></script>
+<script src="proto-cases.js?v=28"></script>
+<script src="proto-squish.js?v=28"></script>
 </body>
 </html>

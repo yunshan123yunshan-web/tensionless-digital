@@ -35,7 +35,7 @@
         infl: [24, 14, 8, .46, 1.14, 4], swatch: [78, 66, 20, 1, 1, 2], sticker: [2, 66, -20, 1.2, 1.2, 9], cursor: [80, 84, 140, 1, 1, 10] }
     }
   };
-  /* DEPTH — the pieces live in a shallow 3D space. Disconnected: scattered in depth, each on its
+  /* DEPTH, the pieces live in a shallow 3D space. Disconnected: scattered in depth, each on its
      own tilt (search nearest; the page far back and angled; the inflatable trapped between the ad
      in front and the page behind). Aligned: everything on ONE plane, facing you. Inside a 3D
      context z-index no longer orders siblings, so the aligned plane uses tiny z offsets instead.
@@ -152,7 +152,7 @@
     var sw = stage.clientWidth, sh = stage.clientHeight;
     links.setAttribute('viewBox', '0 0 ' + sw + ' ' + sh);
     var paths = routes().map(function (l) { return conn(rectOf(l[0]), rectOf(l[1])); });
-    // alignment guides: the focused piece's edges extended across the stage — the grid everything snaps to
+    // alignment guides: the focused piece's edges extended across the stage, the grid everything snaps to
     var f = rectOf(focusKey);
     var guides = [[0, f.y, sw, f.y], [0, f.y + f.h, sw, f.y + f.h], [f.x, 0, f.x, sh]];
     links.innerHTML = '<defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">' +
@@ -192,7 +192,7 @@
   }
 
   /* The coordination. The inflatable is the trigger: crushed flat between the ad and the
-     page, it is released first and its expansion pushes the cards apart — the ad slides
+     page, it is released first and its expansion pushes the cards apart, the ad slides
      firmly into its column, search glides, the page lands with weight. Then the alignment
      guides snap in, the route draws, the cursor clicks, and the enquiry pops in as the finish. */
   function play() {
@@ -204,13 +204,13 @@
     var cta = document.getElementById('lp-cta');
     gsap.set(links, { opacity: 1 });
     tl = gsap.timeline({ onComplete: function () { setState('order'); if (TD.pluckSound) TD.pluckSound(0.7, 0.6, 3); } });
-    // the view swings round as the pieces converge onto one plane — for a moment you see the depth — then squares up
+    // the view swings round as the pieces converge onto one plane, for a moment you see the depth, then squares up
     var cam = mode === 'mob' ? [7, -10] : [9, -16];
     gsap.killTweensOf(world);
     tl.to(world, { rotationX: cam[0], rotationY: cam[1], duration: 0.55, ease: 'power2.out' }, 0.05)
       .to(world, { rotationX: 0, rotationY: 0, duration: 0.95, ease: 'power3.inOut' }, 0.62);
     // (cards converge via their own tweens below, which carry z / tilt / lift.) The inflatable rises in front
-    // of everything as it bursts free — in 3D, depth (not z-index) decides what is in front — then sinks behind.
+    // of everything as it bursts free, in 3D, depth (not z-index) decides what is in front, then sinks behind.
     tl.to(art.infl, { z: 140, duration: 0.3, ease: 'power3.out' }, 0)
       .to(art.infl, { z: O('infl').z, duration: 0.7, ease: 'power2.inOut' }, 0.55)
       .to(art.sticker, { z: O('sticker').z, '--lift': O('sticker')['--lift'], duration: 0.5, ease: 'power2.out' }, 0.3);
@@ -287,16 +287,16 @@
   /* ── services: the selected service's piece takes the centre of the composition ── */
   var SERVICES = [
     { k: 'lp', name: 'Landing pages',
-      p: 'One page per offer, built around the exact promise the ad made — so the person who clicked recognises what they came for, and enquires.',
+      p: 'One page per offer, built around the exact promise the ad made, so the person who clicked recognises what they came for, and enquires.',
       get: 'Page design and copy, A/B tests, enquiry tracking.', fix: 'People click, but don’t enquire.' },
     { k: 'search', row: 'paid', name: 'Google Ads',
       p: 'Search campaigns on the phrases buyers actually type, with negative keywords so you stop paying for browsers and job-seekers.',
       get: 'Keyword plan, ad copy, bid management, monthly report.', fix: 'Spend that attracts the wrong searches.' },
     { k: 'ad', name: 'Facebook Ads',
-      p: 'Creative made in sets, so we learn which message lands — and each one points to a page that says the same thing.',
+      p: 'Creative made in sets, so we learn which message lands, and each one points to a page that says the same thing.',
       get: 'Ad creative in tested sets, audience setup, weekly optimisation.', fix: 'Our ads and content feel disconnected.' },
     { k: 'seo', row: 'org', name: 'SEO',
-      p: 'Pages that answer real buyer questions, linked so authority flows to the page that sells — tracked from first click to enquiry.',
+      p: 'Pages that answer real buyer questions, linked so authority flows to the page that sells, tracked from first click to enquiry.',
       get: 'Keyword research, guide articles, technical fixes, rank tracking.', fix: 'I can’t tell what’s working.' }
   ];
   var picks = [].slice.call(scene.querySelectorAll('.pick')), picksBox = scene.querySelector('.svc-picks'), current = 0;
@@ -321,7 +321,7 @@
     exLine.textContent = picks[i].querySelector('.pick-line').textContent;
     exP.textContent = s.p; exGet.textContent = s.get; exFix.textContent = '“' + s.fix + '”';
     exCta.textContent = 'Ask about ' + (s.k === 'lp' ? 'landing pages' : s.name) + ' →';
-    if (!silent && TD.setTopic) TD.setTopic(s.name + ' — ' + s.fix.replace(/\.$/, ''));
+    if (!silent && TD.setTopic) TD.setTopic(s.name + ': ' + s.fix.replace(/\.$/, ''));
   }
   picks.forEach(function (b, i) {
     b.addEventListener('click', function () { choose(i); });

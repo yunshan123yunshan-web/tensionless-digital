@@ -1,6 +1,6 @@
 /* Prototype core: Lenis, the roller-blind hero and its wire, opt-in sound,
    and the contact topic pre-fill. Shared helpers are exposed on window.TD for
-   proto-scene.js and proto-cases.js. Prototype only — the live site does not load this. */
+   proto-scene.js and proto-cases.js. Prototype only, the live site does not load this. */
 (function () {
   'use strict';
   var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches || !window.gsap;
@@ -34,11 +34,50 @@
 
   /* ── Contact: topic pre-fill (the relaxing line lives in proto-cases.js) ── */
   var contact = document.getElementById('contact');
-  var contactBtn = document.getElementById('contact-btn'), contactTopic = document.getElementById('contact-topic');
+  var contactTopic = document.getElementById('contact-topic'), topicField = document.getElementById('cf-topic');
   TD.setTopic = function (topic) {
-    contactBtn.href = 'mailto:hello@tensionlessdigital.com?subject=' + encodeURIComponent('Request a free call — ' + topic);
-    contactTopic.textContent = 'Topic: ' + topic + ' (you can change it in the email)';
+    topicField.value = topic;
+    contactTopic.textContent = 'Topic: ' + topic + ' (from the service you picked)';
   };
+  /* The call form. FORM_ENDPOINT is empty until a form service is chosen (Formspree, Netlify Forms...):
+     until then a valid form opens the visitor's email app with every field already written in. */
+  var FORM_ENDPOINT = '', MAILTO = 'hello@tensionlessdigital.com';
+  var form = document.getElementById('call-form'), status = document.getElementById('cf-status');
+  var EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  var say = function (msg, isErr) { status.textContent = msg; status.classList.toggle('err', !!isErr); };
+  var check = function () {   // first problem wins; the field is marked and focused
+    var f = form.elements, problems = [
+      [f.name, f.name.value.trim().length > 0, 'Please add your name.'],
+      [f.email, EMAIL.test(f.email.value.trim()), 'Please add an email address we can reply to.']
+    ];
+    for (var k = 0; k < problems.length; k++) {
+      problems[k][0].setAttribute('aria-invalid', problems[k][1] ? 'false' : 'true');
+      if (!problems[k][1]) { problems[k][0].focus(); say(problems[k][2], true); return false; }
+    }
+    return true;
+  };
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!check()) return;
+    var f = form.elements, data = { name: f.name.value.trim(), email: f.email.value.trim(), website: f.website.value.trim(), message: f.message.value.trim(), topic: f.topic.value };
+    if (FORM_ENDPOINT) {
+      say('Sending...');
+      fetch(FORM_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(data) })
+        .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); form.reset(); say('Thanks, ' + data.name + '. We will reply within one working day.'); })
+        .catch(function () { say('That did not send. Please email ' + MAILTO + ' and we will reply within one working day.', true); });
+      return;
+    }
+    var lines = ['Name: ' + data.name, 'Email: ' + data.email];
+    if (data.website) lines.push('Website: ' + data.website);
+    if (data.topic) lines.push('Topic: ' + data.topic);
+    lines.push('', data.message || 'I would like a free 30-minute call about my funnel.');
+    var body = lines.join('\n');
+    location.href = 'mailto:' + MAILTO + '?subject=' + encodeURIComponent('Request a free call' + (data.topic ? ': ' + data.topic : '')) + '&body=' + encodeURIComponent(body);
+    say('Your email app should open with this already written. Just press send. If nothing opened, write to ' + MAILTO + '.');
+  });
+  [].forEach.call(form.querySelectorAll('input, textarea'), function (el) {
+    el.addEventListener('input', function () { if (el.getAttribute('aria-invalid') === 'true') { el.setAttribute('aria-invalid', 'false'); say(''); } });
+  });
   document.getElementById('roll-back').addEventListener('click', function () {
     if (TD.lenis) TD.lenis.scrollTo(0, { duration: 1.8 }); else scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
   });
@@ -120,7 +159,7 @@
     pts.push('0px ' + wireY(0).toFixed(1) + 'px');
     blind.style.clipPath = 'polygon(' + pts.join(',') + ')';
     var mid = N >> 1, disp = d[grab ? grab.k : mid] + Wire.bias;
-    // the hero headline is driven by the wire itself while you pull — nowhere else
+    // the hero headline is driven by the wire itself while you pull, nowhere else
     var s = Math.max(-0.2, Math.min(1, disp / MAXPULL)), range = W < 760 ? 8 : 16;
     h1.style.fontStretch = (100 + s * range).toFixed(2) + '%';
     copy.style.transform = 'translate3d(0,' + ((Wire.y - REST) + disp * 0.3).toFixed(1) + 'px,0)';
@@ -131,7 +170,11 @@
     // Same idea, no motion: the tab is a plain "enter" button; the blind simply isn't animated.
     draw(); drawBlind();
     addEventListener('resize', function () { resize(); draw(); drawBlind(); });
-    addEventListener('scroll', function () { draw(); }, { passive: true });
+    // a visitor who scrolls instead of pressing Enter must not carry the fixed wire across every section
+    addEventListener('scroll', function () {
+      canvas.style.visibility = hero.getBoundingClientRect().bottom < innerHeight * 0.5 ? 'hidden' : '';
+      draw();
+    }, { passive: true });
     tab.textContent = 'Enter ↓';
     tab.addEventListener('click', function () {
       released = true; Wire.y = ROLLED; draw();   // the wire rolls up with the blind, it doesn't stay across the page
@@ -206,7 +249,7 @@
       if (Math.abs(y - grab.y0) > 6) tab.dataset.dragged = '1';
     } else if (e.pointerType === 'mouse') {
       var calm = contact.getBoundingClientRect().top < H * 0.6;
-      if (px >= 0 && !calm) {                     // a genuine crossing plucks it — small, capped, with a cooldown
+      if (px >= 0 && !calm) {                     // a genuine crossing plucks it, small, capped, with a cooldown
         var wy = wireYAt(x), now = performance.now();
         if ((py - wy) * (y - wy) < 0 && now - lastPluck > 120) {
           lastPluck = now;
