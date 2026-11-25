@@ -39,9 +39,10 @@
     topicField.value = topic;
     contactTopic.textContent = 'Topic: ' + topic + ' (from the service you picked)';
   };
-  /* The call form. FORM_ENDPOINT is empty until a form service is chosen (Formspree, Netlify Forms...):
-     until then a valid form opens the visitor's email app with every field already written in. */
-  var FORM_ENDPOINT = '', MAILTO = 'hello@tensionlessdigital.com';
+  /* The call form is a Netlify Form (name="call" in the HTML, detected at deploy). It is sent in the
+     background so the visitor stays on the page. If sending fails (not hosted on Netlify, offline),
+     the visitor's email app opens with every field already written in, so no enquiry is lost. */
+  var MAILTO = 'hello@tensionlessdigital.com';
   var form = document.getElementById('call-form'), status = document.getElementById('cf-status');
   var EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   var say = function (msg, isErr) { status.textContent = msg; status.classList.toggle('err', !!isErr); };
@@ -60,23 +61,44 @@
     e.preventDefault();
     if (!check()) return;
     var f = form.elements, data = { name: f.name.value.trim(), email: f.email.value.trim(), website: f.website.value.trim(), message: f.message.value.trim(), topic: f.topic.value };
-    if (FORM_ENDPOINT) {
-      say('Sending...');
-      fetch(FORM_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(data) })
-        .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); form.reset(); say('Thanks, ' + data.name + '. We will reply within one working day.'); })
-        .catch(function () { say('That did not send. Please email ' + MAILTO + ' and we will reply within one working day.', true); });
-      return;
-    }
+    var btn = form.querySelector('[type="submit"]');
+    btn.disabled = true;
+    say('Sending...');
+    fetch(form.getAttribute('action') || '/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(new FormData(form)).toString() })
+      .then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        var topic = f.topic.value;
+        form.reset(); f.topic.value = topic;
+        say('Thanks, ' + data.name + '. Your request is in, and we will reply within one working day.');
+      })
+      .catch(function () { openMail(data); })
+      .then(function () { btn.disabled = false; });
+  });
+  function openMail(data) {   // fallback: the visitor's email app, pre-filled
     var lines = ['Name: ' + data.name, 'Email: ' + data.email];
     if (data.website) lines.push('Website: ' + data.website);
     if (data.topic) lines.push('Topic: ' + data.topic);
     lines.push('', data.message || 'I would like a free 30-minute call about my funnel.');
     var body = lines.join('\n');
     location.href = 'mailto:' + MAILTO + '?subject=' + encodeURIComponent('Request a free call' + (data.topic ? ': ' + data.topic : '')) + '&body=' + encodeURIComponent(body);
-    say('Your email app should open with this already written. Just press send. If nothing opened, write to ' + MAILTO + '.');
-  });
+    say('We could not send this from the page, so your email app should open with it already written. Just press send. If nothing opened, write to ' + MAILTO + '.');
+  }
   [].forEach.call(form.querySelectorAll('input, textarea'), function (el) {
     el.addEventListener('input', function () { if (el.getAttribute('aria-invalid') === 'true') { el.setAttribute('aria-invalid', 'false'); say(''); } });
+  });
+  /* ── the call popup: every "Request a free call" (and the service "Ask about" link) opens it ── */
+  var dialog = document.getElementById('call-dialog');
+  TD.openCall = function () {
+    if (!dialog.open) { dialog.showModal(); if (TD.lenis) TD.lenis.stop(); }
+    form.elements.name.focus();
+  };
+  dialog.addEventListener('close', function () { if (TD.lenis) TD.lenis.start(); say(''); });
+  document.getElementById('call-close').addEventListener('click', function () { dialog.close(); });
+  dialog.addEventListener('click', function (e) { if (e.target === dialog) dialog.close(); });   // click on the backdrop
+  [].forEach.call(document.querySelectorAll('[data-call]'), function (el) {
+    // capture phase, so the smooth-scroll handler on #contact links never runs for these
+    el.addEventListener('click', function (e) { e.preventDefault(); e.stopImmediatePropagation(); TD.openCall(); }, true);
   });
   document.getElementById('roll-back').addEventListener('click', function () {
     if (TD.lenis) TD.lenis.scrollTo(0, { duration: 1.8 }); else scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
@@ -102,8 +124,8 @@
     W = innerWidth; H = innerHeight;
     canvas.width = W * DPR; canvas.height = H * DPR;
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-    var mobile = W < 760;
-    REST = H * 0.80;
+    var mobile = W <= 760;   // same breakpoint as the CSS (max-width: 760px)
+    REST = H * (mobile ? 0.86 : 0.80);   // matches --rest-gap (20% desktop, 14% phones)
     MAXPULL = mobile ? 80 : 150; ARM = mobile ? 62 : 110; HYST = mobile ? 12 : 18;
     if (!released) Wire.y = REST;
   }
@@ -190,7 +212,7 @@
     if (a === armed) return;
     armed = a;
     tab.classList.toggle('armed', a);
-    tab.textContent = a ? 'Release to open ↑' : 'Pull ↓';
+    tab.textContent = a ? 'Release to open ↑' : 'Pull to open ↓';
   }
   function startGrab(x, y, el, id) {
     if (!canPlay()) return false;

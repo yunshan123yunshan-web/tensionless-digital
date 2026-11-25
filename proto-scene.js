@@ -20,19 +20,19 @@
   var LAYOUT = {
     desk: {
       /* stage aspect 1.36 → card height % of stage = width% × 1.36 × (card h/w) */
-      width: { search: 27, seo: 22, ad: 17, lp: 46, enq: 26, infl: 30, swatch: 13, sticker: 10, cursor: 3.2 },
+      width: { search: 25, seo: 21, ad: 17, lp: 46, enq: 24, infl: 21, swatch: 10, sticker: 8, cursor: 3.2 },
       /* disconnected: opposing angles, clashing scale (search oversized, page undersized), the
          inflatable crushed flat between the ad and the page, which both press over it */
-      chaos: { search: [57, 2, 14, .98, .98, 7], seo: [3, 6, -11, .95, .95, 3], ad: [8, 49, -17, 1, 1, 5], lp: [33, 39, 9, .85, .85, 6], enq: [68, 72, 16, 1, 1, 8],
-        infl: [17, 44, 6, .46, 1.16, 4], swatch: [88, 31, -22, 1, 1, 2], sticker: [50, 24, 24, 1, 1, 9], cursor: [80, 82, 140, .9, .9, 10] }
+      chaos: { search: [62, 1, 12, .95, .95, 6], seo: [2, 5, -10, .95, .95, 3], ad: [4, 50, -14, 1, 1, 5], lp: [33, 29, 4, 1, 1, 9], enq: [70, 72, 12, 1, 1, 8],
+        infl: [16, 60, 6, .46, 1.16, 4], swatch: [92, 40, -18, 1, 1, 2], sticker: [91, 10, 20, 1, 1, 2], cursor: [82, 84, 140, .9, .9, 10] }
     },
     mob: {
       /* stage aspect .73 → card height % = width% × .73 × (card h/w). Cards keep their size; the
          stack overlaps more (page tucks under the ad's footer, enquiry onto the page) so it is shorter */
       /* v13: a wider phone stage (aspect 1.15) so the whole section fits one screen */
-      width: { search: 50, seo: 46, ad: 30, lp: 70, enq: 46, infl: 34, swatch: 20, sticker: 17, cursor: 6 },
-      chaos: { search: [-8, 2, -14, 1, 1, 7], seo: [52, 0, 10, .95, .95, 3], ad: [70, 36, 16, 1, 1, 5], lp: [8, 30, -11, .8, .8, 6], enq: [40, 70, -16, 1, 1, 8],
-        infl: [24, 14, 8, .46, 1.14, 4], swatch: [78, 66, 20, 1, 1, 2], sticker: [2, 66, -20, 1.2, 1.2, 9], cursor: [80, 84, 140, 1, 1, 10] }
+      width: { search: 46, seo: 42, ad: 28, lp: 74, enq: 44, infl: 26, swatch: 15, sticker: 13, cursor: 6 },
+      chaos: { search: [-8, 0, -12, 1, 1, 6], seo: [56, -2, 9, .95, .95, 3], ad: [72, 34, 14, 1, 1, 5], lp: [10, 24, -4, 1, 1, 9], enq: [40, 72, -12, 1, 1, 8],
+        infl: [31, 2, 8, .46, 1.14, 4], swatch: [84, 72, 18, 1, 1, 2], sticker: [-3, 76, -16, 1, 1, 2], cursor: [80, 86, 140, 1, 1, 10] }
     }
   };
   /* DEPTH, the pieces live in a shallow 3D space. Disconnected: scattered in depth, each on its
@@ -41,8 +41,8 @@
      context z-index no longer orders siblings, so the aligned plane uses tiny z offsets instead.
      [translateZ px, rotationX, rotationY, shadow lift 0–1] */
   var DEPTH = {
-    chaos: { search: [170, -8, -14, 1], seo: [60, 8, 16, .6], ad: [90, 6, 18, .75], lp: [-150, 4, -22, .2], enq: [-40, -14, 10, .45],
-      infl: [20, 0, 0, 0], swatch: [-220, 10, 25, .1], sticker: [230, 0, 0, .9], cursor: [120, 0, 0, .9] }
+    chaos: { search: [40, -8, -14, .6], seo: [10, 8, 16, .5], ad: [50, 6, 18, .6], lp: [70, 2, -8, 1], enq: [190, -6, 6, .7],
+      infl: [80, 0, 0, 0], swatch: [-220, 10, 25, .1], sticker: [-160, 0, 0, .2], cursor: [200, 0, 0, .9] }
   };
 
   /* ALIGNED: the selected service's piece takes the centre, big and forward; the other four
@@ -68,6 +68,9 @@
     seo:    { corners: { enq: 'tl', lp: 'bl', search: 'tr', ad: 'br' }, decor: { infl: ['rm', -8], swatch: ['bc', 6], sticker: ['lm', 10] } }
   };
   var DECOR_Z = { infl: -60, swatch: -50, sticker: 10 };
+  /* desktop pictures a size up in the scattered state: each card grows about its own centre.
+     The aligned grid has no spare room (a bigger centre piece covers the corners), so it keeps its sizes. */
+  var GROW = { desk: 1.18, mob: 1 };
   var focusKey = 'lp';
   var mode = 'desk', state = 'chaos', tl = null, shuffle = null;
   function pickMode() { return matchMedia('(max-width: 899px)').matches ? 'mob' : 'desk'; }
@@ -96,7 +99,11 @@
     if (st === 'order') return orderProps(k);
     var p = LAYOUT[mode].chaos[k];
     var rot = p[2];   // full-strength scatter: the mess is the fun
-    var o = { left: p[0] + '%', top: p[1] + '%', width: LAYOUT[mode].width[k] + '%', rotation: rot, scaleX: p[3], scaleY: p[4], zIndex: p[5], opacity: 1 };
+    var w0 = LAYOUT[mode].width[k], g = k === 'cursor' ? 1 : GROW[mode], w = w0 * g;
+    var left = clamp(p[0] - (w - w0) / 2, Math.min(p[0], -2), Math.max(p[0], 102 - w));
+    // cards along the top edge keep their top (growing up would push them into the headline)
+    var top = k === 'cursor' || p[1] < 10 ? p[1] : p[1] - (w - w0) * RATIO[k] / stageH() * 50;
+    var o = { left: left + '%', top: top + '%', width: w + '%', rotation: rot, scaleX: p[3], scaleY: p[4], zIndex: p[5], opacity: 1 };
     // phones get shallower scattered depth
     var mob = mode === 'mob', d = DEPTH.chaos[k], m = mob ? .5 : 1, a = mob ? .7 : 1;
     o.z = d[0] * m; o.rotationX = d[1] * a; o.rotationY = d[2] * a; o['--lift'] = d[3];
@@ -323,17 +330,30 @@
     exCta.textContent = 'Ask about ' + (s.k === 'lp' ? 'landing pages' : s.name) + ' →';
     if (!silent && TD.setTopic) TD.setTopic(s.name + ': ' + s.fix.replace(/\.$/, ''));
   }
+  var hoverPickTimer;
+  var canHover = matchMedia('(hover: hover) and (pointer: fine)');
   picks.forEach(function (b, i) {
-    b.addEventListener('click', function () { choose(i); });
-    // hovering a service outlines its piece in the picture; nothing moves
-    b.addEventListener('pointerenter', function () { art[SERVICES[i].k].classList.add('is-peek'); });
-    b.addEventListener('pointerleave', function () { art[SERVICES[i].k].classList.remove('is-peek'); });
+    function activate() {
+      clearTimeout(hoverPickTimer);
+      if (current !== i || state === 'chaos') choose(i);
+    }
+    b.addEventListener('click', activate);
+    b.addEventListener('focus', function () { if (b.matches(':focus-visible')) activate(); });
+    b.addEventListener('pointerenter', function (e) {
+      art[SERVICES[i].k].classList.add('is-peek');
+      if (canHover.matches && e.pointerType !== 'touch') {
+        clearTimeout(hoverPickTimer);
+        hoverPickTimer = setTimeout(activate, 140);
+      }
+    });
+    b.addEventListener('pointerleave', function () {
+      clearTimeout(hoverPickTimer);
+      art[SERVICES[i].k].classList.remove('is-peek');
+    });
   });
-  /* desktop: details open under the chosen row. Mobile: the 2x2 picker sits under the picture,
-     and the details follow the whole picker. */
+  /* Keep the service targets stationary while hovering; details follow the list. */
   function placeExplain() {
-    if (pickMode() === 'mob') picksBox.insertAdjacentElement('afterend', explain);
-    else picks[current].insertAdjacentElement('afterend', explain);
+    picksBox.insertAdjacentElement('afterend', explain);
   }
   /* the selected service's route (piece → page → enquiry) stays at full strength; the rest dims */
   function markPath() {

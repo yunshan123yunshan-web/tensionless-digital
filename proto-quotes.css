@@ -1,0 +1,49 @@
+/* ── What our clients say: quotes pegged to a washing line ─────────────────
+   Light paper cards on the dark section, so the client's words never look like our
+   own copy. proto-quotes.js positions the cards, draws the wire and swings them.
+   Without JS (or before it runs) the cards simply stack. */
+.q-stage { position: relative; margin-top: 4vh; outline: none; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+.q-stage:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; }
+.q-line { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 1; display: none; }
+.q-line path { fill: none; stroke: var(--light); stroke-opacity: .55; stroke-width: 1.5; stroke-linecap: round; }
+
+.q-card { position: relative; margin: 0 0 16px; padding: 34px 32px 26px; background: var(--light); color: var(--bg);
+  box-shadow: 0 24px 60px rgba(0,0,0,.45); }
+.q-peg { position: absolute; left: 50%; top: -14px; width: 12px; height: 30px; translate: -50% 0; background: var(--thread); border-radius: 2px; z-index: 2; }
+.q-peg::after { content: ''; position: absolute; left: 50%; top: 9px; width: 4px; height: 4px; translate: -50% 0; border-radius: 50%; background: var(--light); }
+.q-mark { display: block; font-family: var(--serif); font-size: 96px; line-height: .6; height: 38px; color: var(--thread); }
+.q-card blockquote { margin: 8px 0 24px; }
+.q-card blockquote p { font-family: var(--serif); font-style: italic; font-size: clamp(22px, 1.9vw, 30px); line-height: 1.28; }
+.q-card figcaption { display: flex; flex-direction: column; gap: 4px; padding-top: 16px; border-top: 1px solid rgba(5,5,7,.18); }
+.q-name { font-weight: 700; font-size: 17px; }
+.q-role { font-size: 14px; color: #4c545e; }
+
+/* live: the line is drawn, cards hang from it and the stage owns the drag */
+.q-stage.is-live { cursor: grab; }
+.q-stage.is-live.dragging { cursor: grabbing; }
+.q-stage.is-live .q-line { display: block; }
+.q-stage.is-live .q-card { position: absolute; left: 0; top: 0; margin: 0; width: var(--q-w, 560px); transform-origin: 50% 0;
+  will-change: transform; transition: filter .3s ease; }
+.q-stage.is-live .q-card:not(.on) { filter: brightness(.5) saturate(.6); cursor: pointer; }
+
+.q-controls { display: none; align-items: center; gap: 14px; margin-top: 18px; color: var(--dim); }
+.q-stage.is-live + .q-controls { display: flex; }
+.q-btn { width: 44px; height: 44px; border: 1px solid rgba(233,237,242,.35); background: none; color: var(--light); font-size: 22px; line-height: 1; cursor: pointer; }
+.q-btn:hover, .q-btn:focus-visible { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+.q-count b { color: var(--light); font-weight: 600; }
+.q-hint { margin-left: auto; text-transform: none; letter-spacing: .02em; transition: opacity .6s ease; }
+.q-hint.gone { opacity: 0; }
+
+@media (max-width: 899px) {
+  .q-card { padding: 28px 22px 22px; }
+  .q-card blockquote p { font-size: 21px; }
+  .q-hint { display: none; }
+}
+
+/* placeholders: obviously not real quotes, so they can never be mistaken for client words */
+.q-card.is-placeholder { background: repeating-linear-gradient(135deg, #dfe4ea 0 14px, #e9edf2 14px 28px); outline: 2px dashed rgba(5,5,7,.35); outline-offset: -10px; }
+.q-card.is-placeholder blockquote p, .q-card.is-placeholder .q-name { color: #4c545e; }
+.q-ph { display: inline-block; margin-bottom: 14px; padding: 4px 8px; background: var(--bg); color: var(--light); font-size: 12px; }
+
+/* cards hanging past the edges must never widen the page */
+.quotes { overflow-x: clip; }

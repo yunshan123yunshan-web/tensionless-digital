@@ -24,8 +24,8 @@
 .m-lead span { display: block; margin-top: 10px; color: var(--dim); }
 .m-sub { display: flex; flex-wrap: wrap; gap: 6px 28px; color: var(--dim); font-size: 14px; }
 .m-sub b { color: var(--light); font-weight: 600; font-size: 20px; letter-spacing: -.02em; margin-right: 6px; }
-.m-flag { color: #aab3bd; font-size: 12px; line-height: 1.6; text-transform: none; letter-spacing: .02em; max-width: 46ch; }
-.m-tag { position: absolute; z-index: 4; padding: 5px 8px; background: rgba(5,5,7,.8); color: var(--light); font-size: 11px; }
+.m-flag { color: #c7ced6; font-size: 13px; max-width: 46ch; }
+.m-tag { position: absolute; z-index: 4; padding: 5px 8px; background: rgba(5,5,7,.8); color: var(--light); font-size: 12px; }
 
 /* wide */
 .moment[data-comp="wide"] .m-media { inset: 0; }
@@ -43,7 +43,7 @@
 .moment[data-comp="crop"] .m-tag { right: calc(var(--gutter) + 12px); top: calc(6vh + 12px); }
 .m-figure { position: absolute; z-index: 2; left: 16%; bottom: 13%; margin: 0; color: var(--light); text-shadow: 0 6px 40px rgba(0,0,0,.45); }
 .m-figure b { display: block; font-weight: 700; font-size: clamp(84px, 10vw, 176px); line-height: .8; letter-spacing: -.06em; }
-.m-figure span { display: block; margin-top: 12px; font-size: 12px; }
+.m-figure span { display: block; margin-top: 12px; font-size: 13px; }
 .moment[data-comp="crop"] .m-media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(5,5,7,0) 45%, rgba(5,5,7,.55) 100%); }
 
 /* type: the photo fills the 8 (aligned to the full frame by proto-cases.js), then spills out of it */
@@ -91,7 +91,7 @@
 .proc-stages { list-style: none; margin-top: 11vh; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 48px; position: relative; z-index: 2; }
 .proc-stages li { opacity: .35; transition: opacity .4s ease; }
 .proc-stages li.on { opacity: 1; }
-.proc-dot { display: block; width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--bg); background: var(--light); margin-bottom: 22px; transition: background .3s; }
+.proc-dot { display: block; width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--bg); background: var(--light); margin-bottom: 22px; transition: background .3s, opacity .4s ease; }
 /* each step is anchored by a big numeral: outlined while ahead of the line, inked once the line reaches it */
 .proc-n { font-weight: 800; font-size: clamp(56px, 6.2vw, 104px); line-height: .8; letter-spacing: -.06em; color: transparent; -webkit-text-stroke: 1.5px var(--bg); transition: color .4s ease; }
 .proc-stages li.on .proc-n { color: var(--bg); }
@@ -102,6 +102,15 @@
 /* the stages step up, so the finished line reads as growth */
 .proc-stages li:nth-child(2) { translate: 0 -32px; }
 .proc-stages li:nth-child(3) { translate: 0 -64px; }
+
+/* ── client results intro + client quotes: plain headings so the section reads as client work at a glance ── */
+.work-intro, .quotes { position: relative; background: var(--bg); color: var(--text); padding: 9vh var(--gutter) 7vh; }
+.work-intro .proc-top, .quotes .proc-top { border-bottom-color: rgba(233,237,242,.28); color: var(--dim); }
+.work-h, .quotes-h { margin-top: 4vh; font-weight: 800; font-size: clamp(44px, 6.4vw, 112px); line-height: .88; letter-spacing: -.045em; text-transform: uppercase; }
+.work-h em, .quotes-h em { font-family: var(--serif); font-weight: 400; text-transform: none; color: var(--accent); }
+.cases.is-reel .reel-hud .reel-title { color: var(--light); font-weight: 600; padding-right: 12px; border-right: 1px solid rgba(233,237,242,.3); }
+.quotes { padding-bottom: 12vh; }
+.q-note { margin-top: 28px; color: var(--dim); }
 
 /* ── phones: natural height; image on top, then statement, then details ── */
 @media (max-width: 899px) {
@@ -122,6 +131,10 @@
   .moment[data-comp="type"] .m-statement { font-size: clamp(32px, 9.4vw, 48px); }
   .m-figure { left: 9%; bottom: 9%; }
   .m-figure b { font-size: clamp(72px, 22vw, 110px); }
+  .work-intro, .quotes { padding-top: 7vh; padding-bottom: 5vh; }
+  .work-intro .proc-top, .quotes .proc-top { flex-direction: column; gap: 4px; }
+  .work-h, .quotes-h { font-size: clamp(40px, 11vw, 64px); }
+  .quotes { padding-bottom: 9vh; }
   .process { padding-top: 5vh; padding-bottom: 4vh; }   /* close to contact, so the line's hand-over stays in view */
   .proc-top { flex-direction: column; gap: 4px; }
   .proc-h { margin-top: 4vh; font-size: clamp(40px, 11vw, 64px); }

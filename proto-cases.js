@@ -75,7 +75,7 @@
         aligners = [], marks = [], shown = -1, tl = null;
     // start clean: nothing from a previous breakpoint's build may leak in
     moments.forEach(function (m) {
-      gsap.set([m].concat([].slice.call(m.querySelectorAll('.m-media, .m-media img, .m-statement, .m-detail'))), { clearProps: 'all' });
+      gsap.set([m].concat([].slice.call(m.querySelectorAll('.m-media, .m-media img, .m-statement, .m-detail, .m-tag'))), { clearProps: 'all' });
     });
     reel.classList.add('is-reel');
     // rebuild the current frame from scratch: start state → measure → re-record → back to now
@@ -97,7 +97,7 @@
                  // from the right (its words held back, so the wipe never cuts through a headline), then the
                  // new words arrive together. Scrubbed, so scrolling back plays the exact mirror.
         var prev = moments[i - 1], words = function (mm) { return [].slice.call(mm.querySelectorAll('.m-k, .m-statement, .m-figure')); };
-        tl.fromTo(words(prev).concat(prev.querySelector('.m-detail')), { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.25, ease: 'power1.in', immediateRender: false }, t)
+        tl.fromTo(words(prev).concat(prev.querySelector('.m-detail'), prev.querySelector('.m-tag')), { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.25, ease: 'power1.in', immediateRender: false }, t)
           .fromTo(m, { clipPath: 'inset(0% 0% 0% 100%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 0.7, ease: 'power3.inOut' }, t + 0.15)
           .fromTo(prev, { xPercent: 0 }, { xPercent: -14, duration: 0.7, ease: 'power3.inOut', immediateRender: false }, t + 0.15)
           .fromTo(prev, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.01, ease: 'none', immediateRender: false }, t + 0.85)
@@ -119,6 +119,8 @@
       }
       tl.fromTo(detail, { autoAlpha: 0, x: 40 }, { autoAlpha: 1, x: 0, duration: 0.5, ease: 'power2.out', immediateRender: false }, t + open - 0.55);
       gsap.set(detail, { autoAlpha: 0 });
+      var tag = m.querySelector('.m-tag');   // the 'illustrative' label lands with the details, on the settled picture
+      if (tag) { tl.fromTo(tag, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4, ease: 'power1.out', immediateRender: false }, t + open - 0.4); gsap.set(tag, { autoAlpha: 0 }); }
       tl.to({}, { duration: hold }, t + open);   // a stable hold on the finished result
     });
 
@@ -215,26 +217,35 @@
       }
       return resample(dense, N);
     };
-    // the process line at progress p: from the reel's seam line, through a tangle, into the settled shape
+    // the process line at progress p: it lies along its own path (the quotes now sit between it and the reel,
+    // so it no longer sweeps in from the section's top edge across the labels), tangled early, then flowing.
+    // drawThread only draws the first drawn(p) points, so the line grows from the first stage towards growth.
+    var drawn = function (p) { return Math.max(1, Math.round(N * (1 - Math.pow(1 - p, 2)))); };
     var procPts = function (p, W, shape) {
-      var phone = W < 900, ep = 1 - Math.pow(1 - p, 2), pts = [];
+      var phone = W < 900, pts = [];
       var amp = (phone ? 26 : 64) * Math.sin(Math.PI * Math.min(1, p / 0.85));   // friction: it tangles on the way, then flows
       for (var i = 0; i <= N; i++) {
         var u = i / N, wig = amp * Math.sin(Math.PI * u) * (Math.sin(i * 0.37) + 0.6 * Math.sin(i * 1.01 + 1.3) + 0.35 * Math.sin(i * 2.4 + 0.4)) / 1.6;
-        pts.push([lerp(W * u, shape[i][0], ep) + (phone ? wig : 0), lerp(-1, shape[i][1], ep) + (phone ? 0 : wig)]);
+        pts.push([shape[i][0] + (phone ? wig : 0), shape[i][1] + (phone ? 0 : wig)]);
       }
       return pts;
     };
     // where the released line travels: out of the curve, down the empty right margin, then in
     // beneath the heading, ending on the underline (last stretch = exactly the word's width)
     var route = function (W, rf, E) {
-      var te = box(tense, rf), Y = te.b - (te.b - te.t) * 0.06, xr = W - (W < 900 ? 9 : 22), K;
+      var te = box(tense, rf), Y = te.b - (te.b - te.t) * 0.06, K;
       if (W < 900) {   // phones: drop below the last stage's text before crossing to the margin
         // the crossing happens inside whatever gap is left between the last stage and the contact kicker
         var s3 = box(stages[stages.length - 1], rf).b, gap = Math.max(36, box(document.getElementById('contact-kicker'), rf).t - s3);
-        K = [E, [E[0], s3 + gap * 0.25], [W * 0.55, s3 + gap * 0.5], [xr, s3 + gap * 0.75], [xr, Y - 70], [xr - 60, Y], [te.r, Y], [te.l, Y]];
+        // same shape as desktop, kept inside the screen: across the gap, down past the headline, slack under 'OUT.'
+        K = [E, [E[0], s3 + gap * 0.3], [W * 0.6, s3 + gap * 0.55], [W - 26, Y - 50], [te.r + 40, Y + 14], [te.r, Y], [te.l, Y]];
       } else {
-        K = [E, [xr, E[1] + 90], [xr, Y - 90], [xr - 90, Y], [te.r, Y], [te.l, Y]];
+        // desktop: the arrow dives down a lane just right of the contact headline (inside the page, never on
+        // the screen edge), then hangs slack below "OUT." like a rope and pulls taut under "tension"
+        // first it drops down the margin until it is clear of the last stage's text, then one smooth bend
+        var lane = clamp(headRight(rf) + 80, W * 0.55, W - 90), s3b = box(stages[stages.length - 1], rf).b;
+        var sag = Math.min(34, (lane - te.r) * 0.06);
+        K = [E, [W - 60, s3b + 30], [lane, Y - 90], [(lane + te.r) / 2, Y + sag], [te.r, Y], [te.l, Y]];
       }
       var cr = function (a, b, c, d, u) { return 0.5 * (2 * b + (c - a) * u + (2 * a - 5 * b + 4 * c - d) * u * u + (3 * b - a - 3 * c + d) * u * u * u); }, out = [];
       for (var sg = 0; sg < K.length - 1; sg++) {
@@ -243,6 +254,14 @@
       }
       return { pts: out, uw: te.r - te.l, te: te, Y: Y };
     };
+    // right edge of the contact headline's actual text (the h2 box itself spans the page)
+    var headRight = function (rf) {
+      var rg = document.createRange(), m = 0;
+      rg.selectNodeContents(tense.closest('h2'));
+      [].forEach.call(rg.getClientRects(), function (c) { m = Math.max(m, c.right); });
+      return m - rf.left;
+    };
+    var smooth = function (a, b, x) { var t = clamp((x - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
     var lengths = function (pts) { var acc = [0]; for (var a = 1; a < pts.length; a++) acc.push(acc[a - 1] + Math.hypot(pts[a][0] - pts[a - 1][0], pts[a][1] - pts[a - 1][1])); return acc; };
     var at = function (pts, acc, s) {
       var j = 0; while (j < pts.length - 2 && acc[j + 1] < s) j++;
@@ -257,7 +276,7 @@
     };
     var poly = function (pts) { return 'M' + pts.map(function (p) { return p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join(' L'); };
     var arrow = function (pts, size) {   // arrowhead pointing along the curve's end
-      if (size <= 0.5) return '';
+      if (size <= 0.5 || pts.length < 4) return '';
       var e = pts[pts.length - 1], b = pts[pts.length - 4], ang = Math.atan2(e[1] - b[1], e[0] - b[0]), d = '';
       [-0.5, 0.5].forEach(function (o) { d += ' M' + e[0].toFixed(1) + ',' + e[1].toFixed(1) + ' L' + (e[0] - size * Math.cos(ang + o)).toFixed(1) + ',' + (e[1] - size * Math.sin(ang + o)).toFixed(1); });
       return d;
@@ -271,17 +290,31 @@
         var rr = route(W, rf, cur[N]);
         d = poly(cur) + arrow(cur, head) + ' M' + rr.te.r.toFixed(1) + ',' + rr.Y.toFixed(1) + ' L' + rr.te.l.toFixed(1) + ',' + rr.Y.toFixed(1);
       } else if (q <= 0) {
-        d = poly(cur) + arrow(cur, head);
-      } else {   // released: a window slides along curve + route, shrinking from the curve to the word
+        var part = cur.slice(0, drawn(p) + 1);
+        d = p > 0.001 ? poly(part) + arrow(part, head) : '';
+      } else {   // released: the arrow keeps its head and extends down to the word; the tail lets go later
         var r = route(W, rf, cur[N]), all = cur.concat(r.pts), acc = lengths(all), Lc = acc[N], Lt = acc[acc.length - 1];
-        var e = q < 0.5 ? 2 * q * q : 1 - Math.pow(-2 * q + 2, 2) / 2;
-        var seg = slice(all, acc, lerp(0, Lt - r.uw, e), lerp(Lc, Lt, e));
+        var headS = lerp(Lc, Lt, smooth(0, 0.8, q)), tailS = lerp(0, Lt - r.uw, smooth(0.3, 1, q));
+        var seg = slice(all, acc, tailS, headS);
         if (ST.wob) seg = seg.map(function (pt, k) { return [pt[0], pt[1] + ST.wob * Math.sin(Math.PI * k / (seg.length - 1))]; });
-        d = poly(seg) + arrow(cur, head);
+        d = poly(seg) + arrow(seg, (phone ? 10 : 16) * (1 - smooth(0.78, 0.96, q)));   // the head melts into the underline
+        // a stage dot dims once the line has let go of it, so no dot is left floating on its own
+        dots.forEach(function (dt) {
+          var b = box(dt, rf), cx = (b.l + b.r) / 2, cy = (b.t + b.b) / 2, best = 0, bd = Infinity;
+          for (var j = 0; j <= N; j++) { var dd = Math.pow(cur[j][0] - cx, 2) + Math.pow(cur[j][1] - cy, 2); if (dd < bd) { bd = dd; best = j; } }
+          dt.style.opacity = tailS > acc[best] ? '0.25' : '';
+        });
       }
+      if (q <= 0 || reduced) dots.forEach(function (dt) { dt.style.opacity = ''; });
       tPath.setAttribute('d', d);
       tPath.style.strokeWidth = (2 + (reduced ? 0 : ST.q)).toFixed(2);
-      stages.forEach(function (li, i) { li.classList.toggle('on', reduced || ST.p >= [0.12, 0.5, 0.88][i]); });
+      // a step inks in the moment the growing line reaches its dot
+      var tip = reduced || q > 0 ? N : drawn(p);
+      stages.forEach(function (li, i) {
+        var b = box(dots[i], rf), cx = (b.l + b.r) / 2, cy = (b.t + b.b) / 2, best = 0, bd = Infinity;
+        for (var j = 0; j <= N; j++) { var dd = Math.pow(shape[j][0] - cx, 2) + Math.pow(shape[j][1] - cy, 2); if (dd < bd) { bd = dd; best = j; } }
+        li.classList.toggle('on', reduced || (p > 0.001 && tip >= best));
+      });
       // the reel's own line hands over the moment this one leaves the seam
       if (reelThread) reelThread.style.visibility = (ST.p > 0.001 || ST.q > 0) ? 'hidden' : '';
     };

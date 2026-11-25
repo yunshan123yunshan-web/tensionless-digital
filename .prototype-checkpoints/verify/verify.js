@@ -164,12 +164,13 @@ const HELP = () => {
   {
     const f = await b.newPage(); await f.setViewport({ width: 1440, height: 900 }); f.on('pageerror', e => errs.push('form ' + e.message));
     await f.goto(URL, { waitUntil: 'networkidle0' }); await wait(500);
+    await f.evaluate(() => TD.openCall()); await wait(300);   // the form lives in the call popup (v28+)
     const r1 = await f.evaluate(() => { document.querySelector('#call-form .btn').click(); return { invalid: document.querySelector('[name=name]').getAttribute('aria-invalid'), focused: document.activeElement.name, msg: document.getElementById('cf-status').textContent }; });
     checks++; if (r1.invalid !== 'true' || r1.focused !== 'name' || !r1.msg) flag('form', 'empty submit not flagged ' + JSON.stringify(r1));
     const r2 = await f.evaluate(() => { const e = document.querySelector('#call-form').elements; e.name.value = 'Test'; e.email.value = 'not-an-email'; document.querySelector('#call-form .btn').click(); return { focused: document.activeElement.name, invalid: e.email.getAttribute('aria-invalid') }; });
     checks++; if (r2.focused !== 'email' || r2.invalid !== 'true') flag('form', 'bad email not flagged ' + JSON.stringify(r2));
-    const r3 = await f.evaluate(() => { const e = document.querySelector('#call-form').elements; e.email.value = 'test@example.com'; document.querySelector('#call-form .btn').click(); return document.getElementById('cf-status').textContent; });
-    checks++; if (!/email app/.test(r3)) flag('form', 'valid submit gave no feedback: ' + r3);
+    const r3 = await f.evaluate(() => { const e = document.querySelector('#call-form').elements; e.email.value = 'test@example.com'; document.querySelector('#call-form .btn').click(); const st = document.getElementById('cf-status'); return new Promise(res => { const t0 = Date.now(), tick = () => (st.textContent !== 'Sending...' || Date.now() - t0 > 4000) ? res(st.textContent) : setTimeout(tick, 50); tick(); }); });   // sending is async (Netlify Forms, v32)
+    checks++; if (!/email app|request is in/.test(r3)) flag('form', 'valid submit gave no feedback: ' + r3);
     await f.evaluate(() => document.getElementById('contact').scrollIntoView()); await wait(400); await f.screenshot({ path: `${OUT}/form-1440.png` });
     await f.close();
   }
