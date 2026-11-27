@@ -23,3 +23,6 @@ temp/
 
 # Netlify CLI local state
 .netlify/
+
+# Eleventy build output
+_site/

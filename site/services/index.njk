@@ -1,0 +1,20 @@
+---
+title: "Digital Marketing Services in Singapore | Tensionless Digital"
+description: "Google Ads, Facebook and Instagram ads, landing pages and SEO in Singapore, planned and run by one team as one campaign, with every enquiry tracked."
+---
+{% extends "sub-page.njk" %}
+{% block main %}
+<section class="sp-hero">
+  <p class="mono kicker">Digital marketing services in Singapore</p>
+  <h1>Four channels, <em>one campaign.</em></h1>
+  <p class="lede">We plan, build and run your Google Ads, Facebook and Instagram ads, SEO and landing pages as one campaign, so every click lands on a page that keeps the ad’s promise, and every enquiry is tracked back to where it came from.</p>
+</section>
+<section class="sp-block" aria-labelledby="list-h">
+  <h2 id="list-h" class="sr-only">Our services</h2>
+  <ul class="rel rel-hub">
+    {%- for s in services %}
+    <li><a href="/services/{{ s.slug }}/"><span>{{ s.name }}</span><span class="rel-lede">{{ s.lede }}</span><span class="mono">Fixes: {{ s.problem }}</span></a></li>
+    {%- endfor %}
+  </ul>
+</section>
+{% endblock %}

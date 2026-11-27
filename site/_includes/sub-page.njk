@@ -1,0 +1,44 @@
+{#- Shell for light sub-pages (no shader, no pinned reels): header, content, contact form, footer. -#}
+{% extends "base.njk" %}
+{% block head %}
+{#- Self-hosted fonts: Archivo is preloaded so it arrives with the CSS and text does not reflow (CLS). -#}
+<link rel="preload" href="/fonts/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/sub-page.css?v=4">
+{% endblock %}
+{% block body %}
+<a class="skip mono" href="#main">Skip to content</a>
+<header class="sp-head">
+  <a class="brand" href="/"><img src="/logo.webp" alt="Tensionless Digital home" width="444" height="395"></a>
+  <nav class="sp-nav mono" aria-label="Main"><a href="/services/"{% if page.url.startsWith('/services/') %} aria-current="page"{% endif %}>Services</a><a href="/insights/"{% if page.url.startsWith('/insights/') %} aria-current="page"{% endif %}>Insights</a><a href="/#work">Work</a><a href="#contact">Contact</a></nav>
+</header>
+<nav class="crumbs mono" aria-label="Breadcrumb"><ol>
+  {%- for b in breadcrumbs %}<li>{% if loop.last %}<span aria-current="page">{{ b.name }}</span>{% else %}<a href="{{ b.url }}">{{ b.name }}</a>{% endif %}</li>{% endfor -%}
+</ol></nav>
+<main id="main">
+{% block main %}{% endblock %}
+</main>
+<section class="sp-contact" id="contact" aria-labelledby="contact-h">
+  <p class="mono kicker">Contact</p>
+  <h2 id="contact-h">Let’s take the <em>tension</em> out.</h2>
+  <div class="sp-contact-grid">
+    <div>
+      <p class="sp-contact-intro">A 30-minute call. We look at your current funnel, tell you where it leaks, and you decide if we’re worth hiring. No deck, no commitment. We reply within one working day.</p>
+      <p class="sp-contact-mail">Or write to <a href="mailto:{{ entity.email }}">{{ entity.email }}</a>.</p>
+    </div>
+    <form class="call-form" name="call" method="POST" action="/thank-you.html" data-netlify="true" netlify-honeypot="bot-field">
+      <input type="hidden" name="form-name" value="call">
+      <p class="cf-trap" hidden><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+      <label class="cf-field"><span class="mono">Name</span><input name="name" autocomplete="name" maxlength="100" required></label>
+      <label class="cf-field"><span class="mono">Email</span><input name="email" type="email" autocomplete="email" maxlength="200" required></label>
+      <label class="cf-field"><span class="mono">Website <i>(optional)</i></span><input name="website" inputmode="url" autocomplete="url" maxlength="200" placeholder="yourcompany.com"></label>
+      <label class="cf-field"><span class="mono">Where do enquiries leak? <i>(optional)</i></span><textarea name="message" rows="3" maxlength="1000" placeholder="e.g. Plenty of clicks, very few calls"></textarea></label>
+      <input type="hidden" name="topic" value="{{ formTopic or 'Services' }}">
+      <button class="btn" type="submit">Request a free call →</button>
+    </form>
+  </div>
+  <footer class="sp-foot mono">
+    <ul class="sp-foot-links" aria-label="Services">{% for s in services %}<li><a href="/services/{{ s.slug }}/">{{ s.name }}</a></li>{% endfor %}<li><a href="/insights/">Insights</a></li></ul>
+    <span>© 2026 {{ entity.brandName }} · <span class="nowrap">UEN {{ entity.uen }}</span> · Singapore · <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a></span>
+  </footer>
+</section>
+{% endblock %}

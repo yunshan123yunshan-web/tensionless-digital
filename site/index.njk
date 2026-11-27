@@ -1,0 +1,451 @@
+---
+title: "Tensionless Digital | Digital Marketing Agency in Singapore"
+description: "Singapore digital marketing agency. We plan and run Google Ads, Facebook Ads, SEO and landing pages as one campaign, for clients in Singapore and worldwide."
+---
+{% extends "base.njk" %}
+{% block head %}
+{#- Self-hosted fonts (same files Google Fonts served); Archivo preloaded because the hero waits on it (LCP). -#}
+<link rel="preload" href="/fonts/archivo-wide-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="https://unpkg.com/lenis@1.1.13/dist/lenis.css">
+<link rel="stylesheet" href="/proto-scene.css?v=34">
+<link rel="stylesheet" href="/proto-cases.css?v=31">
+<link rel="stylesheet" href="/proto-quotes.css?v=2">
+<style>
+  /* Homepage (promoted from prototype-wire.html v32). Blind hero → blue
+     "chaos → choreography" scene → image-led proof → calm contact. */
+  @font-face { font-family: 'Archivo'; src: url('/fonts/archivo-wide-var.woff2') format('woff2'); font-weight: 100 900; font-stretch: 62% 125%; font-display: swap; }
+  @font-face { font-family: 'Cormorant Garamond'; src: url('/fonts/cormorant-italic.woff2') format('woff2'); font-weight: 400; font-style: italic; font-display: swap; }
+  @font-face { font-family: 'JetBrains Mono'; src: url('/fonts/jetbrains-mono-var.woff2') format('woff2'); font-weight: 100 800; font-display: swap; }
+  :root {
+    --light: #e9edf2; --bg: #050507; --text: #e9edf2; --dim: #98a2ae; --faint: #2a2f36;
+    --accent: #8fb0ff; --thread: #4a6bd8;
+    --display: 'Archivo', sans-serif; --serif: 'Cormorant Garamond', serif; --mono: 'JetBrains Mono', monospace;
+    --gutter: clamp(16px, 3vw, 40px);
+    --rest-gap: 20%;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); color: var(--text); font-family: var(--display); }
+  body { overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  .mono { font-family: var(--mono); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; }
+  /* explanatory sentences read as body text, not as uppercase code labels */
+  .m-k, .proc-top span, .scene-top span { text-wrap: balance; }
+  .mono.note { font-family: var(--display); font-size: 14px; line-height: 1.5; letter-spacing: 0; text-transform: none; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  #wire { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 40; pointer-events: none; }
+  .btn { display: inline-block; padding: 14px 22px; background: var(--bg); color: var(--light); text-decoration: none; border: 1px solid var(--bg);
+    font-family: var(--mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; transition: background .15s, color .15s; white-space: nowrap; cursor: pointer; }
+  .btn:hover, .btn:focus-visible { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+  .btn.ghost { background: transparent; color: var(--bg); }
+  .btn.ghost:hover, .btn.ghost:focus-visible { background: var(--accent); }
+  .btn .arr, .ex-cta .arr { display: inline-block; }
+  .btn:hover .arr, .btn:focus-visible .arr, .make:hover .arr { animation: arr-loop .24s ease-in-out; }
+  @keyframes arr-loop { 0% { transform: translateX(0); opacity: 1; } 45% { transform: translateX(12px); opacity: 0; }
+    55% { transform: translateX(-12px); opacity: 0; } 100% { transform: translateX(0); opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .btn .arr, .make .arr { animation: none !important; } }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  /* ── HERO: the blind, with the real introduction underneath ── */
+  .hero { position: relative; height: 100vh; height: 100svh; background: var(--bg); overflow: hidden; }
+  .under { position: absolute; inset: 0; z-index: 0; opacity: 0; transition: opacity .45s ease .1s; display: grid; grid-template-columns: minmax(0, 1fr); align-items: center; padding: 12vh var(--gutter) 8vh; }
+  .kicker { font-size: clamp(18px, 1.8vw, 26px); font-weight: 600; letter-spacing: -.01em; margin-bottom: 22px; }
+  .kicker em, .under h2 em { font-family: var(--serif); font-weight: 400; color: var(--accent); }
+  .under h2 { font-size: clamp(34px, 6.6vw, 116px); font-weight: 500; line-height: 1; letter-spacing: -.035em; max-width: 17ch; }
+  .under-side { margin-top: 28px; max-width: 420px; color: var(--dim); font-size: 15px; line-height: 1.6; }
+  .hero.open .under { opacity: 1; }
+  .blind { position: absolute; inset: 0; z-index: 2; background: var(--light); color: var(--bg); clip-path: inset(0 0 var(--rest-gap) 0); }
+  .hero-nav { position: absolute; top: var(--gutter); left: var(--gutter); right: var(--gutter); display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+  .hero-nav .brand { display: block; line-height: 0; }
+  .hero-nav .brand img, .foot-logo { display: block; width: auto; height: 76px; }   /* stacked logo: big enough to read the wordmark */
+  .foot-logo { height: 56px; }
+  .foot-brand { display: flex; align-items: center; gap: 14px; }
+  .nav-links { display: flex; align-items: center; gap: 22px; }
+  .nav-links a { text-decoration: none; }
+  .nav-links a:hover, .nav-links a:focus-visible { text-decoration: underline; }
+  .sound-btn { padding: 6px 10px; cursor: pointer; background: transparent; color: var(--bg); border: 1px solid rgba(5,5,7,.3); }
+  .sound-btn[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); }
+  .proto { color: #4c545e; }
+  .hero-copy { position: absolute; left: var(--gutter); right: var(--gutter); bottom: calc(var(--rest-gap) + 36px); will-change: transform; }
+  .hero h1 { font-weight: 800; font-size: clamp(42px, min(9.6vw, 15vh), 176px); line-height: .86; letter-spacing: -.035em; text-transform: uppercase; white-space: nowrap; }
+  .hero h1 em { font-family: var(--serif); font-style: italic; font-weight: 400; text-transform: none; }
+  .hero-sub { display: flex; justify-content: space-between; gap: 24px; margin-top: 22px; align-items: end; }
+  .hero-sub p { max-width: 440px; font-size: 15px; line-height: 1.5; color: #3a414a; }
+  .hero-ctas { display: flex; gap: 10px; flex-wrap: wrap; }
+  .pull-tab { position: absolute; left: 50%; top: 80%; z-index: 6; transform: translate(-50%, 0); touch-action: none; cursor: grab;
+    padding: 10px 16px 9px; min-width: 56px; min-height: 44px; background: var(--light); color: var(--bg); border: 0;
+    border-radius: 0 0 22px 22px; font-family: var(--mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase;
+    transition: background .15s, color .15s, opacity .3s; }
+  .pull-tab.armed { background: var(--accent); }
+
+  /* ── CONTACT: one still screen. A taut line crosses it and relaxes into the underline. ── */
+  .contact { position: relative; background: var(--light); color: var(--bg); padding: 18vh var(--gutter) 5vh; display: flex; flex-direction: column; overflow: hidden; }
+  .contact-kicker { color: #4c545e; margin-bottom: 4vh; width: fit-content; }   /* box = the label itself, so the released line can pass beside it */
+  .contact h2 { font-size: clamp(48px, 9vw, 160px); font-weight: 800; letter-spacing: -.045em; line-height: .88; text-transform: uppercase; }
+  .contact h2 em { font-family: var(--serif); font-weight: 400; text-transform: none; }
+  .contact h2 em.tense { display: inline-block; }
+  .contact-grid { display: grid; grid-template-columns: minmax(0, 900px); gap: 30px; margin-top: 6vh; align-items: start; }   /* invitation, then the button right beneath it */
+  .contact-grid > p { max-width: 460px; font-size: 17px; line-height: 1.55; color: #3a414a; }
+  .contact-mail { font-size: 14px; color: #3a414a; }
+  /* the call form: underlined fields in the page's own type, one clear button */
+  .call-form { display: grid; gap: 20px; }
+  .cf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .cf-field { display: grid; gap: 6px; }
+  .cf-field > span { color: #4c545e; }
+  .cf-field i { font-style: normal; text-transform: none; letter-spacing: 0; opacity: .8; }
+  .cf-field input, .cf-field textarea { width: 100%; font: 17px/1.4 var(--display); color: var(--bg); background: transparent; border: 0; border-bottom: 1.5px solid rgba(5,5,7,.35); border-radius: 0; padding: 8px 0; resize: vertical; }
+  .cf-field input::placeholder, .cf-field textarea::placeholder { color: #8a929c; }
+  .cf-field input:focus, .cf-field textarea:focus { outline: none; border-bottom-color: var(--thread); box-shadow: 0 1.5px 0 var(--thread); }
+  .cf-field [aria-invalid="true"] { border-bottom-color: #b3261e; }
+  .call-form .btn { justify-self: start; margin-top: 4px; }
+  .cf-status { font-size: 15px; line-height: 1.5; color: #3a414a; }
+  .cf-status:empty { display: none; }
+  .cf-status.err { color: #b3261e; }
+  .contact-mail a { font-weight: 600; }
+  /* the call form lives in a popup opened by every "Request a free call" (fades only, no vertical motion) */
+  .call-dialog { width: min(640px, calc(100vw - 2 * var(--gutter))); max-height: calc(100svh - 2 * var(--gutter)); margin: auto; overflow-y: auto; overscroll-behavior: contain;
+    padding: clamp(24px, 4vw, 44px); background: var(--light); color: var(--bg); border: 0; border-radius: 0; }
+  .call-dialog[open] { animation: call-in .25s ease; }
+  .call-dialog::backdrop { background: rgba(5,5,7,.72); }
+  .call-dialog[open]::backdrop { animation: call-in .25s ease; }
+  @keyframes call-in { from { opacity: 0; } to { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .call-dialog[open], .call-dialog[open]::backdrop { animation: none; } }
+  .call-head { display: flex; justify-content: space-between; align-items: start; gap: 16px; margin-bottom: 18px; }
+  .call-head h2 { font-size: clamp(28px, 3.4vw, 44px); font-weight: 800; letter-spacing: -.035em; line-height: .95; text-transform: uppercase; text-wrap: balance; }
+  .call-close { flex: none; min-height: 44px; padding: 0 4px; background: none; border: 0; color: var(--bg); cursor: pointer; }
+  .call-close:hover, .call-close:focus-visible { text-decoration: underline; }
+  .call-intro { max-width: 520px; margin-bottom: 26px; font-size: 16px; line-height: 1.55; color: #3a414a; }
+  .call-dialog .btn { padding: 18px 28px; font-size: 13px; }
+  .contact-grid > .btn { justify-self: start; }
+  /* the reassurance sits beside the button, before anyone has to open the form */
+  .contact-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 28px; }
+  .reassure { display: flex; flex-wrap: wrap; gap: 6px 22px; list-style: none; margin: 0; padding: 0; font-size: 15px; color: #3a414a; }
+  .reassure li { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+  .reassure li::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--thread); flex: none; }
+  .contact-topic { margin-top: 8px; color: #3f464f; font-size: 14px; line-height: 1.5; }
+  .contact .btn { padding: 18px 28px; font-size: 13px; }
+  .contact-foot { margin-top: 16vh; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; color: #4c545e; }
+  .roll-back { background: none; border: 0; padding: 0; color: inherit; font: inherit; letter-spacing: inherit; text-transform: inherit; cursor: pointer; }
+  .roll-back:hover, .roll-back:focus-visible { text-decoration: underline; color: var(--bg); }
+
+  @media (max-width: 760px) {
+    /* one compact row: logo left, links right; the message gets the first screen */
+    .hero-nav { flex-direction: row; align-items: center; gap: 10px; }
+    .hero-nav .brand img { height: 46px; }
+    .nav-links { gap: 12px; flex-wrap: nowrap; }
+    .nav-links .proto { display: none; }
+    .sound-btn { padding: 4px 0; border: 0; opacity: .7; }
+    .hero h1 { font-size: 13.2vw; }
+    .hero { --rest-gap: 14%; }   /* a thinner dark strip on phones; matches REST in proto-core.js */
+    .nav-links { font-size: 11px; letter-spacing: .06em; white-space: nowrap; }
+    /* the message rests on the blind's edge (as on desktop), so no dead space sits between the buttons and the pull */
+    .hero-copy { top: calc(var(--gutter) + 56px); bottom: calc(var(--rest-gap) + 30px); display: flex; flex-direction: column; justify-content: flex-end; }
+    .hero-sub { flex-direction: column; align-items: start; }
+    .under { grid-template-columns: 1fr; gap: 24px; align-content: center; padding: 10vh var(--gutter) 6vh; }
+    .under-side { margin-top: 16px; }
+    .contact { padding-top: 7vh; }
+    .contact h2 { font-size: 10vw; }
+    .contact-grid > p { font-size: 15px; }
+    .contact-foot { margin-top: 12vh; flex-direction: column; gap: 6px; }
+    .contact-grid { grid-template-columns: 1fr; gap: 22px; }
+    .cf-row { grid-template-columns: 1fr; }
+  }
+</style>
+{% endblock %}
+{% block body %}
+<canvas id="wire" aria-hidden="true"></canvas>
+
+<section class="hero" id="hero">
+  <div class="under" id="under">
+    <div>
+      <p class="kicker">Marketing, <em>without the tension.</em></p>
+      <h2>Every channel. <em>One team.</em> Nothing leaks between them.</h2>
+      <p class="under-side">We don’t sell fragments of a strategy. We build the whole growth system: first impression, landing page, closed lead. Fewer handoffs means fewer places for revenue to slip.</p>
+    </div>
+  </div>
+  <div class="blind" id="blind">
+    <nav class="hero-nav" aria-label="Main">
+      <a class="brand" href="#hero"><img src="/logo.webp" alt="Tensionless Digital" width="444" height="395"></a>
+      <div class="nav-links mono">
+        <a href="#services">Services</a><a href="#work">Work</a><a href="#contact">Contact</a>
+        <button class="sound-btn mono" id="sound" aria-pressed="false">Sound: off</button>
+      </div>
+    </nav>
+    <div class="hero-copy" id="hero-copy">
+      <h1 id="hero-h1">We turn<br>attention<br><em>into</em> revenue.</h1>
+      <div class="hero-sub">
+        <p>One team building the whole funnel (the ad, the page, the tracking), so nothing pulls against anything else.</p>
+        <div class="hero-ctas"><a class="btn" href="#contact" data-call>Request a free call →</a><a class="btn ghost" href="#work">See the work</a></div>
+      </div>
+    </div>
+  </div>
+  <button class="pull-tab" id="tab" aria-label="Pull the blind down, or press, to open the site">Pull to open ↓</button>
+</section>
+
+<!-- ── 02 · CHAOS → CHOREOGRAPHY ─────────────────────────────────────── -->
+<section class="scene" id="services" data-wire="dark" data-state="chaos" aria-labelledby="scene-title">
+  <div class="scene-top mono"><span>[ 02 ] What we do</span><span>Four services&nbsp;· one team</span></div>
+  <div class="scene-head">
+    <h2 class="scene-title" id="scene-title">Four channels,<br><span class="swap"><em class="s-chaos">pulling apart.</em><em class="s-order" aria-hidden="true">one campaign.</em></span></h2>
+    <p class="scene-lede">We plan, build and run your <b>Google Ads, Facebook Ads, SEO and landing pages</b> as one campaign, so every click lands on a page that keeps the ad’s promise, and every enquiry is tracked back to where it came from.</p>
+  </div>
+  <div class="scene-body">
+    <div class="scene-controls">
+      <button class="make" id="make" type="button" aria-disabled="false"><span class="make-label">Make it work together</span><span class="arr" aria-hidden="true">→</span></button>
+      <p class="mono ctl-label" id="svc-label">What we do for you</p>
+      <div class="svc-picks" role="group" aria-labelledby="svc-label">
+        <button class="pick" type="button" aria-pressed="true" aria-controls="svc-explain"><span class="mono">01</span><span class="pick-txt"><span class="pick-name">Landing pages</span><span class="pick-line">Pages that match each ad, so clicks become enquiries.</span></span></button>
+        <button class="pick" type="button" aria-pressed="false" aria-controls="svc-explain"><span class="mono">02</span><span class="pick-txt"><span class="pick-name">Google Ads</span><span class="pick-line">Reach people already searching for what you sell.</span></span></button>
+        <button class="pick" type="button" aria-pressed="false" aria-controls="svc-explain"><span class="mono">03</span><span class="pick-txt"><span class="pick-name">Facebook Ads</span><span class="pick-line">Ad creative and campaigns to reach your next customers.</span></span></button>
+        <button class="pick" type="button" aria-pressed="false" aria-controls="svc-explain"><span class="mono">04</span><span class="pick-txt"><span class="pick-name">SEO</span><span class="pick-line">Rank for the questions your buyers ask.</span></span></button>
+      </div>
+      <div class="svc-copy" hidden>
+        <div data-svc="lp"><p class="svc-p">One page per offer, built around the exact promise the ad made, so the person who clicked recognises what they came for, and enquires.</p><p class="svc-get">Page design and copy, A/B tests, enquiry tracking.</p><p class="svc-fix">People click, but don’t enquire.</p></div>
+        <div data-svc="search"><p class="svc-p">Search campaigns on the phrases buyers actually type, with negative keywords so you stop paying for browsers and job-seekers.</p><p class="svc-get">Keyword plan, ad copy, bid management, monthly report.</p><p class="svc-fix">Spend that attracts the wrong searches.</p></div>
+        <div data-svc="ad"><p class="svc-p">Creative made in sets, so we learn which message lands, and each one points to a page that says the same thing.</p><p class="svc-get">Ad creative in tested sets, audience setup, weekly optimisation.</p><p class="svc-fix">Our ads and content feel disconnected.</p></div>
+        <div data-svc="seo"><p class="svc-p">Pages that answer real buyer questions, linked so authority flows to the page that sells, tracked from first click to enquiry.</p><p class="svc-get">Keyword research, guide articles, technical fixes, rank tracking.</p><p class="svc-fix">I can’t tell what’s working.</p></div>
+      </div>
+      <div class="svc-explain" id="svc-explain" aria-live="polite">
+        <p class="ex-line" id="ex-line">Pages that match each ad, so clicks become enquiries.</p>
+        <p id="ex-p">One page per offer, built around the exact promise the ad made, so the person who clicked recognises what they came for, and enquires.</p>
+        <p class="ex-get"><span class="mono">You get</span><span id="ex-get">Page design and copy, A/B tests, enquiry tracking.</span></p>
+        <p class="ex-get"><span class="mono">Fixes</span><span id="ex-fix">“People click, but don’t enquire.”</span></p>
+        <a class="ex-cta" id="ex-cta" href="#contact" data-call>Ask about landing pages →</a><a class="ex-more" id="ex-more" href="/services/landing-pages/">How it works</a>
+      </div>
+    </div>
+
+    <div class="stage" id="stage" role="img" aria-label="Illustrative campaign for a fictional renovation studio: a search ad, an organic ranking and a social ad lead to one landing page, which produces an enquiry.">
+      <div class="world" id="world">
+      <svg class="links" id="links" aria-hidden="true"></svg>
+
+      <div class="art art-search" data-k="search" aria-hidden="true"><div class="float"><i class="stub" style="--sx:4%;--sy:100%;--sr:118deg"></i><div class="card paper">
+        <div class="sr-q"><svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.5" fill="none" stroke="#4d5156" stroke-width="2"/><path d="M15 15l6 6" stroke="#4d5156" stroke-width="2"/></svg>renovation quote 4-room hdb</div>
+        <div class="sr-row sr-paid"><span class="sr-src"><i class="sr-fav"></i>Moss &amp; Mortar <small>mossandmortar.sg › layout</small></span>
+          <b class="sr-tag">Sponsored</b><p class="sr-t">HDB Renovation Quote in 48h | Free 3D Layout</p><p class="sr-d">Fixed-price quotes for 3- to 5-room flats. Book a free layout call.</p></div>
+        <div class="sr-row sr-org"><span class="sr-src"><i class="sr-fav"></i>Moss &amp; Mortar <small>mossandmortar.sg › guides</small></span>
+          <p class="sr-t">What a 4-room renovation really costs</p><p class="sr-d">A line-by-line guide to quotes, timelines and permits.</p></div></div><span class="badge">Found</span></div></div>
+
+      <div class="art art-seo" data-k="seo" aria-hidden="true"><div class="float"><i class="stub" style="--sx:96%;--sy:0%;--sr:-48deg"></i><div class="card paper">
+        <div class="seo-head"><i class="sr-fav"></i><span>Organic ranking<small>mossandmortar.sg › guides</small></span></div>
+        <p class="seo-q">4-room renovation cost</p>
+        <div class="seo-body"><span class="seo-pos"><b>#3</b><small>position</small></span><svg class="seo-line" viewBox="0 0 100 40" preserveAspectRatio="none"><polyline points="0,37 14,35 28,36 42,28 56,24 70,15 84,12 100,4"/></svg></div>
+        <p class="seo-foot">Guide → links to the layout page</p></div><span class="badge">Ranked</span></div></div>
+
+      <div class="art art-ad" data-k="ad" aria-hidden="true"><div class="float"><i class="stub" style="--sx:100%;--sy:58%;--sr:32deg"></i><div class="card paper">
+        <div class="ad-head"><span class="ad-avatar">M&amp;M</span><span><b>Moss &amp; Mortar</b><i>Sponsored</i></span><span class="ad-dots">···</span></div>
+        <p class="ad-copy">Free 3D layout in 48 hours, then a fixed-price quote. No surprises.</p>
+        <div class="ad-img"><img src="/proto-assets/kitchen.webp" loading="lazy" decoding="async" alt=""></div>
+        <div class="ad-foot"><span><small>MOSSANDMORTAR.SG</small><b>Free 3D layout</b></span><span class="ad-btn">Get layout</span></div></div><span class="badge">Seen</span></div></div>
+
+      <div class="art art-lp" data-k="lp" aria-hidden="true"><div class="float"><i class="stub" style="--sx:0%;--sy:28%;--sr:205deg"></i><i class="stub" style="--sx:100%;--sy:80%;--sr:-24deg"></i><div class="card paper">
+        <div class="lp-bar"><i></i><i></i><i></i><span class="lp-url">mossandmortar.sg/layout</span></div>
+        <div class="lp-hero">
+          <div class="lp-copy">
+            <span class="lp-logo">Moss &amp; Mortar</span>
+            <p class="lp-eyebrow">HDB · Condo · Landed</p>
+            <p class="lp-h">Renovate once. <em>Love it</em> for years.</p>
+            <p class="lp-sub">A free 3D layout of your home in 48 hours, with a fixed-price quote.</p>
+            <span class="lp-cta" id="lp-cta">Book my free layout →</span>
+            <span class="lp-trust">★★★★★ Homeowner rated</span>
+          </div>
+          <div class="lp-img"><img src="/proto-assets/living.webp" loading="lazy" decoding="async" alt=""></div>
+        </div>
+        <div class="lp-strip"><span>3D layout in 48h</span><span>Fixed-price quote</span><span>One project lead</span></div></div><span class="badge">Clicked</span></div></div>
+
+      <div class="art art-enq" data-k="enq" aria-hidden="true"><div class="float"><i class="stub" style="--sx:0%;--sy:50%;--sr:150deg"></i><div class="card">
+        <div class="enq-top"><span class="enq-check">✓</span>New enquiry<em>now</em></div>
+        <p class="enq-name">Mei T. · 4-room, Tampines</p>
+        <p class="enq-line">Free layout call · Thu, 10:00</p>
+        <p class="enq-src">Ad → landing page → you</p></div><span class="badge">Enquired</span></div></div>
+
+      <div class="art art-infl" data-k="infl" aria-hidden="true"><div class="float"><div class="card bare"><img src="/proto-assets/inflatable.webp" loading="lazy" decoding="async" alt=""></div><span class="infl-hint mono">Press it</span></div></div>
+      <div class="art art-swatch" data-k="swatch" aria-hidden="true"><div class="float"><div class="card"><img src="/proto-assets/swatch.webp" loading="lazy" decoding="async" alt=""><span class="tag">Materials</span></div></div></div>
+      <div class="art art-sticker" data-k="sticker" aria-hidden="true"><div class="float"><div class="card"><b>48h</b><span>free layout</span></div></div></div>
+      <div class="art art-cursor" data-k="cursor" aria-hidden="true"><div class="float"><div class="card bare">
+        <svg viewBox="0 0 20 28"><path d="M1.5 1.5 L1.5 23 L7.2 17.6 L11 26 L14.6 24.4 L10.8 16.2 L18 16.2 Z" fill="#050507" stroke="#e9edf2" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      </div></div></div>
+      </div>
+    </div>
+    <p class="mono note stage-note"><span>Example campaign for a made-up brand (Moss &amp; Mortar), not client work.</span><button class="replay mono" id="replay" type="button" hidden>Replay ↻</button></p>
+  </div>
+</section>
+
+<!-- ── 03 · CLIENT RESULTS: four case moments, then client quotes ───── -->
+<header class="work-intro" id="work-intro">
+  <div class="proc-top mono"><span>[ 03 ] Client results</span><span>Four client campaigns</span></div>
+  <h2 class="work-h" id="work-h">Client <em>results.</em></h2>
+</header>
+<section class="cases" id="work" aria-labelledby="work-h">
+  <div class="reel-hud mono"><span class="reel-title">Client results</span><span class="reel-n" aria-hidden="true"><b id="reel-i">01</b> / 04</span><span class="reel-bars" aria-hidden="true"><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i></span><a class="reel-skip" href="#contact">Skip to contact ↓</a></div>
+  <i class="reel-thread" id="reel-thread" aria-hidden="true"></i>
+  <article class="moment" data-comp="wide" aria-labelledby="m1-h">
+    <figure class="m-media" aria-hidden="true"><img src="/proto-assets/case-auto-photo.webp" width="1920" height="1282" loading="lazy" decoding="async" alt=""></figure>
+    <div class="m-head">
+      <p class="mono m-k">01&nbsp;· Automotive client&nbsp;· Google Ads + SEO</p>
+      <h3 class="m-statement" id="m1-h">Sales in the <em>first month.</em></h3>
+    </div>
+    <div class="m-detail">
+      <p class="mono m-label">What we did</p>
+      <p class="m-copy">Full-funnel Google Ads paired with SEO. Organic held top-3 across two verticals while paid search generated sales in the first month.</p>
+      <p class="m-lead"><b>$350K</b><span class="mono">Confirmed profit</span></p>
+      <p class="m-sub"><span><b>$6K</b> total ad spend</span><span><b>Top 3</b> Google rankings, 2 categories</span></p>
+    </div>
+  </article>
+  <article class="moment" data-comp="crop" aria-labelledby="m2-h">
+    <figure class="m-media" aria-hidden="true"><img src="/proto-assets/case-imm-photo.webp" width="1920" height="1282" loading="lazy" decoding="async" alt="" style="object-position:65% center">
+      <p class="m-figure"><b>70%</b><span class="mono">Lower cost per lead</span></p></figure>
+    <div class="m-head">
+      <p class="mono m-k">02&nbsp;· Immigration law client&nbsp;· Facebook Ads</p>
+      <h3 class="m-statement" id="m2-h">Cheaper leads, <em>and readier ones.</em></h3>
+    </div>
+    <div class="m-detail">
+      <p class="mono m-label">What we did</p>
+      <p class="m-copy">Rebuilt the funnel and refined the audiences, so the firm heard from people with a real case, not just the curious.</p>
+      <p class="sr-only">Lead result: 70% lower cost per lead.</p>
+      <p class="m-sub"><span><b>$100K</b> revenue</span><span><b>$4K</b> total ad spend</span></p>
+    </div>
+  </article>
+  <article class="moment" data-comp="wide" aria-labelledby="m3-h">
+    <figure class="m-media" aria-hidden="true"><img src="/proto-assets/case-fin-photo.webp" width="1920" height="1280" loading="lazy" decoding="async" alt=""></figure>
+    <div class="m-head">
+      <p class="mono m-k">03&nbsp;· Financial services client&nbsp;· Facebook Ads</p>
+      <h3 class="m-statement" id="m3-h">$2M in production <em>in one month.</em></h3>
+    </div>
+    <div class="m-detail">
+      <p class="mono m-label">What we did</p>
+      <p class="m-copy">Prospect-audience targeting and direct-response creative for a high-ticket financial product, built to bring in qualified buyers fast.</p>
+      <p class="m-lead"><b>$2M</b><span class="mono">Total production</span></p>
+      <p class="m-sub"><span><b>$150K</b> in commissions</span><span><b>1</b> calendar month</span></p>
+    </div>
+  </article>
+  <article class="moment" data-comp="type" aria-labelledby="m4-h">
+    <p class="m-numeral" aria-hidden="true" style="background-image:url(/proto-assets/case-re-photo.webp)">8<i class="bl"></i></p>
+    <figure class="m-media" aria-hidden="true"><img src="/proto-assets/case-re-photo.webp" width="1920" height="1280" loading="lazy" decoding="async" alt=""></figure>
+    <div class="m-head">
+      <p class="mono m-k">04&nbsp;· Real estate client&nbsp;· Facebook Ads</p>
+      <h3 class="m-statement" id="m4-h">Eight homes sold on a <em>$3K</em> ad budget.</h3>
+    </div>
+    <div class="m-detail">
+      <p class="mono m-label">What we did</p>
+      <p class="m-copy">Hyperlocal targeting and purchase-intent creative, aimed at buyers for a new development.</p>
+      <p class="m-lead"><b>8</b><span class="mono">Sales closed</span></p>
+      <p class="m-sub"><span><b>$375</b> ad cost per closed sale</span></p>
+    </div>
+  </article>
+</section>
+<section class="quotes" id="quotes" aria-labelledby="quotes-h">
+  <div class="proc-top mono"><span>[ 04 ] Client testimonials</span><span>In their words</span></div>
+  <h2 class="quotes-h" id="quotes-h">What our clients <em>say.</em></h2>
+  <div class="q-stage" id="q-stage" tabindex="0" aria-roledescription="carousel" aria-label="Client testimonials. Use the arrow keys or the buttons to change quote.">
+    <svg class="q-line" aria-hidden="true"><path id="q-line-path"/></svg>
+    <figure class="q-card" id="q-1" role="group" aria-roledescription="slide" aria-label="1 of 7">
+      <i class="q-peg" aria-hidden="true"></i>
+      <span class="q-mark" aria-hidden="true">&ldquo;</span>
+      <blockquote><p>They didn&rsquo;t just run our ads — they rebuilt how we think about customer acquisition entirely. Within three months we had more qualified leads than our sales team could handle.</p></blockquote>
+      <figcaption><span class="q-name">A. Chen</span><span class="q-role">Founder, DTC Beauty Brand · E‑Commerce</span></figcaption>
+    </figure>
+    <figure class="q-card" id="q-2" role="group" aria-roledescription="slide" aria-label="2 of 7">
+      <i class="q-peg" aria-hidden="true"></i>
+      <span class="q-mark" aria-hidden="true">&ldquo;</span>
+      <blockquote><p>Our Google Ads were burning cash for two years. Tensionless Digital fixed our account structure in the first week and we saw the difference within days.</p></blockquote>
+      <figcaption><span class="q-name">M. Torres</span><span class="q-role">VP Marketing, Enterprise SaaS · B2B Services</span></figcaption>
+    </figure>
+    <figure class="q-card" id="q-3" role="group" aria-roledescription="slide" aria-label="3 of 7">
+      <i class="q-peg" aria-hidden="true"></i>
+      <span class="q-mark" aria-hidden="true">&ldquo;</span>
+      <blockquote><p>The landing page they built converted at nearly triple the rate of our old one. Not a redesign — a completely different understanding of our customer.</p></blockquote>
+      <figcaption><span class="q-name">J. Patel</span><span class="q-role">Director of Growth, Series B SaaS</span></figcaption>
+    </figure>
+    <figure class="q-card is-placeholder" id="q-4" role="group" aria-roledescription="slide" aria-label="4 of 7, placeholder">
+      <i class="q-peg" aria-hidden="true"></i>
+      <span class="q-ph mono">Placeholder · real quote needed</span>
+      <span class="q-mark" aria-hidden="true">&ldquo;</span>
+      <blockquote><p>What it was like seeing sales in the first month of the campaign.</p></blockquote>
+      <figcaption><span class="q-name">[ Client name ]</span><span class="q-role">Automotive client · Google Ads + SEO</span></figcaption>
+    </figure>
+    <figure class="q-card is-placeholder" id="q-5" role="group" aria-roledescription="slide" aria-label="5 of 7, placeholder">
+      <i class="q-peg" aria-hidden="true"></i>
+      <span class="q-ph mono">Placeholder · real quote needed</span>
+      <span class="q-mark" aria-hidden="true">&ldquo;</span>
+      <blockquote><p>How the leads changed: fewer tyre-kickers, more people with a real case.</p></blockquote>
+      <figcaption><span class="q-name">[ Client name ]</span><span class="q-role">Immigration law client · Facebook Ads</span></figcaption>
+    </figure>
+    <figure class="q-card is-placeholder" id="q-6" role="group" aria-roledescription="slide" aria-label="6 of 7, placeholder">
+      <i class="q-peg" aria-hidden="true"></i>
+      <span class="q-ph mono">Placeholder · real quote needed</span>
+      <span class="q-mark" aria-hidden="true">&ldquo;</span>
+      <blockquote><p>What $2M in production in one month meant for the business.</p></blockquote>
+      <figcaption><span class="q-name">[ Client name ]</span><span class="q-role">Financial services client · Facebook Ads</span></figcaption>
+    </figure>
+    <figure class="q-card is-placeholder" id="q-7" role="group" aria-roledescription="slide" aria-label="7 of 7, placeholder">
+      <i class="q-peg" aria-hidden="true"></i>
+      <span class="q-ph mono">Placeholder · real quote needed</span>
+      <span class="q-mark" aria-hidden="true">&ldquo;</span>
+      <blockquote><p>Eight homes sold on a $3K budget, in the client's own words.</p></blockquote>
+      <figcaption><span class="q-name">[ Client name ]</span><span class="q-role">Real estate client · Facebook Ads</span></figcaption>
+    </figure>
+  </div>
+  <div class="q-controls mono">
+    <button class="q-btn" type="button" id="q-prev" aria-label="Previous quote">&#8249;</button>
+    <span class="q-count" aria-live="polite"><b id="q-i">01</b> / <span id="q-n">07</span></span>
+    <button class="q-btn" type="button" id="q-next" aria-label="Next quote">&#8250;</button>
+    <span class="q-hint" id="q-hint">Drag the line or use the arrows</span>
+  </div>
+  <p class="mono note q-note">Prototype: the first three quotes are carried over from the current site and need confirming with each client; the rest are placeholders for real quotes.</p>
+</section>
+<svg class="clip-defs" width="0" height="0" aria-hidden="true"><clipPath id="eightclip" clipPathUnits="userSpaceOnUse"><text id="eight-text">8</text></clipPath></svg>
+
+<div class="finale" id="finale">
+<svg class="thread" id="thread" aria-hidden="true"><path id="thread-path"/></svg>
+<!-- ── 04 · WORKING WITH US: one line that straightens ─────────────── -->
+<section class="process" id="process" aria-labelledby="proc-h">
+  <div class="proc-top mono"><span>[ 05 ] Working with us</span><span>What happens after you hire us</span></div>
+  <h2 class="proc-h" id="proc-h">From friction <em>to flow.</em></h2>
+  <ol class="proc-stages">
+    <li><i class="proc-dot"></i><p class="proc-n" aria-hidden="true">01</p><h3>Find the friction</h3><p>We go through your ads, pages and tracking, and show you where enquiries leak, before you commit to anything.</p></li>
+    <li><i class="proc-dot"></i><p class="proc-n" aria-hidden="true">02</p><h3>Build the connections</h3><p>One team builds the ads, the landing pages and the tracking, so every click lands on a page that keeps the promise.</p></li>
+    <li><i class="proc-dot"></i><p class="proc-n" aria-hidden="true">03</p><h3>Keep improving</h3><p>We test, report monthly in plain numbers, and move budget to what’s working.</p></li>
+  </ol>
+</section>
+
+<section class="contact" id="contact" data-wire="dark">
+  <p class="mono contact-kicker" id="contact-kicker">[ 06 ] Contact</p>
+  <h2>Let’s take the<br><em class="tense" id="tense">tension</em> out.</h2>
+  <div class="contact-grid">
+    <div class="contact-cta">
+      <button class="btn" type="button" data-call>Request a free call →</button>
+      <ul class="reassure" aria-label="What the call involves"><li>30-minute call</li><li>No commitment</li><li>Reply within one working day</li></ul>
+    </div>
+  </div>
+  <div class="contact-foot mono"><span class="foot-brand"><img class="foot-logo" src="/logo.webp" alt="Tensionless Digital" width="444" height="395"><span>Singapore</span></span><button class="roll-back" id="roll-back">Back to the top ↑</button><span class="foot-svc">{% for s in services %}<a href="/services/{{ s.slug }}/">{{ s.name }}</a> · {% endfor %}<a href="/insights/">Insights</a></span><span>© 2026 {{ entity.brandName }} · <span style="white-space: nowrap">UEN {{ entity.uen }}</span> · <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a></span></div>
+</section>
+</div>
+<dialog class="call-dialog" id="call-dialog" aria-labelledby="call-title" aria-describedby="call-intro" data-lenis-prevent>
+  <div class="call-head"><h2 id="call-title">Request a free call</h2><button class="call-close mono" type="button" id="call-close" aria-label="Close">Close ✕</button></div>
+    <p class="call-intro" id="call-intro">A 30-minute call. We look at your current funnel, tell you where it leaks, and you decide if we’re worth hiring. No deck, no commitment. We reply within one working day.</p>
+    <form class="call-form" id="call-form" name="call" method="POST" action="/" data-netlify="true" netlify-honeypot="bot-field" novalidate>
+      <input type="hidden" name="form-name" value="call">
+      <p class="cf-trap" hidden><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+      <div class="cf-row">
+        <label class="cf-field"><span class="mono">Name</span><input name="name" autocomplete="name" maxlength="100" required></label>
+        <label class="cf-field"><span class="mono">Email</span><input name="email" type="email" autocomplete="email" maxlength="200" required></label>
+      </div>
+      <label class="cf-field"><span class="mono">Website <i>(optional)</i></span><input name="website" inputmode="url" autocomplete="url" maxlength="200" placeholder="yourcompany.com"></label>
+      <label class="cf-field"><span class="mono">Where do enquiries leak? <i>(optional)</i></span><textarea name="message" rows="3" maxlength="1000" placeholder="e.g. Plenty of clicks, very few calls"></textarea></label>
+      <input type="hidden" name="topic" id="cf-topic">
+      <button class="btn" type="submit">Request a free call →</button>
+      <p class="cf-status" id="cf-status" role="status" aria-live="polite"></p>
+      <p class="contact-mail" id="cf-note">Or write to <a href="mailto:hello@tensionlessdigital.com">hello@tensionlessdigital.com</a>.</p>
+      <p class="contact-topic mono" id="contact-topic"></p>
+    </form>
+</dialog>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="/proto-core.js?v=33"></script>
+<script src="/proto-scene.js?v=33"></script>
+<script src="/proto-cases.js?v=33"></script>
+<script src="/proto-squish.js?v=28"></script>
+<script src="/proto-quotes.js?v=2"></script>
+</body>
+{% endblock %}

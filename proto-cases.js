@@ -97,7 +97,7 @@
                  // from the right (its words held back, so the wipe never cuts through a headline), then the
                  // new words arrive together. Scrubbed, so scrolling back plays the exact mirror.
         var prev = moments[i - 1], words = function (mm) { return [].slice.call(mm.querySelectorAll('.m-k, .m-statement, .m-figure')); };
-        tl.fromTo(words(prev).concat(prev.querySelector('.m-detail'), prev.querySelector('.m-tag')), { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.25, ease: 'power1.in', immediateRender: false }, t)
+        tl.fromTo(words(prev).concat(prev.querySelector('.m-detail'), prev.querySelector('.m-tag')).filter(Boolean), { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.25, ease: 'power1.in', immediateRender: false }, t)
           .fromTo(m, { clipPath: 'inset(0% 0% 0% 100%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 0.7, ease: 'power3.inOut' }, t + 0.15)
           .fromTo(prev, { xPercent: 0 }, { xPercent: -14, duration: 0.7, ease: 'power3.inOut', immediateRender: false }, t + 0.15)
           .fromTo(prev, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.01, ease: 'none', immediateRender: false }, t + 0.85)
@@ -119,7 +119,7 @@
       }
       tl.fromTo(detail, { autoAlpha: 0, x: 40 }, { autoAlpha: 1, x: 0, duration: 0.5, ease: 'power2.out', immediateRender: false }, t + open - 0.55);
       gsap.set(detail, { autoAlpha: 0 });
-      var tag = m.querySelector('.m-tag');   // the 'illustrative' label lands with the details, on the settled picture
+      var tag = m.querySelector('.m-tag');   // optional image label, retained for older prototypes
       if (tag) { tl.fromTo(tag, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4, ease: 'power1.out', immediateRender: false }, t + open - 0.4); gsap.set(tag, { autoAlpha: 0 }); }
       tl.to({}, { duration: hold }, t + open);   // a stable hold on the finished result
     });

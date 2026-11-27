@@ -70,6 +70,7 @@
         if (!r.ok) throw new Error('HTTP ' + r.status);
         var topic = f.topic.value;
         form.reset(); f.topic.value = topic;
+        if (window.tdTrack) window.tdTrack('generate_lead', { form_topic: topic || 'general', form_location: location.pathname });
         say('Thanks, ' + data.name + '. Your request is in, and we will reply within one working day.');
       })
       .catch(function () { openMail(data); })

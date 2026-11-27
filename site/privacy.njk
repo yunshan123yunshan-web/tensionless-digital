@@ -1,0 +1,104 @@
+---
+permalink: /privacy.html
+eleventyExcludeFromCollections: true
+---
+{#- Analytics wording follows site.json ga4Id, so the policy cannot drift from what the site loads. -#}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy | Tensionless Digital</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050507;
+    --text: #e9edf2;
+    --dim: #a7afba;
+    --faint: #4c545e;
+    --line: rgba(233, 238, 244, .12);
+    --display: 'Archivo', system-ui, -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--display);
+    line-height: 1.7;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 100px 24px 120px; }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: .14em;
+    color: var(--dim);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 18px;
+  }
+  h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 700; margin-bottom: 8px; }
+  .updated { font-family: var(--mono); font-size: 12.5px; color: var(--faint); margin-bottom: 48px; }
+  h2 { font-size: 1.15rem; font-weight: 600; margin: 40px 0 12px; }
+  p, li { color: var(--dim); font-size: 15px; margin-bottom: 14px; }
+  ul { padding-left: 20px; margin-bottom: 14px; }
+  a { color: var(--text); }
+  a.back {
+    display: inline-block;
+    margin-bottom: 40px;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--dim);
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 2px;
+  }
+  a.back:hover { color: var(--text); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="back" href="/">&larr; Back to Tensionless Digital</a>
+    <span class="eyebrow">Legal</span>
+    <h1>Privacy Policy</h1>
+    <p class="updated">Draft, pending owner review. Last updated: 2026-11-26.</p>
+
+    <p><em>This is a draft, not legal advice. Review it before publishing and confirm it still matches what the site collects.</em></p>
+
+    <h2>Who We Are</h2>
+    <p>Tensionless Digital is a digital marketing agency based in Singapore, registered as a sole proprietorship (UEN 53504688W). We handle personal data in line with Singapore's Personal Data Protection Act 2012 (PDPA). For any question or request about your personal data, contact our data protection contact at <a href="mailto:hello@tensionlessdigital.com">hello@tensionlessdigital.com</a>.</p>
+
+    <h2>What We Collect</h2>
+    <p>We only collect what you choose to send through the "Request a free call" form: your name, email address, website, the topic you pick, and your message.{% if site.ga4Id %} We also use Google Analytics to understand how visitors find and use the site (see Analytics below). It never receives your name, email address or message.{% else %} This site does not use cookies, analytics or tracking scripts, and it does not store anything in your browser.{% endif %}</p>
+
+    <h2>How the Form Works</h2>
+    <p>The form is processed by Netlify Forms, part of Netlify, Inc., which hosts this site. When you submit it, your details are stored in our Netlify account and a copy is emailed to us. Netlify's servers may be outside Singapore. Where your data is transferred overseas, we rely on the provider giving it a standard of protection comparable to the PDPA.</p>
+
+    <h2>Consent and Use</h2>
+    <p>By submitting the form, you consent to us using your details to reply to your enquiry and discuss a possible engagement. We do not sell, rent or share your information with anyone else, and we do not add you to a mailing list.</p>
+
+    <h2>Data Retention</h2>
+    <p>We keep form submissions for as long as we need them to respond to you and manage any resulting client relationship. After that, we delete them from Netlify and our inbox. You can ask us to delete them sooner at any time.</p>
+
+    <h2>Your Rights</h2>
+    <p>You can ask to access or correct the personal data we hold about you, or withdraw your consent to us using it, by emailing <a href="mailto:hello@tensionlessdigital.com">hello@tensionlessdigital.com</a>. We will reply within one working day and act on the request as soon as reasonably possible.</p>
+
+{%- if site.ga4Id %}
+    <h2>Analytics</h2>
+    <p>This site uses Google Analytics 4, provided by Google LLC, to measure how visitors find and use it: the pages you view, how you arrived (for example from a search or an ad), your approximate location, your device and browser, and whether you sent an enquiry. Google Analytics sets cookies in your browser to tell visits apart. Google may process this data outside Singapore. You can block it through your browser's cookie settings or with <a href="https://tools.google.com/dlpage/gaoptout">Google's opt-out browser add-on</a>.</p>
+{% endif %}
+    <h2>Third-Party Services</h2>
+    <p>This site is hosted by Netlify. It loads animation libraries from cdnjs (Cloudflare) and unpkg, and a few pages (such as this one) load fonts from Google Fonts. Like any web server, these providers may log standard request data such as your IP address and browser type as part of delivering the files. We do not receive or use that data.</p>
+
+    <h2>Changes</h2>
+    <p>We may update this policy from time to time. The "last updated" date above shows the most recent revision.</p>
+
+    <h2>Contact</h2>
+    <p>Questions about this policy can be sent to <a href="mailto:hello@tensionlessdigital.com">hello@tensionlessdigital.com</a>.</p>
+  </div>
+</body>
+</html>

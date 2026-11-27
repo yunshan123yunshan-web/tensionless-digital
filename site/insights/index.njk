@@ -1,0 +1,22 @@
+---
+title: "Digital Marketing Insights for Singapore Businesses | Tensionless Digital"
+description: "Plain answers to the questions businesses ask before hiring for Google Ads, Facebook ads, SEO and landing pages, from a Singapore digital marketing agency."
+permalink: /insights/
+layout: false
+---
+{% extends "sub-page.njk" %}
+{% block main %}
+<section class="sp-hero">
+  <p class="mono kicker">Insights</p>
+  <h1>Plain answers, <em>no tension.</em></h1>
+  <p class="lede">The questions businesses ask us before they hire anyone for ads, pages or search, answered in full.</p>
+</section>
+<section class="sp-block" aria-labelledby="list-h">
+  <h2 id="list-h" class="sr-only">Articles</h2>
+  <ul class="rel rel-hub">
+    {%- for post in collections.insight | reverse %}{% if post.url != page.url %}
+    <li><a href="{{ post.url }}"><span>{{ post.data.h1 }}</span><span class="rel-lede">{{ post.data.lede }}</span><span class="mono"><time datetime="{{ post.date | isoDate }}">{{ post.date | readableDate }}</time></span></a></li>
+    {%- endif %}{% endfor %}
+  </ul>
+</section>
+{% endblock %}

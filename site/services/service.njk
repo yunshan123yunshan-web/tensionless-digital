@@ -1,0 +1,88 @@
+---
+pagination:
+  data: services
+  size: 1
+  alias: svc
+  addAllPagesToCollections: true
+permalink: "/services/{{ svc.slug }}/"
+eleventyComputed:
+  formTopic: "{{ svc.name }}"
+---
+{% extends "sub-page.njk" %}
+{% block main %}
+<section class="sp-hero">
+  <p class="mono kicker">{{ svc.kicker }}</p>
+  <h1>{{ svc.h1 }} <em>{{ svc.h1Em }}</em></h1>
+  <p class="lede">{{ svc.lede }}</p>
+  <a class="btn" href="#contact">Ask about {{ svc.name }} →</a>
+</section>
+
+<section class="sp-block sp-problem" aria-labelledby="problem-h">
+  <p class="mono kicker">The problem it fixes</p>
+  <h2 id="problem-h">“{{ svc.problem }}”</h2>
+  <div class="cols">{% for para in svc.problemText %}<p>{{ para }}</p>{% endfor %}</div>
+</section>
+
+<section class="sp-block" aria-labelledby="inc-h">
+  <p class="mono kicker">What’s included</p>
+  <h2 id="inc-h">What you get</h2>
+  <dl class="inc">
+    {%- for item in svc.included %}
+    <div><dt>{{ item[0] }}</dt><dd>{{ item[1] }}</dd></div>
+    {%- endfor %}
+  </dl>
+</section>
+
+<section class="sp-block" aria-labelledby="how-h">
+  <p class="mono kicker">How it works</p>
+  <h2 id="how-h">From friction <em>to flow.</em></h2>
+  <ol class="steps">
+    {%- for st in svc.steps %}
+    <li><span class="mono" aria-hidden="true">0{{ loop.index }}</span><h3>{{ st[0] }}</h3><p>{{ st[1] }}</p></li>
+    {%- endfor %}
+  </ol>
+</section>
+
+<section class="sp-block" aria-labelledby="fit-h">
+  <p class="mono kicker">Is it right for you</p>
+  <h2 id="fit-h">Who it suits</h2>
+  <div class="fit">
+    <div><h3>A good fit if</h3><p>{{ svc.fitYes }}</p></div>
+    <div><h3>Not the first step if</h3><p>{{ svc.fitNo }}</p></div>
+  </div>
+</section>
+
+<section class="sp-block" aria-labelledby="faq-h">
+  <p class="mono kicker">Questions</p>
+  <h2 id="faq-h">{{ svc.name }}: common questions</h2>
+  <div class="faq">
+    {%- for f in svc.faq %}
+    <details class="faq-item"{% if loop.first %} open{% endif %}><summary>{{ f.q }}</summary><p>{{ f.a }}</p></details>
+    {%- endfor %}
+  </div>
+</section>
+
+{%- set reading = [] %}{% for post in collections.insight %}{% if post.data.relatedServices and svc.slug in post.data.relatedServices %}{% set reading = (reading.push(post), reading) %}{% endif %}{% endfor %}
+{%- if reading.length %}
+<section class="sp-block" aria-labelledby="read-h">
+  <p class="mono kicker">Further reading</p>
+  <h2 id="read-h">Before you <em>decide.</em></h2>
+  <ul class="rel">
+    {%- for post in reading %}
+    <li><a href="{{ post.url }}"><span>{{ post.data.h1 }}</span><span class="mono">{{ post.data.lede }}</span></a></li>
+    {%- endfor %}
+  </ul>
+</section>
+{%- endif %}
+
+<section class="sp-block" aria-labelledby="rel-h">
+  <p class="mono kicker">Works with</p>
+  <h2 id="rel-h">One campaign, <em>not four.</em></h2>
+  <p class="rel-intro">{{ svc.name }} works best alongside the channels it feeds and depends on. We run them as one campaign.</p>
+  <ul class="rel">
+    {%- for slug in svc.related %}{% for s in services %}{% if s.slug == slug %}
+    <li><a href="/services/{{ s.slug }}/"><span>{{ s.name }}</span><span class="mono">{{ s.problem }}</span></a></li>
+    {%- endif %}{% endfor %}{% endfor %}
+  </ul>
+</section>
+{% endblock %}

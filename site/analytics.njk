@@ -1,0 +1,31 @@
+---
+permalink: /analytics.js
+eleventyExcludeFromCollections: true
+---
+/* GA4 loader, generated from site/_data/site.json (ga4Id). Blank ID: defines a no-op
+   tdTrack and loads nothing. An external file, not inline, so the CSP needs no
+   'unsafe-inline'. Pages fire enquiries with tdTrack('generate_lead', {...}). */
+(function () {
+  'use strict';
+  var me = document.currentScript;
+  window.tdTrack = function () {};
+{%- if site.ga4Id %}
+  var ID = '{{ site.ga4Id }}';
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { window.dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', ID);
+  window.tdTrack = function (name, params) { gtag('event', name, params || {}); };
+  var s = document.createElement('script');
+  s.async = true;
+  s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(ID);
+  document.head.appendChild(s);
+{%- endif %}
+  /* The thank-you page counts a sub-page enquiry, but only when the visitor arrived
+     from this site (a form post), not from a bookmark or a direct visit. */
+  if (me && me.hasAttribute('data-lead')) {
+    var ref = '';
+    try { ref = new URL(document.referrer).origin; } catch (e) { ref = ''; }
+    if (ref === location.origin) window.tdTrack('generate_lead', { form_topic: 'sub-page form', form_location: new URL(document.referrer).pathname });
+  }
+})();

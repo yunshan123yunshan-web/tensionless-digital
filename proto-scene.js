@@ -292,24 +292,21 @@
   });
 
   /* ── services: the selected service's piece takes the centre of the composition ── */
+  /* Copy lives in the HTML (.svc-copy) so crawlers and no-JS readers get it; this only adds layout keys. */
   var SERVICES = [
-    { k: 'lp', name: 'Landing pages',
-      p: 'One page per offer, built around the exact promise the ad made, so the person who clicked recognises what they came for, and enquires.',
-      get: 'Page design and copy, A/B tests, enquiry tracking.', fix: 'People click, but don’t enquire.' },
-    { k: 'search', row: 'paid', name: 'Google Ads',
-      p: 'Search campaigns on the phrases buyers actually type, with negative keywords so you stop paying for browsers and job-seekers.',
-      get: 'Keyword plan, ad copy, bid management, monthly report.', fix: 'Spend that attracts the wrong searches.' },
-    { k: 'ad', name: 'Facebook Ads',
-      p: 'Creative made in sets, so we learn which message lands, and each one points to a page that says the same thing.',
-      get: 'Ad creative in tested sets, audience setup, weekly optimisation.', fix: 'Our ads and content feel disconnected.' },
-    { k: 'seo', row: 'org', name: 'SEO',
-      p: 'Pages that answer real buyer questions, linked so authority flows to the page that sells, tracked from first click to enquiry.',
-      get: 'Keyword research, guide articles, technical fixes, rank tracking.', fix: 'I can’t tell what’s working.' }
-  ];
+    { k: 'lp', slug: 'landing-pages', name: 'Landing pages' },
+    { k: 'search', slug: 'google-ads', row: 'paid', name: 'Google Ads' },
+    { k: 'ad', slug: 'meta-ads', name: 'Facebook Ads' },
+    { k: 'seo', slug: 'seo', row: 'org', name: 'SEO' }
+  ].map(function (s) {
+    var el = scene.querySelector('.svc-copy [data-svc="' + s.k + '"]');
+    var txt = function (c) { return el ? el.querySelector('.' + c).textContent : ''; };
+    return Object.assign({}, s, { p: txt('svc-p'), get: txt('svc-get'), fix: txt('svc-fix') });
+  });
   var picks = [].slice.call(scene.querySelectorAll('.pick')), picksBox = scene.querySelector('.svc-picks'), current = 0;
   var exLine = document.getElementById('ex-line');
   var explain = document.getElementById('svc-explain'), exP = document.getElementById('ex-p'), exGet = document.getElementById('ex-get'),
-    exFix = document.getElementById('ex-fix'), exCta = document.getElementById('ex-cta');
+    exFix = document.getElementById('ex-fix'), exCta = document.getElementById('ex-cta'), exMore = document.getElementById('ex-more');
   function choose(i, silent) {
     var s = SERVICES[i];
     picks.forEach(function (b, k) { b.setAttribute('aria-pressed', String(k === i)); });
@@ -327,6 +324,7 @@
     markPath();
     exLine.textContent = picks[i].querySelector('.pick-line').textContent;
     exP.textContent = s.p; exGet.textContent = s.get; exFix.textContent = '“' + s.fix + '”';
+    exMore.href = '/services/' + s.slug + '/';
     exCta.textContent = 'Ask about ' + (s.k === 'lp' ? 'landing pages' : s.name) + ' →';
     if (!silent && TD.setTopic) TD.setTopic(s.name + ': ' + s.fix.replace(/\.$/, ''));
   }

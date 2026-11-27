@@ -1,0 +1,35 @@
+[build]
+  command = "npm test"   # build + check-build.mjs: a failed check blocks the deploy
+  publish = "_site"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# One canonical host: www goes to the apex (site.json origin).
+[[redirects]]
+  from = "https://www.tensionlessdigital.com/*"
+  to = "https://tensionlessdigital.com/:splat"
+  status = 301
+  force = true
+
+# CSP allows only what the pages load: GSAP (cdnjs), Lenis (unpkg), Google Fonts.
+# Inline styles are needed (each page has a <style> block; JS sets style attributes).
+# The call form posts to "/" with fetch, so form-action stays 'self'.
+# GA4 (loaded by /analytics.js only when site.json ga4Id is set) needs the Google
+# domains in script-src, img-src and connect-src, per Google's CSP guidance.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com https://unpkg.com https://*.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'"
+
+# Images are not versioned (no ?v=), so cache for a week rather than forever.
+# CSS/JS keep Netlify's default (revalidate via ETag) since their ?v= bumps are manual.
+[[headers]]
+  for = "/proto-assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"

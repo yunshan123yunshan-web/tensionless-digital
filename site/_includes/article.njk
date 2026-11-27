@@ -1,0 +1,23 @@
+{% extends "sub-page.njk" %}
+{% block main %}
+<article class="post">
+  <header class="sp-hero post-head">
+    <p class="mono kicker">{{ kicker }}</p>
+    <h1>{{ h1 }}</h1>
+    <p class="lede">{{ lede }}</p>
+    <p class="byline mono">By {{ entity.owner.name }}, {{ entity.owner.jobTitle }} · <time datetime="{{ page.date | isoDate }}">{{ page.date | readableDate }}</time></p>
+  </header>
+  <div class="prose">
+{{ content | safe }}
+  </div>
+  <aside class="sp-block post-rel" aria-labelledby="post-rel-h">
+    <p class="mono kicker">Related service</p>
+    <h2 id="post-rel-h">Want us to <em>do it for you?</em></h2>
+    <ul class="rel">
+      {%- for slug in relatedServices %}{% for s in services %}{% if s.slug == slug %}
+      <li><a href="/services/{{ s.slug }}/"><span>{{ s.name }}</span><span class="mono">{{ s.problem }}</span></a></li>
+      {%- endif %}{% endfor %}{% endfor %}
+    </ul>
+  </aside>
+</article>
+{% endblock %}

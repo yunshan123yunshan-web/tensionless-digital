@@ -1,0 +1,53 @@
+{
+  "usage": "Decorative sector photography; the people and properties pictured are not identified as actual clients or campaign subjects.",
+  "photos": [
+    {
+      "file": "proto-assets/case-auto-photo.webp",
+      "photographer": "Mubashir Shoukat",
+      "title": "Collection of luxury cars in a showroom",
+      "source": "https://unsplash.com/photos/collection-of-luxury-cars-in-a-showroom-A-6ymDPGMbU",
+      "download": "https://images.unsplash.com/photo-1764013290175-2b76e9a00b2e?auto=format&fit=max&w=2000&q=85",
+      "license": "Unsplash License",
+      "licenseUrl": "https://unsplash.com/license",
+      "width": 1920,
+      "height": 1282,
+      "retrieved": "2026-11-26"
+    },
+    {
+      "file": "proto-assets/case-imm-photo.webp",
+      "photographer": "Pavel Danilyuk",
+      "title": "Male Lawyer Talking to His Clients",
+      "source": "https://www.pexels.com/photo/male-lawyer-talking-to-his-clients-8112231/",
+      "download": "https://images.pexels.com/photos/8112231/pexels-photo-8112231.jpeg?auto=compress&cs=tinysrgb&w=2000",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "width": 1920,
+      "height": 1282,
+      "retrieved": "2026-11-26"
+    },
+    {
+      "file": "proto-assets/case-fin-photo.webp",
+      "photographer": "RDNE Stock project",
+      "title": "An Agent Showing Documents To His Client",
+      "source": "https://www.pexels.com/photo/an-agent-showing-documents-to-his-client-7821671/",
+      "download": "https://images.pexels.com/photos/7821671/pexels-photo-7821671.jpeg?auto=compress&cs=tinysrgb&w=2000",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "width": 1920,
+      "height": 1280,
+      "retrieved": "2026-11-26"
+    },
+    {
+      "file": "proto-assets/case-re-photo.webp",
+      "photographer": "Ponsakthi Anand",
+      "title": "High-Rise Buildings at the Beach",
+      "source": "https://www.pexels.com/photo/high-rise-buildings-at-the-beach-5273797/",
+      "download": "https://images.pexels.com/photos/5273797/pexels-photo-5273797.jpeg?auto=compress&cs=tinysrgb&w=2000",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "width": 1920,
+      "height": 1280,
+      "retrieved": "2026-11-26"
+    }
+  ]
+}

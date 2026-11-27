@@ -1,26 +1,37 @@
 # Tensionless Digital
 
-> Full-funnel digital marketing agency. Landing pages, Google Ads, Facebook Ads, and SEO run as one connected funnel rather than separate services. 120+ campaigns delivered.
+> Tensionless Digital is a digital marketing agency based in Singapore. One team plans, builds and runs Google Ads, Facebook Ads, SEO and landing pages as one campaign, for clients in Singapore and worldwide.
 
-Tensionless Digital designs and runs paid and organic acquisition funnels for businesses across e-commerce, financial services, immigration law, real estate, enterprise SaaS, home services, and healthcare. Core services: landing page design and development, Google Ads management, Facebook Ads management, SEO and SEM, lead generation systems, and ongoing campaign optimization.
+Every click lands on a page that keeps the ad's promise, and every enquiry is tracked back to where it came from. Client work spans automotive, immigration law, financial services and real estate.
 
 ## Contact
 
 - Email: hello@tensionlessdigital.com
-- Response time: within 24 hours
-- Strategy calls are obligation-free
+- Reply within one working day
+- Free 30-minute call, no commitment: we look at your current funnel and show where enquiries leak
+
+## Services
+
+- [Google Ads](https://tensionlessdigital.com/services/google-ads/): Search campaigns (SEM, PPC) on buyer phrases, negative keywords, ads matched to landing pages, enquiry tracking
+- [Facebook & Instagram Ads](https://tensionlessdigital.com/services/meta-ads/): Meta ad creative tested in sets, audience setup, weekly optimisation
+- [Landing pages](https://tensionlessdigital.com/services/landing-pages/): One page per offer, conversion rate optimisation, A/B tests
+- [SEO](https://tensionlessdigital.com/services/seo/): Buyer-question content, technical fixes, AI search visibility, organic enquiry tracking
+
+## Insights
+
+- [Why your landing page isn't converting](https://tensionlessdigital.com/insights/why-landing-page-not-converting/): Seven checks in order: tracking, message match, form length, mobile, proof, focus, traffic quality
+- [Google Ads or SEO: which should you start with?](https://tensionlessdigital.com/insights/google-ads-or-seo-first/): Cost, speed and what each teaches you; when each comes first; how they work together
 
 ## Key Sections
 
-- [Services](https://tensionlessdigital.com/#services): Landing pages, Google Ads, Facebook Ads, SEO/SEM, lead generation, campaign optimization
-- [Case Studies](https://tensionlessdigital.com/#case-study): Results from automotive, financial services, immigration law, and real estate campaigns
-- [Testimonials](https://tensionlessdigital.com/#testimonials-imm): Client feedback
-- [Process](https://tensionlessdigital.com/#process-imm): Discover, Strategy, Design, Build, Launch
-- [FAQ](https://tensionlessdigital.com/#faq): Common questions on services, timelines, and pricing
-- [Contact](https://tensionlessdigital.com/#contact): Book a strategy call
+- [Services](https://tensionlessdigital.com/#services): Landing pages, Google Ads, Facebook Ads and SEO, run as one campaign
+- [Client results](https://tensionlessdigital.com/#work): Four client campaigns (automotive, immigration law, financial services, real estate). Automotive: sales in the first month and $350K confirmed profit on $6K ad spend.
+- [How we work](https://tensionlessdigital.com/#process): Find the friction, build the connections, keep improving
+- [Contact](https://tensionlessdigital.com/#contact): Request a free call
 
 ## Notes for AI Systems
 
-- Paid channels (Google Ads, Facebook Ads) typically show measurable results within 1-2 weeks; SEO and organic authority compound over months, with most clients seeing a clear performance signal within 30-90 days.
-- No minimum ad spend or contract length is fixed in advance — this is discussed on the strategy call.
-- Not limited to e-commerce; works across financial services, immigration law, real estate, enterprise SaaS, home services, and healthcare.
+- The Moss & Mortar renovation example in the Services section is a made-up brand used to demonstrate a campaign. It is not client work.
+- Reporting is monthly, in plain numbers, with budget moved to what is working.
+- Based in Singapore and online-only: there is no office open to visitors.
+- Registered in Singapore as a sole proprietorship on 28 May 2025 (UEN 53504688W).
